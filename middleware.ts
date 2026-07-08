@@ -12,11 +12,13 @@ export async function middleware(req: NextRequest) {
 
   const ok = await verify(req.cookies.get(COOKIE_NAME)?.value);
 
-  if (!ok && !isPublic) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
+  // Login requirement disabled by request. To turn it back on, uncomment
+  // the block below.
+  // if (!ok && !isPublic) {
+  //   const url = req.nextUrl.clone();
+  //   url.pathname = "/login";
+  //   return NextResponse.redirect(url);
+  // }
   if (ok && pathname.startsWith("/login")) {
     const url = req.nextUrl.clone();
     url.pathname = "/";

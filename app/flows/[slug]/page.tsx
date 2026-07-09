@@ -7,7 +7,10 @@ import { Lens } from "@/components/Lens";
 import { Changelog } from "@/components/Changelog";
 import { Ring, Funnel, Bars } from "@/components/Charts";
 
-export const dynamic = "force-dynamic";
+// Not force-dynamic anymore: that setting overrides fetch-level revalidation
+// and forces a brand-new n8n execution on every single page load. Now the page
+// revalidates on the same 30s cadence as the fetch in lib/readout.ts.
+export const revalidate = 30;
 
 export function generateStaticParams() {
   return FLOWS.map((f) => ({ slug: f.slug }));
@@ -18,17 +21,19 @@ function num(data: Readout | null, path: string): number | null {
   return typeof v === "number" ? v : v == null ? null : Number(v);
 }
 
-export default async function FlowPage({ params }: { params: { slug: string } }) {
+export default async function FlowPage({ params, searchParams }: { params: { slug: string }; searchParams: { from?: string } }) {
   const flow = flowBySlug(params.slug);
   if (!flow) notFound();
   const { data, error, fetchedAt } = await getReadout();
+  const backHref = searchParams.from || "/";
+  const backLabel = backHref === "/gym-owners" ? "Gym owner outreach" : backHref === "/members" ? "Member outreach" : "All dashboards";
 
   return (
     <>
       <Topbar version={data?.meta?.version} fetchedAt={fetchedAt} />
       <div className="wrap">
         <div style={{ paddingTop: 28 }}>
-          <a className="back" href="/">← All flows</a>
+          <a className="back" href={backHref}>← {backLabel}</a>
         </div>
 
         {/* HEADER */}
@@ -80,7 +85,7 @@ export default async function FlowPage({ params }: { params: { slug: string } })
         ) : (
           <section className="section">
             <div className="banner">
-              This flow isn&apos;t instrumented in The Readout yet, so it has no live tiles — see the changelog for why. Flagged, not faked.
+              This flow isn&apos;t instrumented in The Readout yet, so it has no live tiles - see the changelog for why. Flagged, not faked.
             </div>
           </section>
         )}
@@ -157,7 +162,7 @@ export default async function FlowPage({ params }: { params: { slug: string } })
 
 function MetricCard({ m, data }: { m: Metric; data: Readout | null }) {
   const raw = pick(data, m.path);
-  const val = m.suffix === "%" ? (raw == null ? "—" : `${raw}`) : fmt(raw);
+  const val = m.suffix === "%" ? (raw == null ? "-" : `${raw}`) : fmt(raw);
   return (
     <div className="card">
       <div className="stat-label">{m.label}</div>

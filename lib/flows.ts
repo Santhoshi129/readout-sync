@@ -464,23 +464,28 @@ export const FLOWS: Flow[] = [
     order: 10,
     goLive: "2026-07-04",
     category: "adoption",
-    oneLine: "Daily 7:00 AM scan of app + Zen Planner engagement to catch at-risk members - computing live, but delivery not wired yet.",
+    oneLine: "Daily 7:00 AM scan of every member, split into never-linked-the-app and linked-both, checked against 4 alert conditions and batched into one alert.",
     technical: [
-      "Pulls the member-overlap report from dashboard.trainwithus.app/api/v1 and, for members in both systems, calls the per-user engagement endpoint to evaluate alert conditions (at_risk, attendance_drop, needs_attention) plus a not_on_app stream.",
-      "It POSTs assembled alerts to /webhook/retention-alerts - which is caught by the Test Receiver workflow: a single bare webhook node with no downstream and empty connections. So alerts are computed and delivered to a sink that does nothing with them.",
-      "Not represented in The Readout payload, so it has no live tiles on this dashboard yet - flagged rather than faked.",
+      "Daily Trigger fires once at 7am and calls /community/member-overlap once, which returns three groups: in_zp_not_app, in_app_not_zp, in_both. Only the first and third are used - in_app_not_zp (app users with no active gym membership) are deliberately skipped, since they're not retention or outreach targets.",
+      "Build Member List explodes that single response into one item per member, tagging each with stream: not_on_app or stream: in_both, and drops any not_on_app member with no email on file (can't message them anyway). Which Stream? then forks every member down exactly one path.",
+      "Stream A (not_on_app) has no profile_id, so no engagement call is possible - the alert is built directly from the overlap record's membership_status and membership_type, always priority 5 (lowest urgency), always app_engagement: null.",
+      "Stream B (in_both) calls GET /users/{profile_id}/engagement per member, then Check Alert Conditions tests 4 conditions in priority order, first match wins: snapshot_pending (no analytics yet) - at_risk - needs_attention - attendance_drop (7+ days since last visit). No match means alert_type: none, filtered out downstream. Every real alert here carries full app_engagement, attendance_history, and membership_context blocks, plus a dates_invalid flag when a Zen Planner record's end_date is before its begin_date.",
+      "Merge Alerts combines both streams; Has Alert? drops the none items. Build Batch Payload then dedupes by profile_id (a handful of Zen Planner records share one app profile under different IDs - keeps only the highest-priority alert per person), builds an alerts_by_type count breakdown, and wraps it all with run_completed_at + alert_count.",
+      "Send Alerts fires exactly once per daily run - one batched POST, never one request per member. It currently points at a test n8n webhook for inspecting payloads; swapping that URL for the real TWU intervention endpoint is the last step before this delivers real alerts.",
+      "Not represented in The Readout payload yet, so it has no live tiles on this dashboard - flagged rather than faked.",
     ],
     business: [
-      "This is the early-warning system for churn: it spots members going quiet before they leave.",
-      "The detection works today, but the alerts currently go to a test inbox that nobody reads - wiring the final delivery step (Slack / task / email) is what makes this actually useful.",
+      "This is the early-warning system for churn: it spots members going quiet before they leave, across both people who never linked the app and people who did but stopped showing up.",
+      "The detection logic is done and running daily against real data. The only thing standing between this and being useful is the last wire: pointing Send Alerts at the real TWU endpoint instead of the test inbox it's aimed at today.",
     ],
     metrics: [],
     charts: [],
     changelog: [
-      { date: "2026-07-04", status: "done", text: "Live-computing against real app + Zen Planner APIs. Alert types: not_on_app, at_risk, attendance_drop, needs_attention." },
-      { date: "2026-07-04", status: "gap", text: "Delivery terminates at the Test Receiver (bare webhook, no downstream). No Slack/task/email yet. Not instrumented in The Readout." },
+      { date: "2026-07-04", status: "done", text: "Live-computing against real app + Zen Planner APIs. 4 alert conditions in priority order: snapshot_pending, at_risk, needs_attention, attendance_drop. Deduped by profile_id, batched into one POST per run." },
+      { date: "2026-07-04", status: "gap", text: "Send Alerts still points at a test n8n webhook, not the real TWU intervention endpoint. Not instrumented in The Readout yet." },
     ],
   },
+
 
   {
     slug: "alt-email",

@@ -1,7 +1,7 @@
 import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars } from "@/components/Charts";
+import { Funnel, Bars, Ring } from "@/components/Charts";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 
 export const revalidate = 30;
@@ -26,7 +26,7 @@ export default async function MembersDashboard() {
 
         <section style={{ padding: "28px 0 8px" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
-          <h1 style={{ fontSize: 44, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member outreach</h1>
+          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member outreach</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
             {flows.length} automations inviting existing members onto the TWU app.
           </p>
@@ -45,16 +45,24 @@ export default async function MembersDashboard() {
               are a different population who never went through this funnel at
               all, so they're shown separately below instead of chained on,
               which used to produce a nonsense "32500% kept" step. */}
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Outreach funnel</div>
-            <Funnel
-              rows={[
-                { label: "Identified", value: num(data, "app_adoption.total_identified"), tone: "cold" },
-                { label: "Outreach sent", value: sum(data, ["app_adoption.email_outreach_confirmed", "app_adoption.followup_confirmed"]), tone: "warm" },
-                { label: "Replied", value: num(data, "app_adoption.stage_replied"), tone: "warm" },
-                { label: "Adopted via outreach", value: num(data, "app_adoption.adopted"), tone: "amber" },
-              ]}
-            />
+          <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
+            <div className="card" style={{ padding: 32 }}>
+              <div className="eyebrow muted" style={{ marginBottom: 22 }}>Outreach funnel</div>
+              <Funnel
+                rows={[
+                  { label: "Identified", value: num(data, "app_adoption.total_identified"), tone: "cold" },
+                  { label: "Outreach sent", value: sum(data, ["app_adoption.email_outreach_confirmed", "app_adoption.followup_confirmed"]), tone: "warm" },
+                  { label: "Replied", value: num(data, "app_adoption.stage_replied"), tone: "warm" },
+                  { label: "Adopted via outreach", value: num(data, "app_adoption.adopted"), tone: "amber" },
+                ]}
+              />
+            </div>
+            <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
+              <div className="eyebrow muted" style={{ marginBottom: 22 }}>Community coverage</div>
+              <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                <Ring value={num(data, "app_adoption.total_joined")} total={num(data, "app_adoption.total_identified")} centerLabel="in the community" />
+              </div>
+            </div>
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

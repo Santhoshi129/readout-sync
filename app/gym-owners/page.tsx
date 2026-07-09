@@ -2,7 +2,7 @@ import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars } from "@/components/Charts";
+import { Funnel, Bars, Ring } from "@/components/Charts";
 import { num, section, CANARIES, Head, FlowCard } from "@/lib/dashboard-ui";
 
 export const revalidate = 30;
@@ -27,7 +27,7 @@ export default async function GymOwnersDashboard() {
 
         <section style={{ padding: "28px 0 8px" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Train With Us</span>
-          <h1 style={{ fontSize: 44, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Gym owner outreach</h1>
+          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Gym owner outreach</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
             {flows.length} automations reaching cold gyms through email, Instagram, and phone.
           </p>
@@ -45,16 +45,24 @@ export default async function GymOwnersDashboard() {
               IG and phone used to be chained onto this and produced nonsense
               "% kept" numbers (e.g. 738%) because they're a separate channel,
               not a downstream step of email replies - now shown separately below. */}
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Email funnel</div>
-            <Funnel
-              rows={[
-                { label: "Scraped", value: num(data, "summary.total_gyms_scraped"), tone: "cold" },
-                { label: "Drafts created", value: num(data, "summary.total_drafts_created"), tone: "cold" },
-                { label: "Emails sent", value: num(data, "lead_gen.email_outreach_sent"), tone: "warm" },
-                { label: "Replied", value: num(data, "lead_gen.email_replied"), tone: "warm" },
-              ]}
-            />
+          <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
+            <div className="card" style={{ padding: 32 }}>
+              <div className="eyebrow muted" style={{ marginBottom: 22 }}>Email funnel</div>
+              <Funnel
+                rows={[
+                  { label: "Scraped", value: num(data, "summary.total_gyms_scraped"), tone: "cold" },
+                  { label: "Drafts created", value: num(data, "summary.total_drafts_created"), tone: "cold" },
+                  { label: "Emails sent", value: num(data, "lead_gen.email_outreach_sent"), tone: "warm" },
+                  { label: "Replied", value: num(data, "lead_gen.email_replied"), tone: "warm" },
+                ]}
+              />
+            </div>
+            <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
+              <div className="eyebrow muted" style={{ marginBottom: 22 }}>Reply rate</div>
+              <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" />
+              </div>
+            </div>
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

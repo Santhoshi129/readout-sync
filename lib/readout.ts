@@ -127,18 +127,64 @@ export interface Readout {
 
 const BASE = process.env.READOUT_BASE_URL || "https://trainwithus.app.n8n.cloud/webhook";
 
+// The aggregator used to be one n8n webhook (/twu-readout-data) that held
+// every GHL contact + opportunity + app-adoption row in memory for a single
+// execution, which is what was causing "Connection lost" / deactivation
+// under load. Split into two independent, lighter n8n workflows that never
+// share memory: lead gen (contacts + opportunities) and app adoption
+// (a separate GHL location entirely - never depended on lead gen data).
+// Fetched in parallel here and merged into the same Readout shape every
+// other file in this app already expects, so nothing downstream changes.
 export async function getReadout(): Promise<{ data: Readout | null; error: string | null; fetchedAt: string }> {
   const fetchedAt = new Date().toISOString();
   try {
-    // Revalidated every 30s instead of no-store: concurrent visitors now share
-    // one cached fetch instead of each triggering a brand-new, uncached execution
-    // of the heaviest chain in the n8n workflow (9 sub-webhook calls + full GHL
-    // contact pagination, all in parallel). This is what was likely causing
-    // concurrent executions to pile up and crash the workflow under repeat visits.
-    const res = await fetch(`${BASE}/twu-readout-data`, { next: { revalidate: 30 } });
-    if (!res.ok) return { data: null, error: `Readout responded ${res.status}`, fetchedAt };
-    const json = (await res.json()) as Readout | Readout[];
-    const data = Array.isArray(json) ? json[0] : json;
+    const [lgRes, aaRes] = await Promise.all([
+      fetch(`${BASE}/twu-readout-leadgen`, { next: { revalidate: 30 } }),
+      fetch(`${BASE}/twu-readout-appadoption`, { next: { revalidate: 30 } }),
+    ]);
+    if (!lgRes.ok) return { data: null, error: `Lead gen source responded ${lgRes.status}`, fetchedAt };
+    if (!aaRes.ok) return { data: null, error: `App adoption source responded ${aaRes.status}`, fetchedAt };
+
+    const lgJsonRaw = await lgRes.json();
+    const aaJsonRaw = await aaRes.json();
+    const lg = Array.isArray(lgJsonRaw) ? lgJsonRaw[0] : lgJsonRaw;
+    const aa = Array.isArray(aaJsonRaw) ? aaJsonRaw[0] : aaJsonRaw;
+
+    // The only fields that ever needed BOTH datasets - everything else is
+    // already fully computed inside whichever of the two webhooks owns it.
+    const summary = { ...lg.summary, ...aa.summary };
+    summary.total_email_replied = (lg.lead_gen?.email_replied || 0) + (aa.app_adoption?.stage_replied || 0);
+    summary.total_emails_sent =
+      (lg.lead_gen?.email_outreach_sent || 0) +
+      (aa.app_adoption?.email_outreach_confirmed || 0) +
+      (aa.app_adoption?.followup_confirmed || 0);
+
+    const data: Readout = {
+      meta: {
+        dashboard: "TWU · The Readout",
+        generated_at: new Date().toISOString(),
+        version: "v1.0-split",
+        data_freshness: {
+          lead_gen: "live — GHL contacts API (split workflow)",
+          app_adoption: "live — GHL opportunities + MongoDB (split workflow, independent of lead gen)",
+          ...(lg.meta?.data_freshness || {}),
+        },
+      },
+      lead_gen: lg.lead_gen,
+      lead_sources_raw: lg.lead_sources_raw,
+      lead_sources_failed: lg.lead_sources_failed,
+      lead_sources_drafts: lg.lead_sources_drafts,
+      lead_sources_enriched: lg.lead_sources_enriched,
+      app_adoption: aa.app_adoption,
+      geo_distribution: lg.geo_distribution,
+      data_integrity: lg.data_integrity,
+      reply_breakdown: lg.reply_breakdown,
+      alt_email_outreach: lg.alt_email_outreach,
+      ig_bridge_outreach: lg.ig_bridge_outreach,
+      temp_away_pause_resume: lg.temp_away_pause_resume,
+      summary,
+    };
+
     return { data, error: null, fetchedAt };
   } catch (e: any) {
     return { data: null, error: e?.message || "Readout unreachable", fetchedAt };

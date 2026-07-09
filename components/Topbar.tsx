@@ -35,7 +35,6 @@ export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { 
         <span>{version ? `Readout ${version}` : "Readout"}</span>
         <span><span className="live-dot" /> Live · {timeAgo(fetchedAt)}</span>
       </div>
-      <div className="pulse-line" aria-hidden="true"><span /></div>
     </div>
   );
 }

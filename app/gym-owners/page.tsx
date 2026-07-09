@@ -1,15 +1,18 @@
 import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
-import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring } from "@/components/Charts";
-import { num, section, CANARIES, Head, FlowCard } from "@/lib/dashboard-ui";
+import { Funnel, Bars, Ring, Compare, GeoList } from "@/components/Charts";
+import { Counter } from "@/components/Counter";
+import { GymOwnerBriefing } from "@/components/Briefing";
+import { Diagnostics } from "@/components/Diagnostics";
+import { num, section, Head, FlowCard } from "@/lib/dashboard-ui";
 
 export const revalidate = 30;
 
 export default async function GymOwnersDashboard() {
   const { data, error, fetchedAt } = await getReadout();
   const flows = FLOWS.filter((f) => section(f.category) === "gym-owner").sort((a, b) => a.order - b.order);
+  const launch = flows.reduce((min, f) => (f.goLive < min ? f.goLive : min), flows[0]?.goLive ?? fetchedAt);
 
   return (
     <>
@@ -25,15 +28,16 @@ export default async function GymOwnersDashboard() {
           </div>
         )}
 
-        <section style={{ padding: "28px 0 8px" }}>
+        <section style={{ padding: "28px 0 0" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Train With Us</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Gym owner outreach</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
             {flows.length} automations reaching cold gyms through email, Instagram, and phone.
           </p>
+          <GymOwnerBriefing data={data} launchIso={launch} />
         </section>
 
-        <section className="section" style={{ borderTop: "none" }}>
+        <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
           <div className="grid grid-4" style={{ marginBottom: 24 }}>
             <Head label="Contacts in CRM" path="lead_gen.total_contacts_in_ghl" data={data} />
             <Head label="Emails sent" path="lead_gen.email_outreach_sent" data={data} />
@@ -90,30 +94,37 @@ export default async function GymOwnersDashboard() {
             />
           </div>
 
-          <div className="section-head" style={{ marginTop: 8 }}>
-            <div>
-              <div className="eyebrow" style={{ marginBottom: 8 }}>System health self-checks</div>
-              <div className="section-title">Seven canaries, all should read near zero.</div>
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>CrossFit vs HYROX</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Same funnel, two channels — which one's actually pulling weight.</div>
+            <Compare
+              labelA="CrossFit"
+              labelB="HYROX"
+              rows={[
+                { label: "Contacts in CRM", a: num(data, "lead_gen.crossfit_contacts_in_ghl"), b: num(data, "lead_gen.hyrox_contacts_in_ghl") },
+                { label: "Hot leads", a: num(data, "lead_sources_enriched.cf_hot"), b: num(data, "lead_sources_enriched.hy_hot") },
+                { label: "Warm leads", a: num(data, "lead_sources_enriched.cf_warm"), b: num(data, "lead_sources_enriched.hy_warm") },
+                { label: "Drafts created", a: num(data, "lead_sources_drafts.cf_drafts_created"), b: num(data, "lead_sources_drafts.hy_drafts_created") },
+              ]}
+            />
+            <div className="grid grid-2" style={{ gap: 16, marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
+              <div>
+                <div className="stat-label">CrossFit avg prospect score</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_enriched.cf_avg_prospect_score")} /></div>
+              </div>
+              <div>
+                <div className="stat-label">HYROX avg prospect score</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_enriched.hy_avg_prospect_score")} /></div>
+              </div>
             </div>
           </div>
-          <div className="grid grid-4" style={{ marginBottom: 24 }}>
-            {CANARIES.map((c) => {
-              const v = num(data, c.path);
-              const bad = c.expect.includes("watch") ? (v ?? 0) > 0 : (v ?? 0) > 3;
-              return (
-                <div className="canary" key={c.path}>
-                  <div>
-                    <div className="c-val" style={{ color: bad ? "var(--amber)" : "var(--good)" }}>{fmt(v)}</div>
-                    <div className="stat-label">{c.label}</div>
-                  </div>
-                  <div className="c-meta">
-                    <span className={`dot ${bad ? "watch" : "good"}`} style={{ display: "inline-block" }} />
-                    <div className="c-expect">{c.expect}</div>
-                  </div>
-                </div>
-              );
-            })}
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Top locations</div>
+            <GeoList rows={data?.geo_distribution || []} />
           </div>
+
+          <Diagnostics data={data} />
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

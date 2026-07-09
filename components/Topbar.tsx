@@ -1,9 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { timeAgo } from "@/lib/format";
 
 export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { version?: string; fetchedAt: string; crossLinkHref?: string; crossLinkLabel?: string }) {
   const [logoFailed, setLogoFailed] = useState(false);
+  // Re-render once a second so "Live · 12s ago" actually counts up in the
+  // browser instead of freezing at whatever value it had on page load.
+  const [, forceTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => forceTick((n) => n + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
   return (
     <div className="topbar">
       <a className="brand" href="/">
@@ -28,6 +35,7 @@ export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { 
         <span>{version ? `Readout ${version}` : "Readout"}</span>
         <span><span className="live-dot" /> Live · {timeAgo(fetchedAt)}</span>
       </div>
+      <div className="pulse-line" aria-hidden="true"><span /></div>
     </div>
   );
 }

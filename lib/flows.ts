@@ -1,6 +1,6 @@
 // lib/flows.ts
 // The registry. Each flow: two-lens analysis, go-live date, LIVE metric bindings
-// (paths into the Readout — never hardcoded values), a System Updates changelog
+// (paths into the Readout - never hardcoded values), a System Updates changelog
 // derived from node-level code inspection, health canaries, and tag notes where
 // they genuinely add value. Status words are literal: done / in-progress /
 // monitoring / gap. Nothing is marked done unless it ships in the exported nodes.
@@ -58,14 +58,14 @@ export const FLOWS: Flow[] = [
     order: 1,
     goLive: "2026-05-25",
     category: "acquisition",
-    oneLine: "Turns pre-scraped cold gyms into scored, deduped, personally-drafted prospects — CrossFit at 7:00 AM, HYROX at 7:30 AM.",
+    oneLine: "Turns pre-scraped cold gyms into scored, deduped, personally-drafted prospects - CrossFit at 7:00 AM, HYROX at 7:30 AM.",
     technical: [
       "Two parallel pipelines read pre-scraped gyms (CrossFit from MongoDB cf_gym_details, HYROX from the Raw Leads sheet), fetch each gym's website, and run Claude Haiku enrichment for owner name, gym type, a location-specific Instagram handle (franchise HQ handles rejected) and an outreach angle.",
       "A prospect score gates the pipeline: direct email +35, generic +12, generic-domain −15, US/CA +20, independent +20, franchise −5, website +10, phone +5. Hot ≥65, warm 20–64, cold <20 (skipped and logged). This is read straight from the CF/HY Prospect Score nodes.",
       "Survivors are deduped against GHL by email before any contact is created, pushed to GHL (New Leads → Prospect stage, assigned to Dave) with a personalized Gmail draft in David's voice. Nothing sends automatically.",
     ],
     business: [
-      "This is the top of the funnel. Cold gym names go in; ready-to-send, personalized outreach comes out — each one specific to that gym, never generic.",
+      "This is the top of the funnel. Cold gym names go in; ready-to-send, personalized outreach comes out - each one specific to that gym, never generic.",
       "It protects quality two ways: it scores every gym so only worthwhile ones get worked, and it checks GHL first so the same gym is never contacted twice.",
       "David's only job at this stage is to review drafts and hit send. The research and writing are already done.",
     ],
@@ -76,9 +76,9 @@ export const FLOWS: Flow[] = [
       { label: "Drafts created", path: "lead_sources_drafts.total_drafts_created" },
       { label: "No email (skipped)", path: "lead_sources_failed.total_no_email" },
       { label: "Duplicates skipped", path: "lead_sources_failed.total_duplicates_skipped" },
-      { label: "In GHL — CrossFit", path: "lead_gen.crossfit_contacts_in_ghl" },
-      { label: "In GHL — HYROX", path: "lead_gen.hyrox_contacts_in_ghl" },
-      { label: "Hot leads", path: "lead_sources_enriched.combined_hot", flag: "cached", note: "Enrichment breakdown is cached — refreshes when enrichment runs, not on every read." },
+      { label: "In GHL - CrossFit", path: "lead_gen.crossfit_contacts_in_ghl" },
+      { label: "In GHL - HYROX", path: "lead_gen.hyrox_contacts_in_ghl" },
+      { label: "Hot leads", path: "lead_sources_enriched.combined_hot", flag: "cached", note: "Enrichment breakdown is cached - refreshes when enrichment runs, not on every read." },
       { label: "Warm leads", path: "lead_sources_enriched.combined_warm", flag: "cached" },
     ],
     charts: [
@@ -100,7 +100,7 @@ export const FLOWS: Flow[] = [
     tagNotes: [
       { tag: "prospect · new lead", why: "Marks a fresh, un-worked gym entering the pipeline." },
       { tag: "crossfit / hyrox", why: "Routes the contact to the right sequence and reporting split downstream." },
-      { tag: "draft-ready", why: "Signals a Gmail draft exists and is waiting on David — the hand-off point to Dave Approval." },
+      { tag: "draft-ready", why: "Signals a Gmail draft exists and is waiting on David - the hand-off point to Dave Approval." },
     ],
     freshnessKeys: ["lead_sources_raw", "lead_sources_drafts", "lead_sources_failed", "lead_sources_enriched"],
   },
@@ -114,12 +114,12 @@ export const FLOWS: Flow[] = [
     oneLine: "Watches David's Sent folder every minute and records what he actually sent, so follow-ups are timed correctly.",
     technical: [
       "A Gmail trigger polls in:sent every minute, re-fetches message labels (the trigger payload sometimes omits custom labels), and confirms an outreach email via Label_1–4 (CF Direct/Info, HY Direct/Info). Anything unlabeled is ignored.",
-      "It looks the recipient up in GHL, branches on whether outreach-sent already exists, and writes the touch number, sent date, thread ID and message ID to custom fields — advancing the contact through the sequence.",
-      "First touch adds outreach-sent + touch-1 and removes draft-ready; follow-ups increment the step (max 5), swap the touch-N-pending / followup-draft-ready tags for touch-N. It sends nothing — it only records what David sent.",
+      "It looks the recipient up in GHL, branches on whether outreach-sent already exists, and writes the touch number, sent date, thread ID and message ID to custom fields - advancing the contact through the sequence.",
+      "First touch adds outreach-sent + touch-1 and removes draft-ready; follow-ups increment the step (max 5), swap the touch-N-pending / followup-draft-ready tags for touch-N. It sends nothing - it only records what David sent.",
     ],
     business: [
       "This is the bridge between David hitting send and the system knowing about it. Without it, follow-up timing would drift.",
-      "The moment David sends, the record updates itself — no manual logging, no spreadsheet.",
+      "The moment David sends, the record updates itself - no manual logging, no spreadsheet.",
     ],
     metrics: [
       { label: "Emails sent (all)", path: "summary.total_emails_sent" },
@@ -143,7 +143,7 @@ export const FLOWS: Flow[] = [
       { date: "2026-05-25", status: "done", text: "Live alongside Lead Gen. Every-minute sent detection, label re-fetch, first-touch vs follow-up paths." },
     ],
     tagNotes: [
-      { tag: "outreach-sent", why: "The single source of truth that a real email left David's account — everything downstream keys off it." },
+      { tag: "outreach-sent", why: "The single source of truth that a real email left David's account - everything downstream keys off it." },
       { tag: "touch-1 … touch-5", why: "Encodes exactly which touch a contact is on so the sequencer knows what to draft next." },
     ],
   },
@@ -162,7 +162,7 @@ export const FLOWS: Flow[] = [
     ],
     business: [
       "This keeps the conversation going without anyone remembering to follow up. Each gym gets up to five nudges, spaced out, each written fresh.",
-      "The second a gym replies, the nudging stops — no awkward 'did you get my email' after they've already answered.",
+      "The second a gym replies, the nudging stops - no awkward 'did you get my email' after they've already answered.",
       "Gyms that go all five touches with silence are handed off for a phone or Instagram try instead of being dropped.",
     ],
     metrics: [
@@ -191,7 +191,7 @@ export const FLOWS: Flow[] = [
       { date: "2026-06-26", status: "done", text: "Reply handling moved to the dedicated Reply Detector (classification + temp-away pausing)." },
     ],
     tagNotes: [
-      { tag: "phone-ig-followup", why: "David's signal that email is exhausted — hand this gym to the IG/Phone flow." },
+      { tag: "phone-ig-followup", why: "David's signal that email is exhausted - hand this gym to the IG/Phone flow." },
       { tag: "sequence-complete", why: "Freezes the contact so neither the sequencer nor a resume can re-draft it." },
     ],
     canaries: [
@@ -214,7 +214,7 @@ export const FLOWS: Flow[] = [
     ],
     business: [
       "Your members are worth more when they're inside the community app. This flow works the gap between 'is a member' and 'is on the app.'",
-      "It's the 325-of-854 story from the app: a room that's filling up, tracked member by member — joined, opted out, or still to decide.",
+      "It's the 325-of-854 story from the app: a room that's filling up, tracked member by member - joined, opted out, or still to decide.",
     ],
     metrics: [
       { label: "Identified", path: "app_adoption.total_identified" },
@@ -257,7 +257,7 @@ export const FLOWS: Flow[] = [
     ],
     business: [
       "This is what keeps the adoption push from going stale: one polite nudge, a weekly scoreboard, and automatic cleanup of the ones who've gone quiet.",
-      "David gets a Slack readout every week without asking, and the pipeline stays honest — silent members don't clog the 'in progress' column.",
+      "David gets a Slack readout every week without asking, and the pipeline stays honest - silent members don't clog the 'in progress' column.",
     ],
     metrics: [
       { label: "Follow-up drafts waiting", path: "app_adoption.followup_draft_in_gmail" },
@@ -290,11 +290,11 @@ export const FLOWS: Flow[] = [
     order: 6,
     goLive: "2026-06-26",
     category: "signal",
-    oneLine: "Reads every inbound reply, classifies intent with Claude, and routes it — including auto-responder redirects to Alt Email.",
+    oneLine: "Reads every inbound reply, classifies intent with Claude, and routes it - including auto-responder redirects to Alt Email.",
     technical: [
       "Every-minute inbox trigger parses the sender, fetches the original thread, and asks Claude to classify: interested, not_interested, auto_responder, auto_ack, temporary_away, or other. Unknown labels fall back to 'other' so nothing slips past a human.",
       "Interested → tag interested + sequence-stopped, move to Responded. Not-interested → unsubscribed + sequence-stopped, move to Dead. Auto-responder redirect → hands off to Alt Email Outreach. Temporary-away → writes temporarily-paused + paused-source-coldoutreach + paused-until-<date> (this is where Cold Outreach pausing actually happens).",
-      "Auto-ack is intentionally passive — no stage change, sequence keeps running. In the current export the Handle Auto-Ack node writes no tag, so reply_breakdown.auto_ack reads 0 until the auto-ack-detected tag write is deployed.",
+      "Auto-ack is intentionally passive - no stage change, sequence keeps running. In the current export the Handle Auto-Ack node writes no tag, so reply_breakdown.auto_ack reads 0 until the auto-ack-detected tag write is deployed.",
     ],
     business: [
       "Not every reply means the same thing. This tells 'yes, interested' apart from 'please stop,' from a robot 'we're closed until Monday.'",
@@ -304,7 +304,7 @@ export const FLOWS: Flow[] = [
       { label: "Interested", path: "reply_breakdown.interested" },
       { label: "Not interested", path: "reply_breakdown.not_interested" },
       { label: "Auto-responder", path: "reply_breakdown.auto_responder" },
-      { label: "Auto-ack", path: "reply_breakdown.auto_ack", flag: "not-instrumented", note: "Handle Auto-Ack writes no tag in the current export — reads 0 until the auto-ack-detected write is deployed." },
+      { label: "Auto-ack", path: "reply_breakdown.auto_ack", flag: "not-instrumented", note: "Handle Auto-Ack writes no tag in the current export - reads 0 until the auto-ack-detected write is deployed." },
       { label: "Other (needs review)", path: "reply_breakdown.other" },
       { label: "Total classified", path: "reply_breakdown.total_classified" },
     ],
@@ -322,7 +322,7 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-06-26", status: "done", text: "Live as the dedicated classifier for cold-outreach replies. Six-way intent classification, temp-away pausing, Alt Email hand-off." },
-      { date: "2026-06-26", status: "gap", text: "Auto-ack counting: Handle Auto-Ack writes no tag. Drop-in fix ready (adds auto-ack-detected, no stage change) — not yet confirmed deployed." },
+      { date: "2026-06-26", status: "gap", text: "Auto-ack counting: Handle Auto-Ack writes no tag. Drop-in fix ready (adds auto-ack-detected, no stage change) - not yet confirmed deployed." },
     ],
     tagNotes: [
       { tag: "interested / unsubscribed", why: "The two hard outcomes that stop the sequence and move the card." },
@@ -336,14 +336,14 @@ export const FLOWS: Flow[] = [
     order: 7,
     goLive: "2026-06-28",
     category: "signal",
-    oneLine: "Turns David's manual reply tags (IG or phone) into the right CRM moves — the two tags he adds trigger everything else.",
+    oneLine: "Turns David's manual reply tags (IG or phone) into the right CRM moves - the two tags he adds trigger everything else.",
     technical: [
-      "Two webhooks. IG positive replies are routed through Claude first (genuine vs auto-reply, and it captures a redirect email if present) — if an email is found it's written and the stage is held so the IG Bridge Sequence can pick it up; genuine-no-email moves to Responded + sequence-stopped.",
+      "Two webhooks. IG positive replies are routed through Claude first (genuine vs auto-reply, and it captures a redirect email if present) - if an email is found it's written and the stage is held so the IG Bridge Sequence can pick it up; genuine-no-email moves to Responded + sequence-stopped.",
       "Phone: phone-positive → Responded + sequence-stopped + phone-resolved; phone-negative → Dead + sequence-stopped + phone-resolved. Writing phone-resolved is what makes phone_still_due (open right now) distinct from the lifetime phone_followup_due total.",
       "Also writes paused-source-igmain, covering the fourth pause source in the unified temp-away system.",
     ],
     business: [
-      "David only ever adds two tags after an Instagram or phone conversation — positive or negative. The system does the rest of the CRM work.",
+      "David only ever adds two tags after an Instagram or phone conversation - positive or negative. The system does the rest of the CRM work.",
       "It's smart about Instagram: a positive IG reply that hands over an email address quietly starts the email bridge sequence instead of ending the conversation.",
     ],
     metrics: [
@@ -370,8 +370,8 @@ export const FLOWS: Flow[] = [
       { date: "2026-06-28", status: "done", text: "Live. IG positive routed through Claude (email capture → hand to Bridge), phone tags close with phone-resolved." },
     ],
     tagNotes: [
-      { tag: "phone-resolved", why: "Marks a phone stage closed regardless of outcome — powers the 'actually open right now' phone number." },
-      { tag: "ig-email-captured", why: "A redirect email arrived via IG — the trigger the Bridge Sequence waits for." },
+      { tag: "phone-resolved", why: "Marks a phone stage closed regardless of outcome - powers the 'actually open right now' phone number." },
+      { tag: "ig-email-captured", why: "A redirect email arrived via IG - the trigger the Bridge Sequence waits for." },
     ],
   },
 
@@ -384,10 +384,10 @@ export const FLOWS: Flow[] = [
     oneLine: "For email-exhausted gyms: finds a real Instagram handle to DM, then flags a phone call if the DM goes cold.",
     technical: [
       "Daily 9:30 AM, two parallel branches. IG: for gyms tagged phone-ig-followup, searches Google via Apify and asks Claude to classify the handle as ig-direct (location-specific, passes), ig-generic (brand HQ, rejected) or ig-not-found. Direct → ig-outreach-ready + a Mary task; generic/not-found → ig-needs-review. Capped at 20/day for IG safety.",
-      "Phone: fully-paginated fetch of ig-outreach-sent contacts (the old limit=100 single request dropped contacts past 100). NEW = 10+ days since real IG send, gets a task + phone-followup-due; STALE = already due, no reply 7+ days — resurfaces in the daily Slack digest so a backlog can't vanish.",
+      "Phone: fully-paginated fetch of ig-outreach-sent contacts (the old limit=100 single request dropped contacts past 100). NEW = 10+ days since real IG send, gets a task + phone-followup-due; STALE = already due, no reply 7+ days - resurfaces in the daily Slack digest so a backlog can't vanish.",
     ],
     business: [
-      "Email isn't the only door. When a gym never answers email, this finds their real Instagram and queues a DM — and only the real location page, never the corporate brand account.",
+      "Email isn't the only door. When a gym never answers email, this finds their real Instagram and queues a DM - and only the real location page, never the corporate brand account.",
       "If the DM also goes quiet, it puts a phone call on David's list and keeps reminding him until it's done, so nobody falls through the cracks.",
     ],
     metrics: [
@@ -424,14 +424,14 @@ export const FLOWS: Flow[] = [
     order: 9,
     goLive: "2026-06-30",
     category: "platform",
-    oneLine: "The live backend behind this dashboard — one aggregation API (v9.0) that reads GHL, MongoDB and Sheets in parallel.",
+    oneLine: "The live backend behind this dashboard - one aggregation API (v9.0) that reads GHL, MongoDB and Sheets in parallel.",
     technical: [
-      "A single code node fans out ~25 parallel fetches — GHL contacts (paginated) + opportunity stage counts across both pipelines, MongoDB app-adoption, and several Sheets/Mongo sub-webhooks — and assembles one structured payload behind /twu-readout-data.",
+      "A single code node fans out ~25 parallel fetches - GHL contacts (paginated) + opportunity stage counts across both pipelines, MongoDB app-adoption, and several Sheets/Mongo sub-webhooks - and assembles one structured payload behind /twu-readout-data.",
       "It self-documents freshness per block in meta.data_freshness (live vs cached), and carries a data_integrity block of canaries computed directly from GHL tags/fields with no external system.",
       "v9.0 added resume_sequence_exhausted (closing the temp-away gap). Enrichment breakdown remains cached by design; every other block is live per read.",
     ],
     business: [
-      "This is the single source of truth. Every number on this dashboard comes from here, fetched fresh — nothing is typed in by hand.",
+      "This is the single source of truth. Every number on this dashboard comes from here, fetched fresh - nothing is typed in by hand.",
       "It also grades its own honesty: it tells you which numbers are live and which are cached, and runs seven self-checks that should all read near zero on a healthy system.",
     ],
     metrics: [
@@ -445,13 +445,13 @@ export const FLOWS: Flow[] = [
     changelog: [
       { date: "2026-06-30", status: "done", text: "Live as the aggregation API. 11 endpoints, parallel fetch, per-block freshness map, integrity canaries." },
       { date: "2026-07-08", status: "done", text: "v9.0: added temp_away_pause_resume.resume_sequence_exhausted (+ by-source), mirrored to summary and documented in data_freshness." },
-      { date: "2026-06-30", status: "monitoring", text: "lead_sources_enriched (hot/warm/avg-score/email-split) stays cached — refreshes when enrichment runs, not per read." },
+      { date: "2026-06-30", status: "monitoring", text: "lead_sources_enriched (hot/warm/avg-score/email-split) stays cached - refreshes when enrichment runs, not per read." },
     ],
     canaries: [
       { label: "Stuck draft tags", path: "data_integrity.stuck_draft_tags", expect: "≈ 0" },
       { label: "Step / tag mismatch", path: "data_integrity.step_tag_mismatch", expect: "≈ 0" },
       { label: "IG unmatched duplicates", path: "data_integrity.ig_unmatched_duplicates", expect: "low" },
-      { label: "IG bridge stuck pending", path: "data_integrity.ig_bridge_stuck_pending", expect: "watch — label collision" },
+      { label: "IG bridge stuck pending", path: "data_integrity.ig_bridge_stuck_pending", expect: "watch - label collision" },
       { label: "Stuck past resume date", path: "data_integrity.stuck_past_resume_date", expect: "≈ 0" },
       { label: "Missing resume date", path: "data_integrity.missing_resume_date", expect: "≈ 0" },
       { label: "Legacy IG-bridge tag", path: "data_integrity.legacy_ig_bridge_stuck_tag", expect: "→ 0 (migrate)" },
@@ -464,15 +464,15 @@ export const FLOWS: Flow[] = [
     order: 10,
     goLive: "2026-07-04",
     category: "adoption",
-    oneLine: "Daily 7:00 AM scan of app + Zen Planner engagement to catch at-risk members — computing live, but delivery not wired yet.",
+    oneLine: "Daily 7:00 AM scan of app + Zen Planner engagement to catch at-risk members - computing live, but delivery not wired yet.",
     technical: [
       "Pulls the member-overlap report from dashboard.trainwithus.app/api/v1 and, for members in both systems, calls the per-user engagement endpoint to evaluate alert conditions (at_risk, attendance_drop, needs_attention) plus a not_on_app stream.",
-      "It POSTs assembled alerts to /webhook/retention-alerts — which is caught by the Test Receiver workflow: a single bare webhook node with no downstream and empty connections. So alerts are computed and delivered to a sink that does nothing with them.",
-      "Not represented in The Readout payload, so it has no live tiles on this dashboard yet — flagged rather than faked.",
+      "It POSTs assembled alerts to /webhook/retention-alerts - which is caught by the Test Receiver workflow: a single bare webhook node with no downstream and empty connections. So alerts are computed and delivered to a sink that does nothing with them.",
+      "Not represented in The Readout payload, so it has no live tiles on this dashboard yet - flagged rather than faked.",
     ],
     business: [
       "This is the early-warning system for churn: it spots members going quiet before they leave.",
-      "The detection works today, but the alerts currently go to a test inbox that nobody reads — wiring the final delivery step (Slack / task / email) is what makes this actually useful.",
+      "The detection works today, but the alerts currently go to a test inbox that nobody reads - wiring the final delivery step (Slack / task / email) is what makes this actually useful.",
     ],
     metrics: [],
     charts: [],
@@ -488,15 +488,15 @@ export const FLOWS: Flow[] = [
     order: 11,
     goLive: "2026-07-05",
     category: "acquisition",
-    oneLine: "When a gym's auto-reply redirects to another address, this restarts outreach there — a fresh draft plus a 3-touch follow-up.",
+    oneLine: "When a gym's auto-reply redirects to another address, this restarts outreach there - a fresh draft plus a 3-touch follow-up.",
     technical: [
       "Triggered when the Reply Detector catches an auto-responder redirect. Extracts the alternate email, saves it to the original contact (altmail-sent), drafts fresh outreach in David's voice, applies a CF/HY generic label and captures the thread.",
       "A daily 9 AM job advances a 3-touch sequence (4-day gaps, keyed off confirmed send dates and touch-count, excluding altmail-replied / not-interested). Its own reply handler classifies interested / not-interested / other.",
-      "Coverage % = alt-outreach started ÷ auto-responders detected — a gap means some redirects never became attempts.",
+      "Coverage % = alt-outreach started ÷ auto-responders detected - a gap means some redirects never became attempts.",
     ],
     business: [
       "Auto-replies that say 'email us here instead' used to be dead ends. Now they become live conversations at the right address.",
-      "Coverage tells you whether you're capturing those hand-offs or leaking them — the closer to 100%, the fewer redirects fall through.",
+      "Coverage tells you whether you're capturing those hand-offs or leaking them - the closer to 100%, the fewer redirects fall through.",
     ],
     metrics: [
       { label: "Auto-responders detected", path: "alt_email_outreach.auto_responders_detected" },
@@ -519,10 +519,10 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-07-05", status: "done", text: "Live. Redirect capture, fresh draft + 3-touch follow-up, coverage %, own reply handler." },
-      { date: "2026-07-05", status: "monitoring", text: "Reply-handler end-to-end verification is a runtime property not visible in the export — watch coverage % and replied counts against detections." },
+      { date: "2026-07-05", status: "monitoring", text: "Reply-handler end-to-end verification is a runtime property not visible in the export - watch coverage % and replied counts against detections." },
     ],
     tagNotes: [
-      { tag: "altmail-sent", why: "Marks that outreach restarted at the redirect address — the entry point for this flow's own sequence and reporting." },
+      { tag: "altmail-sent", why: "Marks that outreach restarted at the redirect address - the entry point for this flow's own sequence and reporting." },
     ],
   },
 
@@ -532,14 +532,14 @@ export const FLOWS: Flow[] = [
     order: 12,
     goLive: "2026-07-07",
     category: "acquisition",
-    oneLine: "The 3-touch email sequence for gyms who moved TWU from Instagram to email — with a known label-collision to watch.",
+    oneLine: "The 3-touch email sequence for gyms who moved TWU from Instagram to email - with a known label-collision to watch.",
     technical: [
       "Pipeline B (daily 9 AM) drafts touches for contacts with ig-outreach-sent + ig-replied-positive and a captured ig_outreach_email; touch 1 runs fresh Haiku website enrichment, touches 2/3 follow David's reference templates in-thread. Pipeline C classifies replies (interested / not-interested / other).",
-      "Pipeline A confirms a send by matching Gmail labels — but it matches BRIDGE_LABEL_IDS = ['Label_1'..'Label_4'], which are the same CF/HY outreach labels used by Dave Approval. The node's own TODO calls them placeholders, but they're real labels shared with normal outreach, so the confirmation can't uniquely identify a bridge send.",
-      "That collision is why ig_bridge_stuck_pending (contacts frozen at 'drafted, pending send') is the canary to watch. The exact runtime symptom needs a live check — the number is instrumented for exactly that.",
+      "Pipeline A confirms a send by matching Gmail labels - but it matches BRIDGE_LABEL_IDS = ['Label_1'..'Label_4'], which are the same CF/HY outreach labels used by Dave Approval. The node's own TODO calls them placeholders, but they're real labels shared with normal outreach, so the confirmation can't uniquely identify a bridge send.",
+      "That collision is why ig_bridge_stuck_pending (contacts frozen at 'drafted, pending send') is the canary to watch. The exact runtime symptom needs a live check - the number is instrumented for exactly that.",
     ],
     business: [
-      "Some gyms say 'DM us your info by email' — this runs that email conversation for them, three well-timed touches, personalized on the first.",
+      "Some gyms say 'DM us your info by email' - this runs that email conversation for them, three well-timed touches, personalized on the first.",
       "There's one known wrinkle: the step that confirms a bridge email was sent shares labels with regular outreach, so some can get stuck as 'drafted but not confirmed sent.' The stuck-pending number tracks exactly that until the labels are separated.",
     ],
     metrics: [
@@ -549,7 +549,7 @@ export const FLOWS: Flow[] = [
       { label: "Replied not interested", path: "ig_bridge_outreach.replied_not_interested" },
       { label: "Needs review", path: "ig_bridge_outreach.needs_review" },
       { label: "Reply rate", path: "ig_bridge_outreach.reply_rate_pct", suffix: "%" },
-      { label: "Stuck pending (canary)", path: "data_integrity.ig_bridge_stuck_pending", flag: "canary", note: "Elevated by the Label_1–4 collision — watch until a dedicated bridge label is assigned." },
+      { label: "Stuck pending (canary)", path: "data_integrity.ig_bridge_stuck_pending", flag: "canary", note: "Elevated by the Label_1–4 collision - watch until a dedicated bridge label is assigned." },
     ],
     charts: [
       {
@@ -567,7 +567,7 @@ export const FLOWS: Flow[] = [
       { date: "2026-07-07", status: "monitoring", text: "Pipeline A label collision: confirmation matches Label_1–4 (shared with CF/HY outreach). Watch ig_bridge_stuck_pending; fix = assign a dedicated bridge label." },
     ],
     canaries: [
-      { label: "IG bridge stuck pending", path: "data_integrity.ig_bridge_stuck_pending", expect: "watch — label collision" },
+      { label: "IG bridge stuck pending", path: "data_integrity.ig_bridge_stuck_pending", expect: "watch - label collision" },
       { label: "Legacy IG-bridge tag", path: "data_integrity.legacy_ig_bridge_stuck_tag", expect: "→ 0 (migrate)" },
     ],
   },
@@ -578,17 +578,17 @@ export const FLOWS: Flow[] = [
     order: 13,
     goLive: "2026-07-07",
     category: "hygiene",
-    oneLine: "Re-matches Instagram contacts that couldn't be linked to a master gym record — nightly, against a fuller master pool.",
+    oneLine: "Re-matches Instagram contacts that couldn't be linked to a master gym record - nightly, against a fuller master pool.",
     technical: [
       "A webhook fires at DM-send time; contacts it can't confidently match to a master gym are tagged ig-review-noted (often because Mary hadn't added the handle yet). A daily 8 PM job re-runs handle → name-fuzzy → substring matching against the now-more-complete master pool.",
-      "On a fresh match it stamps the real outreach date, tags ig-outreach-sent + ig-duplicate-matched, removes ig-review-noted and posts one Slack summary. Both pools are fully paginated. On continued failure it does nothing — no repeat alert spam.",
+      "On a fresh match it stamps the real outreach date, tags ig-outreach-sent + ig-duplicate-matched, removes ig-review-noted and posts one Slack summary. Both pools are fully paginated. On continued failure it does nothing - no repeat alert spam.",
     ],
     business: [
       "It stops the same gym being treated as two, and fixes contacts whose outreach date was recorded wrong because their Instagram handle wasn't on file yet.",
-      "The unmatched count is the size of that cleanup backlog — it should trend toward zero as handles get filled in.",
+      "The unmatched count is the size of that cleanup backlog - it should trend toward zero as handles get filled in.",
     ],
     metrics: [
-      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", flag: "canary", note: "Contacts tagged ig-review-noted whose outreach date may still be stale — trends down as handles are added." },
+      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", flag: "canary", note: "Contacts tagged ig-review-noted whose outreach date may still be stale - trends down as handles are added." },
     ],
     charts: [],
     changelog: [
@@ -608,17 +608,17 @@ export const FLOWS: Flow[] = [
     oneLine: "The unified pause/resume brain: brings out-of-office contacts back on schedule, across all four outreach flows.",
     technical: [
       "Daily 8:00 AM. Find & Resume strips temporarily-paused + sequence-stopped + paused-until-<date> and adds re-engaged once the date passes, keeping paused-source-<flow> for attribution, then routes by source (coldoutreach / altmail / igbridge / igmain).",
-      "Each branch drafts a resume email in-thread and blocks its own sequencer from double-drafting (CO writes followup-draft-ready, the same tag the sequencer skips on). Exhausted-sequence resumes now remove re-engaged and write resume-sequence-exhausted (v9.0 canary) — they stay out of both active pools (CO excludes on sequence-complete, ALT on touch-count ≥ 3).",
+      "Each branch drafts a resume email in-thread and blocks its own sequencer from double-drafting (CO writes followup-draft-ready, the same tag the sequencer skips on). Exhausted-sequence resumes now remove re-engaged and write resume-sequence-exhausted (v9.0 canary) - they stay out of both active pools (CO excludes on sequence-complete, ALT on touch-count ≥ 3).",
       "Two integrity canaries: stuck_past_resume_date (resume job didn't run) and missing_resume_date (paused with no date tag).",
     ],
     business: [
-      "When a gym says 'I'm away until the 15th,' this remembers and picks the conversation back up on the 15th — automatically, in the same email thread.",
+      "When a gym says 'I'm away until the 15th,' this remembers and picks the conversation back up on the 15th - automatically, in the same email thread.",
       "It works the same way no matter which channel paused them, and it won't accidentally double-message anyone or re-start a conversation that already ran its full course.",
     ],
     metrics: [
       { label: "Currently paused", path: "temp_away_pause_resume.total_paused" },
       { label: "Total resumed", path: "temp_away_pause_resume.total_resumed" },
-      { label: "Resumed — already exhausted", path: "temp_away_pause_resume.resume_sequence_exhausted", flag: "canary", note: "New in v9.0. Resumed contacts whose sequence was already complete — kept visible and out of active pools." },
+      { label: "Resumed - already exhausted", path: "temp_away_pause_resume.resume_sequence_exhausted", flag: "canary", note: "New in v9.0. Resumed contacts whose sequence was already complete - kept visible and out of active pools." },
       { label: "Stuck past resume date", path: "temp_away_pause_resume.stuck_past_resume_date", flag: "canary" },
       { label: "Missing resume date", path: "temp_away_pause_resume.missing_resume_date", flag: "canary" },
       { label: "Legacy IG-bridge tag", path: "temp_away_pause_resume.legacy_ig_bridge_stuck_tag", flag: "canary" },
@@ -637,11 +637,11 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-07-08", status: "done", text: "Live. Unified pause/resume across all four flows, in-thread resume drafts, anti-double-draft block, source attribution." },
-      { date: "2026-07-08", status: "done", text: "Exhausted-resume now writes resume-sequence-exhausted (removes re-engaged), surfaced in Readout v9.0 — closes the previously-invisible gap." },
-      { date: "2026-07-08", status: "monitoring", text: "Legacy ig-bridge-temp-paused contacts won't be picked up (resume reads temporarily-paused only) — need manual migration." },
+      { date: "2026-07-08", status: "done", text: "Exhausted-resume now writes resume-sequence-exhausted (removes re-engaged), surfaced in Readout v9.0 - closes the previously-invisible gap." },
+      { date: "2026-07-08", status: "monitoring", text: "Legacy ig-bridge-temp-paused contacts won't be picked up (resume reads temporarily-paused only) - need manual migration." },
     ],
     tagNotes: [
-      { tag: "paused-until-YYYY-MM-DD", why: "The alarm clock — the resume job reads this date to know when to bring a contact back." },
+      { tag: "paused-until-YYYY-MM-DD", why: "The alarm clock - the resume job reads this date to know when to bring a contact back." },
       { tag: "resume-sequence-exhausted", why: "Marks a resumed contact whose sequence was already done, so it stays visible without re-entering an active pool." },
     ],
     canaries: [

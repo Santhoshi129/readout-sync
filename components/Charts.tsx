@@ -47,7 +47,7 @@ export function Ring({
           transform="rotate(-90 100 100)"
         />
         <text x="100" y="96" textAnchor="middle" fontSize="42" fontWeight="800" fill="var(--amber)">
-          {t > 0 ? `${pctNum}%` : "—"}
+          {t > 0 ? `${pctNum}%` : "-"}
         </text>
         <text x="100" y="122" textAnchor="middle" fontSize="13" fill="var(--ink-faint)" fontFamily="var(--mono)">
           {fmt(v)} / {fmt(t)}

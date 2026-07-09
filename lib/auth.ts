@@ -1,4 +1,4 @@
-// lib/auth.ts — Edge-compatible signed session cookie.
+// lib/auth.ts - Edge-compatible signed session cookie.
 export const COOKIE_NAME = "twu_readout_session";
 const SECRET = process.env.SESSION_SECRET || "dev-insecure-secret-change-me";
 

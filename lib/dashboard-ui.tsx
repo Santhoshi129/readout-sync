@@ -4,6 +4,7 @@
 import { pick, Readout } from "@/lib/readout";
 import { Flow } from "@/lib/flows";
 import { fmt } from "@/lib/format";
+import { Counter } from "@/components/Counter";
 
 export function num(data: Readout | null, path: string): number | null {
   const v = pick(data, path);
@@ -43,14 +44,18 @@ export const CANARIES: { label: string; path: string; expect: string }[] = [
   { label: "Legacy IG tag", path: "data_integrity.legacy_ig_bridge_stuck_tag", expect: "→ 0" },
 ];
 
-export function Head({ label, path, data, amber, suffix }: { label: string; path: string; data: Readout | null; amber?: boolean; suffix?: string }) {
+export function Head({ label, path, data, amber, suffix, flat }: { label: string; path: string; data: Readout | null; amber?: boolean; suffix?: string; flat?: boolean }) {
+  const raw = pick(data, path);
+  const n = typeof raw === "number" ? raw : raw == null ? null : Number(raw);
+  const isZeroSuspect = flat && n === 0;
   return (
     <div className="card">
       <div className="stat-label">{label}</div>
       <div className={`stat-value ${amber ? "amber" : ""}`}>
-        {fmt(pick(data, path))}
+        {Number.isNaN(n as number) ? fmt(raw) : <Counter value={n} />}
         {suffix && <span className="stat-suffix">{suffix}</span>}
       </div>
+      {isZeroSuspect && <div className="stat-flag">flat at 0 — check upstream</div>}
     </div>
   );
 }

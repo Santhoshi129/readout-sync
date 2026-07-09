@@ -34,7 +34,7 @@ export default async function MembersDashboard() {
 
         <section className="section" style={{ borderTop: "none" }}>
           <div className="grid grid-4" style={{ marginBottom: 24 }}>
-            <Head label="Members identified" path="app_adoption.total_identified" data={data} />
+            <Head label="Members identified" path="app_adoption.total_identified" data={data} flat />
             <Head label="Outreach sent" path="app_adoption.email_outreach_confirmed" data={data} />
             <Head label="In the community" path="app_adoption.total_joined" data={data} amber />
             <Head label="Adoption rate" path="app_adoption.adoption_rate_pct" data={data} suffix="%" />

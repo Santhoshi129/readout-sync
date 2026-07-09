@@ -39,7 +39,7 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
         {/* HEADER */}
         <section style={{ padding: "28px 0 8px" }}>
           <div className="eyebrow" style={{ marginBottom: 12 }}>{flow.category}</div>
-          <h1 style={{ fontSize: 44, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.05 }}>{flow.name}</h1>
+          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>{flow.name}</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 18, marginTop: 16, maxWidth: 720, lineHeight: 1.55 }}>{flow.oneLine}</p>
           <div style={{ marginTop: 18, display: "flex", gap: 14, alignItems: "center" }}>
             <span className="chip">◍ Live since {longDate(flow.goLive)}</span>

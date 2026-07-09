@@ -34,7 +34,7 @@ export default async function Landing() {
         <div className="grid grid-2" style={{ gap: 24, marginBottom: 32 }}>
           <a href="/gym-owners" className="card click" style={{ padding: 40 }}>
             <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Train With Us</span>
-            <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 10 }}>Gym owner outreach</div>
+            <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Gym owner outreach</div>
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
               Cold gyms scraped, scored, drafted, and worked through email, Instagram, and phone until they reply.
             </div>
@@ -56,7 +56,7 @@ export default async function Landing() {
 
           <a href="/members" className="card click" style={{ padding: 40 }}>
             <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Blended Athletics</span>
-            <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 10 }}>Member outreach</div>
+            <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Member outreach</div>
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
               Existing members not yet on the TWU app, identified and invited, with adoption tracked to done.
             </div>

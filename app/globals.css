@@ -17,7 +17,8 @@
   --bad: #b04a4a;
   --muted: #3a3a3a;
   --good: #7fc98a;
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-head: var(--font-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: "SF Mono", ui-monospace, "Roboto Mono", Menlo, monospace;
 }
 
@@ -67,18 +68,19 @@ a { color: inherit; text-decoration: none; }
 /* hero */
 .hero { padding: 96px 0 64px; position: relative; }
 .hero-num {
+  font-family: var(--font-head);
   font-size: clamp(88px, 17vw, 232px); font-weight: 800; line-height: 0.86; letter-spacing: -0.03em;
   background: linear-gradient(168deg, var(--amber-bright) 0%, var(--amber) 42%, var(--amber-deep) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 8px 60px rgba(201,168,76,0.14));
 }
-.hero-sub { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.02em; margin-top: 18px; max-width: 640px; }
+.hero-sub { font-family: var(--font-head); font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin-top: 18px; max-width: 640px; }
 .hero-copy { color: var(--ink-dim); font-size: 17px; line-height: 1.6; margin-top: 20px; max-width: 460px; }
 
 /* section */
 .section { padding: 52px 0; border-top: 1px solid var(--border-soft); }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
-.section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+.section-title { font-family: var(--font-head); font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
 
 /* cards / grid */
 .grid { display: grid; gap: 16px; }
@@ -94,7 +96,7 @@ a { color: inherit; text-decoration: none; }
 .card.click:hover { border-color: rgba(201,168,76,0.5); background: var(--card-raised); transform: translateY(-2px); }
 
 .stat-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
-.stat-value { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
+.stat-value { font-family: var(--font-head); font-size: 40px; font-weight: 700; letter-spacing: -0.02em; margin-top: 8px; }
 .stat-value.amber { color: var(--amber); }
 .stat-suffix { font-size: 20px; color: var(--ink-dim); font-weight: 700; }
 
@@ -110,7 +112,7 @@ a { color: inherit; text-decoration: none; }
 /* flow card */
 .flow-card { display: flex; flex-direction: column; gap: 14px; min-height: 168px; }
 .flow-card .fc-top { display: flex; align-items: center; justify-content: space-between; }
-.flow-card .fc-name { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.flow-card .fc-name { font-family: var(--font-head); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
 .flow-card .fc-date { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--ink-faint); text-transform: uppercase; }
 .flow-card .fc-line { color: var(--ink-dim); font-size: 13.5px; line-height: 1.5; flex: 1; }
 .flow-card .fc-foot { display: flex; align-items: center; gap: 8px; }

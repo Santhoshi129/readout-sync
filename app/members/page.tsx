@@ -2,6 +2,7 @@ import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
 import { Funnel, Bars, Ring } from "@/components/Charts";
+import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 
 export const revalidate = 30;
@@ -9,6 +10,7 @@ export const revalidate = 30;
 export default async function MembersDashboard() {
   const { data, error, fetchedAt } = await getReadout();
   const flows = FLOWS.filter((f) => section(f.category) === "member").sort((a, b) => a.order - b.order);
+  const launch = flows.reduce((min, f) => (f.goLive < min ? f.goLive : min), flows[0]?.goLive ?? fetchedAt);
 
   return (
     <>
@@ -24,15 +26,16 @@ export default async function MembersDashboard() {
           </div>
         )}
 
-        <section style={{ padding: "28px 0 8px" }}>
+        <section style={{ padding: "28px 0 0" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member outreach</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
             {flows.length} automations inviting existing members onto the TWU app.
           </p>
+          <MemberBriefing data={data} launchIso={launch} />
         </section>
 
-        <section className="section" style={{ borderTop: "none" }}>
+        <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
           <div className="grid grid-4" style={{ marginBottom: 24 }}>
             <Head label="Members identified" path="app_adoption.total_identified" data={data} flat />
             <Head label="Outreach sent" path="app_adoption.email_outreach_confirmed" data={data} />

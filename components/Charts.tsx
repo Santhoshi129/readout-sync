@@ -148,3 +148,78 @@ function useMounted() {
   useEffect(() => setMounted(true), []);
   return mounted;
 }
+
+// Paired comparison bars (e.g. CrossFit vs HYROX) - two series sharing one
+// scale so a CEO/CMO can read "which channel is ahead" at a glance, not
+// two separate charts they have to mentally overlay themselves.
+export function Compare({
+  rows,
+  labelA,
+  labelB,
+}: {
+  rows: { label: string; a: number | null; b: number | null }[];
+  labelA: string;
+  labelB: string;
+}) {
+  const mounted = useMounted();
+  const max = Math.max(1, ...rows.flatMap((r) => [r.a ?? 0, r.b ?? 0]));
+  return (
+    <div>
+      <div className="compare-legend">
+        <span><i className="dot-legend" style={{ background: "var(--warm)" }} /> {labelA}</span>
+        <span><i className="dot-legend" style={{ background: "var(--hot)" }} /> {labelB}</span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        {rows.map((r, i) => {
+          const av = r.a ?? 0, bv = r.b ?? 0;
+          const aw = Math.max(1.5, (av / max) * 100);
+          const bw = Math.max(1.5, (bv / max) * 100);
+          return (
+            <div key={r.label} className="chart-row">
+              <div style={{ fontSize: 13.5, color: "var(--ink-dim)", marginBottom: 8 }}>{r.label}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                <div className="bar-track thin" style={{ flex: 1 }} title={`${labelA}: ${fmt(r.a)}`}>
+                  <div className="bar-fill" style={{ width: mounted ? `${aw}%` : 0, transitionDelay: `${i * 60}ms`, background: "var(--warm)" }} />
+                </div>
+                <div style={{ width: 56, textAlign: "right", fontSize: 13, fontWeight: 700 }}><Counter value={r.a} /></div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div className="bar-track thin" style={{ flex: 1 }} title={`${labelB}: ${fmt(r.b)}`}>
+                  <div className="bar-fill" style={{ width: mounted ? `${bw}%` : 0, transitionDelay: `${i * 60 + 30}ms`, background: "var(--hot)" }} />
+                </div>
+                <div style={{ width: 56, textAlign: "right", fontSize: 13, fontWeight: 700 }}><Counter value={r.b} /></div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Top-locations breakdown from geo_distribution - computed by the backend
+// on every load already, just never had anywhere to render until now.
+export function GeoList({ rows }: { rows: { label: string; count: number }[] }) {
+  const mounted = useMounted();
+  const top = rows.slice(0, 8);
+  const max = Math.max(1, ...top.map((r) => r.count));
+  if (top.length === 0) {
+    return <div style={{ color: "var(--ink-faint)", fontSize: 13.5 }}>No geo data yet — populates once the CrossFit/HYROX clean-lead sheets have city/state filled in.</div>;
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {top.map((r, i) => {
+        const w = Math.max(1.5, (r.count / max) * 100);
+        return (
+          <div key={r.label} className="chart-row" style={{ display: "grid", gridTemplateColumns: "160px 1fr 48px", alignItems: "center", gap: 16 }}>
+            <div style={{ fontSize: 13.5, color: "var(--ink-dim)" }}>{r.label}</div>
+            <div className="bar-track thin" title={`${r.label}: ${fmt(r.count)}`}>
+              <div className="bar-fill" style={{ width: mounted ? `${w}%` : 0, transitionDelay: `${i * 60}ms`, background: "var(--amber)" }} />
+            </div>
+            <div style={{ textAlign: "right", fontSize: 15, fontWeight: 700 }}><Counter value={r.count} /></div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

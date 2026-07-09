@@ -4,7 +4,10 @@ import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
 import { Funnel } from "@/components/Charts";
 
-export const dynamic = "force-dynamic";
+// Not force-dynamic anymore: that setting overrides fetch-level revalidation
+// and forces a brand-new n8n execution on every single page load. Now the page
+// revalidates on the same 30s cadence as the fetch in lib/readout.ts.
+export const revalidate = 30;
 
 function health(f: Flow): "good" | "watch" | "gap" {
   if (f.changelog.some((c) => c.status === "gap")) return "gap";
@@ -31,7 +34,7 @@ export default async function Home() {
       <div className="wrap">
         {error && (
           <div className="banner err" style={{ marginTop: 28 }}>
-            The Readout is unreachable right now ({error}). Metrics will populate as soon as it responds — nothing here is cached or faked.
+            The Readout is unreachable right now ({error}). Metrics will populate as soon as it responds - nothing here is cached or faked.
           </div>
         )}
 
@@ -41,7 +44,7 @@ export default async function Home() {
           <div className="hero-num">{fmt(pick(data, "summary.total_gyms_scraped"))}</div>
           <div className="hero-sub">From cold list to community, every step on the record.</div>
           <p className="hero-copy">
-            One system takes thousands of cold gyms and works them, in David&apos;s voice, all the way to the community — scored, drafted, sent, followed up, and tracked. This is what it&apos;s doing right now.
+            One system takes thousands of cold gyms and works them, in David&apos;s voice, all the way to the community - scored, drafted, sent, followed up, and tracked. This is what it&apos;s doing right now.
           </p>
         </section>
 
@@ -75,7 +78,7 @@ export default async function Home() {
               ]}
             />
             <p style={{ color: "var(--ink-faint)", fontSize: 12.5, marginTop: 22, lineHeight: 1.6 }}>
-              Live from The Readout summary. The old &quot;Dave Approved&quot; step was retired in v8.1 (tag-hygiene drift) and isn&apos;t shown as a separate stage — these are the stages that are actually instrumented.
+              Live from The Readout summary. The old &quot;Dave Approved&quot; step was retired in v8.1 (tag-hygiene drift) and isn&apos;t shown as a separate stage - these are the stages that are actually instrumented.
             </p>
           </div>
         </section>

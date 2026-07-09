@@ -130,7 +130,12 @@ const BASE = process.env.READOUT_BASE_URL || "https://trainwithus.app.n8n.cloud/
 export async function getReadout(): Promise<{ data: Readout | null; error: string | null; fetchedAt: string }> {
   const fetchedAt = new Date().toISOString();
   try {
-    const res = await fetch(`${BASE}/twu-readout-data`, { cache: "no-store" });
+    // Revalidated every 30s instead of no-store: concurrent visitors now share
+    // one cached fetch instead of each triggering a brand-new, uncached execution
+    // of the heaviest chain in the n8n workflow (9 sub-webhook calls + full GHL
+    // contact pagination, all in parallel). This is what was likely causing
+    // concurrent executions to pile up and crash the workflow under repeat visits.
+    const res = await fetch(`${BASE}/twu-readout-data`, { next: { revalidate: 30 } });
     if (!res.ok) return { data: null, error: `Readout responded ${res.status}`, fetchedAt };
     const json = (await res.json()) as Readout | Readout[];
     const data = Array.isArray(json) ? json[0] : json;

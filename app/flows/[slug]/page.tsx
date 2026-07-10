@@ -26,11 +26,11 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
   if (!flow) notFound();
   const { data, error, fetchedAt } = await getReadout();
   const backHref = searchParams.from || "/";
-  const backLabel = backHref === "/gym-owners" ? "Gym owner outreach" : backHref === "/members" ? "Member outreach" : "All dashboards";
+  const backLabel = backHref === "/gym-owners" ? "Owner Outreach Intelligence" : backHref === "/members" ? "Member Adoption Pulse" : "All dashboards";
 
   return (
     <>
-      <Topbar version={data?.meta?.version} fetchedAt={fetchedAt} />
+      <Topbar version={data?.meta?.version} fetchedAt={data?.meta?.generated_at || fetchedAt} />
       <div className="wrap">
         <div style={{ paddingTop: 28 }}>
           <a className="back" href={backHref}>← {backLabel}</a>
@@ -154,7 +154,7 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
           </section>
         )}
 
-        <div className="foot">Every number above is fetched live from /twu-readout-data · {flow.name}</div>
+        <div className="foot">Every number above is live via the Readout cache sync · {flow.name}</div>
       </div>
     </>
   );

@@ -190,7 +190,7 @@ a { color: inherit; text-decoration: none; }
 .briefing-lead strong { color: var(--amber-bright); font-weight: 800; }
 .briefing-sub { color: var(--ink-dim); font-size: 14.5px; line-height: 1.65; margin-top: 14px; max-width: 780px; }
 
-/* diagnostics disclosure — de-emphasized, collapsed by default */
+/* diagnostics disclosure: de-emphasized, collapsed by default */
 .diagnostics-toggle {
   display: flex; align-items: center; justify-content: space-between; width: 100%;
   background: transparent; border: 1px solid var(--border-soft); border-radius: 12px;

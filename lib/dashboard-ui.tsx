@@ -55,7 +55,7 @@ export function Head({ label, path, data, amber, suffix, flat }: { label: string
         {Number.isNaN(n as number) ? fmt(raw) : <Counter value={n} />}
         {suffix && <span className="stat-suffix">{suffix}</span>}
       </div>
-      {isZeroSuspect && <div className="stat-flag">flat at 0 — check upstream</div>}
+      {isZeroSuspect && <div className="stat-flag">flat at 0, check upstream</div>}
     </div>
   );
 }

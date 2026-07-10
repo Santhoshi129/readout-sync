@@ -127,28 +127,87 @@ export interface Readout {
 
 const BASE = process.env.READOUT_BASE_URL || "https://trainwithus.app.n8n.cloud/webhook";
 
-// The aggregator used to be one n8n webhook (/twu-readout-data) that held
-// every GHL contact + opportunity + app-adoption row in memory for a single
-// execution, which is what was causing "Connection lost" / deactivation
-// under load. Split into two independent, lighter n8n workflows that never
-// share memory: lead gen (contacts + opportunities) and app adoption
-// (a separate GHL location entirely - never depended on lead gen data).
-// Fetched in parallel here and merged into the same Readout shape every
-// other file in this app already expects, so nothing downstream changes.
+// Preferred path: read the cached documents straight from MongoDB. The
+// GitHub Actions sync (scripts/sync-readout.mjs) writes them every 10
+// minutes; n8n is not in the dashboard's path at all when MONGODB_URI is
+// set. Falls back to the n8n endpoints below when it isn't.
+let mongoClientPromise: Promise<any> | null = null;
+async function getMongoDb(): Promise<any | null> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return null;
+  try {
+    if (!mongoClientPromise) {
+      const { MongoClient } = await import("mongodb");
+      const client = new MongoClient(uri);
+      mongoClientPromise = client.connect();
+    }
+    const client = await mongoClientPromise;
+    return client.db();
+  } catch {
+    mongoClientPromise = null;
+    return null;
+  }
+}
+
+export async function readCacheDoc(docId: string): Promise<any | null> {
+  const db = await getMongoDb();
+  if (!db) return null;
+  try {
+    const doc = await db.collection("readout_cache_v2").findOne({ doc_id: docId });
+    if (!doc?.payload) return null;
+    if (doc.payload.meta) doc.payload.meta.cache_generated_at = doc.generated_at;
+    return doc.payload;
+  } catch {
+    return null;
+  }
+}
+
+// v2 architecture: a scheduled n8n workflow (every 5 min, or on demand via
+// /twu-readout-sync-now) runs the heavy GHL + Sheets + Mongo fetch ONCE and
+// stores the compact result in MongoDB. These v2 endpoints read only that
+// stored document, so a dashboard load can never trigger a whole-dataset
+// fetch again (that per-load fetch is what used to crash n8n). If the cache
+// is empty or the v2 workflows are not imported yet, we fall back to the
+// legacy direct endpoints so the dashboard keeps working during migration.
+async function fetchSource(v2Path: string, legacyPath: string, requiredKey: string, mongoDocId: string): Promise<{ json: any; error: string | null }> {
+  // 1) MongoDB direct (no n8n involved).
+  const fromMongo = await readCacheDoc(mongoDocId);
+  if (fromMongo && fromMongo[requiredKey]) return { json: fromMongo, error: null };
+  // 2) n8n cached endpoint.
+  try {
+    const res = await fetch(`${BASE}/${v2Path}`, { cache: "no-store" });
+    if (res.ok) {
+      const raw = await res.json();
+      const j = Array.isArray(raw) ? raw[0] : raw;
+      if (j && !j.cache_empty && j[requiredKey]) return { json: j, error: null };
+    }
+  } catch {
+    // fall through to legacy
+  }
+  // 3) legacy direct endpoint.
+  try {
+    const res = await fetch(`${BASE}/${legacyPath}`, { next: { revalidate: 30 } });
+    if (!res.ok) return { json: null, error: `${legacyPath} responded ${res.status}` };
+    const raw = await res.json();
+    const j = Array.isArray(raw) ? raw[0] : raw;
+    return { json: j, error: null };
+  } catch (e: any) {
+    return { json: null, error: e?.message || `${legacyPath} unreachable` };
+  }
+}
+
 export async function getReadout(): Promise<{ data: Readout | null; error: string | null; fetchedAt: string }> {
   const fetchedAt = new Date().toISOString();
   try {
-    const [lgRes, aaRes] = await Promise.all([
-      fetch(`${BASE}/twu-readout-leadgen`, { next: { revalidate: 30 } }),
-      fetch(`${BASE}/twu-readout-appadoption`, { next: { revalidate: 30 } }),
+    const [lgOut, aaOut] = await Promise.all([
+      fetchSource("twu-readout-leadgen-v2", "twu-readout-leadgen", "lead_gen", "twu_readout_live"),
+      fetchSource("twu-readout-appadoption-v2", "twu-readout-appadoption", "app_adoption", "blended_readout_live"),
     ]);
-    if (!lgRes.ok) return { data: null, error: `Lead gen source responded ${lgRes.status}`, fetchedAt };
-    if (!aaRes.ok) return { data: null, error: `App adoption source responded ${aaRes.status}`, fetchedAt };
+    if (!lgOut.json) return { data: null, error: lgOut.error || "Lead gen source unreachable", fetchedAt };
+    if (!aaOut.json) return { data: null, error: aaOut.error || "App adoption source unreachable", fetchedAt };
 
-    const lgJsonRaw = await lgRes.json();
-    const aaJsonRaw = await aaRes.json();
-    const lg = Array.isArray(lgJsonRaw) ? lgJsonRaw[0] : lgJsonRaw;
-    const aa = Array.isArray(aaJsonRaw) ? aaJsonRaw[0] : aaJsonRaw;
+    const lg = lgOut.json;
+    const aa = aaOut.json;
 
     // The only fields that ever needed BOTH datasets - everything else is
     // already fully computed inside whichever of the two webhooks owns it.
@@ -159,14 +218,18 @@ export async function getReadout(): Promise<{ data: Readout | null; error: strin
       (aa.app_adoption?.email_outreach_confirmed || 0) +
       (aa.app_adoption?.followup_confirmed || 0);
 
+    // When served from the Mongo cache, generated_at is the moment the sync
+    // last computed the numbers. That is the honest "data as of" timestamp.
+    const generatedAt = lg.meta?.cache_generated_at || lg.meta?.generated_at || new Date().toISOString();
+
     const data: Readout = {
       meta: {
         dashboard: "TWU · The Readout",
-        generated_at: new Date().toISOString(),
-        version: "v1.0-split",
+        generated_at: generatedAt,
+        version: lg.meta?.served_from === "mongo-cache" ? "v2-cached" : "v1.0-split",
         data_freshness: {
-          lead_gen: "live — GHL contacts API (split workflow)",
-          app_adoption: "live — GHL opportunities + MongoDB (split workflow, independent of lead gen)",
+          lead_gen: "live via 5-minute sync: GHL contacts API",
+          app_adoption: "live via 5-minute sync: GHL opportunities + MongoDB",
           ...(lg.meta?.data_freshness || {}),
         },
       },

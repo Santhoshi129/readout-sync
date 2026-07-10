@@ -39,8 +39,8 @@ export function GymOwnerBriefing({ data, launchIso }: { data: Readout | null; la
       <p className="briefing-sub">
         {bad === 0
           ? "All 10 automations are live and their data checks out clean end to end."
-          : `All 10 automations are live and running. ${bad} of ${total} background data checks need a look — none of them are stopping outreach, they're tracked in Diagnostics below.`}{" "}
-        A {rate}% reply rate on cold outreach is within the normal range for this kind of campaign at this stage — the lever that moves it is time and volume, not the automation itself.
+          : `All 10 automations are live and running. ${bad} of ${total} background data checks need a look. None of them are stopping outreach; they're tracked in Diagnostics below.`}{" "}
+        A {rate}% reply rate on cold outreach is within the normal range for this kind of campaign at this stage. The lever that moves it is time and volume, not the automation itself.
       </p>
     </div>
   );
@@ -61,11 +61,11 @@ export function MemberBriefing({ data, launchIso }: { data: Readout | null; laun
       <p className="briefing-lead">
         In {days} days, member outreach has sent <strong>{fmt(sent)}</strong> invites with{" "}
         <strong>{fmt(followup)}</strong> follow-ups, converting <strong>{fmt(adopted)}</strong> members through
-        outreach so far{joined ? <> — {fmt(joined)} members are in the community in total</> : null}.
+        outreach so far{joined ? <>, with {fmt(joined)} members in the community in total</> : null}.
       </p>
       <p className="briefing-sub">
         {identifiedBroken
-          ? "One number here is known-wrong: the \u201Cmembers identified\u201D count is reporting 0 while outreach is clearly going out, which means the counting step upstream needs a fix — outreach itself isn't affected."
+          ? "One number here is known-wrong: the \u201Cmembers identified\u201D count is reporting 0 while outreach is clearly going out, which means the counting step upstream needs a fix. Outreach itself isn't affected."
           : "The outreach funnel is reporting end to end with no known gaps."}
       </p>
     </div>

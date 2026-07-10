@@ -6,6 +6,9 @@ import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
 import { num, section, Head, FlowCard } from "@/lib/dashboard-ui";
+import { PipelineMap } from "@/components/PipelineMap";
+import { TagGlossary } from "@/components/TagGlossary";
+import { GYM_OWNER_TAG_GROUPS } from "@/lib/tags";
 
 export const revalidate = 30;
 
@@ -16,7 +19,7 @@ export default async function GymOwnersDashboard() {
 
   return (
     <>
-      <Topbar version={data?.meta?.version} fetchedAt={fetchedAt} crossLinkHref="/members" crossLinkLabel="Member outreach" />
+      <Topbar version={data?.meta?.version} fetchedAt={data?.meta?.generated_at || fetchedAt} crossLinkHref="/members" crossLinkLabel="Member Adoption Pulse" />
       <div className="wrap">
         <div style={{ paddingTop: 28 }}>
           <a className="back" href="/">← All dashboards</a>
@@ -30,9 +33,9 @@ export default async function GymOwnersDashboard() {
 
         <section style={{ padding: "28px 0 0" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Train With Us</span>
-          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Gym owner outreach</h1>
+          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Owner Outreach Intelligence</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations reaching cold gyms through email, Instagram, and phone.
+            {flows.length} automations reaching cold gym owners through email, Instagram, and phone. Every number below is live from GHL, Sheets, and MongoDB.
           </p>
           <GymOwnerBriefing data={data} launchIso={launch} />
         </section>
@@ -44,6 +47,19 @@ export default async function GymOwnersDashboard() {
             <Head label="Replied" path="lead_gen.email_replied" data={data} amber />
             <Head label="Reply rate" path="lead_gen.email_reply_rate_pct" data={data} suffix="%" />
           </div>
+
+          <PipelineMap
+            title="New Leads pipeline, stage by stage"
+            note="The live shape of the gym owner pipeline in GHL. Hover or click a stage for what it means. A contact's outreach stage maps directly to its touch step."
+            stages={[
+              { name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent by David. The contact is now in the 5-touch email sequence.", tone: "cold" },
+              { name: "Responded", count: num(data, "lead_gen.stage_responded"), desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.", tone: "amber" },
+              { name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Waiting on or working through the Instagram channel.", tone: "warm" },
+              { name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"), desc: "In the IG channel: handle found, DM queued or sent by Mari, phone follow-up if still silent.", tone: "hot" },
+              { name: "Alt Outreaching", count: num(data, "alt_email_outreach.in_alt_outreaching_stage"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold" },
+              { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened.", tone: "muted" },
+            ]}
+          />
 
           {/* Email funnel: strictly sequential, same channel end to end.
               IG and phone used to be chained onto this and produced nonsense
@@ -96,7 +112,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>CrossFit vs HYROX</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Same funnel, two channels — which one's actually pulling weight.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Same funnel, two lead sources: which one is actually pulling weight.</div>
             <Compare
               labelA="CrossFit"
               labelB="HYROX"
@@ -125,6 +141,8 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <Diagnostics data={data} />
+
+          <TagGlossary groups={GYM_OWNER_TAG_GROUPS} title="Tag glossary: what every tag in this system means" />
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

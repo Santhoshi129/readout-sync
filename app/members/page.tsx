@@ -4,6 +4,9 @@ import { Topbar } from "@/components/Topbar";
 import { Funnel, Bars, Ring } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
+import { PipelineMap } from "@/components/PipelineMap";
+import { TagGlossary } from "@/components/TagGlossary";
+import { MEMBER_TAG_GROUPS } from "@/lib/tags";
 
 export const revalidate = 30;
 
@@ -14,7 +17,7 @@ export default async function MembersDashboard() {
 
   return (
     <>
-      <Topbar version={data?.meta?.version} fetchedAt={fetchedAt} crossLinkHref="/gym-owners" crossLinkLabel="Gym owner outreach" />
+      <Topbar version={data?.meta?.version} fetchedAt={data?.meta?.generated_at || fetchedAt} crossLinkHref="/gym-owners" crossLinkLabel="Owner Outreach Intelligence" />
       <div className="wrap">
         <div style={{ paddingTop: 28 }}>
           <a className="back" href="/">← All dashboards</a>
@@ -28,9 +31,9 @@ export default async function MembersDashboard() {
 
         <section style={{ padding: "28px 0 0" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
-          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member outreach</h1>
+          <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member Adoption Pulse</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations inviting existing members onto the TWU app.
+            {flows.length} automations inviting existing Blended Athletics members onto the TWU app. Live from MongoDB, GHL, and Gmail state.
           </p>
           <MemberBriefing data={data} launchIso={launch} />
         </section>
@@ -42,6 +45,21 @@ export default async function MembersDashboard() {
             <Head label="In the community" path="app_adoption.total_joined" data={data} amber />
             <Head label="Adoption rate" path="app_adoption.adoption_rate_pct" data={data} suffix="%" />
           </div>
+
+          <PipelineMap
+            title="App Adoption pipeline, stage by stage"
+            note="The live shape of the member adoption pipeline in GHL. Hover or click a stage for what it means."
+            stages={[
+              { name: "Drafted", count: num(data, "app_adoption.stage_drafted"), desc: "Invite drafted in Gmail, waiting on a human send.", tone: "cold" },
+              { name: "Sent", count: num(data, "app_adoption.stage_sent"), desc: "Invite confirmed sent. The clock to follow-up starts here.", tone: "warm" },
+              { name: "Follow-up", count: num(data, "app_adoption.stage_followup"), desc: "10 plus days with no reply, so a threaded follow-up went out.", tone: "warm" },
+              { name: "Replied", count: num(data, "app_adoption.stage_replied"), desc: "Wrote back with something that needs review or a next step.", tone: "hot" },
+              { name: "Adopted", count: num(data, "app_adoption.stage_adopted"), desc: "Joined the TWU app. The goal stage.", tone: "amber" },
+              { name: "Not Joining", count: num(data, "app_adoption.stage_not_joining"), desc: "Explicitly confirmed they will not join.", tone: "muted" },
+              { name: "Opted Out", count: num(data, "app_adoption.stage_opted_out"), desc: "Asked not to be contacted again.", tone: "muted" },
+              { name: "No Response", count: num(data, "app_adoption.stage_no_response"), desc: "Follow-up sent, 4 to 5 plus days of silence. Closed by the Monday cleanup.", tone: "cold" },
+            ]}
+          />
 
           {/* Sequential outreach funnel only - stops at "Adopted via outreach"
               (app_adoption.adopted). "Already on app" and "Total in community"
@@ -80,6 +98,8 @@ export default async function MembersDashboard() {
               ]}
             />
           </div>
+
+          <TagGlossary groups={MEMBER_TAG_GROUPS} title="Tag and status glossary: what every marker in this system means" />
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

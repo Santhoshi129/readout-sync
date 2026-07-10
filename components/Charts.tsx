@@ -201,10 +201,11 @@ export function Compare({
 // on every load already, just never had anywhere to render until now.
 export function GeoList({ rows }: { rows: { label: string; count: number }[] }) {
   const mounted = useMounted();
-  const top = rows.slice(0, 8);
+  const [expanded, setExpanded] = useState(false);
+  const top = rows.slice(0, expanded ? 20 : 8);
   const max = Math.max(1, ...top.map((r) => r.count));
   if (top.length === 0) {
-    return <div style={{ color: "var(--ink-faint)", fontSize: 13.5 }}>No geo data yet — populates once the CrossFit/HYROX clean-lead sheets have city/state filled in.</div>;
+    return <div style={{ color: "var(--ink-faint)", fontSize: 13.5 }}>No geo data yet. Populates once the CrossFit/HYROX clean-lead sheets have city/state filled in.</div>;
   }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -220,6 +221,14 @@ export function GeoList({ rows }: { rows: { label: string; count: number }[] }) 
           </div>
         );
       })}
+      {rows.length > 8 && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          style={{ background: "transparent", border: "1px solid var(--border, #2a2a2a)", borderRadius: 999, color: "var(--amber)", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.1em", textTransform: "uppercase", padding: "6px 12px", cursor: "pointer", alignSelf: "flex-start", marginTop: 4 }}
+        >
+          {expanded ? "Show top 8" : `Show top 20 of ${rows.length}`}
+        </button>
+      )}
     </div>
   );
 }

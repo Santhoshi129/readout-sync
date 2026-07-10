@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { timeAgo } from "@/lib/format";
+import { RefreshButton } from "@/components/RefreshButton";
 
 export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { version?: string; fetchedAt: string; crossLinkHref?: string; crossLinkLabel?: string }) {
   const [logoFailed, setLogoFailed] = useState(false);
@@ -32,8 +33,9 @@ export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { 
             {crossLinkLabel} →
           </a>
         )}
+        <RefreshButton />
         <span>{version ? `Readout ${version}` : "Readout"}</span>
-        <span><span className="live-dot" /> Live · {timeAgo(fetchedAt)}</span>
+        <span><span className="live-dot" /> Synced {timeAgo(fetchedAt)}</span>
       </div>
     </div>
   );

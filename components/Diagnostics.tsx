@@ -22,7 +22,7 @@ export function Diagnostics({ data }: { data: Readout | null }) {
     <div style={{ marginBottom: 24 }}>
       <button className="diagnostics-toggle" data-open={open} onClick={() => setOpen((o) => !o)}>
         <span>
-          Diagnostics — data-consistency checks · {badCount === 0 ? "all clean" : `${badCount} of ${rows.length} need a look`}
+          Diagnostics: data-consistency checks · {badCount === 0 ? "all clean" : `${badCount} of ${rows.length} need a look`}
         </span>
         <span className="chev">▾</span>
       </button>

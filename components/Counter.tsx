@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 // Animates a number counting up to its target whenever the target changes
 // (first paint, or a 30s revalidation bringing in a new value). Falls back
 // to an instant jump for prefers-reduced-motion, so this never becomes a
-// distraction — just a small signal that the number is live, not static.
+// distraction, just a small signal that the number is live, not static.
 export function Counter({ value, duration = 900 }: { value: number | null; duration?: number }) {
   const [display, setDisplay] = useState<number | null>(value);
   const prev = useRef<number | null>(value);

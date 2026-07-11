@@ -239,6 +239,11 @@ export const FLOWS: Flow[] = [
       { date: "2026-06-13", status: "done", text: "Live. Tuesday draft queue, reply processor, weekly Slack summary, GHL tag webhook (outreach-sent / app-not-joining)." },
       { date: "2026-06-19", status: "done", text: "Follow-up, weekly summary and no-response sweeps split into their own flow (see Follow-up / Summary)." },
     ],
+    tagNotes: [
+      { tag: "zp-member / app-adoption-outreach", why: "Confirms the contact is a real Zen Planner member and marks them as part of this program." },
+      { tag: "outreach-draft-ready", why: "Invite drafted in Gmail and waiting on David to send - the hand-off point for this flow." },
+      { tag: "outreach-sent / app-not-joining", why: "Set on the incoming tag webhook - outreach-sent confirms the send, app-not-joining is David's manual signal that a member has declined." },
+    ],
     canaries: [
       { label: "No-email (Mongo vs Sheet)", path: "app_adoption.no_email_mongo_count", expect: "should track sheet count" },
     ],
@@ -281,6 +286,10 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-06-19", status: "done", text: "Split out of App Adoption. Friday follow-up, Tuesday summary, Monday no-response sweep all live." },
+    ],
+    tagNotes: [
+      { tag: "followup-draft-ready", why: "A follow-up invite is drafted in Gmail, waiting on David to send." },
+      { tag: "no_response", why: "Written by the Monday cleanup for members who stayed silent 4+ days after the follow-up - keeps the pipeline from filling with stale 'in progress' cards." },
     ],
   },
 
@@ -575,6 +584,13 @@ export const FLOWS: Flow[] = [
       { label: "IG bridge stuck pending", path: "data_integrity.ig_bridge_stuck_pending", expect: "watch - label collision" },
       { label: "Legacy IG-bridge tag", path: "data_integrity.legacy_ig_bridge_stuck_tag", expect: "→ 0 (migrate)" },
     ],
+    tagNotes: [
+      { tag: "ig-outreach-sent + ig-replied-positive", why: "The entry condition Pipeline B watches for - a contact only enters the bridge once both are present and an email has been captured." },
+      { tag: "ig-alt-outreach-sent", why: "Confirms touch 1 of the bridge sequence actually sent." },
+      { tag: "ig-bridge-sequence-complete", why: "All 3 touches ran with no reply - closes the sequence out." },
+      { tag: "ig-bridge-replied-interested / ig-bridge-replied-not-interested", why: "Pipeline C's classification of the reply - moves the contact to Responded or Dead Lead." },
+      { tag: "temporarily-paused + paused-source-igbridge", why: "How an out-of-office reply on this channel is recorded, so Temp Away knows which sequence to resume it into." },
+    ],
   },
 
   {
@@ -601,6 +617,10 @@ export const FLOWS: Flow[] = [
     ],
     canaries: [
       { label: "IG unmatched duplicates", path: "data_integrity.ig_unmatched_duplicates", expect: "low / trending to 0" },
+    ],
+    tagNotes: [
+      { tag: "ig-review-noted", why: "Stamped at DM-send time when the webhook can't confidently match the contact to a master gym record - the flag this flow works off of every night." },
+      { tag: "ig-outreach-sent + ig-duplicate-matched", why: "Written together on a fresh match: confirms the real outreach date and marks the record as reconciled with the master pool." },
     ],
   },
 

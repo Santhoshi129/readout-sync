@@ -33,7 +33,7 @@ export default async function MembersDashboard() {
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member Adoption Pulse</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations inviting existing Blended Athletics members onto the TWU app. Live from MongoDB, GHL, and Gmail state.
+            {flows.length} automations converting the existing Blended Athletics membership into active TWU app users - identified, personally invited, and tracked to adoption. Every figure below is computed live from MongoDB, GHL, and Gmail state.
           </p>
           <MemberBriefing data={data} launchIso={launch} />
         </section>

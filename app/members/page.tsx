@@ -1,7 +1,7 @@
 import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring } from "@/components/Charts";
+import { Funnel, Bars, Ring, Donut } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
@@ -87,13 +87,14 @@ export default async function MembersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Community status</div>
-            <Bars
-              rows={[
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Community status</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Every identified member's current outcome. Hover a slice or a row for its share.</div>
+            <Donut
+              centerLabel="identified"
+              segments={[
                 { label: "Already on app before outreach", value: num(data, "app_adoption.already_on_app"), tone: "cold" },
-                { label: "Adopted via outreach", value: num(data, "app_adoption.adopted"), tone: "amber" },
-                { label: "Total in community", value: num(data, "app_adoption.total_joined"), tone: "hot" },
-                { label: "Opted out", value: num(data, "app_adoption.opted_out"), tone: "muted" },
+                { label: "Adopted via outreach", value: num(data, "app_adoption.adopted"), tone: "hot" },
+                { label: "Opted out", value: num(data, "app_adoption.opted_out"), tone: "bad" },
                 { label: "Confirmed not joining", value: num(data, "app_adoption.not_joining_confirmed"), tone: "muted" },
               ]}
             />

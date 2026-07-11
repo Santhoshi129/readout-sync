@@ -1,7 +1,7 @@
 import { getReadout } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, GeoList } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, Donut, GeoList } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
@@ -98,14 +98,16 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Reply breakdown</div>
-            <Bars
-              rows={[
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply breakdown</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>What every classified reply turned out to be. Hover a slice or a row for its share.</div>
+            <Donut
+              centerLabel="classified"
+              segments={[
                 { label: "Interested", value: num(data, "reply_breakdown.interested"), tone: "hot" },
-                { label: "Not interested", value: num(data, "reply_breakdown.not_interested"), tone: "muted" },
-                { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "amber" },
+                { label: "Not interested", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
+                { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
                 { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
-                { label: "Other", value: num(data, "reply_breakdown.other"), tone: "cold" },
+                { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
               ]}
             />
           </div>
@@ -136,7 +138,47 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Top locations</div>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Hot vs warm leads</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Prospect score band, by source. Hot scores 65+, warm scores 20-64.</div>
+            <Compare
+              labelA="Hot"
+              labelB="Warm"
+              rows={[
+                { label: "CrossFit", a: num(data, "lead_sources_enriched.cf_hot"), b: num(data, "lead_sources_enriched.cf_warm") },
+                { label: "HYROX", a: num(data, "lead_sources_enriched.hy_hot"), b: num(data, "lead_sources_enriched.hy_warm") },
+                { label: "Combined", a: num(data, "lead_sources_enriched.combined_hot"), b: num(data, "lead_sources_enriched.combined_warm") },
+              ]}
+            />
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Direct vs generic email quality</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>A direct, named contact email scores well above a generic info@ inbox - this is how clean each source's contact data actually is.</div>
+            <Compare
+              labelA="Direct"
+              labelB="Generic"
+              rows={[
+                { label: "CrossFit", a: num(data, "lead_sources_enriched.cf_direct_email"), b: num(data, "lead_sources_enriched.cf_generic_email") },
+                { label: "HYROX", a: num(data, "lead_sources_enriched.hy_direct_email"), b: num(data, "lead_sources_enriched.hy_generic_email") },
+              ]}
+            />
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Email vs Instagram</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>The two outbound channels, head to head - volume sent and what came back.</div>
+            <Compare
+              labelA="Email"
+              labelB="Instagram"
+              rows={[
+                { label: "Outreach sent", a: num(data, "lead_gen.email_outreach_sent"), b: num(data, "lead_gen.ig_outreach_sent") },
+                { label: "Replied positive", a: num(data, "lead_gen.email_replied"), b: num(data, "lead_gen.ig_replied_positive") },
+              ]}
+            />
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Top locations</div>
             <GeoList rows={data?.geo_distribution || []} />
           </div>
 

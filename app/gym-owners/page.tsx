@@ -35,7 +35,7 @@ export default async function GymOwnersDashboard() {
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Train With Us</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Owner Outreach Intelligence</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations reaching cold gym owners through email, Instagram, and phone. Every number below is live from GHL, Sheets, and MongoDB.
+            {flows.length} automations running the full gym-owner acquisition motion, from first contact through email, Instagram, and phone to a booked reply. Every figure below is computed live from GHL, Sheets, and MongoDB - nothing is entered by hand.
           </p>
           <GymOwnerBriefing data={data} launchIso={launch} />
         </section>

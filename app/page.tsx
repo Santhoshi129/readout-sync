@@ -36,7 +36,7 @@ export default async function Landing() {
             <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Train With Us</span>
             <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Owner Outreach Intelligence</div>
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
-              Cold gyms scraped, scored, drafted, and worked through email, Instagram, and phone until they reply.
+              End-to-end gym acquisition: prospects are sourced, scored, and personally drafted, then carried through email, Instagram, and phone until they convert.
             </div>
             <div style={{ display: "flex", gap: 32 }}>
               <div>
@@ -58,7 +58,7 @@ export default async function Landing() {
             <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Blended Athletics</span>
             <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Member Adoption Pulse</div>
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
-              Existing members not yet on the TWU app, identified and invited, with adoption tracked to done.
+              Converts the existing membership base into active app users: members are identified, personally invited, and tracked through to adoption.
             </div>
             <div style={{ display: "flex", gap: 32 }}>
               <div>

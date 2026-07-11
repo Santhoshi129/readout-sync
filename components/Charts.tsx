@@ -152,6 +152,11 @@ function useMounted() {
 // Paired comparison bars (e.g. CrossFit vs HYROX) - two series sharing one
 // scale so a CEO/CMO can read "which channel is ahead" at a glance, not
 // two separate charts they have to mentally overlay themselves.
+//
+// Beyond the raw bars, this computes a live, plain-English headline from
+// the actual numbers (who's ahead, by how much) so the takeaway lands in
+// the first second - and a hover state that opens a per-row detail panel
+// instead of relying on a native title="" tooltip.
 export function Compare({
   rows,
   labelA,
@@ -162,32 +167,93 @@ export function Compare({
   labelB: string;
 }) {
   const mounted = useMounted();
+  const [hover, setHover] = useState<number | null>(null);
   const max = Math.max(1, ...rows.flatMap((r) => [r.a ?? 0, r.b ?? 0]));
+
+  const totalA = rows.reduce((s, r) => s + (r.a ?? 0), 0);
+  const totalB = rows.reduce((s, r) => s + (r.b ?? 0), 0);
+  const leaderIsA = totalA >= totalB;
+  const bigger = Math.max(totalA, totalB);
+  const smaller = Math.min(totalA, totalB);
+  const ratio = smaller > 0 ? bigger / smaller : bigger > 0 ? Infinity : 1;
+  const marginPct = bigger > 0 ? Math.round(((bigger - smaller) / bigger) * 100) : 0;
+
+  const headline =
+    totalA === 0 && totalB === 0
+      ? "No volume yet on either side."
+      : marginPct < 10
+      ? `Neck and neck - ${labelA} and ${labelB} are within ${Math.max(marginPct, 1)}% of each other overall.`
+      : `${leaderIsA ? labelA : labelB} is ahead of ${leaderIsA ? labelB : labelA} by ${marginPct}%${
+          isFinite(ratio) && ratio >= 1.5 ? ` (${ratio.toFixed(1)}\u00d7)` : ""
+        } across the funnel.`;
+
+  const active = hover != null ? rows[hover] : null;
+
   return (
     <div>
+      <div className="compare-headline">
+        <span className="compare-headline-dot" style={{ background: leaderIsA ? "var(--warm)" : "var(--hot)" }} />
+        {headline}
+      </div>
+
       <div className="compare-legend">
         <span><i className="dot-legend" style={{ background: "var(--warm)" }} /> {labelA}</span>
         <span><i className="dot-legend" style={{ background: "var(--hot)" }} /> {labelB}</span>
       </div>
+
       <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
         {rows.map((r, i) => {
           const av = r.a ?? 0, bv = r.b ?? 0;
           const aw = Math.max(1.5, (av / max) * 100);
           const bw = Math.max(1.5, (bv / max) * 100);
+          const rowLeaderIsA = av >= bv && av > 0;
+          const rowLeaderIsB = bv > av;
           return (
-            <div key={r.label} className="chart-row">
-              <div style={{ fontSize: 13.5, color: "var(--ink-dim)", marginBottom: 8 }}>{r.label}</div>
+            <div
+              key={r.label}
+              className="chart-row compare-row"
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover((h) => (h === i ? null : h))}
+              onFocus={() => setHover(i)}
+              onBlur={() => setHover((h) => (h === i ? null : h))}
+              tabIndex={0}
+            >
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
+                <div style={{ fontSize: 13.5, color: "var(--ink-dim)" }}>{r.label}</div>
+                {(rowLeaderIsA || rowLeaderIsB) && (
+                  <div
+                    className="compare-leader-chip"
+                    style={{ color: rowLeaderIsA ? "var(--warm)" : "var(--hot)" }}
+                  >
+                    {rowLeaderIsA ? labelA : labelB} leads
+                  </div>
+                )}
+              </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                <div className="bar-track thin" style={{ flex: 1 }} title={`${labelA}: ${fmt(r.a)}`}>
+                <div className="bar-track thin" style={{ flex: 1 }}>
                   <div className="bar-fill" style={{ width: mounted ? `${aw}%` : 0, transitionDelay: `${i * 60}ms`, background: "var(--warm)" }} />
                 </div>
                 <div style={{ width: 56, textAlign: "right", fontSize: 13, fontWeight: 700 }}><Counter value={r.a} /></div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div className="bar-track thin" style={{ flex: 1 }} title={`${labelB}: ${fmt(r.b)}`}>
+                <div className="bar-track thin" style={{ flex: 1 }}>
                   <div className="bar-fill" style={{ width: mounted ? `${bw}%` : 0, transitionDelay: `${i * 60 + 30}ms`, background: "var(--hot)" }} />
                 </div>
                 <div style={{ width: 56, textAlign: "right", fontSize: 13, fontWeight: 700 }}><Counter value={r.b} /></div>
+              </div>
+
+              {/* Detail strip - only the hovered/focused row expands it, so the
+                  chart stays calm at rest and rewards a closer look. */}
+              <div className={`compare-detail ${hover === i ? "open" : ""}`}>
+                <span>{labelA} {fmt(r.a)}</span>
+                <span className="compare-detail-sep">·</span>
+                <span>{labelB} {fmt(r.b)}</span>
+                <span className="compare-detail-sep">·</span>
+                <span>
+                  {av + bv > 0
+                    ? `split ${Math.round((av / (av + bv)) * 100)} / ${Math.round((bv / (av + bv)) * 100)}`
+                    : "no volume yet"}
+                </span>
               </div>
             </div>
           );

@@ -90,37 +90,6 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
           </section>
         )}
 
-        {/* 4 · HEALTH CANARIES */}
-        {flow.canaries && flow.canaries.length > 0 && (
-          <section className="section">
-            <div className="section-head">
-              <div>
-                <div className="eyebrow" style={{ marginBottom: 8 }}>Health checks</div>
-                <div className="section-title">Self-checks for this flow.</div>
-              </div>
-            </div>
-            <div className="grid grid-3">
-              {flow.canaries.map((c) => {
-                const v = num(data, c.path);
-                const watch = c.expect.includes("watch") || c.expect.includes("migrate");
-                const bad = watch ? (v ?? 0) > 0 : (v ?? 0) > 3;
-                return (
-                  <div className="canary" key={c.path}>
-                    <div>
-                      <div className="c-val" style={{ color: bad ? "var(--amber)" : "var(--good)" }}>{fmt(v)}</div>
-                      <div className="stat-label">{c.label}</div>
-                    </div>
-                    <div className="c-meta">
-                      <span className={`dot ${bad ? "watch" : "good"}`} />
-                      <div className="c-expect">{c.expect}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
         {/* 4 · SYSTEM UPDATES */}
         <section className="section">
           <div className="section-head">

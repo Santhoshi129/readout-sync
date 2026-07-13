@@ -80,6 +80,8 @@ export const FLOWS: Flow[] = [
       { label: "In GHL - HYROX", path: "lead_gen.hyrox_contacts_in_ghl" },
       { label: "Hot leads", path: "lead_sources_enriched.combined_hot" },
       { label: "Warm leads", path: "lead_sources_enriched.combined_warm" },
+      { label: "Independent gyms", path: "franchise_mix.independent", note: "Tagged independent - no franchise affiliation. Scores +20 higher in prospect scoring than a franchise location." },
+      { label: "Franchise-affiliated", path: "franchise_mix.total_franchise", note: "f45-franchise + orangetheory-franchise + shred415-franchise tags, combined." },
     ],
     charts: [
       {
@@ -90,6 +92,16 @@ export const FLOWS: Flow[] = [
           { label: "CF drafts", path: "lead_sources_drafts.cf_drafts_created", tone: "amber" },
           { label: "HY scraped", path: "lead_sources_raw.hy_scraped", tone: "cold" },
           { label: "HY drafts", path: "lead_sources_drafts.hy_drafts_created", tone: "amber" },
+        ],
+      },
+      {
+        kind: "bars",
+        title: "Franchise mix (independent vs named franchises)",
+        series: [
+          { label: "Independent", path: "franchise_mix.independent", tone: "cold" },
+          { label: "F45", path: "franchise_mix.f45", tone: "amber" },
+          { label: "Orangetheory", path: "franchise_mix.orangetheory", tone: "warm" },
+          { label: "Shred415", path: "franchise_mix.shred415", tone: "hot" },
         ],
       },
     ],
@@ -125,7 +137,7 @@ export const FLOWS: Flow[] = [
       "The moment David sends, the record updates itself - no manual logging, no spreadsheet.",
     ],
     metrics: [
-      { label: "Emails sent (all)", path: "summary.total_emails_sent", note: "lead_gen.email_outreach_sent + app_adoption.email_outreach_confirmed + app_adoption.followup_confirmed - every confirmed send across both the TWU cold outreach and Blended member outreach systems, combined." },
+      { label: "Emails sent (all)", path: "summary.total_emails_sent", note: "Every confirmed send, added together: first-touch and follow-up emails to gym owners (TWU cold outreach), plus invite and follow-up emails to existing members (Blended app adoption)." },
       { label: "Outreach sent (lead gen)", path: "lead_gen.email_outreach_sent", note: "Count of GHL contacts carrying the outreach-sent tag - the exact tag this workflow applies the moment it confirms a first-touch email in David's Sent folder." },
       { label: "In active sequence", path: "lead_gen.touch_sequence.in_sequence", note: "Contacts whose Outreach Step custom field reads 1-5 - still inside the 5-touch sequence, not yet finished or stopped." },
     ],

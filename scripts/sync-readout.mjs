@@ -174,13 +174,26 @@ async function buildLeadGen(db, gToken) {
     for (const ct of batch) {
       total++;
       const t = ct.tags || [];
-      const has = (x) => t.includes(x);
+      // Case-insensitive: GHL doesn't enforce tag casing, and manual tagging
+      // (vs API-applied) can easily produce "Interested" instead of
+      // "interested". An exact-match miss here silently drops a contact
+      // into the wrong bucket with no error - worth the tiny cost to guard
+      // against.
+      const tLower = t.map((x) => String(x).toLowerCase());
+      const has = (x) => tLower.includes(x.toLowerCase());
       const sf = (ct.customFields || []).find((f) => f.id === STEP_FIELD);
       const step = parseInt(sf?.value || "0") || 0;
       if (has("cf")) inc("cf");
       if (has("hyrox")) inc("hy");
       if (has("hot")) inc("hot");
       if (has("warm")) inc("warm");
+      // Franchise-affiliation tags exist in the glossary as powering a
+      // franchise-vs-independent split, but nothing was actually reading
+      // them into a count before now.
+      if (has("independent")) inc("independentGym");
+      if (has("f45-franchise")) inc("f45");
+      if (has("orangetheory-franchise")) inc("orangetheory");
+      if (has("shred415-franchise")) inc("shred415");
       // Live per-source hot/warm - previously read from an orphaned
       // readout_cache/twu_readout_v1 doc that nothing writes anymore (dead
       // upstream workflow), so the CrossFit vs HYROX and Hot vs Warm charts
@@ -352,7 +365,14 @@ async function buildLeadGen(db, gToken) {
   // had contacts in it. All 6 GHL pipeline stages are mutually exclusive,
   // so the true total is the sum of all 6, not 5.
   const totalPipeline = stResponded + stDead + stNoResp + stNewLead + stIG + stAlt;
-  const replyRate = totalPipeline > 0 ? parseFloat(((stResponded / totalPipeline) * 100).toFixed(1)) : 0;
+  // This used to be stResponded/totalPipeline - "what share of the whole
+  // pipeline reached Responded" - a real number, but a different question
+  // than "reply rate" asks anywhere else on the dashboard (Channel
+  // effectiveness, the Reply rate ring), which is replies/sent. Same label,
+  // two different denominators, so the same-ish metric showed different
+  // numbers on different pages. One definition now: replied / sent.
+  const replyRate = n("sent") > 0 ? parseFloat(((n("replied") / n("sent")) * 100).toFixed(1)) : 0;
+  const pipelineRespondedSharePct = totalPipeline > 0 ? parseFloat(((stResponded / totalPipeline) * 100).toFixed(1)) : 0;
   // Cap raised from 4 to 20 - the dashboard was already trying to show up
   // to 10 but the server only ever sent the top 4, so it looked frozen.
   // Touch step attached per reply now too (real: the same per-contact step
@@ -384,7 +404,8 @@ async function buildLeadGen(db, gToken) {
       replied_contacts: repliedContacts, phone_followup_due: n("phoneDue"), phone_still_due: n("phoneStillDue"),
       phone_positive: n("phonePos"), phone_negative: n("phoneNeg"), phone_called_only: n("phoneCalledOnly"), phone_resolved: n("phoneResolved"),
       stage_new_lead: stNewLead, stage_responded: stResponded, stage_dead: stDead, stage_no_response: stNoResp, stage_ig_outreach: stIG,
-      stage_alt_outreaching: stAlt, total_in_pipeline: totalPipeline, email_reply_rate_pct: replyRate, replied_at_touch: repliedAtTouch,
+      stage_alt_outreaching: stAlt, total_in_pipeline: totalPipeline, email_reply_rate_pct: replyRate,
+      pipeline_responded_share_pct: pipelineRespondedSharePct, replied_at_touch: repliedAtTouch,
     },
     lead_sources_raw: { cf_scraped: cfScraped, cf_processed: cfProcessed, cf_pending: cfPending, hy_scraped: hyScraped, hy_processed: hyProcessed, hy_pending: hyPending, combined_scraped: combinedScraped, combined_processed: combinedProcessed, combined_pending: combinedPending },
     lead_sources_failed: { cf_failed: cfFailed, hy_failed: hyFailed, total_failed: combinedFailed, cf_no_email: cfNoEmail, hy_no_email: hyNoEmail, total_no_email: combinedNoEmail, cf_duplicates_skipped: cfDup, hy_duplicates_skipped: hyDup, total_duplicates_skipped: combinedDup },
@@ -408,6 +429,10 @@ async function buildLeadGen(db, gToken) {
       cf_failed: cfFailed, hy_failed: hyFailed, total_failed: combinedFailed,
     },
     geo_distribution: geoDistribution,
+    franchise_mix: {
+      independent: n("independentGym"), f45: n("f45"), orangetheory: n("orangetheory"), shred415: n("shred415"),
+      total_franchise: n("f45") + n("orangetheory") + n("shred415"),
+    },
     data_integrity: {
       stuck_draft_tags: stuckDraftIds.length, step_tag_mismatch: mismatchIds.length, ig_unmatched_duplicates: n("igUnmatched"),
       ig_bridge_stuck_pending: n("igbStuck"), stuck_past_resume_date: stuckPastResumeIds.length, missing_resume_date: missingResumeIds.length,

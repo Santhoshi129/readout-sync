@@ -166,14 +166,29 @@ export default async function GymOwnersDashboard() {
               const phoneResolved = num(data, "lead_gen.phone_resolved") ?? 0;
               const phonePositive = num(data, "lead_gen.phone_positive") ?? 0;
               const rate = (n: number, d: number) => (d > 0 ? Math.round((n / d) * 1000) / 10 : null);
+              const channels = [
+                { label: "Email", value: rate(emailReplied, emailSent) },
+                { label: "Instagram", value: rate(igReplied, igSent) },
+                { label: "Phone", value: rate(phonePositive, phoneResolved) },
+              ].filter((c) => c.value != null) as { label: string; value: number }[];
+              const best = channels.length ? channels.reduce((a, b) => (b.value > a.value ? b : a)) : null;
+              const worst = channels.length > 1 ? channels.reduce((a, b) => (b.value < a.value ? b : a)) : null;
               return (
-                <Bars
-                  rows={[
-                    { label: `Email (${fmt(emailSent)} sent)`, value: rate(emailReplied, emailSent), tone: "amber" },
-                    { label: `Instagram (${fmt(igSent)} sent)`, value: rate(igReplied, igSent), tone: "hot" },
-                    { label: `Phone (${fmt(phoneResolved)} resolved)`, value: rate(phonePositive, phoneResolved), tone: "warm" },
-                  ]}
-                />
+                <>
+                  {best && worst && best.label !== worst.label && (
+                    <div className="compare-headline" style={{ marginBottom: 18 }}>
+                      <span className="compare-headline-dot" style={{ background: "var(--hot)" }} />
+                      {best.label} converts best at {best.value}% - {(best.value / Math.max(worst.value, 0.1)).toFixed(1)}x {worst.label}'s {worst.value}%.
+                    </div>
+                  )}
+                  <Bars
+                    rows={[
+                      { label: `Email (${fmt(emailSent)} sent)`, value: rate(emailReplied, emailSent), tone: "amber" },
+                      { label: `Instagram (${fmt(igSent)} sent)`, value: rate(igReplied, igSent), tone: "hot" },
+                      { label: `Phone (${fmt(phoneResolved)} resolved)`, value: rate(phonePositive, phoneResolved), tone: "warm" },
+                    ]}
+                  />
+                </>
               );
             })()}
           </div>
@@ -261,15 +276,45 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Instagram channel</div>
-            <Bars
-              rows={[
-                { label: "Ready to send", value: num(data, "lead_gen.ig_outreach_ready"), tone: "cold" },
-                { label: "DMs sent", value: num(data, "lead_gen.ig_outreach_sent"), tone: "warm" },
-                { label: "Replied positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
-                { label: "Replied negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "muted" },
-              ]}
-            />
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram channel</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>ig-outreach-ready = handle qualified, waiting to be DM&apos;d. ig-outreach-sent = Mari has actually sent the DM. Two independent tags, not a strict funnel.</div>
+            {(() => {
+              const ready = num(data, "lead_gen.ig_outreach_ready") ?? 0;
+              const sent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
+              const pos = num(data, "lead_gen.ig_replied_positive") ?? 0;
+              const neg = num(data, "lead_gen.ig_replied_negative") ?? 0;
+              const replies = pos + neg;
+              const replyRate = sent > 0 ? Math.round((replies / sent) * 1000) / 10 : null;
+              const posShare = replies > 0 ? Math.round((pos / replies) * 100) : null;
+              return (
+                <>
+                  <div className="compare-headline" style={{ marginBottom: 8 }}>
+                    <span className="compare-headline-dot" style={{ background: "var(--hot)" }} />
+                    {fmt(sent)} DMs sent{replyRate != null ? ` \u00b7 ${replyRate}% reply rate` : ""}{posShare != null ? ` \u00b7 ${posShare}% of replies positive` : ""}
+                  </div>
+                  {sent > ready && (
+                    <div className="stat-flag" style={{ marginBottom: 18, fontSize: 11.5 }}>
+                      DMs sent ({fmt(sent)}) is higher than Ready to send ({fmt(ready)}) - {fmt(sent - ready)} contact{sent - ready === 1 ? "" : "s"} carry ig-outreach-sent without ig-outreach-ready, so either ready doesn&apos;t reflect the live backlog or the ready tag is cleared on send. Worth confirming with whoever owns the IG and Phone Outreach workflow.
+                    </div>
+                  )}
+                  <div className="grid grid-2" style={{ gap: 24, alignItems: "center" }}>
+                    <Bars
+                      rows={[
+                        { label: "Ready to send", value: ready, tone: "cold" },
+                        { label: "DMs sent", value: sent, tone: "warm" },
+                      ]}
+                    />
+                    <Donut
+                      centerLabel="replied"
+                      segments={[
+                        { label: "Positive", value: pos, tone: "hot" },
+                        { label: "Negative", value: neg, tone: "bad" },
+                      ]}
+                    />
+                  </div>
+                </>
+              );
+            })()}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

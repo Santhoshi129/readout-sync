@@ -180,6 +180,16 @@ async function buildLeadGen(db, gToken) {
       if (has("hyrox")) inc("hy");
       if (has("hot")) inc("hot");
       if (has("warm")) inc("warm");
+      // Live per-source hot/warm - previously read from an orphaned
+      // readout_cache/twu_readout_v1 doc that nothing writes anymore (dead
+      // upstream workflow), so the CrossFit vs HYROX and Hot vs Warm charts
+      // were silently showing frozen, undated numbers. cf/hyrox and hot/warm
+      // are all per-contact tags already being read above, so the
+      // intersection is free - same loop, no extra API calls.
+      if (has("cf") && has("hot")) inc("cfHot");
+      if (has("cf") && has("warm")) inc("cfWarm");
+      if (has("hyrox") && has("hot")) inc("hyHot");
+      if (has("hyrox") && has("warm")) inc("hyWarm");
       if (has("outreach-sent")) inc("sent");
       if (has("sequence-complete")) inc("seqdone");
       if (has("ig-outreach-ready")) inc("igReady");
@@ -357,13 +367,17 @@ async function buildLeadGen(db, gToken) {
     lead_sources_drafts: { cf_drafts_created: cfDrafts, hy_drafts_created: hyDrafts, total_drafts_created: combinedDrafts },
     lead_sources_enriched: {
       cf_in_ghl: n("cf"), cf_duplicate_skipped: cfDup, cf_enrichment_failed: cachedEnr.cf_enrichment_failed || 0,
-      cf_hot: cachedEnr.cf_hot || 0, cf_warm: cachedEnr.cf_warm || 0, cf_direct_email: cachedEnr.cf_direct_email || 0,
+      cf_hot: n("cfHot"), cf_warm: n("cfWarm"),
+      // TODO(direct/generic email, avg prospect score): still reading the
+      // orphaned readout_cache/twu_readout_v1 doc - waiting on the GHL
+      // custom field ID for Email Status to compute these live too.
+      cf_direct_email: cachedEnr.cf_direct_email || 0,
       cf_generic_email: cachedEnr.cf_generic_email || 0, cf_avg_prospect_score: cachedEnr.cf_avg_prospect_score || 0,
       hy_in_ghl: n("hy"), hy_duplicate_skipped: hyDup, hy_enrichment_failed: cachedEnr.hy_enrichment_failed || 0,
-      hy_hot: cachedEnr.hy_hot || 0, hy_warm: cachedEnr.hy_warm || 0, hy_direct_email: cachedEnr.hy_direct_email || 0,
+      hy_hot: n("hyHot"), hy_warm: n("hyWarm"), hy_direct_email: cachedEnr.hy_direct_email || 0,
       hy_generic_email: cachedEnr.hy_generic_email || 0, hy_avg_prospect_score: cachedEnr.hy_avg_prospect_score || 0,
-      combined_in_ghl: n("cf") + n("hy"), combined_hot: (cachedEnr.cf_hot || 0) + (cachedEnr.hy_hot || 0),
-      combined_warm: (cachedEnr.cf_warm || 0) + (cachedEnr.hy_warm || 0),
+      combined_in_ghl: n("cf") + n("hy"), combined_hot: n("cfHot") + n("hyHot"),
+      combined_warm: n("cfWarm") + n("hyWarm"),
       cf_failed: cfFailed, hy_failed: hyFailed, total_failed: combinedFailed,
     },
     geo_distribution: geoDistribution,

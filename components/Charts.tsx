@@ -483,6 +483,8 @@ export function ReplyBreakdown({
   positiveLabel = "Positive",
   negativeLabel = "Negative",
   automatedLabel = "Automated / other",
+  centerLabel = "replied",
+  hoverPrefix = "Hover for what's inside",
   breakdown,
 }: {
   positive: number | null;
@@ -491,13 +493,15 @@ export function ReplyBreakdown({
   positiveLabel?: string;
   negativeLabel?: string;
   automatedLabel?: string;
+  centerLabel?: string;
+  hoverPrefix?: string;
   breakdown: { label: string; value: number | null; tone: string }[];
 }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div>
       <Donut
-        centerLabel="replies"
+        centerLabel={centerLabel}
         segments={[
           { label: positiveLabel, value: positive, tone: "hot" },
           { label: negativeLabel, value: negative, tone: "bad" },
@@ -513,7 +517,7 @@ export function ReplyBreakdown({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--amber)", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-          Hover for what&apos;s inside &quot;{automatedLabel}&quot; ({fmt(automated)})
+          {hoverPrefix} &quot;{automatedLabel}&quot; ({fmt(automated)})
         </div>
         {hovered && (
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft, #222)" }}>

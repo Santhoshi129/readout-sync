@@ -30,7 +30,7 @@ export interface Readout {
     ig_outreach_sent: number;
     ig_replied_positive: number;
     ig_replied_negative: number;
-    replied_contacts: { name: string; time: string; channel: string }[];
+    replied_contacts: { name: string; time: string; channel: string; touch: number | null }[];
     phone_followup_due: number;
     phone_still_due: number;
     phone_positive: number;
@@ -42,8 +42,10 @@ export interface Readout {
     stage_dead: number;
     stage_no_response: number;
     stage_ig_outreach: number;
+    stage_alt_outreaching: number;
     total_in_pipeline: number;
     email_reply_rate_pct: number;
+    replied_at_touch: { touch_1: number; touch_2: number; touch_3: number; touch_4: number; touch_5: number; unattributed: number };
   };
   lead_sources_raw: {
     cf_scraped: number; cf_processed: number; cf_pending: number;
@@ -81,7 +83,7 @@ export interface Readout {
     stage_no_response: number; stage_adopted: number; stage_not_joining: number;
     stage_opted_out: number; stage_replied: number;
   };
-  geo_distribution: { label: string; count: number }[];
+  geo_distribution: { label: string; count: number; names: string[] }[];
   data_integrity: {
     stuck_draft_tags: number;
     step_tag_mismatch: number;

@@ -4,7 +4,6 @@ import { Topbar } from "@/components/Topbar";
 import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
-import { Diagnostics } from "@/components/Diagnostics";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineFlow } from "@/components/PipelineFlow";
 import { fmt } from "@/lib/format";
@@ -89,6 +88,9 @@ export default async function GymOwnersDashboard() {
                         { label: "No reply, phone due", value: num(data, "lead_gen.phone_followup_due"), tone: "muted" },
                       ]}
                     />
+                    <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 10, lineHeight: 1.5 }}>
+                      &quot;Phone due&quot; is only the ones that have crossed the 10-day no-reply threshold and gotten the phone-followup-due tag - most of the {fmt(num(data, "lead_gen.stage_ig_outreach"))} DM&apos;d contacts simply haven&apos;t hit that mark yet, so this number stays well below the stage total on purpose.
+                    </div>
                   </div>
                 ),
               },
@@ -183,11 +185,12 @@ export default async function GymOwnersDashboard() {
                   )}
                   <Bars
                     rows={[
-                      { label: `Email (${fmt(emailSent)} sent)`, value: rate(emailReplied, emailSent), tone: "amber" },
-                      { label: `Instagram (${fmt(igSent)} sent)`, value: rate(igReplied, igSent), tone: "hot" },
-                      { label: `Phone (${fmt(phoneResolved)} resolved)`, value: rate(phonePositive, phoneResolved), tone: "warm" },
+                      { label: `Email - ${fmt(emailReplied)}/${fmt(emailSent)} replied`, value: rate(emailReplied, emailSent), tone: "amber" },
+                      { label: `Instagram - ${fmt(igReplied)}/${fmt(igSent)} replied`, value: rate(igReplied, igSent), tone: "hot" },
+                      { label: `Phone - ${fmt(phonePositive)}/${fmt(phoneResolved)} positive`, value: rate(phonePositive, phoneResolved), tone: "warm" },
                     ]}
                   />
+                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12 }}>Each bar is that channel&apos;s own replied-count \u00f7 sent-count, recalculated on every sync - not a fixed number. Hover a bar for the same numbers again.</div>
                 </>
               );
             })()}
@@ -195,8 +198,8 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 640 }}>
-              Positive / negative / automated first - the outcome that actually matters. Click into "Automated" on any panel to see what it's actually made of. Instagram's main channel only tags positive/negative in GHL, so it stays a clean 2-way split rather than being padded out. The IG Bridge (redirect) track is a different flow with its own tagging and is broken out separately.
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 680 }}>
+              Positive, negative, and automated, in that order - the outcome that actually matters, first. Click into &quot;Automated&quot; on the Email or Alt Bridge panel to see what it&apos;s made of. Instagram has no auto-responder or auto-ack concept at all: DMs don&apos;t bounce with an autoreply the way email does, and Mari classifies every reply herself as positive or negative by hand, so there&apos;s no automated bucket to break out for that channel - it&apos;s not missing data, there&apos;s nothing there to show.
             </div>
             <div className="grid grid-3" style={{ gap: 20 }}>
               <div>
@@ -206,12 +209,16 @@ export default async function GymOwnersDashboard() {
                   positive={num(data, "reply_breakdown.interested")}
                   negative={num(data, "reply_breakdown.not_interested")}
                   automated={sum(data, ["reply_breakdown.auto_responder", "reply_breakdown.auto_ack", "reply_breakdown.other"])}
+                  negativeLabel="Negative (unsubscribed)"
                   breakdown={[
                     { label: "Auto-responder (redirect)", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
                     { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
                     { label: "Other / uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
                   ]}
                 />
+                <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
+                  &quot;Negative&quot; here is the unsubscribed tag - Reply Detector doesn&apos;t write a separate not-interested tag today, it treats a polite pass and an explicit unsubscribe the same way. If that&apos;s wrong and there should be a distinct not-interested outcome, tell me the exact tag it should check for.
+                </div>
                 {(() => {
                   const classified = num(data, "reply_breakdown.total_classified") ?? 0;
                   const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
@@ -225,14 +232,45 @@ export default async function GymOwnersDashboard() {
 
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - main channel</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Positive/negative only - no finer tagging exists in GHL for this channel</div>
-                <Donut
-                  centerLabel="replied"
-                  segments={[
-                    { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
-                    { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
-                  ]}
-                />
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>ig-outreach-ready stays on a contact even after the DM goes out, so &quot;Ready&quot; below only counts the true backlog - ready and not yet sent.</div>
+                {(() => {
+                  const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
+                  const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
+                  const sent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
+                  const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
+                  const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
+                  const pos = num(data, "lead_gen.ig_replied_positive") ?? 0;
+                  const neg = num(data, "lead_gen.ig_replied_negative") ?? 0;
+                  return (
+                    <>
+                      <Bars
+                        rows={[
+                          { label: "Ready (backlog)", value: readyOnly, tone: "cold" },
+                          { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
+                          { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
+                          { label: "Needs review", value: needsReview, tone: "bad" },
+                        ]}
+                      />
+                      <div style={{ marginTop: 16 }}>
+                        <Donut
+                          centerLabel="replied"
+                          segments={[
+                            { label: "Positive", value: pos, tone: "hot" },
+                            { label: "Negative", value: neg, tone: "bad" },
+                          ]}
+                        />
+                      </div>
+                      {sentOnly > 0 && (
+                        <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
+                          {fmt(sentOnly)} contact{sentOnly === 1 ? "" : "s"} were DM&apos;d without ever carrying the ready tag - some other path got them sent. Not folded into either bucket above.
+                        </div>
+                      )}
+                      <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
+                        &quot;Needs review&quot; covers two different situations - a generic/brand-HQ handle Claude rejected, and no handle found at all - because the workflow that classifies them writes the same tag either way. There&apos;s no way to split those two apart from GHL data alone right now.
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               <div>
@@ -268,61 +306,12 @@ export default async function GymOwnersDashboard() {
               />
             </div>
             <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
-              <div className="eyebrow muted" style={{ marginBottom: 22 }}>Reply rate</div>
+              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply rate</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied \u00f7 sent - the same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
                 <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" />
               </div>
             </div>
-          </div>
-
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram channel</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>ig-outreach-ready and ig-outreach-sent are two independent tags - a contact keeps the ready tag even after being DM&apos;d unless something removes it, so &quot;Ready to send&quot; below only counts contacts that are ready and NOT yet sent (the real backlog), not everyone ever tagged ready.</div>
-            {(() => {
-              const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
-              const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
-              const sent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
-              const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
-              const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
-              const pos = num(data, "lead_gen.ig_replied_positive") ?? 0;
-              const neg = num(data, "lead_gen.ig_replied_negative") ?? 0;
-              const replies = pos + neg;
-              const replyRate = sent > 0 ? Math.round((replies / sent) * 1000) / 10 : null;
-              const posShare = replies > 0 ? Math.round((pos / replies) * 100) : null;
-              return (
-                <>
-                  <div className="compare-headline" style={{ marginBottom: 8 }}>
-                    <span className="compare-headline-dot" style={{ background: "var(--hot)" }} />
-                    {fmt(sent)} DMs sent{replyRate != null ? ` \u00b7 ${replyRate}% reply rate` : ""}{posShare != null ? ` \u00b7 ${posShare}% of replies positive` : ""}
-                  </div>
-                  {sentOnly > 0 && (
-                    <div className="stat-flag" style={{ marginBottom: 18, fontSize: 11.5 }}>
-                      {fmt(sentOnly)} contact{sentOnly === 1 ? "" : "s"} carry ig-outreach-sent without ever having ig-outreach-ready - sent through some other path (manual tag, or ready was never applied). Broken out below instead of inflating either bucket.
-                    </div>
-                  )}
-                  <div className="grid grid-2" style={{ gap: 24, alignItems: "center" }}>
-                    <Bars
-                      rows={[
-                        { label: "Ready to send (backlog)", value: readyOnly, tone: "cold" },
-                        { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
-                        { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
-                        { label: "Needs review", value: needsReview, tone: "bad" },
-                      ]}
-                    />
-                    <Donut
-                      centerLabel="replied"
-                      segments={[
-                        { label: "Positive", value: pos, tone: "hot" },
-                        { label: "Negative", value: neg, tone: "bad" },
-                      ]}
-                    />
-                  </div>
-                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 14, fontFamily: "var(--mono)" }}>
-                    &quot;Not found&quot; isn&apos;t its own live tag - the IG &amp; Phone Outreach flow classifies a handle as ig-not-found internally, then applies the same ig-needs-review tag it uses for generic/brand-HQ handles, so the two collapse together here. Splitting them needs either a workflow change or reading ig_handle_status if that field holds the finer-grained value.
-                  </div>
-                </>
-              );
-            })()}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
@@ -417,9 +406,6 @@ export default async function GymOwnersDashboard() {
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Top locations</div>
             <GeoList rows={data?.geo_distribution || []} />
           </div>
-
-          <Diagnostics data={data} />
-
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

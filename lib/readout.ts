@@ -146,6 +146,7 @@ export async function getReadout(): Promise<{ data: Readout | null; error: strin
       lead_sources_enriched: lg.lead_sources_enriched,
       app_adoption: aa.app_adoption,
       geo_distribution: lg.geo_distribution,
+      franchise_mix: lg.franchise_mix || { independent: 0, f45: 0, orangetheory: 0, shred415: 0, total_franchise: 0 },
       data_integrity: lg.data_integrity,
       reply_breakdown: lg.reply_breakdown,
       alt_email_outreach: lg.alt_email_outreach,

@@ -48,6 +48,7 @@ export interface Readout {
     stage_alt_outreaching: number;
     total_in_pipeline: number;
     email_reply_rate_pct: number;
+    pipeline_responded_share_pct: number;
     replied_at_touch: { touch_1: number; touch_2: number; touch_3: number; touch_4: number; touch_5: number; unattributed: number };
   };
   lead_sources_raw: {
@@ -87,6 +88,7 @@ export interface Readout {
     stage_opted_out: number; stage_replied: number;
   };
   geo_distribution: { label: string; count: number; names: string[] }[];
+  franchise_mix: { independent: number; f45: number; orangetheory: number; shred415: number; total_franchise: number };
   data_integrity: {
     stuck_draft_tags: number;
     step_tag_mismatch: number;

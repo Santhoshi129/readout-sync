@@ -95,7 +95,7 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-05-25", status: "done", text: "Went live. Dual CF/HY pipelines, Haiku enrichment, prospect scoring, GHL dedup-before-create, draft-only output." },
-      { date: "2026-05-25", status: "monitoring", text: "Direct-vs-generic email split and avg prospect score are still served from cache, pending the Email Status custom field ID; hot/warm leads are now computed live per source." },
+      { date: "2026-05-25", status: "monitoring", text: "Avg prospect score is still served from cache - not a GHL field, its source needs confirming. Hot/warm leads and direct-vs-generic email are now computed live per source (hot/warm from tag intersection, direct/generic from the Email Status custom field)." },
     ],
     tagNotes: [
       { tag: "prospect · new lead", why: "Marks a fresh, un-worked gym entering the pipeline." },
@@ -116,7 +116,7 @@ export const FLOWS: Flow[] = [
     category: "signal",
     oneLine: "Watches David's Sent folder every minute and records what he actually sent, so follow-ups are timed correctly.",
     technical: [
-      "A Gmail trigger polls in:sent every minute, re-fetches message labels (the trigger payload sometimes omits custom labels), and confirms an outreach email via Label_1–4 (CF Direct/Info, HY Direct/Info). Anything unlabeled is ignored.",
+      "A Gmail trigger polls in:sent every minute, re-fetches message labels (the trigger payload sometimes omits custom labels), and confirms an outreach email via Label_1–4 (CF Direct/Generic, HY Direct/Generic). Anything unlabeled is ignored.",
       "It looks the recipient up in GHL, branches on whether outreach-sent already exists, and writes the touch number, sent date, thread ID and message ID to custom fields - advancing the contact through the sequence.",
       "First touch adds outreach-sent + touch-1 and removes draft-ready; follow-ups increment the step (max 5), swap the touch-N-pending / followup-draft-ready tags for touch-N. It sends nothing - it only records what David sent.",
     ],
@@ -125,9 +125,9 @@ export const FLOWS: Flow[] = [
       "The moment David sends, the record updates itself - no manual logging, no spreadsheet.",
     ],
     metrics: [
-      { label: "Emails sent (all)", path: "summary.total_emails_sent" },
-      { label: "Outreach sent (lead gen)", path: "lead_gen.email_outreach_sent" },
-      { label: "In active sequence", path: "lead_gen.touch_sequence.in_sequence" },
+      { label: "Emails sent (all)", path: "summary.total_emails_sent", note: "lead_gen.email_outreach_sent + app_adoption.email_outreach_confirmed + app_adoption.followup_confirmed - every confirmed send across both the TWU cold outreach and Blended member outreach systems, combined." },
+      { label: "Outreach sent (lead gen)", path: "lead_gen.email_outreach_sent", note: "Count of GHL contacts carrying the outreach-sent tag - the exact tag this workflow applies the moment it confirms a first-touch email in David's Sent folder." },
+      { label: "In active sequence", path: "lead_gen.touch_sequence.in_sequence", note: "Contacts whose Outreach Step custom field reads 1-5 - still inside the 5-touch sequence, not yet finished or stopped." },
     ],
     charts: [
       {

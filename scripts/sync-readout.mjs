@@ -19,6 +19,7 @@ const AA_PIPE = "zAT94WRonEeLSXYzLWdZ";
 const GHL_VER = "2021-07-28";
 const STEP_FIELD = "pfpt1pOQ9chbAN67daK2";
 const BRIDGE_FIELD = "5Tdp1iTiQZGFt8HielHE";
+const EMAIL_STATUS_FIELD = "5evC7FcmVes84nvJjcVi"; // "Email Status" - values "Direct" / "Generic"
 const LG_ST = {
   responded: "2e528889-3c9d-4f15-bfdc-97b5b35b3013",
   dead: "7833c005-23e2-4c6c-a827-ce2ca2870061",
@@ -190,6 +191,16 @@ async function buildLeadGen(db, gToken) {
       if (has("cf") && has("warm")) inc("cfWarm");
       if (has("hyrox") && has("hot")) inc("hyHot");
       if (has("hyrox") && has("warm")) inc("hyWarm");
+      // Live per-source Direct/Generic email quality - Email Status is a
+      // free-text GHL field holding "Direct" or "Generic", set during
+      // enrichment. Was previously only available from the same orphaned
+      // cache doc as hot/warm above.
+      const esf = (ct.customFields || []).find((f) => f.id === EMAIL_STATUS_FIELD);
+      const emailStatus = String(esf?.value || "").trim().toLowerCase();
+      if (has("cf") && emailStatus === "direct") inc("cfDirect");
+      if (has("cf") && emailStatus === "generic") inc("cfGeneric");
+      if (has("hyrox") && emailStatus === "direct") inc("hyDirect");
+      if (has("hyrox") && emailStatus === "generic") inc("hyGeneric");
       if (has("outreach-sent")) inc("sent");
       if (has("sequence-complete")) inc("seqdone");
       if (has("ig-outreach-ready")) inc("igReady");
@@ -368,14 +379,17 @@ async function buildLeadGen(db, gToken) {
     lead_sources_enriched: {
       cf_in_ghl: n("cf"), cf_duplicate_skipped: cfDup, cf_enrichment_failed: cachedEnr.cf_enrichment_failed || 0,
       cf_hot: n("cfHot"), cf_warm: n("cfWarm"),
-      // TODO(direct/generic email, avg prospect score): still reading the
-      // orphaned readout_cache/twu_readout_v1 doc - waiting on the GHL
-      // custom field ID for Email Status to compute these live too.
-      cf_direct_email: cachedEnr.cf_direct_email || 0,
-      cf_generic_email: cachedEnr.cf_generic_email || 0, cf_avg_prospect_score: cachedEnr.cf_avg_prospect_score || 0,
+      cf_direct_email: n("cfDirect"), cf_generic_email: n("cfGeneric"),
+      // TODO(avg prospect score): still reading the orphaned
+      // readout_cache/twu_readout_v1 doc - Prospect Score isn't a GHL
+      // custom field (not in the Email Status-style field export), so it
+      // likely lives on the Mongo enrichment doc or the Clean Leads sheet -
+      // need to confirm which before wiring this up live too.
+      cf_avg_prospect_score: cachedEnr.cf_avg_prospect_score || 0,
       hy_in_ghl: n("hy"), hy_duplicate_skipped: hyDup, hy_enrichment_failed: cachedEnr.hy_enrichment_failed || 0,
-      hy_hot: n("hyHot"), hy_warm: n("hyWarm"), hy_direct_email: cachedEnr.hy_direct_email || 0,
-      hy_generic_email: cachedEnr.hy_generic_email || 0, hy_avg_prospect_score: cachedEnr.hy_avg_prospect_score || 0,
+      hy_hot: n("hyHot"), hy_warm: n("hyWarm"),
+      hy_direct_email: n("hyDirect"), hy_generic_email: n("hyGeneric"),
+      hy_avg_prospect_score: cachedEnr.hy_avg_prospect_score || 0,
       combined_in_ghl: n("cf") + n("hy"), combined_hot: n("cfHot") + n("hyHot"),
       combined_warm: n("cfWarm") + n("hyWarm"),
       cf_failed: cfFailed, hy_failed: hyFailed, total_failed: combinedFailed,

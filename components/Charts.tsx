@@ -167,22 +167,28 @@ export function Compare({
   const mounted = useMounted();
   const [hover, setHover] = useState<number | null>(null);
 
-  const totalA = rows.reduce((s, r) => s + (r.a ?? 0), 0);
-  const totalB = rows.reduce((s, r) => s + (r.b ?? 0), 0);
-  const leaderIsA = totalA >= totalB;
-  const bigger = Math.max(totalA, totalB);
-  const smaller = Math.min(totalA, totalB);
-  const ratio = smaller > 0 ? bigger / smaller : bigger > 0 ? Infinity : 1;
-  const marginPct = bigger > 0 ? Math.round(((bigger - smaller) / bigger) * 100) : 0;
+  // Headline used to sum every row's raw value across A and B - which is
+  // wrong whenever the rows aren't independent, additive quantities. Two
+  // concrete failures that shipped: (1) a "Combined" row that's already the
+  // sum of the two rows above it got summed AGAIN into the total, silently
+  // doubling the gap; (2) rows like "Contacts in CRM" and "Hot leads" got
+  // added together even though hot leads is already a subset of contacts,
+  // mixing a whole with one of its own parts. Neither is fixable by
+  // filtering specific rows out (every Compare instance uses different
+  // rows), so the headline now counts which side wins more ROWS instead of
+  // summing raw magnitudes - that comparison is valid no matter what unit
+  // or relationship the rows have to each other.
+  const decided = rows.filter((r) => (r.a ?? 0) !== (r.b ?? 0));
+  const aWins = decided.filter((r) => (r.a ?? 0) > (r.b ?? 0)).length;
+  const bWins = decided.length - aWins;
+  const leaderIsA = aWins >= bWins;
 
   const headline =
-    totalA === 0 && totalB === 0
+    decided.length === 0
       ? "No volume yet on either side."
-      : marginPct < 10
-      ? `Neck and neck - ${labelA} and ${labelB} are within ${Math.max(marginPct, 1)}% of each other overall.`
-      : `${leaderIsA ? labelA : labelB} is ahead of ${leaderIsA ? labelB : labelA} by ${marginPct}%${
-          isFinite(ratio) && ratio >= 1.5 ? ` (${ratio.toFixed(1)}\u00d7)` : ""
-        } across the funnel.`;
+      : aWins === bWins
+      ? `Even split - ${labelA} and ${labelB} each lead on ${aWins} of ${decided.length} compared metrics.`
+      : `${leaderIsA ? labelA : labelB} leads on ${leaderIsA ? aWins : bWins} of ${decided.length} metrics compared to ${leaderIsA ? labelB : labelA}'s ${leaderIsA ? bWins : aWins}.`;
 
   return (
     <div>
@@ -462,9 +468,65 @@ export function Trend({
   );
 }
 
-export function GeoList({ rows }: { rows: { label: string; count: number }[] }) {
+// Two-level reply breakdown. Top level is always Positive / Negative /
+// Automated-or-other - the three outcomes anyone actually asks about first.
+// "Automated" is a real grouping of auto-responder + auto-ack + uncategorized
+// other (or auto-ack + needs-review for the IG Bridge variant) - nothing
+// invented, just regrouped so the first thing you see is the 3-way outcome
+// instead of a flat 5-way split where the automated noise is mixed in at
+// the same visual weight as a real human reply. Click "Automated" to drill
+// into what it's actually made of; collapses back on a second click.
+export function ReplyBreakdown({
+  positive,
+  negative,
+  automated,
+  positiveLabel = "Positive",
+  negativeLabel = "Negative",
+  automatedLabel = "Automated / other",
+  breakdown,
+}: {
+  positive: number | null;
+  negative: number | null;
+  automated: number | null;
+  positiveLabel?: string;
+  negativeLabel?: string;
+  automatedLabel?: string;
+  breakdown: { label: string; value: number | null; tone: string }[];
+}) {
+  const [drilled, setDrilled] = useState(false);
+  return (
+    <div>
+      <Donut
+        centerLabel="replies"
+        segments={[
+          { label: positiveLabel, value: positive, tone: "hot" },
+          { label: negativeLabel, value: negative, tone: "bad" },
+          { label: automatedLabel, value: automated, tone: "muted" },
+        ]}
+      />
+      <button
+        onClick={() => setDrilled((d) => !d)}
+        style={{
+          marginTop: 16, background: "transparent", border: "1px solid var(--border-soft, #2a2a2a)", borderRadius: 999,
+          color: "var(--amber)", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
+          padding: "7px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
+        }}
+      >
+        {drilled ? "Hide" : "What's inside"} &quot;{automatedLabel}&quot; ({fmt(automated)}) {drilled ? "\u2212" : "+"}
+      </button>
+      {drilled && (
+        <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border-soft, #222)" }}>
+          <Bars rows={breakdown} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function GeoList({ rows }: { rows: { label: string; count: number; names?: string[] }[] }) {
   const mounted = useMounted();
   const [expanded, setExpanded] = useState(false);
+  const [hover, setHover] = useState<number | null>(null);
   const top = rows.slice(0, expanded ? 20 : 8);
   const max = Math.max(1, ...top.map((r) => r.count));
   if (top.length === 0) {
@@ -474,13 +536,33 @@ export function GeoList({ rows }: { rows: { label: string; count: number }[] }) 
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {top.map((r, i) => {
         const w = Math.max(1.5, (r.count / max) * 100);
+        const names = r.names || [];
         return (
-          <div key={r.label} className="chart-row" style={{ display: "grid", gridTemplateColumns: "160px 1fr 48px", alignItems: "center", gap: 16 }}>
-            <div style={{ fontSize: 13.5, color: "var(--ink-dim)" }}>{r.label}</div>
-            <div className="bar-track thin" title={`${r.label}: ${fmt(r.count)}`}>
-              <div className="bar-fill" style={{ width: mounted ? `${w}%` : 0, transitionDelay: `${i * 60}ms`, background: "var(--amber)" }} />
+          <div key={r.label}>
+            <div
+              className="chart-row"
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover((h) => (h === i ? null : h))}
+              style={{ display: "grid", gridTemplateColumns: "160px 1fr 48px", alignItems: "center", gap: 16, cursor: names.length ? "pointer" : "default" }}
+            >
+              <div style={{ fontSize: 13.5, color: "var(--ink-dim)" }}>{r.label}</div>
+              <div className="bar-track thin">
+                <div className="bar-fill" style={{ width: mounted ? `${w}%` : 0, transitionDelay: `${i * 60}ms`, background: hover === i ? "var(--amber-bright, #e0bc5f)" : "var(--amber)" }} />
+              </div>
+              <div style={{ textAlign: "right", fontSize: 15, fontWeight: 700 }}><Counter value={r.count} /></div>
             </div>
-            <div style={{ textAlign: "right", fontSize: 15, fontWeight: 700 }}><Counter value={r.count} /></div>
+            {hover === i && names.length > 0 && (
+              <div style={{ marginTop: 8, marginLeft: 0, display: "flex", flexWrap: "wrap", gap: 6, animation: "fadeIn 120ms ease" }}>
+                {names.map((nm) => (
+                  <span key={nm} style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-dim)", background: "rgba(201,168,76,0.08)", border: "1px solid var(--border-soft, #222)", borderRadius: 6, padding: "3px 8px" }}>
+                    {nm}
+                  </span>
+                ))}
+                {r.count > names.length && (
+                  <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", padding: "3px 4px" }}>+{r.count - names.length} more</span>
+                )}
+              </div>
+            )}
           </div>
         );
       })}

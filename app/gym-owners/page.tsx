@@ -1,7 +1,7 @@
 import { getReadout, getHistory } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
@@ -51,12 +51,32 @@ export default async function GymOwnersDashboard() {
           <PipelineFlow
             title="New Leads pipeline, stage by stage"
             note="The live shape of the gym owner pipeline in GHL. Click any stage to see what it means and trace its connections."
+            totalOverride={num(data, "lead_gen.total_in_pipeline")}
             nodes={[
               { id: "new", name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent by David. The contact is now in the 5-touch email sequence.", tone: "cold", col: 0, row: 1 },
-              { id: "responded", name: "Responded", count: num(data, "lead_gen.stage_responded"), desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.", tone: "amber", col: 1, row: 0 },
+              {
+                id: "responded", name: "Responded", count: num(data, "lead_gen.stage_responded"),
+                desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.",
+                tone: "amber", col: 1, row: 0,
+                extra: (
+                  <div>
+                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>REPLIES BY TOUCH (ALL CHANNELS)</div>
+                    <Bars
+                      rows={[
+                        { label: "Touch 1", value: num(data, "lead_gen.replied_at_touch.touch_1"), tone: "cold" },
+                        { label: "Touch 2", value: num(data, "lead_gen.replied_at_touch.touch_2"), tone: "cold" },
+                        { label: "Touch 3", value: num(data, "lead_gen.replied_at_touch.touch_3"), tone: "warm" },
+                        { label: "Touch 4", value: num(data, "lead_gen.replied_at_touch.touch_4"), tone: "warm" },
+                        { label: "Touch 5", value: num(data, "lead_gen.replied_at_touch.touch_5"), tone: "hot" },
+                        { label: "Unattributed", value: num(data, "lead_gen.replied_at_touch.unattributed"), tone: "muted" },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
               { id: "noresp", name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Waiting on or working through the Instagram channel.", tone: "warm", col: 1, row: 2 },
               { id: "ig", name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"), desc: "In the IG channel: handle found, DM queued or sent by Mari, phone follow-up if still silent.", tone: "hot", col: 2, row: 2 },
-              { id: "alt", name: "Alt Outreaching", count: num(data, "alt_email_outreach.in_alt_outreaching_stage"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold", col: 3, row: 1 },
+              { id: "alt", name: "Alt Outreaching", count: num(data, "lead_gen.stage_alt_outreaching"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold", col: 3, row: 1 },
               { id: "dead", name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened. Can happen from any stage, not just the end of the line.", tone: "muted", col: 3, row: 3 },
             ]}
             edges={[
@@ -108,20 +128,20 @@ export default async function GymOwnersDashboard() {
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 640 }}>
-              Email has full reply classification. Instagram's main channel only tags positive/negative in GHL - shown honestly as 2 buckets, not padded out. The IG Bridge (redirect) track has its own richer tagging and is broken out separately since it's a different flow.
+              Positive / negative / automated first - the outcome that actually matters. Click into "Automated" on any panel to see what it's actually made of. Instagram's main channel only tags positive/negative in GHL, so it stays a clean 2-way split rather than being padded out. The IG Bridge (redirect) track is a different flow with its own tagging and is broken out separately.
             </div>
             <div className="grid grid-3" style={{ gap: 20 }}>
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Email</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>5-way classified via Reply Detector</div>
-                <Donut
-                  centerLabel="classified"
-                  segments={[
-                    { label: "Interested", value: num(data, "reply_breakdown.interested"), tone: "hot" },
-                    { label: "Not interested", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
-                    { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Via Reply Detector classifier</div>
+                <ReplyBreakdown
+                  positive={num(data, "reply_breakdown.interested")}
+                  negative={num(data, "reply_breakdown.not_interested")}
+                  automated={sum(data, ["reply_breakdown.auto_responder", "reply_breakdown.auto_ack", "reply_breakdown.other"])}
+                  breakdown={[
+                    { label: "Auto-responder (redirect)", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
                     { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
-                    { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
+                    { label: "Other / uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
                   ]}
                 />
                 {(() => {
@@ -150,11 +170,11 @@ export default async function GymOwnersDashboard() {
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - Bridge/redirect</div>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Separate flow: emails that bounced to an IG conversation</div>
-                <Donut
-                  centerLabel="classified"
-                  segments={[
-                    { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
-                    { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
+                <ReplyBreakdown
+                  positive={num(data, "ig_bridge_outreach.replied_interested")}
+                  negative={num(data, "ig_bridge_outreach.replied_not_interested")}
+                  automated={sum(data, ["ig_bridge_outreach.auto_ack", "ig_bridge_outreach.needs_review"])}
+                  breakdown={[
                     { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
                     { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
                   ]}
@@ -266,13 +286,16 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count - the last ones to write back, either channel.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count - the last ones to write back, either channel. Live from GHL, capped to the most recent 20 server-side.</div>
             {(data?.lead_gen?.replied_contacts?.length ?? 0) > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {data!.lead_gen.replied_contacts.slice(0, 10).map((c, i) => (
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
                     <span style={{ fontSize: 13.5 }}>{c.name}</span>
                     <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      {c.touch != null && (
+                        <span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--amber)", border: "1px solid var(--border-soft)", borderRadius: 4, padding: "1px 6px" }}>T{c.touch}</span>
+                      )}
                       <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{c.channel}</span>
                       <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{c.time}</span>
                     </span>

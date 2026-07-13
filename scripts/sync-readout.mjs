@@ -553,67 +553,106 @@ async function buildAppAdoption(db, gToken) {
 // ---------- main ----------
 async function main() {
   const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error("MONGODB_URI not set");
+  if (!uri) {
+    // No Mongo connection possible at all - the only channel left is a
+    // GitHub Actions annotation (a plain stdout line in this exact format
+    // becomes a readable annotation via the API, unlike the raw job log
+    // which lives behind blob storage we can't always reach).
+    console.log("::error title=Readout Sync Failed::MONGODB_URI secret is not set - check Settings > Secrets and variables > Actions on this repo.");
+    process.exit(1);
+  }
   const client = new MongoClient(uri);
-  await client.connect();
-  const db = client.db();
-  const gToken = await sheetsAccessToken();
+  let db;
+  try {
+    await client.connect();
+    db = client.db();
+  } catch (e) {
+    console.log(`::error title=Readout Sync Failed::MongoDB connection failed: ${e?.message || e}. If this is Atlas, check the cluster's Network Access / IP allowlist - GitHub Actions runners use rotating IPs, so the allowlist needs 0.0.0.0/0 (Allow Access from Anywhere), not a fixed IP.`);
+    process.exit(1);
+  }
 
-  const lg = await buildLeadGen(db, gToken);
-  await db.collection("readout_cache_v2").updateOne(
-    { doc_id: "twu_readout_live" },
-    { $set: { generated_at: lg.meta.generated_at, payload: lg } },
-    { upsert: true },
-  );
-  console.log("Stored twu_readout_live");
+  try {
+    const gToken = await sheetsAccessToken();
 
-  const aa = await buildAppAdoption(db, gToken);
-  await db.collection("readout_cache_v2").updateOne(
-    { doc_id: "blended_readout_live" },
-    { $set: { generated_at: aa.meta.generated_at, payload: aa } },
-    { upsert: true },
-  );
-  console.log("Stored blended_readout_live");
+    const lg = await buildLeadGen(db, gToken);
+    await db.collection("readout_cache_v2").updateOne(
+      { doc_id: "twu_readout_live" },
+      { $set: { generated_at: lg.meta.generated_at, payload: lg } },
+      { upsert: true },
+    );
+    console.log("Stored twu_readout_live");
 
-  // Append (never overwrite) a compact snapshot for trend charts. Only the
-  // numeric fields worth plotting over time - not the full payload - to keep
-  // documents small across months of 10-minute snapshots. Real data only:
-  // whatever the two builders actually computed this run, nothing invented.
-  const ts = new Date();
-  await db.collection("readout_history").insertOne({
-    ts,
-    doc_id: "twu_readout_live",
-    metrics: {
-      total_contacts_in_ghl: lg.lead_gen?.total_contacts_in_ghl ?? 0,
-      hot_leads: lg.lead_gen?.hot_leads ?? 0,
-      warm_leads: lg.lead_gen?.warm_leads ?? 0,
-      email_outreach_sent: lg.lead_gen?.email_outreach_sent ?? 0,
-      email_replied: lg.lead_gen?.email_replied ?? 0,
-      ig_outreach_sent: lg.lead_gen?.ig_outreach_sent ?? 0,
-      ig_replied_positive: lg.lead_gen?.ig_replied_positive ?? 0,
-      total_drafts_created: (lg.lead_sources_drafts?.cf_drafts_created ?? 0) + (lg.lead_sources_drafts?.hy_drafts_created ?? 0),
-      total_in_pipeline: lg.lead_gen?.total_in_pipeline ?? 0,
-      email_reply_rate_pct: lg.lead_gen?.email_reply_rate_pct ?? 0,
-    },
-  });
-  await db.collection("readout_history").insertOne({
-    ts,
-    doc_id: "blended_readout_live",
-    metrics: {
-      total_identified: aa.app_adoption?.total_identified ?? 0,
-      email_outreach_confirmed: aa.app_adoption?.email_outreach_confirmed ?? 0,
-      adopted: aa.app_adoption?.adopted ?? 0,
-      already_on_app: aa.app_adoption?.already_on_app ?? 0,
-      total_joined: aa.app_adoption?.total_joined ?? 0,
-      opted_out: aa.app_adoption?.opted_out ?? 0,
-      adoption_rate_pct: aa.app_adoption?.adoption_rate_pct ?? 0,
-    },
-  });
-  console.log("Stored history snapshots");
+    const aa = await buildAppAdoption(db, gToken);
+    await db.collection("readout_cache_v2").updateOne(
+      { doc_id: "blended_readout_live" },
+      { $set: { generated_at: aa.meta.generated_at, payload: aa } },
+      { upsert: true },
+    );
+    console.log("Stored blended_readout_live");
 
-  await client.close();
-  console.log("Sync complete");
+    // Append (never overwrite) a compact snapshot for trend charts. Only the
+    // numeric fields worth plotting over time - not the full payload - to keep
+    // documents small across months of 10-minute snapshots. Real data only:
+    // whatever the two builders actually computed this run, nothing invented.
+    const ts = new Date();
+    await db.collection("readout_history").insertOne({
+      ts,
+      doc_id: "twu_readout_live",
+      metrics: {
+        total_contacts_in_ghl: lg.lead_gen?.total_contacts_in_ghl ?? 0,
+        hot_leads: lg.lead_gen?.hot_leads ?? 0,
+        warm_leads: lg.lead_gen?.warm_leads ?? 0,
+        email_outreach_sent: lg.lead_gen?.email_outreach_sent ?? 0,
+        email_replied: lg.lead_gen?.email_replied ?? 0,
+        ig_outreach_sent: lg.lead_gen?.ig_outreach_sent ?? 0,
+        ig_replied_positive: lg.lead_gen?.ig_replied_positive ?? 0,
+        total_drafts_created: (lg.lead_sources_drafts?.cf_drafts_created ?? 0) + (lg.lead_sources_drafts?.hy_drafts_created ?? 0),
+        total_in_pipeline: lg.lead_gen?.total_in_pipeline ?? 0,
+        email_reply_rate_pct: lg.lead_gen?.email_reply_rate_pct ?? 0,
+      },
+    });
+    await db.collection("readout_history").insertOne({
+      ts,
+      doc_id: "blended_readout_live",
+      metrics: {
+        total_identified: aa.app_adoption?.total_identified ?? 0,
+        email_outreach_confirmed: aa.app_adoption?.email_outreach_confirmed ?? 0,
+        adopted: aa.app_adoption?.adopted ?? 0,
+        already_on_app: aa.app_adoption?.already_on_app ?? 0,
+        total_joined: aa.app_adoption?.total_joined ?? 0,
+        opted_out: aa.app_adoption?.opted_out ?? 0,
+        adoption_rate_pct: aa.app_adoption?.adoption_rate_pct ?? 0,
+      },
+    });
+    console.log("Stored history snapshots");
+
+    // Success beacon - the dashboard can read this directly to show "synced
+    // Xm ago" or "failing since Y" without anyone needing GitHub access at
+    // all. Cheap, and it's the only thing that makes a silent failure loud.
+    await db.collection("readout_cache_v2").updateOne(
+      { doc_id: "sync_status" },
+      { $set: { ok: true, last_success_at: ts, last_attempt_at: ts, last_error: null } },
+      { upsert: true },
+    );
+
+    await client.close();
+    console.log("Sync complete");
+  } catch (e) {
+    const message = e?.message || String(e);
+    console.log(`::error title=Readout Sync Failed::${message}`);
+    try {
+      await db.collection("readout_cache_v2").updateOne(
+        { doc_id: "sync_status" },
+        { $set: { ok: false, last_attempt_at: new Date(), last_error: message } },
+        { upsert: true },
+      );
+    } catch {
+      // Mongo write itself failed too - the annotation above is the only
+      // record of this run, but at least it exists somewhere readable.
+    }
+    await client.close().catch(() => {});
+    process.exit(1);
+  }
 }
 
-
-main().catch((e) => { console.error(e); process.exit(1); });
+main();

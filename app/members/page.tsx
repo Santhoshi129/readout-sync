@@ -1,4 +1,4 @@
-import { getReadout, getHistory } from "@/lib/readout";
+import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
 import { Funnel, Bars, Ring, Donut, Trend, Compare } from "@/components/Charts";
@@ -11,6 +11,7 @@ export const revalidate = 30;
 
 export default async function MembersDashboard() {
   const { data, error, fetchedAt } = await getReadout();
+  const syncStatus = await getSyncStatus();
   const history = await getHistory("blended_readout_live", 14);
   const flows = FLOWS.filter((f) => section(f.category) === "member").sort((a, b) => a.order - b.order);
   const launch = flows.reduce((min, f) => (f.goLive < min ? f.goLive : min), flows[0]?.goLive ?? fetchedAt);
@@ -26,6 +27,12 @@ export default async function MembersDashboard() {
         {error && (
           <div className="banner err" style={{ marginTop: 20 }}>
             The Readout is unreachable right now ({error}). Numbers below will fill in as soon as it responds.
+          </div>
+        )}
+
+        {syncStatus && !syncStatus.ok && (
+          <div className="banner err" style={{ marginTop: 20 }}>
+            Sync is failing - everything below is from the last time it worked{syncStatus.last_success_at ? ` (${new Date(syncStatus.last_success_at).toLocaleString()})` : ""}, not current data. Last attempt{syncStatus.last_attempt_at ? ` at ${new Date(syncStatus.last_attempt_at).toLocaleString()}` : ""} failed with: {syncStatus.last_error || "unknown error"}.
           </div>
         )}
 

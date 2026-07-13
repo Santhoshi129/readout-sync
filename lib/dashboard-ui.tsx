@@ -64,6 +64,12 @@ export function FlowCard({ f, data, backTo }: { f: Flow; data: Readout | null; b
   const h = health(f);
   const headline = f.metrics[0];
   const headlineVal = headline ? num(data, headline.path) : null;
+  // Secondary chips: pull whichever of this flow's own declared metrics are
+  // about skipped/failed volume (no-email, duplicates) straight onto the
+  // card face, so that's visible without a click into the drilldown page.
+  // Content-matched by label rather than hardcoded to one flow, so it works
+  // for any flow whose metrics registry carries the same kind of entry.
+  const secondary = f.metrics.filter((m) => /no.?email|duplicate/i.test(m.label)).slice(0, 2);
   return (
     <a className="card click flow-card" href={`/flows/${f.slug}?from=${backTo}`}>
       <div className="fc-top">
@@ -75,6 +81,24 @@ export function FlowCard({ f, data, backTo }: { f: Flow; data: Readout | null; b
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 4 }}>
           <span style={{ fontSize: 22, fontWeight: 800 }}>{fmt(headlineVal)}</span>
           <span className="stat-label">{headline.label}</span>
+        </div>
+      )}
+      {secondary.length > 0 && (
+        <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+          {secondary.map((m) => (
+            <span
+              key={m.path}
+              style={{
+                display: "flex", alignItems: "baseline", gap: 5, fontSize: 11.5,
+                fontFamily: "var(--mono)", color: "var(--ink-faint)",
+                border: "1px solid var(--border-soft, #2a2a2a)", borderRadius: 999,
+                padding: "3px 10px",
+              }}
+            >
+              <span style={{ color: "var(--warm)", fontWeight: 700 }}>{fmt(num(data, m.path))}</span>
+              {m.label}
+            </span>
+          ))}
         </div>
       )}
       <div className="fc-foot">

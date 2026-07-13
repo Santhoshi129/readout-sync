@@ -5,7 +5,7 @@ import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } fr
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
-import { PipelineFlow } from "@/components/PipelineFlow";
+import { PipelineMap } from "@/components/PipelineMap";
 import { fmt } from "@/lib/format";
 
 export const revalidate = 30;
@@ -47,16 +47,15 @@ export default async function GymOwnersDashboard() {
             <Head label="Reply rate" path="lead_gen.email_reply_rate_pct" data={data} suffix="%" />
           </div>
 
-          <PipelineFlow
+          <PipelineMap
             title="Lead journey - stage by stage"
-            note="Rebuilt from the actual n8n workflow logic (touch sequencer, IG Bridge, Alt Email Outreach), not just GHL's coarse opportunity stage. Click any node to see what it means and trace its connections."
-            totalOverride={num(data, "lead_gen.total_in_pipeline")}
-            nodes={[
-              { id: "new", name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent. Now in the 5-touch email sequence. An unsubscribe at any touch during this window goes straight to Dead - it doesn't have to reach No Response first.", tone: "cold", col: 0, row: 1 },
+            note="The live shape of the gym-owner pipeline in GHL. Hover a stage for what it means; a few stages carry extra detail below the description."
+            stages={[
+              { name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First email just went out. In the 5-touch sequence now.", tone: "cold" },
               {
-                id: "responded", name: "Responded", count: num(data, "lead_gen.stage_responded"),
-                desc: "A genuinely interested reply during the 5-touch sequence, or a contact resolved out of Alt Outreaching as interested/handled. No further stage after this - it's the goal state.",
-                tone: "amber", col: 2, row: 0,
+                name: "Responded", count: num(data, "lead_gen.stage_responded"),
+                desc: "A genuinely interested reply, from either the email sequence or Alt Outreaching. Nothing moves past this - it's the goal.",
+                tone: "amber",
                 extra: (
                   <div>
                     <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>REPLIES BY TOUCH (ALL CHANNELS)</div>
@@ -73,11 +72,11 @@ export default async function GymOwnersDashboard() {
                   </div>
                 ),
               },
-              { id: "noresp", name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Moves into the Instagram channel next.", tone: "warm", col: 1, row: 2 },
+              { name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches sent, no reply. Moves to Instagram next.", tone: "warm" },
               {
-                id: "ig", name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"),
-                desc: "DM sent. Stays at this exact stage for every outcome below - GHL's pipeline never moves it further from here. A positive reply with no redirect email simply stays tagged positive; a redirect triggers the separate IG Bridge pull into Alt Outreaching.",
-                tone: "hot", col: 2, row: 2,
+                name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"),
+                desc: "DM sent. Positive, negative, and phone-due outcomes all stay parked at this same stage - only the tag changes.",
+                tone: "hot",
                 extra: (
                   <div>
                     <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>OUTCOME TAGS (stage doesn&apos;t change, only tags do)</div>
@@ -89,15 +88,15 @@ export default async function GymOwnersDashboard() {
                       ]}
                     />
                     <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 10, lineHeight: 1.5 }}>
-                      &quot;Phone due&quot; is only the ones that have crossed the 10-day no-reply threshold and gotten the phone-followup-due tag - most of the {fmt(num(data, "lead_gen.stage_ig_outreach"))} DM&apos;d contacts simply haven&apos;t hit that mark yet, so this number stays well below the stage total on purpose.
+                      &quot;Phone due&quot; only counts contacts past the 10-day no-reply mark - most DM&apos;d contacts haven&apos;t hit that yet.
                     </div>
                   </div>
                 ),
               },
               {
-                id: "phone", name: "Phone Follow-up", count: num(data, "lead_gen.phone_followup_due"),
-                desc: "Tag-based, not a GHL pipeline stage - the opportunity stays parked at Instagram Outreach the whole time. Fires when a DM was sent and there's been no reply after the follow-up window.",
-                tone: "muted", col: 3, row: 3,
+                name: "Phone Follow-up", count: num(data, "lead_gen.phone_followup_due"),
+                desc: "A tag, not a pipeline stage - fires when a DM got no reply past the follow-up window.",
+                tone: "muted",
                 extra: (
                   <div>
                     <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>CALL OUTCOME TAGS</div>
@@ -113,34 +112,19 @@ export default async function GymOwnersDashboard() {
                 ),
               },
               {
-                id: "alt", name: "Alt Outreaching", count: num(data, "lead_gen.stage_alt_outreaching"),
-                desc: "One shared GHL stage fed by two separate n8n workflows: an email auto-responder redirect during the 5-touch sequence, or a positive Instagram reply that also gave a redirect email (the IG Bridge). One alt-email hop, then resolved to Responded, Dead, or paused.",
-                tone: "cold", col: 3, row: 1,
+                name: "Alt Outreaching", count: num(data, "lead_gen.stage_alt_outreaching"),
+                desc: "One stage, two doors in: an email auto-reply redirect, or a positive IG reply with a redirect email. Resolves to Responded, Dead, or paused.",
+                tone: "cold",
                 extra: (
-                  <div>
-                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>WHICH PULL BROUGHT THEM HERE (separate send counts, same destination stage)</div>
-                    <Bars
-                      rows={[
-                        { label: "Via email auto-responder", value: num(data, "alt_email_outreach.alt_outreach_started"), tone: "cold" },
-                        { label: "Via IG Bridge (positive + redirect)", value: num(data, "ig_bridge_outreach.touch1_sent"), tone: "hot" },
-                      ]}
-                    />
-                  </div>
+                  <Bars
+                    rows={[
+                      { label: "Via email auto-responder", value: num(data, "alt_email_outreach.alt_outreach_started"), tone: "cold" },
+                      { label: "Via IG Bridge", value: num(data, "ig_bridge_outreach.touch1_sent"), tone: "hot" },
+                    ]}
+                  />
                 ),
               },
-              { id: "dead", name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no. Reachable directly from New Lead (unsub mid-sequence), from Instagram (negative reply), or from Alt Outreaching (not interested) - not only from the end of a finished sequence.", tone: "muted", col: 4, row: 2 },
-            ]}
-            edges={[
-              { from: "new", to: "responded" },
-              { from: "new", to: "noresp" },
-              { from: "new", to: "alt" },
-              { from: "new", to: "dead" },
-              { from: "noresp", to: "ig" },
-              { from: "ig", to: "dead" },
-              { from: "ig", to: "phone" },
-              { from: "ig", to: "alt" },
-              { from: "alt", to: "responded" },
-              { from: "alt", to: "dead" },
+              { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no - reachable from New Lead, Instagram, or Alt Outreaching, not only the end of a finished sequence.", tone: "muted" },
             ]}
           />
 
@@ -190,7 +174,6 @@ export default async function GymOwnersDashboard() {
                       { label: `Phone - ${fmt(phonePositive)}/${fmt(phoneResolved)} positive`, value: rate(phonePositive, phoneResolved), tone: "warm" },
                     ]}
                   />
-                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12 }}>Each bar is that channel&apos;s own replied-count \u00f7 sent-count, recalculated on every sync - not a fixed number. Hover a bar for the same numbers again.</div>
                 </>
               );
             })()}
@@ -199,7 +182,7 @@ export default async function GymOwnersDashboard() {
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 680 }}>
-              Positive, negative, and automated, in that order - the outcome that actually matters, first. Click into &quot;Automated&quot; on the Email or Alt Bridge panel to see what it&apos;s made of. Instagram has no auto-responder or auto-ack concept at all: DMs don&apos;t bounce with an autoreply the way email does, and Mari classifies every reply herself as positive or negative by hand, so there&apos;s no automated bucket to break out for that channel - it&apos;s not missing data, there&apos;s nothing there to show.
+              What came back on each channel - positive, negative, automated.
             </div>
             <div className="grid grid-3" style={{ gap: 20 }}>
               <div>
@@ -216,9 +199,6 @@ export default async function GymOwnersDashboard() {
                     { label: "Other / uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
                   ]}
                 />
-                <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
-                  &quot;Negative&quot; here is the unsubscribed tag - Reply Detector doesn&apos;t write a separate not-interested tag today, it treats a polite pass and an explicit unsubscribe the same way. If that&apos;s wrong and there should be a distinct not-interested outcome, tell me the exact tag it should check for.
-                </div>
                 {(() => {
                   const classified = num(data, "reply_breakdown.total_classified") ?? 0;
                   const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
@@ -232,50 +212,19 @@ export default async function GymOwnersDashboard() {
 
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - main channel</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>ig-outreach-ready stays on a contact even after the DM goes out, so &quot;Ready&quot; below only counts the true backlog - ready and not yet sent.</div>
-                {(() => {
-                  const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
-                  const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
-                  const sent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
-                  const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
-                  const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
-                  const pos = num(data, "lead_gen.ig_replied_positive") ?? 0;
-                  const neg = num(data, "lead_gen.ig_replied_negative") ?? 0;
-                  return (
-                    <>
-                      <Bars
-                        rows={[
-                          { label: "Ready (backlog)", value: readyOnly, tone: "cold" },
-                          { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
-                          { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
-                          { label: "Needs review", value: needsReview, tone: "bad" },
-                        ]}
-                      />
-                      <div style={{ marginTop: 16 }}>
-                        <Donut
-                          centerLabel="replied"
-                          segments={[
-                            { label: "Positive", value: pos, tone: "hot" },
-                            { label: "Negative", value: neg, tone: "bad" },
-                          ]}
-                        />
-                      </div>
-                      {sentOnly > 0 && (
-                        <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
-                          {fmt(sentOnly)} contact{sentOnly === 1 ? "" : "s"} were DM&apos;d without ever carrying the ready tag - some other path got them sent. Not folded into either bucket above.
-                        </div>
-                      )}
-                      <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
-                        &quot;Needs review&quot; covers two different situations - a generic/brand-HQ handle Claude rejected, and no handle found at all - because the workflow that classifies them writes the same tag either way. There&apos;s no way to split those two apart from GHL data alone right now.
-                      </div>
-                    </>
-                  );
-                })()}
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Mari classifies every DM reply by hand - positive or negative, no automated bucket</div>
+                <Donut
+                  centerLabel="replied"
+                  segments={[
+                    { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
+                    { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
+                  ]}
+                />
               </div>
 
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alternative email bridge</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>A positive IG reply that also gave a redirect email - followed up by email from there, not the other way around</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>A positive IG reply that also gave a redirect email</div>
                 <ReplyBreakdown
                   positive={num(data, "ig_bridge_outreach.replied_interested")}
                   negative={num(data, "ig_bridge_outreach.replied_not_interested")}
@@ -287,6 +236,36 @@ export default async function GymOwnersDashboard() {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram outreach progress</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits - separate from what they replied.</div>
+            {(() => {
+              const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
+              const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
+              const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
+              const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
+              const dupMatched = num(data, "lead_gen.ig_duplicate_matched") ?? 0;
+              const sentNoHandle = num(data, "lead_gen.ig_sent_no_handle") ?? 0;
+              return (
+                <>
+                  <Bars
+                    rows={[
+                      { label: "Ready (backlog)", value: readyOnly, tone: "cold" },
+                      { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
+                      { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
+                      { label: "Needs review", value: needsReview, tone: "bad" },
+                      { label: "Duplicate-matched (fixed)", value: dupMatched, tone: "hot" },
+                      { label: "Sent, no handle on file", value: sentNoHandle, tone: "warm" },
+                    ]}
+                  />
+                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 14, lineHeight: 1.5 }}>
+                    &quot;Needs review&quot; covers both a rejected generic/brand-HQ handle and no handle found at all - the workflow writes the same tag either way, so these two can&apos;t be split from GHL data alone.
+                  </div>
+                </>
+              );
+            })()}
           </div>
 
           {/* Email funnel: strictly sequential, same channel end to end.

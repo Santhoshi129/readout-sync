@@ -20,6 +20,7 @@ const GHL_VER = "2021-07-28";
 const STEP_FIELD = "pfpt1pOQ9chbAN67daK2";
 const BRIDGE_FIELD = "5Tdp1iTiQZGFt8HielHE";
 const EMAIL_STATUS_FIELD = "5evC7FcmVes84nvJjcVi"; // "Email Status" - values "Direct" / "Generic"
+const IG_HANDLE_FIELD = "cQKyrFIHu7LwKMiBFHEM"; // "Instagram Handle"
 const LG_ST = {
   responded: "2e528889-3c9d-4f15-bfdc-97b5b35b3013",
   dead: "7833c005-23e2-4c6c-a827-ce2ca2870061",
@@ -272,6 +273,9 @@ async function buildLeadGen(db, gToken) {
       const bf = (ct.customFields || []).find((f) => f.id === BRIDGE_FIELD);
       if (bf && /drafted, pending send/i.test(String(bf.value || ""))) inc("igbStuck");
       if (has("ig-review-noted")) inc("igUnmatched");
+      if (has("ig-duplicate-matched")) inc("igDupMatched");
+      const ihf = (ct.customFields || []).find((f) => f.id === IG_HANDLE_FIELD);
+      if (has("ig-outreach-sent") && !String(ihf?.value || "").trim()) inc("igSentNoHandle");
       const hasProgressed = has("outreach-sent") || t.some((x) => /^touch-[2-5]$/.test(x));
       if (hasProgressed && (has("draft-ready") || has("followup-draft-ready"))) stuckDraftIds.push(ct.id);
       if (step !== 0) {
@@ -400,6 +404,7 @@ async function buildLeadGen(db, gToken) {
       touch_sequence: { in_sequence: n("inSeq"), step_1: n("t1"), step_2: n("t2"), step_3: n("t3"), step_4: n("t4"), step_5: n("t5") },
       ig_outreach_ready: n("igReadyOnly"), ig_outreach_ready_and_sent: n("igReadyAndSent"), ig_outreach_sent: n("igSent"),
       ig_outreach_sent_only: n("igSentOnly"), ig_needs_review: n("igNeedsReview"),
+      ig_duplicate_matched: n("igDupMatched"), ig_sent_no_handle: n("igSentNoHandle"),
       ig_replied_positive: n("igPos"), ig_replied_negative: n("igNeg"),
       replied_contacts: repliedContacts, phone_followup_due: n("phoneDue"), phone_still_due: n("phoneStillDue"),
       phone_positive: n("phonePos"), phone_negative: n("phoneNeg"), phone_called_only: n("phoneCalledOnly"), phone_resolved: n("phoneResolved"),

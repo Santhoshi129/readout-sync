@@ -1,7 +1,7 @@
-import { getReadout } from "@/lib/readout";
+import { getReadout, getHistory } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Donut } from "@/components/Charts";
+import { Funnel, Bars, Ring, Donut, Trend } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
@@ -10,6 +10,7 @@ export const revalidate = 30;
 
 export default async function MembersDashboard() {
   const { data, error, fetchedAt } = await getReadout();
+  const history = await getHistory("blended_readout_live", 14);
   const flows = FLOWS.filter((f) => section(f.category) === "member").sort((a, b) => a.order - b.order);
   const launch = flows.reduce((min, f) => (f.goLive < min ? f.goLive : min), flows[0]?.goLive ?? fetchedAt);
 
@@ -98,6 +99,19 @@ export default async function MembersDashboard() {
             />
           </div>
 
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Built from a snapshot taken every sync run (every 10 minutes). Real accumulated history, not interpolated.</div>
+            <Trend
+              points={history}
+              series={[
+                { key: "total_identified", label: "Identified", tone: "cold" },
+                { key: "adopted", label: "Adopted", tone: "amber" },
+                { key: "total_joined", label: "In community", tone: "hot" },
+              ]}
+            />
+          </div>
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

@@ -357,6 +357,44 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Lead sourcing: skipped &amp; failed</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Straight from the Failed Logs sheet - leads that never made it to a draft, and why. Duplicate means already tracked in GHL; no email means the scrape/enrichment step couldn&apos;t find a usable address.</div>
+            <Compare
+              labelA="CrossFit"
+              labelB="HYROX"
+              rows={[
+                { label: "No email found", a: num(data, "lead_sources_failed.cf_no_email"), b: num(data, "lead_sources_failed.hy_no_email") },
+                { label: "Duplicates skipped", a: num(data, "lead_sources_failed.cf_duplicates_skipped"), b: num(data, "lead_sources_failed.hy_duplicates_skipped") },
+                { label: "Total failed/skipped", a: num(data, "lead_sources_failed.cf_failed"), b: num(data, "lead_sources_failed.hy_failed") },
+              ]}
+            />
+            <div className="grid grid-3" style={{ gap: 16, marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
+              <div>
+                <div className="stat-label">Combined no email</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_failed.total_no_email")} /></div>
+              </div>
+              <div>
+                <div className="stat-label">Combined duplicates</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_failed.total_duplicates_skipped")} /></div>
+              </div>
+              <div>
+                <div className="stat-label">Combined total failed</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_failed.total_failed")} /></div>
+              </div>
+            </div>
+            {(() => {
+              const scraped = num(data, "lead_sources_raw.combined_scraped") ?? 0;
+              const failed = num(data, "lead_sources_failed.total_failed") ?? 0;
+              const failRate = scraped > 0 ? Math.round((failed / scraped) * 1000) / 10 : null;
+              return failRate != null ? (
+                <div className="stat-flag" style={{ marginTop: 18, fontSize: 11.5 }}>
+                  {fmt(failed)} of {fmt(scraped)} scraped gyms ({failRate}%) never became a draft - the rest either failed here or are still pending enrichment.
+                </div>
+              ) : null;
+            })()}
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Direct vs generic email quality</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>A direct, named contact email scores well above a generic info@ inbox - this is how clean each source's contact data actually is.</div>
             <Compare

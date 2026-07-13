@@ -469,8 +469,45 @@ async function main() {
   );
   console.log("Stored blended_readout_live");
 
+  // Append (never overwrite) a compact snapshot for trend charts. Only the
+  // numeric fields worth plotting over time - not the full payload - to keep
+  // documents small across months of 10-minute snapshots. Real data only:
+  // whatever the two builders actually computed this run, nothing invented.
+  const ts = new Date();
+  await db.collection("readout_history").insertOne({
+    ts,
+    doc_id: "twu_readout_live",
+    metrics: {
+      total_contacts_in_ghl: lg.lead_gen?.total_contacts_in_ghl ?? 0,
+      hot_leads: lg.lead_gen?.hot_leads ?? 0,
+      warm_leads: lg.lead_gen?.warm_leads ?? 0,
+      email_outreach_sent: lg.lead_gen?.email_outreach_sent ?? 0,
+      email_replied: lg.lead_gen?.email_replied ?? 0,
+      ig_outreach_sent: lg.lead_gen?.ig_outreach_sent ?? 0,
+      ig_replied_positive: lg.lead_gen?.ig_replied_positive ?? 0,
+      total_drafts_created: (lg.lead_sources_drafts?.cf_drafts_created ?? 0) + (lg.lead_sources_drafts?.hy_drafts_created ?? 0),
+      total_in_pipeline: lg.lead_gen?.total_in_pipeline ?? 0,
+      email_reply_rate_pct: lg.lead_gen?.email_reply_rate_pct ?? 0,
+    },
+  });
+  await db.collection("readout_history").insertOne({
+    ts,
+    doc_id: "blended_readout_live",
+    metrics: {
+      total_identified: aa.app_adoption?.total_identified ?? 0,
+      email_outreach_confirmed: aa.app_adoption?.email_outreach_confirmed ?? 0,
+      adopted: aa.app_adoption?.adopted ?? 0,
+      already_on_app: aa.app_adoption?.already_on_app ?? 0,
+      total_joined: aa.app_adoption?.total_joined ?? 0,
+      opted_out: aa.app_adoption?.opted_out ?? 0,
+      adoption_rate_pct: aa.app_adoption?.adoption_rate_pct ?? 0,
+    },
+  });
+  console.log("Stored history snapshots");
+
   await client.close();
   console.log("Sync complete");
 }
+
 
 main().catch((e) => { console.error(e); process.exit(1); });

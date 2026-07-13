@@ -493,7 +493,7 @@ export function ReplyBreakdown({
   automatedLabel?: string;
   breakdown: { label: string; value: number | null; tone: string }[];
 }) {
-  const [drilled, setDrilled] = useState(false);
+  const [hovered, setHovered] = useState(false);
   return (
     <div>
       <Donut
@@ -504,21 +504,23 @@ export function ReplyBreakdown({
           { label: automatedLabel, value: automated, tone: "muted" },
         ]}
       />
-      <button
-        onClick={() => setDrilled((d) => !d)}
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
-          marginTop: 16, background: "transparent", border: "1px solid var(--border-soft, #2a2a2a)", borderRadius: 999,
-          color: "var(--amber)", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
-          padding: "7px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
+          marginTop: 16, border: "1px solid var(--border-soft, #2a2a2a)", borderRadius: 10,
+          padding: "10px 14px", cursor: "default",
         }}
       >
-        {drilled ? "Hide" : "What's inside"} &quot;{automatedLabel}&quot; ({fmt(automated)}) {drilled ? "\u2212" : "+"}
-      </button>
-      {drilled && (
-        <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border-soft, #222)" }}>
-          <Bars rows={breakdown} />
+        <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--amber)", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          Hover for what&apos;s inside &quot;{automatedLabel}&quot; ({fmt(automated)})
         </div>
-      )}
+        {hovered && (
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft, #222)" }}>
+            <Bars rows={breakdown} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

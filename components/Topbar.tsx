@@ -29,7 +29,10 @@ export function Topbar({ version, fetchedAt, crossLinkHref, crossLinkLabel }: { 
       </a>
       <div className="topbar-right">
         {crossLinkHref && (
-          <a href={crossLinkHref} style={{ color: "var(--ink-dim)", textDecoration: "none", fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", border: "1px solid var(--border)", borderRadius: 999, padding: "5px 11px" }}>
+          <a
+            href={crossLinkHref}
+            className="cross-link-btn"
+          >
             {crossLinkLabel} →
           </a>
         )}

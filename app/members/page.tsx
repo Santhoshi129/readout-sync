@@ -5,8 +5,6 @@ import { Funnel, Bars, Ring, Donut } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
-import { TagGlossary } from "@/components/TagGlossary";
-import { MEMBER_TAG_GROUPS } from "@/lib/tags";
 
 export const revalidate = 30;
 
@@ -100,7 +98,6 @@ export default async function MembersDashboard() {
             />
           </div>
 
-          <TagGlossary groups={MEMBER_TAG_GROUPS} title="Tag and status glossary: what every marker in this system means" />
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

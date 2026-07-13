@@ -187,8 +187,8 @@ export function Compare({
     decided.length === 0
       ? "No volume yet on either side."
       : aWins === bWins
-      ? `Even split - ${labelA} and ${labelB} each lead on ${aWins} of ${decided.length} compared metrics.`
-      : `${leaderIsA ? labelA : labelB} leads on ${leaderIsA ? aWins : bWins} of ${decided.length} metrics compared to ${leaderIsA ? labelB : labelA}'s ${leaderIsA ? bWins : aWins}.`;
+      ? `Even split - ${labelA} and ${labelB} are each higher on ${aWins} of the ${decided.length} rows below.`
+      : `${leaderIsA ? labelA : labelB} has the higher raw count on ${leaderIsA ? aWins : bWins} of the ${decided.length} rows below (${leaderIsA ? labelB : labelA} on ${leaderIsA ? bWins : aWins}) - this counts wins per row, not overall size.`;
 
   return (
     <div>

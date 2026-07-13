@@ -36,6 +36,18 @@ export default async function MembersDashboard() {
           </div>
         )}
 
+        {(() => {
+          const genAt = data?.meta?.generated_at;
+          if (!genAt || (syncStatus && !syncStatus.ok)) return null;
+          const ageMin = (Date.now() - new Date(genAt).getTime()) / 60000;
+          if (ageMin < 20) return null;
+          return (
+            <div className="banner err" style={{ marginTop: 20 }}>
+              This data is {Math.round(ageMin)} minutes old - the sync should refresh every 10. Either it&apos;s not running, or it&apos;s writing somewhere this page isn&apos;t reading from. Numbers below are real, just not current.
+            </div>
+          );
+        })()}
+
         <section style={{ padding: "28px 0 0" }}>
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member Adoption Pulse</h1>

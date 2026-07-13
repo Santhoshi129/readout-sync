@@ -45,6 +45,27 @@ export async function readCacheDoc(docId: string): Promise<any | null> {
   }
 }
 
+// The sync script's own self-report of its last run, written whether that
+// run succeeded or failed. Read directly (no page load triggers a sync) so
+// a broken sync shows up loudly on the dashboard itself instead of quietly
+// serving whatever stale cache existed before anyone noticed.
+export async function getSyncStatus(): Promise<{ ok: boolean; last_success_at: string | null; last_attempt_at: string | null; last_error: string | null } | null> {
+  const db = await getMongoDb();
+  if (!db) return null;
+  try {
+    const doc = await db.collection("readout_cache_v2").findOne({ doc_id: "sync_status" });
+    if (!doc) return null;
+    return {
+      ok: !!doc.ok,
+      last_success_at: doc.last_success_at ? new Date(doc.last_success_at).toISOString() : null,
+      last_attempt_at: doc.last_attempt_at ? new Date(doc.last_attempt_at).toISOString() : null,
+      last_error: doc.last_error || null,
+    };
+  } catch {
+    return null;
+  }
+}
+
 // v2 architecture: a scheduled sync runs the heavy GHL + Sheets + Mongo
 // fetch ONCE and stores the compact result in MongoDB. These reads only
 // touch that stored document, so a dashboard load can never trigger a

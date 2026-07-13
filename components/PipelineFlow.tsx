@@ -102,7 +102,16 @@ export function PipelineFlow({
     const ro = new ResizeObserver(() => measure());
     if (containerRef.current) ro.observe(containerRef.current);
     window.addEventListener("resize", measure);
-    return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
+    // Belt-and-braces re-measures: web font swap (Space Grotesk / Inter)
+    // can shift box widths/heights after the first layout pass without
+    // firing a ResizeObserver on the container if the grid absorbs it.
+    // A couple of cheap follow-up measures after mount catches that.
+    const t1 = setTimeout(measure, 150);
+    const t2 = setTimeout(measure, 500);
+    if (typeof document !== "undefined" && (document as any).fonts?.ready) {
+      (document as any).fonts.ready.then(() => measure());
+    }
+    return () => { ro.disconnect(); window.removeEventListener("resize", measure); clearTimeout(t1); clearTimeout(t2); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes.length, edges.length]);
 

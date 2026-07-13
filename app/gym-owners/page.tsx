@@ -49,15 +49,15 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <PipelineFlow
-            title="New Leads pipeline, stage by stage"
-            note="The live shape of the gym owner pipeline in GHL. Click any stage to see what it means and trace its connections."
+            title="Lead journey - stage by stage"
+            note="Rebuilt from the actual n8n workflow logic (touch sequencer, IG Bridge, Alt Email Outreach), not just GHL's coarse opportunity stage. Click any node to see what it means and trace its connections."
             totalOverride={num(data, "lead_gen.total_in_pipeline")}
             nodes={[
-              { id: "new", name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent by David. The contact is now in the 5-touch email sequence.", tone: "cold", col: 0, row: 1 },
+              { id: "new", name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent. Now in the 5-touch email sequence. An unsubscribe at any touch during this window goes straight to Dead - it doesn't have to reach No Response first.", tone: "cold", col: 0, row: 1 },
               {
                 id: "responded", name: "Responded", count: num(data, "lead_gen.stage_responded"),
-                desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.",
-                tone: "amber", col: 1, row: 0,
+                desc: "A genuinely interested reply during the 5-touch sequence, or a contact resolved out of Alt Outreaching as interested/handled. No further stage after this - it's the goal state.",
+                tone: "amber", col: 2, row: 0,
                 extra: (
                   <div>
                     <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>REPLIES BY TOUCH (ALL CHANNELS)</div>
@@ -74,18 +74,71 @@ export default async function GymOwnersDashboard() {
                   </div>
                 ),
               },
-              { id: "noresp", name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Waiting on or working through the Instagram channel.", tone: "warm", col: 1, row: 2 },
-              { id: "ig", name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"), desc: "In the IG channel: handle found, DM queued or sent by Mari, phone follow-up if still silent.", tone: "hot", col: 2, row: 2 },
-              { id: "alt", name: "Alt Outreaching", count: num(data, "lead_gen.stage_alt_outreaching"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold", col: 3, row: 1 },
-              { id: "dead", name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened. Can happen from any stage, not just the end of the line.", tone: "muted", col: 3, row: 3 },
+              { id: "noresp", name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Moves into the Instagram channel next.", tone: "warm", col: 1, row: 2 },
+              {
+                id: "ig", name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"),
+                desc: "DM sent. Stays at this exact stage for every outcome below - GHL's pipeline never moves it further from here. A positive reply with no redirect email simply stays tagged positive; a redirect triggers the separate IG Bridge pull into Alt Outreaching.",
+                tone: "hot", col: 2, row: 2,
+                extra: (
+                  <div>
+                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>OUTCOME TAGS (stage doesn&apos;t change, only tags do)</div>
+                    <Bars
+                      rows={[
+                        { label: "Replied positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
+                        { label: "Replied negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
+                        { label: "No reply, phone due", value: num(data, "lead_gen.phone_followup_due"), tone: "muted" },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+              {
+                id: "phone", name: "Phone Follow-up", count: num(data, "lead_gen.phone_followup_due"),
+                desc: "Tag-based, not a GHL pipeline stage - the opportunity stays parked at Instagram Outreach the whole time. Fires when a DM was sent and there's been no reply after the follow-up window.",
+                tone: "muted", col: 3, row: 3,
+                extra: (
+                  <div>
+                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>CALL OUTCOME TAGS</div>
+                    <Bars
+                      rows={[
+                        { label: "Positive", value: num(data, "lead_gen.phone_positive"), tone: "hot" },
+                        { label: "Negative", value: num(data, "lead_gen.phone_negative"), tone: "bad" },
+                        { label: "Called, no outcome yet", value: num(data, "lead_gen.phone_called_only"), tone: "warm" },
+                        { label: "Resolved", value: num(data, "lead_gen.phone_resolved"), tone: "cold" },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+              {
+                id: "alt", name: "Alt Outreaching", count: num(data, "lead_gen.stage_alt_outreaching"),
+                desc: "One shared GHL stage fed by two separate n8n workflows: an email auto-responder redirect during the 5-touch sequence, or a positive Instagram reply that also gave a redirect email (the IG Bridge). One alt-email hop, then resolved to Responded, Dead, or paused.",
+                tone: "cold", col: 3, row: 1,
+                extra: (
+                  <div>
+                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)", marginBottom: 10, fontFamily: "var(--mono)" }}>WHICH PULL BROUGHT THEM HERE (separate send counts, same destination stage)</div>
+                    <Bars
+                      rows={[
+                        { label: "Via email auto-responder", value: num(data, "alt_email_outreach.alt_outreach_started"), tone: "cold" },
+                        { label: "Via IG Bridge (positive + redirect)", value: num(data, "ig_bridge_outreach.touch1_sent"), tone: "hot" },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+              { id: "dead", name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no. Reachable directly from New Lead (unsub mid-sequence), from Instagram (negative reply), or from Alt Outreaching (not interested) - not only from the end of a finished sequence.", tone: "muted", col: 4, row: 2 },
             ]}
             edges={[
               { from: "new", to: "responded" },
               { from: "new", to: "noresp" },
+              { from: "new", to: "alt" },
+              { from: "new", to: "dead" },
               { from: "noresp", to: "ig" },
-              { from: "ig", to: "alt" },
-              { from: "noresp", to: "dead" },
               { from: "ig", to: "dead" },
+              { from: "ig", to: "phone" },
+              { from: "ig", to: "alt" },
+              { from: "alt", to: "responded" },
+              { from: "alt", to: "dead" },
             ]}
           />
 
@@ -168,8 +221,8 @@ export default async function GymOwnersDashboard() {
               </div>
 
               <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - Bridge/redirect</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Separate flow: emails that bounced to an IG conversation</div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alternative email bridge</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>A positive IG reply that also gave a redirect email - followed up by email from there, not the other way around</div>
                 <ReplyBreakdown
                   positive={num(data, "ig_bridge_outreach.replied_interested")}
                   negative={num(data, "ig_bridge_outreach.replied_not_interested")}

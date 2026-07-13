@@ -1,17 +1,19 @@
-import { getReadout } from "@/lib/readout";
+import { getReadout, getHistory } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, Donut, GeoList } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
+import { fmt } from "@/lib/format";
 
 export const revalidate = 30;
 
 export default async function GymOwnersDashboard() {
   const { data, error, fetchedAt } = await getReadout();
+  const history = await getHistory("twu_readout_live", 14);
   const flows = FLOWS.filter((f) => section(f.category) === "gym-owner").sort((a, b) => a.order - b.order);
   const launch = flows.reduce((min, f) => (f.goLive < min ? f.goLive : min), flows[0]?.goLive ?? fetchedAt);
 
@@ -58,6 +60,42 @@ export default async function GymOwnersDashboard() {
               { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened.", tone: "muted" },
             ]}
           />
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Built from a snapshot taken every sync run (every 10 minutes). Real accumulated history, not interpolated.</div>
+            <Trend
+              points={history}
+              series={[
+                { key: "total_contacts_in_ghl", label: "Contacts in CRM", tone: "cold" },
+                { key: "email_replied", label: "Email replies", tone: "amber" },
+                { key: "total_drafts_created", label: "Drafts created", tone: "warm" },
+              ]}
+            />
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Channel effectiveness</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel - not volume, but how well each one actually converts what it sends.</div>
+            {(() => {
+              const emailSent = num(data, "lead_gen.email_outreach_sent") ?? 0;
+              const emailReplied = num(data, "lead_gen.email_replied") ?? 0;
+              const igSent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
+              const igReplied = sum(data, ["lead_gen.ig_replied_positive", "lead_gen.ig_replied_negative"]) ?? 0;
+              const phoneResolved = num(data, "lead_gen.phone_resolved") ?? 0;
+              const phonePositive = num(data, "lead_gen.phone_positive") ?? 0;
+              const rate = (n: number, d: number) => (d > 0 ? Math.round((n / d) * 1000) / 10 : null);
+              return (
+                <Bars
+                  rows={[
+                    { label: `Email (${fmt(emailSent)} sent)`, value: rate(emailReplied, emailSent), tone: "amber" },
+                    { label: `Instagram (${fmt(igSent)} sent)`, value: rate(igReplied, igSent), tone: "hot" },
+                    { label: `Phone (${fmt(phoneResolved)} resolved)`, value: rate(phonePositive, phoneResolved), tone: "warm" },
+                  ]}
+                />
+              );
+            })()}
+          </div>
 
           {/* Email funnel: strictly sequential, same channel end to end.
               IG and phone used to be chained onto this and produced nonsense

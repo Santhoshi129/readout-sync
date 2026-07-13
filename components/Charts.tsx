@@ -339,6 +339,120 @@ export function Donut({
     </div>
   );
 }
+// Time-series trend line(s), built from readout_history snapshots. Honest
+// about sparse data: with under 2 points it explains why instead of drawing
+// a misleading flat/empty line. Multiple series share one y-scale so their
+// shapes are comparable; each gets its own color and a value readout on
+// hover via the nearest-point vertical guide.
+export function Trend({
+  points,
+  series,
+  height = 220,
+}: {
+  points: { ts: string; metrics: Record<string, number> }[];
+  series: { key: string; label: string; tone: string }[];
+  height?: number;
+}) {
+  const mounted = useMounted();
+  const [hover, setHover] = useState<number | null>(null);
+
+  if (points.length < 2) {
+    return (
+      <div style={{ color: "var(--ink-faint)", fontSize: 13.5, padding: "24px 0" }}>
+        Not enough history yet to plot a trend - the sync job appends one snapshot every run, so this fills in over the next few hours/days. No placeholder line shown in the meantime.
+      </div>
+    );
+  }
+
+  const W = 800;
+  const H = height;
+  const padL = 8, padR = 8, padT = 16, padB = 28;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  const allVals = points.flatMap((p) => series.map((s) => p.metrics[s.key] ?? 0));
+  const maxV = Math.max(1, ...allVals);
+  const minV = Math.min(0, ...allVals);
+  const range = maxV - minV || 1;
+
+  const x = (i: number) => padL + (i / (points.length - 1)) * innerW;
+  const y = (v: number) => padT + innerH - ((v - minV) / range) * innerH;
+
+  const pathFor = (key: string) =>
+    points.map((p, i) => `${i === 0 ? "M" : "L"} ${x(i).toFixed(1)} ${y(p.metrics[key] ?? 0).toFixed(1)}`).join(" ");
+
+  const first = new Date(points[0].ts);
+  const last = new Date(points[points.length - 1].ts);
+  const fmtDate = (d: Date) => d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 18, marginBottom: 14, flexWrap: "wrap" }}>
+        {series.map((s) => (
+          <span key={s.key} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "var(--ink-dim)" }}>
+            <i className="dot-legend" style={{ background: TONE[s.tone] || "var(--amber)" }} />
+            {s.label}
+          </span>
+        ))}
+      </div>
+      <svg
+        width="100%"
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ display: "block", overflow: "visible" }}
+        onMouseLeave={() => setHover(null)}
+      >
+        {[0.25, 0.5, 0.75].map((f) => (
+          <line key={f} x1={padL} x2={W - padR} y1={padT + innerH * f} y2={padT + innerH * f} stroke="#1e1e1e" strokeWidth="1" />
+        ))}
+        {series.map((s) => (
+          <path
+            key={s.key}
+            d={pathFor(s.key)}
+            fill="none"
+            stroke={TONE[s.tone] || "var(--amber)"}
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            style={{
+              strokeDasharray: 2000,
+              strokeDashoffset: mounted ? 0 : 2000,
+              transition: "stroke-dashoffset 900ms cubic-bezier(0.16,1,0.3,1)",
+            }}
+          />
+        ))}
+        {hover != null && (
+          <line x1={x(hover)} x2={x(hover)} y1={padT} y2={padT + innerH} stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="3 3" />
+        )}
+        {points.map((p, i) => (
+          <rect
+            key={i}
+            x={x(i) - innerW / points.length / 2}
+            y={padT}
+            width={innerW / points.length}
+            height={innerH}
+            fill="transparent"
+            onMouseEnter={() => setHover(i)}
+          />
+        ))}
+        {hover != null &&
+          series.map((s) => (
+            <circle key={s.key} cx={x(hover)} cy={y(points[hover].metrics[s.key] ?? 0)} r="4" fill={TONE[s.tone] || "var(--amber)"} />
+          ))}
+        <text x={padL} y={H - 6} fontSize="10.5" fill="var(--ink-faint)" fontFamily="var(--mono)">{fmtDate(first)}</text>
+        <text x={W - padR} y={H - 6} fontSize="10.5" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{fmtDate(last)}</text>
+      </svg>
+      {hover != null && (
+        <div style={{ display: "flex", gap: 18, marginTop: 8, flexWrap: "wrap", fontFamily: "var(--mono)", fontSize: 12 }}>
+          <span style={{ color: "var(--ink-faint)" }}>{new Date(points[hover].ts).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span>
+          {series.map((s) => (
+            <span key={s.key} style={{ color: TONE[s.tone] || "var(--amber)" }}>{s.label}: {fmt(points[hover].metrics[s.key] ?? 0)}</span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function GeoList({ rows }: { rows: { label: string; count: number }[] }) {
   const mounted = useMounted();
   const [expanded, setExpanded] = useState(false);

@@ -411,8 +411,9 @@ export const FLOWS: Flow[] = [
       "If the DM also goes quiet, it puts a phone call on David's list and keeps reminding him until it's done, so nobody falls through the cracks.",
     ],
     metrics: [
-      { label: "IG ready to send", path: "lead_gen.ig_outreach_ready" },
+      { label: "IG ready to send (backlog)", path: "lead_gen.ig_outreach_ready", note: "ig-outreach-ready contacts NOT also tagged ig-outreach-sent - the real still-waiting queue." },
       { label: "IG DMs sent", path: "lead_gen.ig_outreach_sent" },
+      { label: "Needs review (generic/not-found)", path: "lead_gen.ig_needs_review", note: "ig-needs-review - covers both generic/brand-HQ handles and no-handle-found; this flow doesn't tag those two cases differently." },
       { label: "Phone follow-up due (lifetime)", path: "lead_gen.phone_followup_due" },
       { label: "Phone still due (open now)", path: "lead_gen.phone_still_due" },
     ],

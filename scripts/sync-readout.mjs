@@ -205,6 +205,17 @@ async function buildLeadGen(db, gToken) {
       if (has("sequence-complete")) inc("seqdone");
       if (has("ig-outreach-ready")) inc("igReady");
       if (has("ig-outreach-sent")) inc("igSent");
+      // "Ready to send" should mean still-waiting, not "ever tagged ready" -
+      // a contact keeps ig-outreach-ready even after being DM'd unless
+      // something explicitly removes it, so the raw tag count above was
+      // counting people twice (once as ready, again as sent). Split into
+      // the three states that actually exist: ready-only (true backlog),
+      // ready-and-sent (normal completed path), sent-only (sent tag exists
+      // without ready - the anomaly flagged earlier).
+      if (has("ig-outreach-ready") && !has("ig-outreach-sent")) inc("igReadyOnly");
+      if (has("ig-outreach-ready") && has("ig-outreach-sent")) inc("igReadyAndSent");
+      if (has("ig-outreach-sent") && !has("ig-outreach-ready")) inc("igSentOnly");
+      if (has("ig-needs-review")) inc("igNeedsReview");
       if (has("ig-replied-positive")) inc("igPos");
       if (has("ig-replied-negative")) inc("igNeg");
       if (has("phone-followup-due")) inc("phoneDue");
@@ -367,7 +378,9 @@ async function buildLeadGen(db, gToken) {
       hot_leads: n("hot"), warm_leads: n("warm"), email_outreach_sent: n("sent"), email_replied: n("replied"),
       sequence_complete: n("seqdone"),
       touch_sequence: { in_sequence: n("inSeq"), step_1: n("t1"), step_2: n("t2"), step_3: n("t3"), step_4: n("t4"), step_5: n("t5") },
-      ig_outreach_ready: n("igReady"), ig_outreach_sent: n("igSent"), ig_replied_positive: n("igPos"), ig_replied_negative: n("igNeg"),
+      ig_outreach_ready: n("igReadyOnly"), ig_outreach_ready_and_sent: n("igReadyAndSent"), ig_outreach_sent: n("igSent"),
+      ig_outreach_sent_only: n("igSentOnly"), ig_needs_review: n("igNeedsReview"),
+      ig_replied_positive: n("igPos"), ig_replied_negative: n("igNeg"),
       replied_contacts: repliedContacts, phone_followup_due: n("phoneDue"), phone_still_due: n("phoneStillDue"),
       phone_positive: n("phonePos"), phone_negative: n("phoneNeg"), phone_called_only: n("phoneCalledOnly"), phone_resolved: n("phoneResolved"),
       stage_new_lead: stNewLead, stage_responded: stResponded, stage_dead: stDead, stage_no_response: stNoResp, stage_ig_outreach: stIG,

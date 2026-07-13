@@ -27,7 +27,10 @@ export interface Readout {
       step_1: number; step_2: number; step_3: number; step_4: number; step_5: number;
     };
     ig_outreach_ready: number;
+    ig_outreach_ready_and_sent: number;
     ig_outreach_sent: number;
+    ig_outreach_sent_only: number;
+    ig_needs_review: number;
     ig_replied_positive: number;
     ig_replied_negative: number;
     replied_contacts: { name: string; time: string; channel: string; touch: number | null }[];

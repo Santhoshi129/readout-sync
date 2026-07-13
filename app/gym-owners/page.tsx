@@ -277,10 +277,13 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram channel</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>ig-outreach-ready = handle qualified, waiting to be DM&apos;d. ig-outreach-sent = Mari has actually sent the DM. Two independent tags, not a strict funnel.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>ig-outreach-ready and ig-outreach-sent are two independent tags - a contact keeps the ready tag even after being DM&apos;d unless something removes it, so &quot;Ready to send&quot; below only counts contacts that are ready and NOT yet sent (the real backlog), not everyone ever tagged ready.</div>
             {(() => {
-              const ready = num(data, "lead_gen.ig_outreach_ready") ?? 0;
+              const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
+              const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
               const sent = num(data, "lead_gen.ig_outreach_sent") ?? 0;
+              const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
+              const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
               const pos = num(data, "lead_gen.ig_replied_positive") ?? 0;
               const neg = num(data, "lead_gen.ig_replied_negative") ?? 0;
               const replies = pos + neg;
@@ -292,16 +295,18 @@ export default async function GymOwnersDashboard() {
                     <span className="compare-headline-dot" style={{ background: "var(--hot)" }} />
                     {fmt(sent)} DMs sent{replyRate != null ? ` \u00b7 ${replyRate}% reply rate` : ""}{posShare != null ? ` \u00b7 ${posShare}% of replies positive` : ""}
                   </div>
-                  {sent > ready && (
+                  {sentOnly > 0 && (
                     <div className="stat-flag" style={{ marginBottom: 18, fontSize: 11.5 }}>
-                      DMs sent ({fmt(sent)}) is higher than Ready to send ({fmt(ready)}) - {fmt(sent - ready)} contact{sent - ready === 1 ? "" : "s"} carry ig-outreach-sent without ig-outreach-ready, so either ready doesn&apos;t reflect the live backlog or the ready tag is cleared on send. Worth confirming with whoever owns the IG and Phone Outreach workflow.
+                      {fmt(sentOnly)} contact{sentOnly === 1 ? "" : "s"} carry ig-outreach-sent without ever having ig-outreach-ready - sent through some other path (manual tag, or ready was never applied). Broken out below instead of inflating either bucket.
                     </div>
                   )}
                   <div className="grid grid-2" style={{ gap: 24, alignItems: "center" }}>
                     <Bars
                       rows={[
-                        { label: "Ready to send", value: ready, tone: "cold" },
-                        { label: "DMs sent", value: sent, tone: "warm" },
+                        { label: "Ready to send (backlog)", value: readyOnly, tone: "cold" },
+                        { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
+                        { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
+                        { label: "Needs review", value: needsReview, tone: "bad" },
                       ]}
                     />
                     <Donut
@@ -311,6 +316,9 @@ export default async function GymOwnersDashboard() {
                         { label: "Negative", value: neg, tone: "bad" },
                       ]}
                     />
+                  </div>
+                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 14, fontFamily: "var(--mono)" }}>
+                    &quot;Not found&quot; isn&apos;t its own live tag - the IG &amp; Phone Outreach flow classifies a handle as ig-not-found internally, then applies the same ig-needs-review tag it uses for generic/brand-HQ handles, so the two collapse together here. Splitting them needs either a workflow change or reading ig_handle_status if that field holds the finer-grained value.
                   </div>
                 </>
               );

@@ -166,7 +166,6 @@ export function Compare({
 }) {
   const mounted = useMounted();
   const [hover, setHover] = useState<number | null>(null);
-  const max = Math.max(1, ...rows.flatMap((r) => [r.a ?? 0, r.b ?? 0]));
 
   const totalA = rows.reduce((s, r) => s + (r.a ?? 0), 0);
   const totalB = rows.reduce((s, r) => s + (r.b ?? 0), 0);
@@ -200,10 +199,20 @@ export function Compare({
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         {rows.map((r, i) => {
           const av = r.a ?? 0, bv = r.b ?? 0;
-          const aw = av > 0 ? Math.max(3, (av / max) * 100) : 0;
-          const bw = bv > 0 ? Math.max(3, (bv / max) * 100) : 0;
+          // Per-row scaling, not a shared global max: a row like "Contacts
+          // in CRM" (thousands) used to share one scale with a row like
+          // "Hot leads" (tens), so the small row's bars were invisible
+          // slivers even though it's the exact comparison someone opened
+          // this card to read. Each row now scales against its own larger
+          // side, so every row is legible regardless of absolute magnitude
+          // differences between metrics.
+          const rowMax = Math.max(1, av, bv);
+          const aw = av > 0 ? Math.max(3, (av / rowMax) * 100) : 0;
+          const bw = bv > 0 ? Math.max(3, (bv / rowMax) * 100) : 0;
           const rowLeaderIsA = av >= bv && av > 0;
           const rowLeaderIsB = bv > av;
+          const rowBigger = Math.max(av, bv), rowSmaller = Math.min(av, bv);
+          const rowDeltaPct = rowBigger > 0 ? Math.round(((rowBigger - rowSmaller) / rowBigger) * 100) : 0;
           return (
             <div
               key={r.label}
@@ -227,7 +236,7 @@ export function Compare({
               <div className="compare-diverge-center">
                 <div className="compare-diverge-label">{r.label}</div>
                 <div className={`compare-leader-chip ${hover === i ? "on" : ""}`} style={{ color: rowLeaderIsA ? "var(--series-a)" : rowLeaderIsB ? "var(--series-b)" : "var(--ink-faint)" }}>
-                  {rowLeaderIsA ? `${labelA} leads` : rowLeaderIsB ? `${labelB} leads` : "even"}
+                  {rowLeaderIsA || rowLeaderIsB ? `${rowLeaderIsA ? labelA : labelB} +${rowDeltaPct}%` : "even"}
                 </div>
               </div>
 

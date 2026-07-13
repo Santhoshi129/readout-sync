@@ -195,10 +195,17 @@ async function buildLeadGen(db, gToken) {
       if (step >= 1) { inc("inSeq"); if (step <= 5) inc(`t${step}`); }
       if (has("replied")) {
         inc("replied");
+        // Same step custom field already read into `step` above - just
+        // attributing each reply to the touch it happened at, which wasn't
+        // aggregated before. Unattributed (step 0 or missing) still counted
+        // honestly rather than guessed.
+        if (step >= 1 && step <= 5) inc(`repliedTouch${step}`);
+        else inc("repliedTouchUnknown");
         repliedMini.push({
           name: ct.contactName || ct.name || `${ct.firstName || ""} ${ct.lastName || ""}`.trim() || "Unknown",
           time: ct.dateUpdated || ct.updatedAt || "",
           channel: has("ig-outreach-sent") ? "ig" : "email",
+          touch: step >= 1 && step <= 5 ? step : null,
         });
       }
       if (has("interested")) inc("interested");
@@ -248,18 +255,33 @@ async function buildLeadGen(db, gToken) {
 
   // Sheets, one tab at a time.
   let cfDrafts = 0, hyDrafts = 0;
+  // geoMap now keeps a capped set of gym/business names alongside the count -
+  // same row data already being read for the city/state columns, so this is
+  // zero extra API calls. Capped at 15 names per location so the cache
+  // document doesn't grow unbounded for dense metros. Name column is
+  // whatever the sheet actually has; if none of the candidate headers match,
+  // names stays empty for that row rather than guessing.
   const geoMap = {};
+  const NAME_CANDS = ["gym name", "business name", "business", "company", "gym", "name"];
+  const addGeo = (label, name) => {
+    if (!label) return;
+    if (!geoMap[label]) geoMap[label] = { count: 0, names: new Set() };
+    geoMap[label].count++;
+    if (name && geoMap[label].names.size < 15) geoMap[label].names.add(name);
+  };
   {
     const rows = await sheetRows(gToken, SHEET_A, "Crossfit - Clean Leads");
     cfDrafts = rows.length;
-    for (const r of rows) { const l = geoLabel(getField(r, ["city"]), getField(r, ["state", "province"])); if (l) geoMap[l] = (geoMap[l] || 0) + 1; }
+    for (const r of rows) { const l = geoLabel(getField(r, ["city"]), getField(r, ["state", "province"])); addGeo(l, getField(r, NAME_CANDS)); }
   }
   {
     const rows = await sheetRows(gToken, SHEET_A, "Hyrox - Clean Leads");
     hyDrafts = rows.length;
-    for (const r of rows) { const l = geoLabel(getField(r, ["city"]), getField(r, ["state", "province"])); if (l) geoMap[l] = (geoMap[l] || 0) + 1; }
+    for (const r of rows) { const l = geoLabel(getField(r, ["city"]), getField(r, ["state", "province"])); addGeo(l, getField(r, NAME_CANDS)); }
   }
-  const geoDistribution = Object.entries(geoMap).map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+  const geoDistribution = Object.entries(geoMap)
+    .map(([label, v]) => ({ label, count: v.count, names: Array.from(v.names) }))
+    .sort((a, b) => b.count - a.count);
 
   let hyScraped = 0, hyProcessed = 0;
   {
@@ -292,9 +314,22 @@ async function buildLeadGen(db, gToken) {
   const cachedEnr = oldCache.lead_sources_enriched || {};
 
   // Derived + payload.
-  const totalPipeline = stResponded + stDead + stNoResp + stNewLead + stIG;
+  // Bug fix: stAlt (Alt Outreaching stage) was fetched above but never
+  // folded into the total - every "% of pipeline" figure and the reply
+  // rate was quietly computed against an undercount whenever that stage
+  // had contacts in it. All 6 GHL pipeline stages are mutually exclusive,
+  // so the true total is the sum of all 6, not 5.
+  const totalPipeline = stResponded + stDead + stNoResp + stNewLead + stIG + stAlt;
   const replyRate = totalPipeline > 0 ? parseFloat(((stResponded / totalPipeline) * 100).toFixed(1)) : 0;
-  const repliedContacts = repliedMini.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0)).slice(0, 4);
+  // Cap raised from 4 to 20 - the dashboard was already trying to show up
+  // to 10 but the server only ever sent the top 4, so it looked frozen.
+  // Touch step attached per reply now too (real: the same per-contact step
+  // custom field already read above, just not aggregated before).
+  const repliedContacts = repliedMini.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0)).slice(0, 20);
+  const repliedAtTouch = {
+    touch_1: n("repliedTouch1"), touch_2: n("repliedTouch2"), touch_3: n("repliedTouch3"),
+    touch_4: n("repliedTouch4"), touch_5: n("repliedTouch5"), unattributed: n("repliedTouchUnknown"),
+  };
   const totalRepliesClassified = n("interested") + n("unsub") + n("autoresp") + n("autoack") + n("otherReply");
   const altNoReplyYet = n("altSent") - n("altReplied");
   const altCoverage = n("autoresp") > 0 ? parseFloat(((n("altSent") / n("autoresp")) * 100).toFixed(1)) : 0;
@@ -315,7 +350,7 @@ async function buildLeadGen(db, gToken) {
       replied_contacts: repliedContacts, phone_followup_due: n("phoneDue"), phone_still_due: n("phoneStillDue"),
       phone_positive: n("phonePos"), phone_negative: n("phoneNeg"), phone_called_only: n("phoneCalledOnly"), phone_resolved: n("phoneResolved"),
       stage_new_lead: stNewLead, stage_responded: stResponded, stage_dead: stDead, stage_no_response: stNoResp, stage_ig_outreach: stIG,
-      total_in_pipeline: totalPipeline, email_reply_rate_pct: replyRate,
+      stage_alt_outreaching: stAlt, total_in_pipeline: totalPipeline, email_reply_rate_pct: replyRate, replied_at_touch: repliedAtTouch,
     },
     lead_sources_raw: { cf_scraped: cfScraped, cf_processed: cfProcessed, cf_pending: cfPending, hy_scraped: hyScraped, hy_processed: hyProcessed, hy_pending: hyPending, combined_scraped: combinedScraped, combined_processed: combinedProcessed, combined_pending: combinedPending },
     lead_sources_failed: { cf_failed: cfFailed, hy_failed: hyFailed, total_failed: combinedFailed, cf_no_email: cfNoEmail, hy_no_email: hyNoEmail, total_no_email: combinedNoEmail, cf_duplicates_skipped: cfDup, hy_duplicates_skipped: hyDup, total_duplicates_skipped: combinedDup },

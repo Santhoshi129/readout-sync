@@ -223,9 +223,19 @@ export default async function GymOwnersDashboard() {
               </div>
 
               <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alternative email bridge</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>A positive IG reply that also gave a redirect email</div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching (both feeders)</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Two different flows land here on different tags - shown together since they share the one destination stage.</div>
+                <div style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-dim)", marginBottom: 8 }}>Via email auto-responder redirect</div>
+                <Donut
+                  centerLabel="replied"
+                  segments={[
+                    { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
+                    { label: "Not interested", value: num(data, "alt_email_outreach.not_interested"), tone: "bad" },
+                  ]}
+                />
+                <div style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-dim)", marginTop: 20, marginBottom: 8 }}>Via IG Bridge (positive + redirect)</div>
                 <ReplyBreakdown
+                  centerLabel="replied"
                   positive={num(data, "ig_bridge_outreach.replied_interested")}
                   negative={num(data, "ig_bridge_outreach.replied_not_interested")}
                   automated={sum(data, ["ig_bridge_outreach.auto_ack", "ig_bridge_outreach.needs_review"])}
@@ -249,21 +259,21 @@ export default async function GymOwnersDashboard() {
               const dupMatched = num(data, "lead_gen.ig_duplicate_matched") ?? 0;
               const sentNoHandle = num(data, "lead_gen.ig_sent_no_handle") ?? 0;
               return (
-                <>
-                  <Bars
-                    rows={[
-                      { label: "Ready (backlog)", value: readyOnly, tone: "cold" },
-                      { label: "Ready \u2192 sent", value: readyAndSent, tone: "amber" },
-                      { label: "Sent, no ready tag", value: sentOnly, tone: "muted" },
-                      { label: "Needs review", value: needsReview, tone: "bad" },
-                      { label: "Duplicate-matched (fixed)", value: dupMatched, tone: "hot" },
-                      { label: "Sent, no handle on file", value: sentNoHandle, tone: "warm" },
-                    ]}
-                  />
-                  <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 14, lineHeight: 1.5 }}>
-                    &quot;Needs review&quot; covers both a rejected generic/brand-HQ handle and no handle found at all - the workflow writes the same tag either way, so these two can&apos;t be split from GHL data alone.
-                  </div>
-                </>
+                <ReplyBreakdown
+                  centerLabel="IG contacts"
+                  hoverPrefix="Hover for the data-quality flags inside"
+                  positiveLabel="Ready (backlog)"
+                  negativeLabel="Ready \u2192 sent"
+                  automatedLabel="Sent, no ready tag"
+                  positive={readyOnly}
+                  negative={readyAndSent}
+                  automated={sentOnly}
+                  breakdown={[
+                    { label: "Needs review", value: needsReview, tone: "bad" },
+                    { label: "Duplicate-matched (fixed)", value: dupMatched, tone: "hot" },
+                    { label: "Sent, no handle on file", value: sentNoHandle, tone: "warm" },
+                  ]}
+                />
               );
             })()}
           </div>

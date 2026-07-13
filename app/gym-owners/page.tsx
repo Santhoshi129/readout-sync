@@ -5,10 +5,8 @@ import { Funnel, Bars, Ring, Compare, Donut, GeoList } from "@/components/Charts
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
-import { num, section, Head, FlowCard } from "@/lib/dashboard-ui";
+import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
-import { TagGlossary } from "@/components/TagGlossary";
-import { GYM_OWNER_TAG_GROUPS } from "@/lib/tags";
 
 export const revalidate = 30;
 
@@ -110,6 +108,15 @@ export default async function GymOwnersDashboard() {
                 { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
               ]}
             />
+            {(() => {
+              const classified = num(data, "reply_breakdown.total_classified") ?? 0;
+              const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
+              return classified < knownReplies ? (
+                <div className="stat-flag" style={{ marginTop: 18 }}>
+                  Classified total ({classified}) is lower than replies recorded elsewhere ({knownReplies}) - the Reply Detector classifier is behind the raw reply count upstream. Flagged, not faked; see the Reply Detector flow page for the known gap.
+                </div>
+              ) : null;
+            })()}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
@@ -172,9 +179,29 @@ export default async function GymOwnersDashboard() {
               labelB="Instagram"
               rows={[
                 { label: "Outreach sent", a: num(data, "lead_gen.email_outreach_sent"), b: num(data, "lead_gen.ig_outreach_sent") },
-                { label: "Replied positive", a: num(data, "lead_gen.email_replied"), b: num(data, "lead_gen.ig_replied_positive") },
+                { label: "Replied (any outcome)", a: num(data, "lead_gen.email_replied"), b: sum(data, ["lead_gen.ig_replied_positive", "lead_gen.ig_replied_negative"]) },
               ]}
             />
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count - the last ones to write back, either channel.</div>
+            {(data?.lead_gen?.replied_contacts?.length ?? 0) > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {data!.lead_gen.replied_contacts.slice(0, 10).map((c, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
+                    <span style={{ fontSize: 13.5 }}>{c.name}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{c.channel}</span>
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{c.time}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No named replies in the current live payload yet.</div>
+            )}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
@@ -184,7 +211,6 @@ export default async function GymOwnersDashboard() {
 
           <Diagnostics data={data} />
 
-          <TagGlossary groups={GYM_OWNER_TAG_GROUPS} title="Tag glossary: what every tag in this system means" />
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

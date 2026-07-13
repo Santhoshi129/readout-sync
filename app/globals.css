@@ -11,12 +11,14 @@
   --amber: #c9a84c;
   --amber-bright: #e6c766;
   --amber-deep: #8a6f2a;
-  --cold: #4a5a6a;
-  --warm: #6f9e8a;
+  --cold: #4f7aa6;
+  --warm: #c9834c;
   --hot: #7fc98a;
   --bad: #b04a4a;
   --muted: #3a3a3a;
   --good: #7fc98a;
+  --series-a: #e6c766;
+  --series-b: #5b93d6;
   --font: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-head: var(--font-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: "SF Mono", ui-monospace, "Roboto Mono", Menlo, monospace;
@@ -155,8 +157,19 @@ a { color: inherit; text-decoration: none; }
 .canary .c-expect { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing:0.1em; }
 
 /* back link */
-.back { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); display:inline-flex; gap:8px; align-items:center; }
-.back:hover { color: var(--amber); }
+.back {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim);
+  display: inline-flex; gap: 8px; align-items: center;
+  background: var(--card-raised); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 14px; transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+.back:hover { color: var(--amber-bright); border-color: var(--amber-deep); background: var(--card); }
+.cross-link-btn {
+  color: var(--ink-dim); text-decoration: none; font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 16px; background: var(--card-raised); transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+.cross-link-btn:hover { color: var(--amber-bright); border-color: var(--amber-deep); background: var(--card); }
 
 /* login */
 .login-wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
@@ -220,23 +233,35 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink); margin-bottom: 20px; line-height: 1.4;
 }
 .compare-headline-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; box-shadow: 0 0 10px currentColor; }
-.compare-row {
-  outline: none; border-radius: 10px; padding: 10px 12px; margin: -10px -12px;
+
+/* Diverging (mirrored) comparison bars - both series pull outward from a
+   shared center line, one row per metric. Reads as an actual comparison
+   chart, not two stacked progress bars, and uses two genuinely distinct
+   hues (--series-a / --series-b) instead of two shades of green. */
+.compare-diverge-row {
+  display: grid; grid-template-columns: 1fr 132px 1fr; align-items: center; gap: 14px;
+  padding: 9px 10px; margin: 0 -10px; border-radius: 10px; outline: none;
   transition: background 200ms ease;
 }
-.compare-row:hover, .compare-row:focus-visible { background: rgba(201, 168, 76, 0.05); }
+.compare-diverge-row:hover, .compare-diverge-row:focus-visible { background: rgba(201, 168, 76, 0.05); }
+.compare-diverge-side { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.compare-diverge-side.left { justify-content: flex-end; }
+.compare-diverge-side.right { justify-content: flex-start; }
+.compare-diverge-track { flex: 1; height: 16px; border-radius: 4px; overflow: hidden; min-width: 0; }
+.compare-diverge-side.left .compare-diverge-track { display: flex; justify-content: flex-end; }
+.compare-diverge-fill {
+  height: 100%; border-radius: 4px; width: 0;
+  transition: width 900ms cubic-bezier(0.16, 1, 0.3, 1), filter 150ms ease;
+}
+.compare-diverge-row:hover .compare-diverge-fill { filter: brightness(1.2); }
+.compare-diverge-value { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; flex: none; }
+.compare-diverge-center { text-align: center; }
+.compare-diverge-label { font-size: 12.5px; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .compare-leader-chip {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-  opacity: 0; transform: translateY(-2px); transition: opacity 180ms ease, transform 180ms ease;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-top: 3px; opacity: 0; transform: translateY(-2px); transition: opacity 180ms ease, transform 180ms ease;
 }
-.compare-row:hover .compare-leader-chip, .compare-row:focus-visible .compare-leader-chip { opacity: 1; transform: translateY(0); }
-.compare-detail {
-  font-family: var(--mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.02em;
-  max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
-  transition: max-height 220ms ease, opacity 220ms ease, margin-top 220ms ease;
-}
-.compare-detail.open { max-height: 24px; opacity: 1; margin-top: 10px; }
-.compare-detail-sep { margin: 0 8px; color: var(--border); }
+.compare-leader-chip.on, .compare-diverge-row:hover .compare-leader-chip, .compare-diverge-row:focus-visible .compare-leader-chip { opacity: 1; transform: translateY(0); }
 
 /* honest flag for stats that are structurally stuck at zero upstream,
    rather than silently rendering a number that looks final and correct */

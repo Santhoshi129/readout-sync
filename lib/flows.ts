@@ -71,7 +71,7 @@ export const FLOWS: Flow[] = [
     ],
     metrics: [
       { label: "Total scraped", path: "lead_sources_raw.combined_scraped" },
-      { label: "Processed", path: "lead_sources_raw.combined_processed" },
+      { label: "Processed", path: "lead_sources_raw.combined_processed", note: "Out of this scrape's queue - not the same number as total CRM contacts below, which includes every past run." },
       { label: "Pending", path: "lead_sources_raw.combined_pending" },
       { label: "Drafts created", path: "lead_sources_drafts.total_drafts_created" },
       { label: "No email (skipped)", path: "lead_sources_failed.total_no_email" },
@@ -100,6 +100,9 @@ export const FLOWS: Flow[] = [
     tagNotes: [
       { tag: "prospect · new lead", why: "Marks a fresh, un-worked gym entering the pipeline." },
       { tag: "crossfit / hyrox", why: "Routes the contact to the right sequence and reporting split downstream." },
+      { tag: "independent", why: "No franchise affiliation - scores higher as a prospect than a franchise location." },
+      { tag: "f45-franchise / orangetheory-franchise / shred415-franchise", why: "Franchise affiliation detected during enrichment; scores lower and powers the franchise-vs-independent split." },
+      { tag: "hot / warm", why: "The prospect score band itself, written straight to the contact - hot is 65+, warm is 20-64. Cold gyms never reach GHL." },
       { tag: "draft-ready", why: "Signals a Gmail draft exists and is waiting on David - the hand-off point to Dave Approval." },
     ],
     freshnessKeys: ["lead_sources_raw", "lead_sources_drafts", "lead_sources_failed", "lead_sources_enriched"],
@@ -191,8 +194,10 @@ export const FLOWS: Flow[] = [
       { date: "2026-06-26", status: "done", text: "Reply handling moved to the dedicated Reply Detector (classification + temp-away pausing)." },
     ],
     tagNotes: [
+      { tag: "touch-N-pending / followup-draft-ready", why: "The next touch is drafted in Gmail but not yet sent - also the tag Temp Away checks to avoid double-drafting a contact." },
       { tag: "phone-ig-followup", why: "David's signal that email is exhausted - hand this gym to the IG/Phone flow." },
       { tag: "sequence-complete", why: "Freezes the contact so neither the sequencer nor a resume can re-draft it." },
+      { tag: "sequence-stopped", why: "Written the instant a reply arrives, halting further touches immediately." },
     ],
     canaries: [
       { label: "Stuck draft tags", path: "data_integrity.stuck_draft_tags", expect: "≈ 0" },
@@ -335,6 +340,9 @@ export const FLOWS: Flow[] = [
     ],
     tagNotes: [
       { tag: "interested / unsubscribed", why: "The two hard outcomes that stop the sequence and move the card." },
+      { tag: "auto-responder-detected", why: "An auto-reply redirected us to another address - the trigger that hands the contact to Alt Email Outreach." },
+      { tag: "auto-ack-detected", why: "Would mark a pure acknowledgement with no stage change - not yet written in the deployed export, which is why auto_ack reads 0 above (see changelog)." },
+      { tag: "replied / replied-at-touch-N", why: "Records a real reply against the exact touch that earned it." },
       { tag: "temporarily-paused + paused-source-coldoutreach", why: "Pauses an out-of-office contact and records which flow to resume it into." },
     ],
   },
@@ -379,8 +387,11 @@ export const FLOWS: Flow[] = [
       { date: "2026-06-28", status: "done", text: "Live. IG positive routed through Claude (email capture → hand to Bridge), phone tags close with phone-resolved." },
     ],
     tagNotes: [
+      { tag: "ig-replied-positive / ig-replied-negative", why: "David's manual outcome tag on an IG reply - the two entry points this whole flow reacts to." },
+      { tag: "phone-positive / phone-negative", why: "David's manual outcome tag on a phone call - routed to Responded or Dead Lead." },
       { tag: "phone-resolved", why: "Marks a phone stage closed regardless of outcome - powers the 'actually open right now' phone number." },
       { tag: "ig-email-captured", why: "A redirect email arrived via IG - the trigger the Bridge Sequence waits for." },
+      { tag: "source-instagram", why: "Marks that a captured redirect email came from IG rather than an email auto-responder, so reporting can tell the two hand-offs apart." },
     ],
   },
 
@@ -423,7 +434,10 @@ export const FLOWS: Flow[] = [
     ],
     tagNotes: [
       { tag: "ig-outreach-ready / ig-needs-review", why: "Splits confirmed location handles (ready to DM) from ones a human must find first." },
+      { tag: "ig-direct / ig-generic", why: "Claude's classification of the found handle - gym-specific and usable, versus a rejected brand-HQ account." },
+      { tag: "ig-outreach-sent", why: "Mari has DM'd this gym on Instagram - written manually once the DM actually goes out." },
       { tag: "phone-followup-due", why: "Puts the gym on the call list; cleared only by a phone/IG outcome tag." },
+      { tag: "phone-called", why: "A call was made but the outcome isn't recorded yet - written manually, then closed out by phone-positive/negative in the Tag Handler." },
     ],
   },
 
@@ -536,6 +550,7 @@ export const FLOWS: Flow[] = [
       { date: "2026-07-05", status: "monitoring", text: "Reply-handler end-to-end verification is a runtime property not visible in the export - watch coverage % and replied counts against detections." },
     ],
     tagNotes: [
+      { tag: "altmail-replied / altmail-interested / altmail-not-interested", why: "Outcome tags once the alt-channel reply comes back." },
       { tag: "altmail-sent", why: "Marks that outreach restarted at the redirect address - the entry point for this flow's own sequence and reporting." },
     ],
   },
@@ -666,6 +681,7 @@ export const FLOWS: Flow[] = [
       { date: "2026-07-08", status: "monitoring", text: "Legacy ig-bridge-temp-paused contacts won't be picked up (resume reads temporarily-paused only) - need manual migration." },
     ],
     tagNotes: [
+      { tag: "re-engaged", why: "Written the moment a paused contact resumes, so it's never picked up twice by the same sweep." },
       { tag: "paused-until-YYYY-MM-DD", why: "The alarm clock - the resume job reads this date to know when to bring a contact back." },
       { tag: "resume-sequence-exhausted", why: "Marks a resumed contact whose sequence was already done, so it stays visible without re-entering an active pool." },
     ],

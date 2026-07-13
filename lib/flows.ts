@@ -78,8 +78,8 @@ export const FLOWS: Flow[] = [
       { label: "Duplicates skipped", path: "lead_sources_failed.total_duplicates_skipped" },
       { label: "In GHL - CrossFit", path: "lead_gen.crossfit_contacts_in_ghl" },
       { label: "In GHL - HYROX", path: "lead_gen.hyrox_contacts_in_ghl" },
-      { label: "Hot leads", path: "lead_sources_enriched.combined_hot", flag: "cached", note: "Enrichment breakdown is cached - refreshes when enrichment runs, not on every read." },
-      { label: "Warm leads", path: "lead_sources_enriched.combined_warm", flag: "cached" },
+      { label: "Hot leads", path: "lead_sources_enriched.combined_hot" },
+      { label: "Warm leads", path: "lead_sources_enriched.combined_warm" },
     ],
     charts: [
       {
@@ -95,7 +95,7 @@ export const FLOWS: Flow[] = [
     ],
     changelog: [
       { date: "2026-05-25", status: "done", text: "Went live. Dual CF/HY pipelines, Haiku enrichment, prospect scoring, GHL dedup-before-create, draft-only output." },
-      { date: "2026-05-25", status: "monitoring", text: "Enrichment breakdown (hot/warm/avg-score/direct-vs-generic) is served from cache, not the live read. Volume, drafts, dedup and failures are all live." },
+      { date: "2026-05-25", status: "monitoring", text: "Direct-vs-generic email split and avg prospect score are still served from cache, pending the Email Status custom field ID; hot/warm leads are now computed live per source." },
     ],
     tagNotes: [
       { tag: "prospect · new lead", why: "Marks a fresh, un-worked gym entering the pipeline." },

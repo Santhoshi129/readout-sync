@@ -78,6 +78,30 @@ async function fetchSource(v2Path: string, legacyPath: string, requiredKey: stri
   }
 }
 
+// Trend data for the last N days, read straight from the readout_history
+// collection appended by scripts/sync-readout.mjs on every sync run. Returns
+// [] (not fake data) if Mongo isn't reachable or nothing has accumulated
+// yet - the chart component renders an honest "not enough history yet" state
+// in that case rather than drawing a flat or invented line.
+export type HistoryPoint = { ts: string; metrics: Record<string, number> };
+
+export async function getHistory(docId: string, days = 14): Promise<HistoryPoint[]> {
+  const db = await getMongoDb();
+  if (!db) return [];
+  try {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+    const rows = await db
+      .collection("readout_history")
+      .find({ doc_id: docId, ts: { $gte: since } })
+      .sort({ ts: 1 })
+      .project({ _id: 0, ts: 1, metrics: 1 })
+      .toArray();
+    return rows.map((r: any) => ({ ts: new Date(r.ts).toISOString(), metrics: r.metrics || {} }));
+  } catch {
+    return [];
+  }
+}
+
 export async function getReadout(): Promise<{ data: Readout | null; error: string | null; fetchedAt: string }> {
   const fetchedAt = new Date().toISOString();
   try {

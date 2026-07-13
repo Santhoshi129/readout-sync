@@ -6,7 +6,7 @@ import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { Diagnostics } from "@/components/Diagnostics";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
-import { PipelineMap } from "@/components/PipelineMap";
+import { PipelineFlow } from "@/components/PipelineFlow";
 import { fmt } from "@/lib/format";
 
 export const revalidate = 30;
@@ -48,16 +48,24 @@ export default async function GymOwnersDashboard() {
             <Head label="Reply rate" path="lead_gen.email_reply_rate_pct" data={data} suffix="%" />
           </div>
 
-          <PipelineMap
+          <PipelineFlow
             title="New Leads pipeline, stage by stage"
-            note="The live shape of the gym owner pipeline in GHL. Hover or click a stage for what it means. A contact's outreach stage maps directly to its touch step."
-            stages={[
-              { name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent by David. The contact is now in the 5-touch email sequence.", tone: "cold" },
-              { name: "Responded", count: num(data, "lead_gen.stage_responded"), desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.", tone: "amber" },
-              { name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Waiting on or working through the Instagram channel.", tone: "warm" },
-              { name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"), desc: "In the IG channel: handle found, DM queued or sent by Mari, phone follow-up if still silent.", tone: "hot" },
-              { name: "Alt Outreaching", count: num(data, "alt_email_outreach.in_alt_outreaching_stage"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold" },
-              { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened.", tone: "muted" },
+            note="The live shape of the gym owner pipeline in GHL. Click any stage to see what it means and trace its connections."
+            nodes={[
+              { id: "new", name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First touch confirmed sent by David. The contact is now in the 5-touch email sequence.", tone: "cold", col: 0, row: 1 },
+              { id: "responded", name: "Responded", count: num(data, "lead_gen.stage_responded"), desc: "Replied with real interest or a real conversation, at whatever touch its outreach step shows. The goal stage.", tone: "amber", col: 1, row: 0 },
+              { id: "noresp", name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches completed with silence. Waiting on or working through the Instagram channel.", tone: "warm", col: 1, row: 2 },
+              { id: "ig", name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"), desc: "In the IG channel: handle found, DM queued or sent by Mari, phone follow-up if still silent.", tone: "hot", col: 2, row: 2 },
+              { id: "alt", name: "Alt Outreaching", count: num(data, "alt_email_outreach.in_alt_outreaching_stage"), desc: "An auto-responder or IG reply redirected us to a different email address; the 3-touch alt sequence is working it.", tone: "cold", col: 3, row: 1 },
+              { id: "dead", name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no, recorded at the exact touch it happened. Can happen from any stage, not just the end of the line.", tone: "muted", col: 3, row: 3 },
+            ]}
+            edges={[
+              { from: "new", to: "responded" },
+              { from: "new", to: "noresp" },
+              { from: "noresp", to: "ig" },
+              { from: "ig", to: "alt" },
+              { from: "noresp", to: "dead" },
+              { from: "ig", to: "dead" },
             ]}
           />
 
@@ -97,6 +105,64 @@ export default async function GymOwnersDashboard() {
             })()}
           </div>
 
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 640 }}>
+              Email has full reply classification. Instagram's main channel only tags positive/negative in GHL - shown honestly as 2 buckets, not padded out. The IG Bridge (redirect) track has its own richer tagging and is broken out separately since it's a different flow.
+            </div>
+            <div className="grid grid-3" style={{ gap: 20 }}>
+              <div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Email</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>5-way classified via Reply Detector</div>
+                <Donut
+                  centerLabel="classified"
+                  segments={[
+                    { label: "Interested", value: num(data, "reply_breakdown.interested"), tone: "hot" },
+                    { label: "Not interested", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
+                    { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
+                    { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
+                    { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
+                  ]}
+                />
+                {(() => {
+                  const classified = num(data, "reply_breakdown.total_classified") ?? 0;
+                  const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
+                  return classified < knownReplies ? (
+                    <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
+                      Classified ({classified}) trails raw replies ({knownReplies}) - classifier is behind upstream.
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+
+              <div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - main channel</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Positive/negative only - no finer tagging exists in GHL for this channel</div>
+                <Donut
+                  centerLabel="replied"
+                  segments={[
+                    { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
+                    { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
+                  ]}
+                />
+              </div>
+
+              <div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - Bridge/redirect</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Separate flow: emails that bounced to an IG conversation</div>
+                <Donut
+                  centerLabel="classified"
+                  segments={[
+                    { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
+                    { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
+                    { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
+                    { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Email funnel: strictly sequential, same channel end to end.
               IG and phone used to be chained onto this and produced nonsense
               "% kept" numbers (e.g. 738%) because they're a separate channel,
@@ -131,30 +197,6 @@ export default async function GymOwnersDashboard() {
                 { label: "Replied negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "muted" },
               ]}
             />
-          </div>
-
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply breakdown</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>What every classified reply turned out to be. Hover a slice or a row for its share.</div>
-            <Donut
-              centerLabel="classified"
-              segments={[
-                { label: "Interested", value: num(data, "reply_breakdown.interested"), tone: "hot" },
-                { label: "Not interested", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
-                { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
-                { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
-                { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
-              ]}
-            />
-            {(() => {
-              const classified = num(data, "reply_breakdown.total_classified") ?? 0;
-              const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
-              return classified < knownReplies ? (
-                <div className="stat-flag" style={{ marginTop: 18 }}>
-                  Classified total ({classified}) is lower than replies recorded elsewhere ({knownReplies}) - the Reply Detector classifier is behind the raw reply count upstream. Flagged, not faked; see the Reply Detector flow page for the known gap.
-                </div>
-              ) : null;
-            })()}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

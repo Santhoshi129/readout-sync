@@ -230,7 +230,7 @@ export const FLOWS: Flow[] = [
       "Adoption rate = (adopted + already-on-app) ÷ total identified, computed live from the deduped MongoDB tracker.",
     ],
     business: [
-      "Your members are worth more when they're inside the community app. This flow works the gap between 'is a member' and 'is on the app.'",
+      "This flow works the gap between 'is a member' and 'is on the app.'",
       "It's the 325-of-854 story from the app: a room that's filling up, tracked member by member - joined, opted out, or still to decide.",
     ],
     metrics: [
@@ -637,7 +637,9 @@ export const FLOWS: Flow[] = [
       "The unmatched count is the size of that cleanup backlog - it should trend toward zero as handles get filled in.",
     ],
     metrics: [
-      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", flag: "canary", note: "Contacts tagged ig-review-noted whose outreach date may still be stale - trends down as handles are added." },
+      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", note: "Contacts tagged ig-review-noted whose outreach date may still be stale - trends down as handles are added." },
+      { label: "Matched (fixed)", path: "lead_gen.ig_duplicate_matched", note: "Tagged ig-duplicate-matched - this workflow found a fresh match and corrected the outreach date." },
+      { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", note: "Tagged ig-outreach-sent but the Instagram Handle field is empty - exactly the situation this workflow exists to catch and fix." },
     ],
     charts: [],
     changelog: [
@@ -665,7 +667,7 @@ export const FLOWS: Flow[] = [
       "Two integrity canaries: stuck_past_resume_date (resume job didn't run) and missing_resume_date (paused with no date tag).",
     ],
     business: [
-      "When a gym says 'I'm away until the 15th,' this remembers and picks the conversation back up on the 15th - automatically, in the same email thread.",
+      "Covers any reason a contact needs to be paused and picked back up later - away until a date, asked to be contacted again in a while, or anything in that family - and resumes the conversation automatically, in the same thread.",
       "It works the same way no matter which channel paused them, and it won't accidentally double-message anyone or re-start a conversation that already ran its full course.",
     ],
     metrics: [

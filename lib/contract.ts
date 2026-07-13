@@ -31,6 +31,8 @@ export interface Readout {
     ig_outreach_sent: number;
     ig_outreach_sent_only: number;
     ig_needs_review: number;
+    ig_duplicate_matched: number;
+    ig_sent_no_handle: number;
     ig_replied_positive: number;
     ig_replied_negative: number;
     replied_contacts: { name: string; time: string; channel: string; touch: number | null }[];

@@ -10,6 +10,8 @@ export interface StageDef {
   count: number | null;
   desc: string;
   tone?: "cold" | "warm" | "hot" | "amber" | "muted" | "bad";
+  /** Optional extra content shown under the description once hovered/pinned - e.g. an outcome-tag breakdown. */
+  extra?: React.ReactNode;
 }
 
 const TONE: Record<string, string> = {
@@ -79,6 +81,7 @@ export function PipelineMap({ stages, title, note }: { stages: StageDef[]; title
             {active === i && (
               <div style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, marginTop: 8, borderTop: "1px solid var(--border-soft, #222)", paddingTop: 8 }}>
                 {s.desc}
+                {s.extra && <div style={{ marginTop: 10 }}>{s.extra}</div>}
               </div>
             )}
           </div>

@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown, StatTiles } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
@@ -277,28 +277,6 @@ export default async function GymOwnersDashboard() {
             </div>
           </div>
 
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram outreach progress</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits. Separate from what they replied. Hover a tile for what it means.</div>
-            <StatTiles
-              tiles={[
-                { label: "Ready, backlog", value: num(data, "lead_gen.ig_outreach_ready"), tone: "cold", note: "Tagged ig-outreach-ready and not yet DM'd. The real still-waiting queue." },
-                { label: "Ready, then sent", value: num(data, "lead_gen.ig_outreach_ready_and_sent"), tone: "warm", note: "Went through the normal path: qualified, then DM'd." },
-                { label: "Sent, no ready tag", value: num(data, "lead_gen.ig_outreach_sent_only"), tone: "hot", note: "DM'd without ever carrying the ready tag. Worth a look if this climbs." },
-              ]}
-            />
-            <div style={{ marginTop: 20 }}>
-              <StatTiles
-                tiles={[
-                  { label: "Needs review", value: num(data, "lead_gen.ig_needs_review"), tone: "bad", note: "Scraping couldn't find a usable handle. Needs manual lookup." },
-                  { label: "Needs review, never DM'd", value: num(data, "lead_gen.ig_needs_review_not_sent"), tone: "bad", note: "The subset of needs-review contacts that also have no ig-outreach-sent tag. Nobody's tried this gym yet." },
-                  { label: "Duplicate-matched (fixed)", value: num(data, "lead_gen.ig_duplicate_matched"), tone: "hot", note: "GHL auto-created a duplicate on DM send; this workflow found the real match and corrected it." },
-                  { label: "Sent, no handle on file", value: num(data, "lead_gen.ig_sent_no_handle"), tone: "warm", note: "Tagged as sent but the Instagram Handle field is empty. The exact gap this data-quality check exists to catch." },
-                ]}
-              />
-            </div>
-          </div>
-
           {/* Email funnel: strictly sequential, same channel end to end.
               IG and phone used to be chained onto this and produced nonsense
               "% kept" numbers (e.g. 738%) because they're a separate channel,
@@ -321,27 +299,6 @@ export default async function GymOwnersDashboard() {
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
                 <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" pctOverride={num(data, "lead_gen.email_reply_rate_pct")} />
               </div>
-            </div>
-          </div>
-
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Failed logs</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Gyms that never made it into GHL. From the Failed Logs sheet. Hover a tile for what it means.</div>
-            <StatTiles
-              tiles={[
-                { label: "No email, CrossFit", value: num(data, "lead_sources_failed.cf_no_email"), tone: "amber", note: "Scraped but no usable email found. Never made it to GHL." },
-                { label: "No email, HYROX", value: num(data, "lead_sources_failed.hy_no_email"), tone: "amber", note: "Scraped but no usable email found. Never made it to GHL." },
-                { label: "Total failed, both sources", value: num(data, "lead_sources_failed.total_failed"), tone: "bad", note: "Every gym that dropped out before reaching GHL, any reason, both sources combined." },
-              ]}
-            />
-            <div style={{ marginTop: 16 }}>
-              <StatTiles
-                tiles={[
-                  { label: "Duplicate, CrossFit", value: num(data, "lead_sources_failed.cf_duplicates_skipped"), tone: "muted", note: "Already existed in GHL. Skipped on purpose, not a failure." },
-                  { label: "Duplicate, HYROX", value: num(data, "lead_sources_failed.hy_duplicates_skipped"), tone: "muted", note: "Already existed in GHL. Skipped on purpose, not a failure." },
-                  { label: "Never made it, all reasons", value: sum(data, ["lead_sources_failed.total_no_email", "lead_sources_failed.total_duplicates_skipped"]), tone: "warm", note: "No-email plus duplicate-skipped, both sources. The rest of total failed is other error types." },
-                ]}
-              />
             </div>
           </div>
 

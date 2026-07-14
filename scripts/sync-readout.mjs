@@ -488,6 +488,7 @@ async function buildAppAdoption(db, gToken) {
       zp_person_id: 1, created_at: 1, status: 1, adopted: 1, opted_out: 1,
       outreach_sent_confirmed_date: 1, followup_sent_confirmed_date: 1,
       name: 1, full_name: 1, first_name: 1, last_name: 1,
+      replied_at: 1, reply_date: 1, last_reply_date: 1,
     },
   }).toArray();
   const seen = {};
@@ -505,6 +506,7 @@ async function buildAppAdoption(db, gToken) {
   // back to whatever the collection actually has, down to the raw
   // Zen Planner id if no name field is populated for that row.
   const recentlySent = [];
+  const recentlyReplied = [];
   for (const r of Object.values(seen)) {
     aaTotal++;
     if (r.status === "draft_created" && !r.outreach_sent_confirmed_date) aaDraft++;
@@ -522,8 +524,17 @@ async function buildAppAdoption(db, gToken) {
       const name = r.full_name || r.name || [r.first_name, r.last_name].filter(Boolean).join(" ") || `Member ${r.zp_person_id}`;
       recentlySent.push({ name, sent_at: r.outreach_sent_confirmed_date });
     }
+    // Only listed if the collection actually has a reply-timestamp field
+    // populated - no fallback to created_at, since that isn't when they
+    // replied and would mislabel the list.
+    const repliedAt = r.replied_at || r.reply_date || r.last_reply_date;
+    if (r.status === "replied_other" && repliedAt) {
+      const name = r.full_name || r.name || [r.first_name, r.last_name].filter(Boolean).join(" ") || `Member ${r.zp_person_id}`;
+      recentlyReplied.push({ name, replied_at: repliedAt });
+    }
   }
   recentlySent.sort((a, b) => new Date(b.sent_at || 0) - new Date(a.sent_at || 0));
+  recentlyReplied.sort((a, b) => new Date(b.replied_at || 0) - new Date(a.replied_at || 0));
   console.log(`AppAdoption: ${aaTotal} tracked members`);
 
   const notJoining = await db.collection("outreach_tracker_clean").countDocuments({ status: "not_joining" });
@@ -560,6 +571,7 @@ async function buildAppAdoption(db, gToken) {
       stage_no_response: stNoResp, stage_adopted: stAdopted, stage_not_joining: stNotJoin,
       stage_opted_out: stOptOut, stage_replied: stReplied,
       recently_sent: recentlySent.slice(0, 20),
+      recently_replied: recentlyReplied.slice(0, 20),
     },
     summary: {
       total_email_drafts_in_gmail: aaDraft + aaFupDraft, replied_app_adoption: stReplied,

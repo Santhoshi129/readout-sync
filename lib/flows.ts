@@ -104,6 +104,16 @@ export const FLOWS: Flow[] = [
           { label: "Shred415", path: "franchise_mix.shred415", tone: "hot" },
         ],
       },
+      {
+        kind: "bars",
+        title: "Failed logs, by source",
+        series: [
+          { label: "CF no email", path: "lead_sources_failed.cf_no_email", tone: "amber" },
+          { label: "HY no email", path: "lead_sources_failed.hy_no_email", tone: "amber" },
+          { label: "CF duplicates skipped", path: "lead_sources_failed.cf_duplicates_skipped", tone: "muted" },
+          { label: "HY duplicates skipped", path: "lead_sources_failed.hy_duplicates_skipped", tone: "muted" },
+        ],
+      },
     ],
     changelog: [
       { date: "2026-05-25", status: "done", text: "Went live. Dual CF/HY pipelines, Haiku enrichment, prospect scoring, GHL dedup-before-create, draft-only output." },
@@ -242,6 +252,8 @@ export const FLOWS: Flow[] = [
       { label: "No response", path: "app_adoption.no_response" },
       { label: "Needs Dave review", path: "app_adoption.needs_dave_review" },
       { label: "Not joining (confirmed)", path: "app_adoption.not_joining_confirmed" },
+      { label: "No email (Mongo)", path: "app_adoption.no_email_mongo_count", note: "Filtered out before outreach - no usable email on file." },
+      { label: "Duplicate (Mongo)", path: "app_adoption.duplicate_mongo_count", note: "Already tracked under another record - skipped on purpose." },
     ],
     charts: [
       {
@@ -250,6 +262,16 @@ export const FLOWS: Flow[] = [
         valuePath: "app_adoption.total_joined",
         totalPath: "app_adoption.total_identified",
         centerLabel: "joined",
+      },
+      {
+        kind: "bars",
+        title: "Skipped before outreach: Mongo vs source sheet",
+        series: [
+          { label: "No email, Mongo", path: "app_adoption.no_email_mongo_count", tone: "amber" },
+          { label: "No email, sheet", path: "app_adoption.no_email_sheet_count", tone: "amber" },
+          { label: "Duplicate, Mongo", path: "app_adoption.duplicate_mongo_count", tone: "muted" },
+          { label: "Duplicate, sheet", path: "app_adoption.duplicate_sheet_count", tone: "muted" },
+        ],
       },
     ],
     changelog: [
@@ -426,6 +448,8 @@ export const FLOWS: Flow[] = [
       { label: "IG ready to send (backlog)", path: "lead_gen.ig_outreach_ready", note: "ig-outreach-ready contacts NOT also tagged ig-outreach-sent - the real still-waiting queue." },
       { label: "IG DMs sent", path: "lead_gen.ig_outreach_sent" },
       { label: "Needs review (generic/not-found)", path: "lead_gen.ig_needs_review", note: "ig-needs-review - covers both generic/brand-HQ handles and no-handle-found; this flow doesn't tag those two cases differently." },
+      { label: "Needs review, never DM'd", path: "lead_gen.ig_needs_review_not_sent", note: "The subset of needs-review contacts with no ig-outreach-sent tag either - nobody's tried this gym yet." },
+      { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", note: "Tagged ig-outreach-sent but the Instagram Handle field is empty." },
       { label: "Phone follow-up due (lifetime)", path: "lead_gen.phone_followup_due" },
       { label: "Phone still due (open now)", path: "lead_gen.phone_still_due" },
     ],
@@ -442,6 +466,16 @@ export const FLOWS: Flow[] = [
           { label: "IG DMs sent (lifetime total)", path: "lead_gen.ig_outreach_sent", tone: "warm" },
           { label: "Phone due (lifetime total)", path: "lead_gen.phone_followup_due", tone: "amber" },
           { label: "Phone due (still open now)", path: "lead_gen.phone_still_due", tone: "hot" },
+        ],
+      },
+      {
+        kind: "bars",
+        title: "Data-quality flags",
+        series: [
+          { label: "Ready, then sent", path: "lead_gen.ig_outreach_ready_and_sent", tone: "warm" },
+          { label: "Sent, no ready tag", path: "lead_gen.ig_outreach_sent_only", tone: "hot" },
+          { label: "Needs review, never DM'd", path: "lead_gen.ig_needs_review_not_sent", tone: "bad" },
+          { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", tone: "warm" },
         ],
       },
     ],
@@ -641,11 +675,21 @@ export const FLOWS: Flow[] = [
       "The unmatched count is the size of that cleanup backlog - it should trend toward zero as handles get filled in.",
     ],
     metrics: [
-      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", note: "Contacts tagged ig-review-noted whose outreach date may still be stale - trends down as handles are added." },
       { label: "Matched (fixed)", path: "lead_gen.ig_duplicate_matched", note: "Tagged ig-duplicate-matched - this workflow found a fresh match and corrected the outreach date." },
+      { label: "Unmatched (review backlog)", path: "data_integrity.ig_unmatched_duplicates", note: "Contacts tagged ig-review-noted whose outreach date may still be stale - trends down as handles are added." },
       { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", note: "Tagged ig-outreach-sent but the Instagram Handle field is empty - exactly the situation this workflow exists to catch and fix." },
     ],
-    charts: [],
+    charts: [
+      {
+        kind: "bars",
+        title: "Duplicate cleanup, by outcome",
+        series: [
+          { label: "Matched (fixed)", path: "lead_gen.ig_duplicate_matched", tone: "hot" },
+          { label: "Unmatched (backlog)", path: "data_integrity.ig_unmatched_duplicates", tone: "bad" },
+          { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", tone: "warm" },
+        ],
+      },
+    ],
     changelog: [
       { date: "2026-07-07", status: "done", text: "Updated version live. Nightly retry with fuzzy/substring matching, full pagination, one-shot alerts, no spam on repeat failure." },
     ],

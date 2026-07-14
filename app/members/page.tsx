@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Donut, Trend, StatTiles } from "@/components/Charts";
+import { Funnel, Bars, Ring, Donut, Trend } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
@@ -104,35 +104,39 @@ export default async function MembersDashboard() {
             </div>
           </div>
 
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Skipped before outreach</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>No usable email, or already tracked. Hover a tile for what it means.</div>
-            <StatTiles
-              tiles={[
-                { label: "No email, Mongo tracker", value: num(data, "app_adoption.no_email_mongo_count"), tone: "amber", note: "Members in outreach_tracker_clean with no usable email on file." },
-                { label: "No email, source sheet", value: num(data, "app_adoption.no_email_sheet_count"), tone: "amber", note: "Same check, straight from the source Google Sheet. Compare against the Mongo count to spot sync gaps." },
-                { label: "Duplicate, Mongo tracker", value: num(data, "app_adoption.duplicate_mongo_count"), tone: "muted", note: "Already tracked under another record. Skipped on purpose, not a failure." },
-                { label: "Duplicate, source sheet", value: num(data, "app_adoption.duplicate_sheet_count"), tone: "muted", note: "Same check, straight from the source Google Sheet." },
-                { label: "Needs Dave's review", value: num(data, "app_adoption.needs_dave_review"), tone: "bad", note: "Replied with something that isn't a clean yes/no. Waiting on a manual read." },
-              ]}
-            />
-          </div>
-
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently sent</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real send timestamps from MongoDB, most recent first.</div>
-            {(data?.app_adoption?.recently_sent?.length ?? 0) > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {data!.app_adoption.recently_sent.slice(0, 10).map((m, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
-                    <span style={{ fontSize: 13.5 }}>{m.name}</span>
-                    <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.sent_at}</span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No send timestamps in the current live payload yet.</div>
-            )}
+          <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
+            <div className="card" style={{ padding: 32 }}>
+              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently sent</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real send timestamps from MongoDB, most recent first.</div>
+              {(data?.app_adoption?.recently_sent?.length ?? 0) > 0 ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {data!.app_adoption.recently_sent.slice(0, 10).map((m, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
+                      <span style={{ fontSize: 13.5 }}>{m.name}</span>
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.sent_at}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No send timestamps in the current live payload yet.</div>
+              )}
+            </div>
+            <div className="card" style={{ padding: 32 }}>
+              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real reply timestamps from MongoDB, most recent first.</div>
+              {(data?.app_adoption?.recently_replied?.length ?? 0) > 0 ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {data!.app_adoption.recently_replied.slice(0, 10).map((m, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
+                      <span style={{ fontSize: 13.5 }}>{m.name}</span>
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.replied_at}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No reply timestamps in the current live payload yet.</div>
+              )}
+            </div>
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

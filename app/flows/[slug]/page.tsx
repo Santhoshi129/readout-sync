@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import { getReadout, pick, Readout } from "@/lib/readout";
-import { flowBySlug, FLOWS, Metric, ChartSpec } from "@/lib/flows";
-import { fmt, longDate } from "@/lib/format";
+import { flowBySlug, FLOWS, ChartSpec } from "@/lib/flows";
+import { longDate } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
 import { Lens } from "@/components/Lens";
 import { Changelog } from "@/components/Changelog";
-import { Ring, Funnel, Bars } from "@/components/Charts";
+import { Ring, Funnel, Bars, StatTiles } from "@/components/Charts";
 
 // Not force-dynamic anymore: that setting overrides fetch-level revalidation
 // and forces a brand-new n8n execution on every single page load. Now the page
@@ -68,10 +68,17 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
             </div>
 
             {flow.metrics.length > 0 && (
-              <div className="grid grid-4" style={{ marginBottom: flow.charts.length ? 28 : 0 }}>
-                {flow.metrics.map((m) => (
-                  <MetricCard key={m.path + m.label} m={m} data={data} />
-                ))}
+              <div style={{ marginBottom: flow.charts.length ? 28 : 0 }}>
+                <StatTiles
+                  tiles={flow.metrics.map((m) => ({
+                    label: m.label,
+                    value: num(data, m.path),
+                    note: m.note,
+                    suffix: m.suffix,
+                    flag: m.flag,
+                    tone: m.flag === "canary" ? "bad" : m.flag === "cached" ? "muted" : "amber",
+                  }))}
+                />
               </div>
             )}
 
@@ -126,26 +133,6 @@ export default async function FlowPage({ params, searchParams }: { params: { slu
         <div className="foot">Every number above is live via the Readout cache sync · {flow.name}</div>
       </div>
     </>
-  );
-}
-
-function MetricCard({ m, data }: { m: Metric; data: Readout | null }) {
-  const raw = pick(data, m.path);
-  const val = m.suffix === "%" ? (raw == null ? "-" : `${raw}`) : fmt(raw);
-  return (
-    <div className="card">
-      <div className="stat-label">{m.label}</div>
-      <div className="stat-value" style={{ fontSize: 32 }}>
-        {val}
-        {m.suffix && raw != null && <span className="stat-suffix">{m.suffix}</span>}
-      </div>
-      {m.flag && m.flag !== "live" && (
-        <span className={`chip ${m.flag}`} style={{ marginTop: 10 }}>
-          {m.flag === "cached" ? "cached" : m.flag === "not-instrumented" ? "not instrumented" : "canary"}
-        </span>
-      )}
-      {m.note && <p style={{ color: "var(--ink-faint)", fontSize: 11.5, lineHeight: 1.5, marginTop: 10 }}>{m.note}</p>}
-    </div>
   );
 }
 

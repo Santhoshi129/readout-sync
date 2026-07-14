@@ -1,10 +1,10 @@
 import { Topbar } from "@/components/Topbar";
-import { Donut, StatTiles } from "@/components/Charts";
+import { Donut, StatTiles, Bars } from "@/components/Charts";
 import { ParetoChart } from "@/components/ParetoChart";
 import { QuickWinsMatrix } from "@/components/QuickWinsMatrix";
-import { PainPointRanking } from "@/components/PainPointRanking";
+import { ConnectionMap } from "@/components/ConnectionMap";
 import { EvidenceTable } from "@/components/EvidenceTable";
-import { getRetentionMatrix, label } from "@/lib/retention-matrix";
+import { getRetentionMatrix, label, ACTIONABLE_TEXT } from "@/lib/retention-matrix";
 import { longDate } from "@/lib/format";
 
 export const revalidate = 3600;
@@ -31,9 +31,7 @@ export default function RetentionResearch() {
       }))
   );
 
-  // Plain-language executive summary - the "read this in 30 seconds"
-  // layer. Every number here is derived, nothing hand-typed, so it stays
-  // true as the underlying data grows.
+  // Plain-language executive summary - the "read this in 30 seconds" layer.
   const totalMentions = rows.reduce((s, r) => s + r.frequency, 0);
   let running = 0;
   let eightyCount = rows.length;
@@ -48,11 +46,15 @@ export default function RetentionResearch() {
     : memberShare <= 35 ? "gym owners describing what they're seeing, more than members speaking directly"
     : "a fairly even mix of member and owner voices";
 
+  const actionableMentions = { yes: 0, partial: 0, no: 0 };
+  rows.forEach((r) => { actionableMentions[r.twu_actionable] += r.frequency; });
+  const fixablePct = totalMentions > 0 ? Math.round((actionableMentions.yes / totalMentions) * 100) : 0;
+
   return (
     <>
       <Topbar version="Community Research v1" fetchedAt={fetchedAt} crossLinkHref="/" crossLinkLabel="All systems" />
       <div className="wrap">
-        <section style={{ padding: "56px 0 40px" }}>
+        <section style={{ padding: "48px 0 28px" }}>
           <div className="eyebrow" style={{ marginBottom: 14 }}>Community Research · r/CrossFit · r/HYROX · r/GymOwners</div>
           <div className="hero-sub">
             {label(top.pain_point)} is where members are quietly walking out the door.
@@ -60,81 +62,91 @@ export default function RetentionResearch() {
           <p className="hero-copy">
             Across {report.total_classified_items} retention-relevant discussions, {label(top.pain_point).toLowerCase()} was cited
             more than any other reason members disengage — {top.frequency} mentions, {top.member_mentions} of them from members directly.
+            <strong style={{ color: "var(--ink)" }}> This particular one isn't fixable with a feature</strong> — it's a culture problem, not a software problem.
           </p>
         </section>
 
-        <div className="card" style={{ padding: 28, marginBottom: 40, borderLeft: "3px solid var(--amber)" }}>
-          <div className="stat-label" style={{ marginBottom: 14 }}>In plain terms</div>
-          <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 10, fontSize: 14.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
+        <div className="card" style={{ padding: 24, marginBottom: 28, borderLeft: "3px solid var(--amber)" }}>
+          <div className="stat-label" style={{ marginBottom: 12 }}>In plain terms</div>
+          <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 8, fontSize: 14, color: "var(--ink-dim)", lineHeight: 1.6 }}>
             <li>
-              Fixing just <strong style={{ color: "var(--ink)" }}>{eightyCount} of the {rows.length} pain points</strong> below would address roughly <strong style={{ color: "var(--ink)" }}>80% of everything members and owners are complaining about</strong> — this isn't 13 equal-sized problems, it's a short list that matters most.
+              Fixing just <strong style={{ color: "var(--ink)" }}>{eightyCount} of {rows.length} pain points</strong> would address roughly <strong style={{ color: "var(--ink)" }}>80% of everything</strong> members and owners are saying — a short list, not 13 equal problems.
             </li>
             <li>
-              This data is coming from <strong style={{ color: "var(--ink)" }}>{voiceLean}</strong> ({memberShare}% member-voiced).
+              Only <strong style={{ color: "var(--ink)" }}>{fixablePct}% of all mentions</strong> point to something the app can directly fix. The rest is staffing, culture, or business decisions — worth knowing before scoping a sprint around this data.
             </li>
-            {bestQuickWin ? (
+            <li>
+              This data leans toward <strong style={{ color: "var(--ink)" }}>{voiceLean}</strong> ({memberShare}% member-voiced).
+            </li>
+            {bestQuickWin && (
               <li>
-                The clearest immediate opportunity: <strong style={{ color: "var(--ink)" }}>{bestQuickWin.solution}</strong>, addressing {label(bestQuickWin.parentPainPoint).toLowerCase()} — reported as working well and cheap to put in place.
+                Clearest immediate move: <strong style={{ color: "var(--ink)" }}>{bestQuickWin.solution}</strong>, addressing {label(bestQuickWin.parentPainPoint).toLowerCase()} — reported as working well and cheap to put in place.
               </li>
-            ) : (
-              <li>No solution yet clears the bar for "cheap and clearly working" — the quick-wins map below shows what's closest.</li>
             )}
           </ul>
         </div>
 
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 28 }}>
           <StatTiles
             tiles={[
-              { label: "Discussions analyzed", value: report.total_classified_items, note: `Across r/${report.subreddits.join(", r/")}.` },
+              { label: "Discussions analyzed", value: report.total_classified_items, note: `Across r/${report.subreddits.join(", r/")}. Early pilot — not yet enough volume to bet a roadmap on.` },
               { label: "Pain point categories", value: rows.length, note: "Fixed taxonomy — every item mapped to one of these, not free text." },
+              { label: "App-fixable mentions", value: fixablePct, suffix: "%", note: "Share of all mentions pointing to something the product can directly address." },
               { label: "Member-voiced share", value: memberShare, suffix: "%", note: `${totalMember} member mentions vs ${totalOwner} owner mentions.` },
-              { label: "Leading pain point", value: null, note: label(top.pain_point) },
             ]}
           />
         </div>
 
-        <div className="section">
-          <div className="section-head">
-            <div className="section-title">Where the problem concentrates</div>
-            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Ranked by mentions, with cumulative share overlaid.</div>
-          </div>
-          <div className="card" style={{ padding: 32 }}>
+        {/* Dashboard grid - four panels visible together, not four separate
+            scroll stops. This is the actual "dashboard" surface; the
+            evidence table below is the deliberate exception since a
+            sortable table needs room to breathe. */}
+        <div className="grid grid-2" style={{ gap: 20, marginBottom: 20 }}>
+          <div className="card" style={{ padding: 26 }}>
+            <div className="section-head">
+              <div className="section-title">Where the problem concentrates</div>
+              <span style={{ fontSize: 12, color: "var(--ink-faint)" }}>80/20 view</span>
+            </div>
             <ParetoChart rows={rows} />
           </div>
-        </div>
 
-        <div className="section">
-          <div className="section-head">
-            <div className="section-title">Pain points, ranked</div>
-            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Click any row to see its solutions.</div>
-          </div>
-          <div className="card" style={{ padding: 28 }}>
-            <PainPointRanking rows={rows} />
-          </div>
-        </div>
-
-        <div className="section">
-          <div className="grid grid-2" style={{ gap: 24 }}>
-            <div className="card" style={{ padding: 32 }}>
-              <div className="section-head">
-                <div className="section-title">Quick wins map</div>
-              </div>
-              <QuickWinsMatrix points={quadrantPoints} />
+          <div className="card" style={{ padding: 26 }}>
+            <div className="section-head">
+              <div className="section-title">Quick wins map</div>
+              <span style={{ fontSize: 12, color: "var(--ink-faint)" }}>cheap &amp; working →</span>
             </div>
-            <div className="card" style={{ padding: 28 }}>
-              <div className="section-head">
-                <div className="section-title">Who's talking</div>
-              </div>
-              <Donut
-                segments={[
-                  { label: "Members", value: totalMember, tone: "cold" },
-                  { label: "Owners", value: totalOwner, tone: "amber" },
+            <QuickWinsMatrix points={quadrantPoints} />
+          </div>
+
+          <div className="card" style={{ padding: 26 }}>
+            <div className="section-head">
+              <div className="section-title">Pain point → solution map</div>
+              <span style={{ fontSize: 12, color: "var(--ink-faint)" }}>colored by app-fixability</span>
+            </div>
+            <ConnectionMap rows={rows} />
+          </div>
+
+          <div className="card" style={{ padding: 26 }}>
+            <div className="section-head">
+              <div className="section-title">Who's talking, what's fixable</div>
+            </div>
+            <Donut
+              segments={[
+                { label: "Members", value: totalMember, tone: "cold" },
+                { label: "Owners", value: totalOwner, tone: "amber" },
+              ]}
+              centerLabel="mentions"
+              compact
+            />
+            <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border-soft)" }}>
+              <div className="stat-label" style={{ marginBottom: 12 }}>Mentions by fixability</div>
+              <Bars
+                rows={[
+                  { label: ACTIONABLE_TEXT.yes, value: actionableMentions.yes, tone: "hot" },
+                  { label: ACTIONABLE_TEXT.partial, value: actionableMentions.partial, tone: "amber" },
+                  { label: ACTIONABLE_TEXT.no, value: actionableMentions.no, tone: "bad" },
                 ]}
-                centerLabel="mentions"
               />
-              <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)", lineHeight: 1.6 }}>
-                Each discussion is tagged by whether it reads as a gym owner's business perspective or a member's customer perspective.
-              </div>
             </div>
           </div>
         </div>
@@ -142,43 +154,17 @@ export default function RetentionResearch() {
         <div className="section">
           <div className="section-head">
             <div className="section-title">Evidence table</div>
-            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Every pain point × solution pair, sortable and searchable.</div>
+            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Every pain point × solution, sortable, searchable, filterable by fixability.</div>
           </div>
-          <div className="card" style={{ padding: 28 }}>
+          <div className="card" style={{ padding: 26 }}>
             <EvidenceTable rows={rows} />
           </div>
         </div>
 
-        <div className="section">
-          <div className="section-head">
-            <div className="section-title">How to read this report</div>
-          </div>
-          <div className="card" style={{ padding: 28 }}>
-            <div className="grid grid-2" style={{ gap: 28 }}>
-              <div>
-                <div className="stat-label" style={{ marginBottom: 12 }}>Methodology</div>
-                <div style={{ fontSize: 13, color: "var(--ink-dim)", lineHeight: 1.8 }}>
-                  Posts and comments pulled from r/CrossFit, r/HYROX, and r/GymOwners, narrowed by a keyword pre-filter, then
-                  classified against a fixed 14-category pain-point taxonomy. Each item is scored for relevance, perspective
-                  (owner vs. member), and — where a fix is mentioned — effectiveness and implementation difficulty on a 1–5 scale.
-                </div>
-              </div>
-              <div>
-                <div className="stat-label" style={{ marginBottom: 12 }}>Reading the quadrant</div>
-                <div style={{ fontSize: 13, color: "var(--ink-dim)", lineHeight: 1.8 }}>
-                  Bubble position is difficulty (x) vs. reported effectiveness (y); size is how often that solution came up.
-                  Top-left is where to look first — solutions that are cheap to run and reported as actually working.
-                </div>
-              </div>
-            </div>
-            <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--border-soft)", fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)" }}>
-              First classification pass, generated {longDate(report.generated_at)} — figures will grow as remaining subreddit data is processed.
-            </div>
-          </div>
-        </div>
-
-        <div className="foot">
-          Community Research · Reddit scrape → keyword pre-filter → classification → aggregated matrix. Independent from Retention Signal.
+        <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid var(--border-soft)", fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)", lineHeight: 1.7 }}>
+          Methodology: r/CrossFit, r/HYROX, r/GymOwners → keyword pre-filter → classified against a fixed 14-category taxonomy →
+          scored for relevance, perspective, and (where a fix is named) effectiveness/difficulty on a 1–5 scale. First pass,
+          generated {longDate(report.generated_at)}. Independent from Retention Signal.
         </div>
       </div>
     </>

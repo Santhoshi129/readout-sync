@@ -80,3 +80,23 @@ export function label(key: string): string {
 export function description(key: string): string {
   return PAIN_POINT_DESCRIPTIONS[key] || "";
 }
+
+// Plain-language readings of the 1-5 scores, for anyone who doesn't want
+// to mentally convert "4/5" into a judgment call. Number stays visible
+// alongside these for anyone who does want the precise scale.
+const EFFECTIVENESS_WORDS: Record<number, string> = {
+  1: "Didn't work", 2: "Mixed results", 3: "Somewhat effective", 4: "Worked well", 5: "Highly effective",
+};
+const DIFFICULTY_WORDS: Record<number, string> = {
+  1: "Trivial to do", 2: "Easy", 3: "Moderate effort", 4: "Significant effort", 5: "Major undertaking",
+};
+
+export function effectivenessLabel(n: number | null): string {
+  if (n == null) return "–";
+  return EFFECTIVENESS_WORDS[n] || `${n}/5`;
+}
+
+export function difficultyLabel(n: number | null): string {
+  if (n == null) return "–";
+  return DIFFICULTY_WORDS[n] || `${n}/5`;
+}

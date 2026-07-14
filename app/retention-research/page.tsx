@@ -2,6 +2,7 @@ import { Topbar } from "@/components/Topbar";
 import { Donut, StatTiles } from "@/components/Charts";
 import { QuickWinsMatrix } from "@/components/QuickWinsMatrix";
 import { PainPointRanking } from "@/components/PainPointRanking";
+import { EvidenceTable } from "@/components/EvidenceTable";
 import { getRetentionMatrix, label } from "@/lib/retention-matrix";
 import { longDate } from "@/lib/format";
 
@@ -88,6 +89,16 @@ export default function RetentionResearch() {
                 Each discussion is tagged by whether it reads as a gym owner's business perspective or a member's customer perspective.
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="section-head">
+            <div className="section-title">Evidence table</div>
+            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Every pain point × solution pair, sortable and searchable.</div>
+          </div>
+          <div className="card" style={{ padding: 28 }}>
+            <EvidenceTable rows={rows} />
           </div>
         </div>
 

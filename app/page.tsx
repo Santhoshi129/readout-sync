@@ -1,5 +1,6 @@
 import { getReadout } from "@/lib/readout";
 import { getLatestRunSummary, getRetentionFindings } from "@/lib/retention";
+import { getRetentionMatrix, label as rmLabel } from "@/lib/retention-matrix";
 import { FLOWS } from "@/lib/flows";
 import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
@@ -13,6 +14,7 @@ export default async function Landing() {
     getLatestRunSummary(),
     getRetentionFindings(),
   ]);
+  const communityResearch = getRetentionMatrix();
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
@@ -120,6 +122,32 @@ export default async function Landing() {
                 ))}
               </div>
             )}
+          </div>
+        </a>
+
+        <a href="/retention-research" className="card click" style={{ padding: 40, marginBottom: 32 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Community Research</span>
+              <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Community Research</div>
+              <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
+                Reddit discussions from r/CrossFit, r/HYROX, and r/GymOwners, classified against a fixed pain-point taxonomy and scored for effectiveness and difficulty — an independent read on why members actually leave.
+              </div>
+              <div style={{ display: "flex", gap: 32 }}>
+                <div>
+                  <div className="stat-label">Discussions analyzed</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_classified_items)}</div>
+                </div>
+                <div>
+                  <div className="stat-label">Categories</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.matrix.length)}</div>
+                </div>
+                <div>
+                  <div className="stat-label">Leading pain point</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{rmLabel(communityResearch.matrix[0]?.pain_point)}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </a>
 

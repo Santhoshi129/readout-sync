@@ -552,7 +552,7 @@ export function ReplyBreakdown({
 // explains itself when someone actually wants to know. This is the same
 // visual language as the flow detail pages' "Report: live impact" tiles,
 // reused here so the main dashboards get it too.
-export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tone?: string }[] }) {
+export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tone?: string; suffix?: string; flag?: string }[] }) {
   return (
     <div className="grid grid-3" style={{ gap: 16 }}>
       {tiles.map((t, i) => (
@@ -562,20 +562,35 @@ export function StatTiles({ tiles }: { tiles: { label: string; value: number | n
   );
 }
 
-function StatTile({ label, value, note, tone }: { label: string; value: number | null; note?: string; tone?: string }) {
+function StatTile({ label, value, note, tone, suffix, flag }: { label: string; value: number | null; note?: string; tone?: string; suffix?: string; flag?: string }) {
   const [hover, setHover] = useState(false);
   return (
     <div
       className="card"
-      style={{ padding: 24 }}
+      style={{ padding: 24, position: "relative", overflow: "hidden" }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
-        {label}
+      <div
+        style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 2,
+          background: `linear-gradient(90deg, ${TONE[tone || "amber"]}, transparent)`,
+          opacity: hover ? 1 : 0.5, transition: "opacity 200ms ease",
+        }}
+      />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
+          {label}
+        </div>
+        {flag && flag !== "live" && (
+          <span className={`chip ${flag}`} style={{ fontSize: 9 }}>
+            {flag === "cached" ? "cached" : flag === "not-instrumented" ? "n/a" : "canary"}
+          </span>
+        )}
       </div>
       <div style={{ fontFamily: "var(--font-head)", fontSize: 32, fontWeight: 800, marginTop: 8 }}>
         <Counter value={value} />
+        {suffix && value != null && <span className="stat-suffix">{suffix}</span>}
       </div>
       {note && (
         <div

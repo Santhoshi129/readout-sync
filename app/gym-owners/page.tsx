@@ -203,11 +203,13 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="eyebrow muted" style={{ marginBottom: 16 }}>Reply intelligence</div>
-          <div className="grid grid-3" style={{ gap: 20, marginBottom: 20, alignItems: "start" }}>
-            <div className="card" style={{ padding: 28 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Email</div>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>via Reply Detector</div>
+          <div className="grid grid-4" style={{ gap: 16, marginBottom: 24, alignItems: "start" }}>
+            <div className="card" style={{ padding: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 3 }}>Email</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", marginBottom: 12 }}>via Reply Detector</div>
               <Donut
+                size={110}
+                compact
                 centerLabel="replied"
                 centerValue={num(data, "lead_gen.email_replied")}
                 segments={[
@@ -224,17 +226,19 @@ export default async function GymOwnersDashboard() {
                 if (classified === knownReplies) return null;
                 const behind = classified < knownReplies;
                 return (
-                  <div className="stat-flag" style={{ marginTop: 14, fontSize: 11 }}>
-                    Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}).
+                  <div className="stat-flag" style={{ marginTop: 12, fontSize: 10.5 }}>
+                    Classified ({classified}) {behind ? "trails" : "exceeds"} raw ({knownReplies}).
                   </div>
                 );
               })()}
             </div>
 
-            <div className="card" style={{ padding: 28 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram, main channel</div>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Mari classifies by hand</div>
+            <div className="card" style={{ padding: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 3 }}>Instagram, main</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", marginBottom: 12 }}>Mari, by hand</div>
               <Donut
+                size={110}
+                compact
                 centerLabel="replied"
                 segments={[
                   { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
@@ -243,10 +247,12 @@ export default async function GymOwnersDashboard() {
               />
             </div>
 
-            <div className="card" style={{ padding: 28 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching, via email redirect</div>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Auto-responder feeder</div>
+            <div className="card" style={{ padding: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 3 }}>Alt, email redirect</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", marginBottom: 12 }}>Auto-responder feeder</div>
               <Donut
+                size={110}
+                compact
                 centerLabel="replied"
                 segments={[
                   { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
@@ -254,20 +260,22 @@ export default async function GymOwnersDashboard() {
                 ]}
               />
             </div>
-          </div>
 
-          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching, via IG Bridge</div>
-            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Positive IG reply + redirect email feeder</div>
-            <Donut
-              centerLabel="replied"
-              segments={[
-                { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
-                { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
-                { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
-                { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
-              ]}
-            />
+            <div className="card" style={{ padding: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 3 }}>Alt, IG Bridge</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", marginBottom: 12 }}>IG reply + redirect feeder</div>
+              <Donut
+                size={110}
+                compact
+                centerLabel="replied"
+                segments={[
+                  { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
+                  { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
+                  { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
+                  { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
+                ]}
+              />
+            </div>
           </div>
 
           {/* Email funnel: strictly sequential, same channel end to end.

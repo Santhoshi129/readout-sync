@@ -281,6 +281,8 @@ export function Donut({
   segments,
   centerLabel,
   centerValue,
+  size = 200,
+  compact = false,
 }: {
   segments: { label: string; value: number | null; tone: string }[];
   centerLabel: string;
@@ -289,6 +291,10 @@ export function Donut({
   // middle matches that instead of the sum of these segments, which can
   // legitimately differ when classification runs behind or double-tags.
   centerValue?: number | null;
+  // Smaller footprint for tight grids (e.g. 4-across) without changing
+  // every other Donut on the dashboard.
+  size?: number;
+  compact?: boolean;
 }) {
   const mounted = useMounted();
   const [hover, setHover] = useState<number | null>(null);
@@ -311,8 +317,8 @@ export function Donut({
   const active = hover != null ? arcs[hover] : null;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 36, flexWrap: "wrap" }}>
-      <svg width="200" height="200" viewBox="0 0 200 200" style={{ flex: "none" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: compact ? 16 : 36, flexWrap: "wrap" }}>
+      <svg width={size} height={size} viewBox="0 0 200 200" style={{ flex: "none" }}>
         <circle cx="100" cy="100" r={R} fill="none" stroke="#161616" strokeWidth={SW} />
         {arcs.map((a, i) =>
           a.len > 0 ? (
@@ -346,22 +352,22 @@ export function Donut({
         </text>
       </svg>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1, minWidth: 200 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: compact ? 6 : 10, flex: 1, minWidth: compact ? 110 : 200 }}>
         {arcs.map((a, i) => (
           <div
             key={a.label}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover((h) => (h === i ? null : h))}
             style={{
-              display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
-              padding: "6px 8px", margin: "-6px -8px", borderRadius: 8,
+              display: "flex", alignItems: "center", gap: compact ? 6 : 10, cursor: "pointer",
+              padding: compact ? "3px 4px" : "6px 8px", margin: compact ? "-3px -4px" : "-6px -8px", borderRadius: 8,
               background: hover === i ? "rgba(201,168,76,0.06)" : "transparent",
               transition: "background 150ms ease",
             }}
           >
             <i className="dot-legend" style={{ background: TONE[a.tone] || "var(--amber)", flex: "none" }} />
-            <span style={{ fontSize: 13.5, color: "var(--ink-dim)", flex: 1 }}>{a.label}</span>
-            <span style={{ fontSize: 14.5, fontWeight: 700 }}><Counter value={a.value} /></span>
+            <span style={{ fontSize: compact ? 11.5 : 13.5, color: "var(--ink-dim)", flex: 1 }}>{a.label}</span>
+            <span style={{ fontSize: compact ? 12.5 : 14.5, fontWeight: 700 }}><Counter value={a.value} /></span>
             <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)", width: 38, textAlign: "right" }}>{a.pct}%</span>
           </div>
         ))}

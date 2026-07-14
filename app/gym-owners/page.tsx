@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, GeoList, Trend, StatTiles } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, GeoList, Trend, Donut } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
@@ -202,48 +202,66 @@ export default async function GymOwnersDashboard() {
             })()}
           </div>
 
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Reply intelligence</div>
-            <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 10, color: "var(--ink-dim)" }}>Email · via Reply Detector classifier</div>
-            <StatTiles
-              tiles={[
-                { label: "Positive", value: num(data, "reply_breakdown.interested"), tone: "hot" },
-                { label: "Negative, unsubscribed", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
-                { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm", note: "Redirected us to another address. Feeds the Alt Email pipeline." },
-                { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
-                { label: "Other, uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
-              ]}
-            />
-            {(() => {
-              const classified = num(data, "reply_breakdown.total_classified") ?? 0;
-              const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
-              if (classified === knownReplies) return null;
-              const behind = classified < knownReplies;
-              return (
-                <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
-                  Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}). Classifier is {behind ? "behind" : "double-counting somewhere"} upstream.
-                </div>
-              );
-            })()}
+          <div className="eyebrow muted" style={{ marginBottom: 16 }}>Reply intelligence</div>
+          <div className="grid grid-3" style={{ gap: 20, marginBottom: 20, alignItems: "start" }}>
+            <div className="card" style={{ padding: 28 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Email</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>via Reply Detector</div>
+              <Donut
+                centerLabel="replied"
+                centerValue={num(data, "lead_gen.email_replied")}
+                segments={[
+                  { label: "Positive", value: num(data, "reply_breakdown.interested"), tone: "hot" },
+                  { label: "Negative", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
+                  { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
+                  { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
+                  { label: "Other", value: num(data, "reply_breakdown.other"), tone: "muted" },
+                ]}
+              />
+              {(() => {
+                const classified = num(data, "reply_breakdown.total_classified") ?? 0;
+                const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
+                if (classified === knownReplies) return null;
+                const behind = classified < knownReplies;
+                return (
+                  <div className="stat-flag" style={{ marginTop: 14, fontSize: 11 }}>
+                    Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}).
+                  </div>
+                );
+              })()}
+            </div>
 
-            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 26, marginBottom: 10, color: "var(--ink-dim)" }}>Instagram, main channel · Mari classifies by hand</div>
-            <StatTiles
-              tiles={[
-                { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
-                { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
-              ]}
-            />
+            <div className="card" style={{ padding: 28 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram, main channel</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Mari classifies by hand</div>
+              <Donut
+                centerLabel="replied"
+                segments={[
+                  { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
+                  { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
+                ]}
+              />
+            </div>
 
-            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 26, marginBottom: 10, color: "var(--ink-dim)" }}>Alt Outreaching, via email auto-responder redirect</div>
-            <StatTiles
-              tiles={[
-                { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
-                { label: "Not interested", value: num(data, "alt_email_outreach.not_interested"), tone: "bad" },
-              ]}
-            />
-            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 18, marginBottom: 10, color: "var(--ink-dim)" }}>Alt Outreaching, via IG Bridge (positive + redirect)</div>
-            <StatTiles
-              tiles={[
+            <div className="card" style={{ padding: 28 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching, via email redirect</div>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Auto-responder feeder</div>
+              <Donut
+                centerLabel="replied"
+                segments={[
+                  { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
+                  { label: "Not interested", value: num(data, "alt_email_outreach.not_interested"), tone: "bad" },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching, via IG Bridge</div>
+            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 16 }}>Positive IG reply + redirect email feeder</div>
+            <Donut
+              centerLabel="replied"
+              segments={[
                 { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
                 { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
                 { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },

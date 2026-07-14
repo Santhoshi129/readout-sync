@@ -431,13 +431,17 @@ export const FLOWS: Flow[] = [
     ],
     charts: [
       {
-        kind: "funnel",
+        // Plain bars, not a funnel: "IG ready" is the current backlog and
+        // "IG DMs sent" is the lifetime total ever sent, so sent is always
+        // much bigger than ready and a step-over-step "% kept" number
+        // (the funnel chart computes one automatically) is meaningless here.
+        kind: "bars",
         title: "IG → phone hand-off",
         series: [
-          { label: "IG ready", path: "lead_gen.ig_outreach_ready", tone: "cold" },
-          { label: "IG DMs sent", path: "lead_gen.ig_outreach_sent", tone: "warm" },
-          { label: "Phone due", path: "lead_gen.phone_followup_due", tone: "amber" },
-          { label: "Still due", path: "lead_gen.phone_still_due", tone: "hot" },
+          { label: "IG ready to send (backlog now)", path: "lead_gen.ig_outreach_ready", tone: "cold" },
+          { label: "IG DMs sent (lifetime total)", path: "lead_gen.ig_outreach_sent", tone: "warm" },
+          { label: "Phone due (lifetime total)", path: "lead_gen.phone_followup_due", tone: "amber" },
+          { label: "Phone due (still open now)", path: "lead_gen.phone_still_due", tone: "hot" },
         ],
       },
     ],

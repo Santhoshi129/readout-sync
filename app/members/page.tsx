@@ -32,7 +32,7 @@ export default async function MembersDashboard() {
 
         {syncStatus && !syncStatus.ok && (
           <div className="banner err" style={{ marginTop: 20 }}>
-            Sync is failing - everything below is from the last time it worked{syncStatus.last_success_at ? ` (${new Date(syncStatus.last_success_at).toLocaleString()})` : ""}, not current data. Last attempt{syncStatus.last_attempt_at ? ` at ${new Date(syncStatus.last_attempt_at).toLocaleString()}` : ""} failed with: {syncStatus.last_error || "unknown error"}.
+            Sync is failing. Everything below is from the last time it worked{syncStatus.last_success_at ? ` (${new Date(syncStatus.last_success_at).toLocaleString()})` : ""}, not current data. Last attempt{syncStatus.last_attempt_at ? ` at ${new Date(syncStatus.last_attempt_at).toLocaleString()}` : ""} failed with: {syncStatus.last_error || "unknown error"}.
           </div>
         )}
 
@@ -43,7 +43,7 @@ export default async function MembersDashboard() {
           if (ageMin < 20) return null;
           return (
             <div className="banner err" style={{ marginTop: 20 }}>
-              This data is {Math.round(ageMin)} minutes old - the sync should refresh every 10. Either it&apos;s not running, or it&apos;s writing somewhere this page isn&apos;t reading from. Numbers below are real, just not current.
+              This data is {Math.round(ageMin)} minutes old. The sync should refresh every 10. Either it&apos;s not running, or it&apos;s writing somewhere this page isn&apos;t reading from. Numbers below are real, just not current.
             </div>
           );
         })()}
@@ -52,7 +52,7 @@ export default async function MembersDashboard() {
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Blended Athletics</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Member Adoption Pulse</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations converting the existing Blended Athletics membership into active TWU app users - identified, personally invited, and tracked to adoption. Every figure below is computed live from MongoDB, GHL, and Gmail state.
+            {flows.length} automations converting the existing Blended Athletics membership into active TWU app users: identified, personally invited, and tracked to adoption. Every figure below is computed live from MongoDB, GHL, and Gmail state.
           </p>
           <MemberBriefing data={data} launchIso={launch} />
         </section>
@@ -108,7 +108,7 @@ export default async function MembersDashboard() {
           <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
             <div className="card" style={{ padding: 32 }}>
               <div className="eyebrow muted" style={{ marginBottom: 4 }}>Drafted vs sent</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>How much of what&apos;s drafted actually goes out - first invite and follow-up separately.</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>How much of what&apos;s drafted actually goes out. First invite and follow-up separately.</div>
               <Compare
                 labelA="Drafted"
                 labelB="Sent"
@@ -120,7 +120,7 @@ export default async function MembersDashboard() {
             </div>
             <div className="card" style={{ padding: 32 }}>
               <div className="eyebrow muted" style={{ marginBottom: 4 }}>Skipped before outreach</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>No usable email, or already tracked - Mongo tracker vs the source sheet.</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>No usable email, or already tracked. Mongo tracker vs the source sheet.</div>
               <Compare
                 labelA="Mongo"
                 labelB="Sheet"
@@ -141,6 +141,23 @@ export default async function MembersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently sent</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real send timestamps from MongoDB, most recent first.</div>
+            {(data?.app_adoption?.recently_sent?.length ?? 0) > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {data!.app_adoption.recently_sent.slice(0, 10).map((m, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
+                    <span style={{ fontSize: 13.5 }}>{m.name}</span>
+                    <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.sent_at}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No send timestamps in the current live payload yet.</div>
+            )}
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Community status</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Every identified member's current outcome. Hover a slice or a row for its share.</div>
             <Donut
@@ -157,7 +174,7 @@ export default async function MembersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Built from a snapshot taken every sync run (every 10 minutes). Real accumulated history, not interpolated.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Saved automatically every 10 minutes, every time the sync runs. This is real history building up over time, not a guess.</div>
             <Trend
               points={history}
               series={[

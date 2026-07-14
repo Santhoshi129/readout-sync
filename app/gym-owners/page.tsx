@@ -33,7 +33,7 @@ export default async function GymOwnersDashboard() {
 
         {syncStatus && !syncStatus.ok && (
           <div className="banner err" style={{ marginTop: 20 }}>
-            Sync is failing - everything below is from the last time it worked{syncStatus.last_success_at ? ` (${new Date(syncStatus.last_success_at).toLocaleString()})` : ""}, not current data. Last attempt{syncStatus.last_attempt_at ? ` at ${new Date(syncStatus.last_attempt_at).toLocaleString()}` : ""} failed with: {syncStatus.last_error || "unknown error"}.
+            Sync is failing. Everything below is from the last time it worked{syncStatus.last_success_at ? ` (${new Date(syncStatus.last_success_at).toLocaleString()})` : ""}, not current data. Last attempt{syncStatus.last_attempt_at ? ` at ${new Date(syncStatus.last_attempt_at).toLocaleString()}` : ""} failed with: {syncStatus.last_error || "unknown error"}.
           </div>
         )}
 
@@ -51,7 +51,7 @@ export default async function GymOwnersDashboard() {
           if (ageMin < 20) return null;
           return (
             <div className="banner err" style={{ marginTop: 20 }}>
-              This data is {Math.round(ageMin)} minutes old - the sync should refresh every 10. Either it&apos;s not running, or it&apos;s writing somewhere this page isn&apos;t reading from. Numbers below are real, just not current.
+              This data is {Math.round(ageMin)} minutes old. The sync should refresh every 10. Either it&apos;s not running, or it&apos;s writing somewhere this page isn&apos;t reading from. Numbers below are real, just not current.
             </div>
           );
         })()}
@@ -60,7 +60,7 @@ export default async function GymOwnersDashboard() {
           <span className="chip" style={{ marginBottom: 14, display: "inline-flex" }}>Train With Us</span>
           <h1 style={{ fontFamily: "var(--font-head)", fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.05 }}>Owner Outreach Intelligence</h1>
           <p style={{ color: "var(--ink-dim)", fontSize: 16, marginTop: 14, maxWidth: 680 }}>
-            {flows.length} automations running the full gym-owner acquisition motion, from first contact through email, Instagram, and phone to a booked reply. Every figure below is computed live from GHL, Sheets, and MongoDB - nothing is entered by hand.
+            {flows.length} automations running the full gym-owner acquisition motion, from first contact through email, Instagram, and phone to a booked reply. Every figure below is computed live from GHL, Sheets, and MongoDB. Nothing is entered by hand.
           </p>
           <GymOwnerBriefing data={data} launchIso={launch} />
         </section>
@@ -74,13 +74,13 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <PipelineMap
-            title="Lead journey - stage by stage"
+            title="Lead journey, stage by stage"
             note="The live shape of the gym-owner pipeline in GHL. Hover a stage for what it means; a few stages carry extra detail below the description."
             stages={[
               { name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First email just went out. In the 5-touch sequence now.", tone: "cold" },
               {
                 name: "Responded", count: num(data, "lead_gen.stage_responded"),
-                desc: "A genuinely interested reply, from either the email sequence or Alt Outreaching. Nothing moves past this - it's the goal.",
+                desc: "A genuinely interested reply, from either the email sequence or Alt Outreaching. Nothing moves past this, it's the goal.",
                 tone: "amber",
                 extra: (
                   <div>
@@ -101,7 +101,7 @@ export default async function GymOwnersDashboard() {
               { name: "No Response", count: num(data, "lead_gen.stage_no_response"), desc: "All 5 touches sent, no reply. Moves to Instagram next.", tone: "warm" },
               {
                 name: "Instagram Outreach", count: num(data, "lead_gen.stage_ig_outreach"),
-                desc: "DM sent. Positive, negative, and phone-due outcomes all stay parked at this same stage - only the tag changes.",
+                desc: "DM sent. Positive, negative, and phone-due outcomes all stay parked at this same stage, only the tag changes.",
                 tone: "hot",
                 extra: (
                   <div>
@@ -114,14 +114,14 @@ export default async function GymOwnersDashboard() {
                       ]}
                     />
                     <div style={{ color: "var(--ink-faint)", fontSize: 11, marginTop: 10, lineHeight: 1.5 }}>
-                      &quot;Phone due&quot; only counts contacts past the 10-day no-reply mark - most DM&apos;d contacts haven&apos;t hit that yet.
+                      &quot;Phone due&quot; only counts contacts past the 10-day no-reply mark. Most DM&apos;d contacts haven&apos;t hit that yet.
                     </div>
                   </div>
                 ),
               },
               {
                 name: "Phone Follow-up", count: num(data, "lead_gen.phone_followup_due"),
-                desc: "A tag, not a pipeline stage - fires when a DM got no reply past the follow-up window.",
+                desc: "A tag, not a pipeline stage. Fires when a DM got no reply past the follow-up window.",
                 tone: "muted",
                 extra: (
                   <div>
@@ -150,13 +150,13 @@ export default async function GymOwnersDashboard() {
                   />
                 ),
               },
-              { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no - reachable from New Lead, Instagram, or Alt Outreaching, not only the end of a finished sequence.", tone: "muted" },
+              { name: "Dead Lead", count: num(data, "lead_gen.stage_dead"), desc: "Unsubscribed or said no. Reachable from New Lead, Instagram, or Alt Outreaching, not only the end of a finished sequence.", tone: "muted" },
             ]}
           />
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Built from a snapshot taken every sync run (every 10 minutes). Real accumulated history, not interpolated.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Saved automatically every 10 minutes, every time the sync runs. This is real history building up over time, not a guess.</div>
             <Trend
               points={history}
               series={[
@@ -169,7 +169,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Channel effectiveness</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel - not volume, but how well each one actually converts what it sends.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel. Not volume, but how well each one actually converts what it sends.</div>
             {(() => {
               const emailSent = num(data, "lead_gen.email_outreach_sent") ?? 0;
               const emailReplied = num(data, "lead_gen.email_replied") ?? 0;
@@ -208,7 +208,7 @@ export default async function GymOwnersDashboard() {
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 680 }}>
-              What came back on each channel - positive, negative, automated.
+              What came back on each channel: positive, negative, automated.
             </div>
             <div className="grid grid-3" style={{ gap: 20 }}>
               <div>
@@ -230,15 +230,15 @@ export default async function GymOwnersDashboard() {
                   const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
                   return classified < knownReplies ? (
                     <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
-                      Classified ({classified}) trails raw replies ({knownReplies}) - classifier is behind upstream.
+                      Classified ({classified}) trails raw replies ({knownReplies}). Classifier is behind upstream.
                     </div>
                   ) : null;
                 })()}
               </div>
 
               <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram - main channel</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Mari classifies every DM reply by hand - positive or negative, no automated bucket</div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram, main channel</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Mari classifies every DM reply by hand: positive or negative, no automated bucket</div>
                 <Donut
                   centerLabel="replied"
                   segments={[
@@ -250,7 +250,7 @@ export default async function GymOwnersDashboard() {
 
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching (both feeders)</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Two different flows land here on different tags - shown together since they share the one destination stage.</div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Two different flows land here on different tags, shown together since they share the one destination stage.</div>
                 <div style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-dim)", marginBottom: 8 }}>Via email auto-responder redirect</div>
                 <Donut
                   centerLabel="replied"
@@ -276,12 +276,13 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram outreach progress</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits - separate from what they replied.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits. Separate from what they replied.</div>
             {(() => {
               const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
               const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
               const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
               const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
+              const needsReviewNotSent = num(data, "lead_gen.ig_needs_review_not_sent") ?? 0;
               const dupMatched = num(data, "lead_gen.ig_duplicate_matched") ?? 0;
               const sentNoHandle = num(data, "lead_gen.ig_sent_no_handle") ?? 0;
               return (
@@ -296,6 +297,7 @@ export default async function GymOwnersDashboard() {
                   automated={sentOnly}
                   breakdown={[
                     { label: "Needs review", value: needsReview, tone: "bad" },
+                    { label: "Needs review, never DM'd", value: needsReviewNotSent, tone: "bad" },
                     { label: "Duplicate-matched (fixed)", value: dupMatched, tone: "hot" },
                     { label: "Sent, no handle on file", value: sentNoHandle, tone: "warm" },
                   ]}
@@ -322,9 +324,33 @@ export default async function GymOwnersDashboard() {
             </div>
             <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
               <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply rate</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied \u00f7 sent - the same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied \u00f7 sent. The same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
                 <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" />
+              </div>
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Failed logs</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Gyms that never made it into GHL. From the Failed Logs sheet, by source.</div>
+            <Compare
+              labelA="CrossFit"
+              labelB="HYROX"
+              rows={[
+                { label: "No email found", a: num(data, "lead_sources_failed.cf_no_email"), b: num(data, "lead_sources_failed.hy_no_email") },
+                { label: "Duplicate, skipped", a: num(data, "lead_sources_failed.cf_duplicates_skipped"), b: num(data, "lead_sources_failed.hy_duplicates_skipped") },
+                { label: "Other failure", a: (num(data, "lead_sources_failed.cf_failed") ?? 0) - (num(data, "lead_sources_failed.cf_no_email") ?? 0) - (num(data, "lead_sources_failed.cf_duplicates_skipped") ?? 0), b: (num(data, "lead_sources_failed.hy_failed") ?? 0) - (num(data, "lead_sources_failed.hy_no_email") ?? 0) - (num(data, "lead_sources_failed.hy_duplicates_skipped") ?? 0) },
+              ]}
+            />
+            <div className="grid grid-2" style={{ gap: 16, marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
+              <div>
+                <div className="stat-label">Total failed, both sources</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_failed.total_failed")} /></div>
+              </div>
+              <div>
+                <div className="stat-label">Never made it to GHL, all reasons combined</div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={sum(data, ["lead_sources_failed.total_no_email", "lead_sources_failed.total_duplicates_skipped"])} /></div>
               </div>
             </div>
           </div>
@@ -370,7 +396,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Direct vs generic email quality</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>A direct, named contact email scores well above a generic info@ inbox - this is how clean each source's contact data actually is.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>A direct, named contact email scores well above a generic info@ inbox. This is how clean each source's contact data actually is.</div>
             <Compare
               labelA="Direct"
               labelB="Generic"
@@ -383,7 +409,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Email vs Instagram</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>The two outbound channels, head to head - volume sent and what came back.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>The two outbound channels, head to head: volume sent and what came back.</div>
             <Compare
               labelA="Email"
               labelB="Instagram"
@@ -396,7 +422,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count - the last ones to write back, either channel. Live from GHL, capped to the most recent 20 server-side.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count. The last ones to write back, either channel. Live from GHL, capped to the most recent 20.</div>
             {(data?.lead_gen?.replied_contacts?.length ?? 0) > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {data!.lead_gen.replied_contacts.slice(0, 10).map((c, i) => (

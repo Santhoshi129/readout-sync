@@ -45,7 +45,7 @@ export default async function Landing() {
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
               End-to-end gym acquisition: prospects are sourced, scored, and personally drafted, then carried through email, Instagram, and phone until they convert.
             </div>
-            <div style={{ display: "flex", gap: 32 }}>
+            <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
               <div>
                 <div className="stat-label">Automations</div>
                 <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{gymOwnerFlows.length}</div>
@@ -67,7 +67,7 @@ export default async function Landing() {
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 440 }}>
               Converts the existing membership base into active app users: members are identified, personally invited, and tracked through to adoption.
             </div>
-            <div style={{ display: "flex", gap: 32 }}>
+            <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
               <div>
                 <div className="stat-label">Automations</div>
                 <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{memberFlows.length}</div>
@@ -92,7 +92,7 @@ export default async function Landing() {
               <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
                 Reads real gym-owner conversations on Reddit, has Claude extract and score the pain points and solutions, then checks each one against published industry data — every finding traceable back to its source.
               </div>
-              <div style={{ display: "flex", gap: 32 }}>
+              <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
                 <div>
                   <div className="stat-label">Items scraped</div>
                   <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(retentionSummary?.total_items_scraped ?? null)}</div>
@@ -133,7 +133,7 @@ export default async function Landing() {
               <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
                 Reddit discussions from r/CrossFit, r/HYROX, and r/GymOwners, classified against a fixed pain-point taxonomy and scored for effectiveness and difficulty — an independent read on why members actually leave.
               </div>
-              <div style={{ display: "flex", gap: 32 }}>
+              <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
                 <div>
                   <div className="stat-label">Discussions analyzed</div>
                   <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_classified_items)}</div>

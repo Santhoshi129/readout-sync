@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Counter } from "@/components/Counter";
-import { label, description, PainPoint } from "@/lib/retention-matrix";
+import { label, description, effectivenessLabel, difficultyLabel, PainPoint } from "@/lib/retention-matrix";
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -91,10 +91,10 @@ export function PainPointRanking({ rows }: { rows: PainPoint[] }) {
                       <td style={{ padding: "10px 10px 10px 0", borderBottom: "1px solid var(--border-soft)" }}>{s.solution}</td>
                       <td style={{ padding: "10px 10px 10px 0", borderBottom: "1px solid var(--border-soft)" }}>{s.frequency}</td>
                       <td style={{ padding: "10px 10px 10px 0", borderBottom: "1px solid var(--border-soft)" }}>
-                        {s.effectiveness != null ? `${s.effectiveness}/5` : "–"}
+                        {s.effectiveness != null ? <span title={`${s.effectiveness}/5`}>{effectivenessLabel(s.effectiveness)}</span> : "–"}
                       </td>
                       <td style={{ padding: "10px 10px 10px 0", borderBottom: "1px solid var(--border-soft)" }}>
-                        {s.difficulty != null ? `${s.difficulty}/5` : "–"}
+                        {s.difficulty != null ? <span title={`${s.difficulty}/5`}>{difficultyLabel(s.difficulty)}</span> : "–"}
                       </td>
                     </tr>
                   ))}

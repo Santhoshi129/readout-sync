@@ -5,6 +5,17 @@
 // no synthetic fallback — an empty result renders an honest empty state
 // rather than fake data. Client components must not import this file, it
 // pulls in the Node-only mongodb driver.
+//
+// v2 changes:
+// - _id is projected OUT of every query. Mongo ObjectIds are not plain
+//   objects, and these rows are passed as props into client components
+//   (FindingCard, RetentionLedger); Next.js hard-errors on non-serializable
+//   props the moment real data lands.
+// - Run-summary reads filter on run_timestamp existing, so the empty
+//   documents written by the earlier misconfigured n8n insert node can
+//   never be selected as "the latest run" again.
+// - getRunHistory() added: every valid run summary, oldest first, for the
+//   run-over-run trend chart.
 
 export interface RetentionFinding {
   finding_key: string;
@@ -39,6 +50,7 @@ export interface RetentionRunSummary {
   run_timestamp: string;
   subreddits_scanned: string[];
   keywords_searched: string[];
+  sort_method?: string;
   total_posts_scraped: number;
   total_comments_scraped: number;
   total_items_scraped: number;
@@ -50,10 +62,8 @@ export interface RetentionRunSummary {
   pipeline_notes?: string;
 }
 
-// Same connection pattern as lib/readout.ts's getMongoDb() — not extracted
-// into a shared helper because that file explicitly keeps Mongo logic
-// server-only and un-exported; this mirrors it exactly rather than adding
-// a new shared module for a two-collection read.
+// Same connection pattern as lib/readout.ts's getMongoDb() — kept in sync
+// with that file rather than extracted into a shared module.
 let mongoClientPromise: Promise<any> | null = null;
 async function getMongoDb(): Promise<any | null> {
   const uri = process.env.MONGODB_URI;
@@ -78,7 +88,10 @@ export async function getRetentionFindings(): Promise<{ findings: RetentionFindi
   try {
     const rows = await db
       .collection("retention_findings")
-      .find({})
+      // finding_key must exist — guards against any malformed writes from
+      // before the n8n node fields were configured properly.
+      .find({ finding_key: { $exists: true } })
+      .project({ _id: 0 })
       .sort({ community_confidence_score: -1 })
       .toArray();
     return { findings: rows as RetentionFinding[], error: null };
@@ -93,12 +106,42 @@ export async function getLatestRunSummary(): Promise<{ summary: RetentionRunSumm
   try {
     const doc = await db
       .collection("retention_run_summary")
-      .find({})
+      .find({ run_timestamp: { $exists: true } })
+      .project({ _id: 0 })
       .sort({ run_timestamp: -1 })
       .limit(1)
       .toArray();
     return { summary: (doc[0] as RetentionRunSummary) || null, error: null };
   } catch (e: any) {
     return { summary: null, error: e?.message || "retention_run_summary query failed" };
+  }
+}
+
+// Every valid pipeline run, oldest first — one point per run for the
+// run-over-run trend. Returns [] (never fake points) when Mongo is down or
+// fewer than one run has been recorded; the chart explains itself in that
+// case instead of drawing an invented line.
+export async function getRunHistory(limit = 60): Promise<RetentionRunSummary[]> {
+  const db = await getMongoDb();
+  if (!db) return [];
+  try {
+    const rows = await db
+      .collection("retention_run_summary")
+      .find({ run_timestamp: { $exists: true } })
+      .project({
+        _id: 0,
+        run_id: 1,
+        run_timestamp: 1,
+        total_items_scraped: 1,
+        total_findings_extracted: 1,
+        findings_industry_validated: 1,
+        findings_strong_confidence: 1,
+      })
+      .sort({ run_timestamp: -1 })
+      .limit(limit)
+      .toArray();
+    return (rows as RetentionRunSummary[]).reverse();
+  } catch {
+    return [];
   }
 }

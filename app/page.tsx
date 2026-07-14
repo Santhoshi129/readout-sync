@@ -1,4 +1,5 @@
 import { getReadout } from "@/lib/readout";
+import { getLatestRunSummary, getRetentionFindings } from "@/lib/retention";
 import { FLOWS } from "@/lib/flows";
 import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
@@ -8,6 +9,10 @@ export const revalidate = 30;
 
 export default async function Landing() {
   const { data, error, fetchedAt } = await getReadout();
+  const [{ summary: retentionSummary }, { findings: retentionFindings }] = await Promise.all([
+    getLatestRunSummary(),
+    getRetentionFindings(),
+  ]);
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
@@ -76,6 +81,47 @@ export default async function Landing() {
             </div>
           </a>
         </div>
+
+        <a href="/retention-signal" className="card click" style={{ padding: 40, marginBottom: 32 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Retention Research</span>
+              <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Retention Signal</div>
+              <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
+                Reads real gym-owner conversations on Reddit, has Claude extract and score the pain points and solutions, then checks each one against published industry data — every finding traceable back to its source.
+              </div>
+              <div style={{ display: "flex", gap: 32 }}>
+                <div>
+                  <div className="stat-label">Items scraped</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(retentionSummary?.total_items_scraped ?? null)}</div>
+                </div>
+                <div>
+                  <div className="stat-label">Findings</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(retentionFindings.length)}</div>
+                </div>
+                <div>
+                  <div className="stat-label">Industry-validated</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{fmt(retentionSummary?.findings_industry_validated ?? null)}</div>
+                </div>
+              </div>
+            </div>
+            {retentionFindings.length > 0 && (
+              <div style={{ display: "flex", gap: 5, alignItems: "flex-end", height: 60 }}>
+                {retentionFindings.slice(0, 8).map((f) => (
+                  <div
+                    key={f.finding_key}
+                    title={f.pain_point}
+                    style={{
+                      width: 8, borderRadius: 3,
+                      height: Math.max(10, Math.min(60, f.community_confidence_score * 6)),
+                      background: f.confidence_band?.startsWith("Strong") ? "var(--hot)" : f.confidence_band?.startsWith("Moderate") ? "var(--amber)" : "var(--ink-faint)",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </a>
 
         {platformFlows.map((f) => (
           <a key={f.slug} href={`/flows/${f.slug}?from=/`} className="card click" style={{ padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 40 }}>

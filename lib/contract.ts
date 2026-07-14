@@ -31,6 +31,7 @@ export interface Readout {
     ig_outreach_sent: number;
     ig_outreach_sent_only: number;
     ig_needs_review: number;
+    ig_needs_review_not_sent: number;
     ig_duplicate_matched: number;
     ig_sent_no_handle: number;
     ig_replied_positive: number;
@@ -88,6 +89,7 @@ export interface Readout {
     stage_drafted: number; stage_sent: number; stage_followup: number;
     stage_no_response: number; stage_adopted: number; stage_not_joining: number;
     stage_opted_out: number; stage_replied: number;
+    recently_sent: { name: string; sent_at: string }[];
   };
   geo_distribution: { label: string; count: number; names: string[] }[];
   franchise_mix: { independent: number; f45: number; orangetheory: number; shred415: number; total_franchise: number };

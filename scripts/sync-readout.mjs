@@ -229,7 +229,10 @@ async function buildLeadGen(db, gToken) {
       if (has("ig-outreach-ready") && !has("ig-outreach-sent")) inc("igReadyOnly");
       if (has("ig-outreach-ready") && has("ig-outreach-sent")) inc("igReadyAndSent");
       if (has("ig-outreach-sent") && !has("ig-outreach-ready")) inc("igSentOnly");
-      if (has("ig-needs-review")) inc("igNeedsReview");
+      if (has("ig-needs-review")) {
+        inc("igNeedsReview");
+        if (!has("ig-outreach-sent")) inc("igNeedsReviewNotSent");
+      }
       if (has("ig-replied-positive")) inc("igPos");
       if (has("ig-replied-negative")) inc("igNeg");
       if (has("phone-followup-due")) inc("phoneDue");
@@ -404,6 +407,7 @@ async function buildLeadGen(db, gToken) {
       touch_sequence: { in_sequence: n("inSeq"), step_1: n("t1"), step_2: n("t2"), step_3: n("t3"), step_4: n("t4"), step_5: n("t5") },
       ig_outreach_ready: n("igReadyOnly"), ig_outreach_ready_and_sent: n("igReadyAndSent"), ig_outreach_sent: n("igSent"),
       ig_outreach_sent_only: n("igSentOnly"), ig_needs_review: n("igNeedsReview"),
+      ig_needs_review_not_sent: n("igNeedsReviewNotSent"),
       ig_duplicate_matched: n("igDupMatched"), ig_sent_no_handle: n("igSentNoHandle"),
       ig_replied_positive: n("igPos"), ig_replied_negative: n("igNeg"),
       replied_contacts: repliedContacts, phone_followup_due: n("phoneDue"), phone_still_due: n("phoneStillDue"),
@@ -480,7 +484,11 @@ async function buildAppAdoption(db, gToken) {
 
   const toBool = (v) => v === true || v === "TRUE" || v === "true";
   const rowsIn = await db.collection("outreach_tracker_clean").find({}, {
-    projection: { zp_person_id: 1, created_at: 1, status: 1, adopted: 1, opted_out: 1, outreach_sent_confirmed_date: 1, followup_sent_confirmed_date: 1 },
+    projection: {
+      zp_person_id: 1, created_at: 1, status: 1, adopted: 1, opted_out: 1,
+      outreach_sent_confirmed_date: 1, followup_sent_confirmed_date: 1,
+      name: 1, full_name: 1, first_name: 1, last_name: 1,
+    },
   }).toArray();
   const seen = {};
   for (const r of rowsIn) {
@@ -492,6 +500,11 @@ async function buildAppAdoption(db, gToken) {
     if (b > a) seen[id] = r;
   }
   let aaTotal = 0, aaDraft = 0, aaFupDraft = 0, aaOutConf = 0, aaFupConf = 0, aaAdopted = 0, aaOrganic = 0, aaOptedOut = 0, aaNoResp = 0, aaNeedsReview = 0, aaNoEmailMongo = 0, aaDupMongo = 0;
+  // Recently-sent list: real send timestamps straight from Mongo
+  // (outreach_sent_confirmed_date), not computed or guessed. Name falls
+  // back to whatever the collection actually has, down to the raw
+  // Zen Planner id if no name field is populated for that row.
+  const recentlySent = [];
   for (const r of Object.values(seen)) {
     aaTotal++;
     if (r.status === "draft_created" && !r.outreach_sent_confirmed_date) aaDraft++;
@@ -505,7 +518,12 @@ async function buildAppAdoption(db, gToken) {
     if (r.status === "replied_other") aaNeedsReview++;
     if (r.status === "No email") aaNoEmailMongo++;
     if (r.status === "Duplicate") aaDupMongo++;
+    if (r.outreach_sent_confirmed_date) {
+      const name = r.full_name || r.name || [r.first_name, r.last_name].filter(Boolean).join(" ") || `Member ${r.zp_person_id}`;
+      recentlySent.push({ name, sent_at: r.outreach_sent_confirmed_date });
+    }
   }
+  recentlySent.sort((a, b) => new Date(b.sent_at || 0) - new Date(a.sent_at || 0));
   console.log(`AppAdoption: ${aaTotal} tracked members`);
 
   const notJoining = await db.collection("outreach_tracker_clean").countDocuments({ status: "not_joining" });
@@ -541,6 +559,7 @@ async function buildAppAdoption(db, gToken) {
       not_joining_confirmed: notJoining, stage_drafted: stDrafted, stage_sent: stSent, stage_followup: stFollowup,
       stage_no_response: stNoResp, stage_adopted: stAdopted, stage_not_joining: stNotJoin,
       stage_opted_out: stOptOut, stage_replied: stReplied,
+      recently_sent: recentlySent.slice(0, 20),
     },
     summary: {
       total_email_drafts_in_gmail: aaDraft + aaFupDraft, replied_app_adoption: stReplied,

@@ -69,7 +69,7 @@ export default async function MembersDashboard() {
             stages={[
               { name: "Drafted", count: num(data, "app_adoption.stage_drafted"), desc: "Invite drafted in Gmail, waiting on a human send.", tone: "cold" },
               { name: "Sent", count: num(data, "app_adoption.stage_sent"), desc: "Invite confirmed sent. The clock to follow-up starts here.", tone: "warm" },
-              { name: "Follow-up", count: num(data, "app_adoption.stage_followup"), desc: "10 plus days with no reply, so a threaded follow-up went out.", tone: "warm" },
+              { name: "Follow-up", count: num(data, "app_adoption.stage_followup"), desc: "10 plus days with no reply, so a threaded follow-up went out.", tone: "amber" },
               { name: "Replied", count: num(data, "app_adoption.stage_replied"), desc: "Wrote back with something that needs review or a next step.", tone: "hot" },
               { name: "Adopted", count: num(data, "app_adoption.stage_adopted"), desc: "Joined the TWU app. The goal stage.", tone: "amber" },
               { name: "Not Joining", count: num(data, "app_adoption.stage_not_joining"), desc: "Explicitly confirmed they will not join.", tone: "muted" },

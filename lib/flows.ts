@@ -74,8 +74,6 @@ export const FLOWS: Flow[] = [
       { label: "Processed", path: "lead_sources_raw.combined_processed", note: "Out of this scrape's queue - not the same number as total CRM contacts below, which includes every past run." },
       { label: "Pending", path: "lead_sources_raw.combined_pending" },
       { label: "Drafts created", path: "lead_sources_drafts.total_drafts_created" },
-      { label: "No email (skipped)", path: "lead_sources_failed.total_no_email" },
-      { label: "Duplicates skipped", path: "lead_sources_failed.total_duplicates_skipped" },
       { label: "In GHL - CrossFit", path: "lead_gen.crossfit_contacts_in_ghl" },
       { label: "In GHL - HYROX", path: "lead_gen.hyrox_contacts_in_ghl" },
       { label: "Hot leads", path: "lead_sources_enriched.combined_hot" },
@@ -261,8 +259,6 @@ export const FLOWS: Flow[] = [
       { label: "No response", path: "app_adoption.no_response" },
       { label: "Needs Dave review", path: "app_adoption.needs_dave_review" },
       { label: "Not joining (confirmed)", path: "app_adoption.not_joining_confirmed" },
-      { label: "No email (skipped)", path: "app_adoption.no_email_count", note: "From the source Google Sheet - filtered out before outreach, no usable email on file." },
-      { label: "Duplicate (skipped)", path: "app_adoption.duplicate_count", note: "From the source Google Sheet - already tracked, skipped on purpose." },
     ],
     charts: [
       {
@@ -320,7 +316,7 @@ export const FLOWS: Flow[] = [
         series: [
           { label: "Drafted", path: "app_adoption.stage_drafted", tone: "cold" },
           { label: "Sent", path: "app_adoption.stage_sent", tone: "warm" },
-          { label: "Follow-up", path: "app_adoption.stage_followup", tone: "warm" },
+          { label: "Follow-up", path: "app_adoption.stage_followup", tone: "amber" },
           { label: "Replied", path: "app_adoption.stage_replied", tone: "amber" },
           { label: "Adopted", path: "app_adoption.stage_adopted", tone: "hot" },
           { label: "No response", path: "app_adoption.stage_no_response", tone: "muted" },
@@ -353,15 +349,13 @@ export const FLOWS: Flow[] = [
       "It reacts instantly and correctly: interested gets flagged for David, not-interested is closed out, and an out-of-office quietly pauses the sequence until they're back.",
     ],
     metrics: [
-      { label: "Reply rate", path: "lead_gen.email_reply_rate_pct", suffix: "%" },
-      { label: "Replied", path: "lead_gen.email_replied" },
-      { label: "Responded (stage)", path: "lead_gen.stage_responded" },
+      { label: "Replied", path: "lead_gen.email_replied", note: "Raw reply_breakdown.interested + not_interested + auto_responder + auto_ack + other, the moment a reply lands - before classification." },
       { label: "Interested", path: "reply_breakdown.interested" },
       { label: "Not interested", path: "reply_breakdown.not_interested" },
       { label: "Auto-responder", path: "reply_breakdown.auto_responder" },
       { label: "Auto-ack", path: "reply_breakdown.auto_ack", flag: "not-instrumented", note: "Handle Auto-Ack writes no tag in the current export - reads 0 until the auto-ack-detected write is deployed." },
       { label: "Other (needs review)", path: "reply_breakdown.other" },
-      { label: "Total classified", path: "reply_breakdown.total_classified" },
+      { label: "Total classified", path: "reply_breakdown.total_classified", note: "Sum of the five buckets above. Compare to Replied - if they don't match, classification is behind or double-tagging." },
     ],
     charts: [
       {
@@ -479,10 +473,8 @@ export const FLOWS: Flow[] = [
         kind: "bars",
         title: "Data-quality flags",
         series: [
-          { label: "Ready, then sent", path: "lead_gen.ig_outreach_ready_and_sent", tone: "warm" },
-          { label: "Sent, no ready tag", path: "lead_gen.ig_outreach_sent_only", tone: "hot" },
-          { label: "Needs review, never DM'd", path: "lead_gen.ig_needs_review_not_sent", tone: "bad" },
           { label: "Sent, no handle on file", path: "lead_gen.ig_sent_no_handle", tone: "warm" },
+          { label: "Needs review, never DM'd", path: "lead_gen.ig_needs_review_not_sent", tone: "bad" },
         ],
       },
     ],

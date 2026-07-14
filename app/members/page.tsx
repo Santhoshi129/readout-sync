@@ -66,7 +66,6 @@ export default async function MembersDashboard() {
 
           <PipelineMap
             title="App Adoption pipeline, stage by stage"
-            note="The live shape of the member adoption pipeline in GHL. Hover or click a stage for what it means."
             stages={[
               { name: "Drafted", count: num(data, "app_adoption.stage_drafted"), desc: "Invite drafted in Gmail, waiting on a human send.", tone: "cold" },
               { name: "Sent", count: num(data, "app_adoption.stage_sent"), desc: "Invite confirmed sent. The clock to follow-up starts here.", tone: "warm" },
@@ -104,44 +103,8 @@ export default async function MembersDashboard() {
             </div>
           </div>
 
-          <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
-            <div className="card" style={{ padding: 32 }}>
-              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently sent</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real send timestamps from MongoDB, most recent first.</div>
-              {(data?.app_adoption?.recently_sent?.length ?? 0) > 0 ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {data!.app_adoption.recently_sent.slice(0, 10).map((m, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
-                      <span style={{ fontSize: 13.5 }}>{m.name}</span>
-                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.sent_at}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No send timestamps in the current live payload yet.</div>
-              )}
-            </div>
-            <div className="card" style={{ padding: 32 }}>
-              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>Real reply timestamps from MongoDB, most recent first.</div>
-              {(data?.app_adoption?.recently_replied?.length ?? 0) > 0 ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {data!.app_adoption.recently_replied.slice(0, 10).map((m, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
-                      <span style={{ fontSize: 13.5 }}>{m.name}</span>
-                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{m.replied_at}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No reply timestamps in the current live payload yet.</div>
-              )}
-            </div>
-          </div>
-
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Community status</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Every identified member's current outcome. Hover a slice or a row for its share.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Community status</div>
             <Donut
               centerLabel="identified"
               segments={[
@@ -155,8 +118,7 @@ export default async function MembersDashboard() {
 
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Saved automatically every 10 minutes, every time the sync runs. This is real history building up over time, not a guess.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>14-day trend</div>
             <Trend
               points={history}
               series={[

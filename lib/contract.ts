@@ -22,6 +22,7 @@ export interface Readout {
     email_outreach_sent: number;
     email_replied: number;
     sequence_complete: number;
+    sequence_stopped: number;
     touch_sequence: {
       in_sequence: number;
       step_1: number; step_2: number; step_3: number; step_4: number; step_5: number;
@@ -81,16 +82,12 @@ export interface Readout {
     no_response: number;
     needs_dave_review: number;
     adoption_rate_pct: number;
-    no_email_mongo_count: number;
-    duplicate_mongo_count: number;
-    no_email_sheet_count: number;
-    duplicate_sheet_count: number;
+    no_email_count: number;
+    duplicate_count: number;
     not_joining_confirmed: number;
     stage_drafted: number; stage_sent: number; stage_followup: number;
     stage_no_response: number; stage_adopted: number; stage_not_joining: number;
     stage_opted_out: number; stage_replied: number;
-    recently_sent: { name: string; sent_at: string }[];
-    recently_replied: { name: string; replied_at: string }[];
   };
   geo_distribution: { label: string; count: number; names: string[] }[];
   franchise_mix: { independent: number; f45: number; orangetheory: number; shred415: number; total_franchise: number };

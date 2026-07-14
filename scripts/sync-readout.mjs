@@ -217,6 +217,7 @@ async function buildLeadGen(db, gToken) {
       if (has("hyrox") && emailStatus === "generic") inc("hyGeneric");
       if (has("outreach-sent")) inc("sent");
       if (has("sequence-complete")) inc("seqdone");
+      if (has("sequence-stopped")) inc("seqstopped");
       if (has("ig-outreach-ready")) inc("igReady");
       if (has("ig-outreach-sent")) inc("igSent");
       // "Ready to send" should mean still-waiting, not "ever tagged ready" -
@@ -403,7 +404,7 @@ async function buildLeadGen(db, gToken) {
     lead_gen: {
       total_contacts_in_ghl: total, crossfit_contacts_in_ghl: n("cf"), hyrox_contacts_in_ghl: n("hy"),
       hot_leads: n("hot"), warm_leads: n("warm"), email_outreach_sent: n("sent"), email_replied: n("replied"),
-      sequence_complete: n("seqdone"),
+      sequence_complete: n("seqdone"), sequence_stopped: n("seqstopped"),
       touch_sequence: { in_sequence: n("inSeq"), step_1: n("t1"), step_2: n("t2"), step_3: n("t3"), step_4: n("t4"), step_5: n("t5") },
       ig_outreach_ready: n("igReadyOnly"), ig_outreach_ready_and_sent: n("igReadyAndSent"), ig_outreach_sent: n("igSent"),
       ig_outreach_sent_only: n("igSentOnly"), ig_needs_review: n("igNeedsReview"),
@@ -487,8 +488,6 @@ async function buildAppAdoption(db, gToken) {
     projection: {
       zp_person_id: 1, created_at: 1, status: 1, adopted: 1, opted_out: 1,
       outreach_sent_confirmed_date: 1, followup_sent_confirmed_date: 1,
-      name: 1, full_name: 1, first_name: 1, last_name: 1,
-      replied_at: 1, reply_date: 1, last_reply_date: 1,
     },
   }).toArray();
   const seen = {};
@@ -500,13 +499,7 @@ async function buildAppAdoption(db, gToken) {
     const b = new Date(r.created_at || 0).getTime();
     if (b > a) seen[id] = r;
   }
-  let aaTotal = 0, aaDraft = 0, aaFupDraft = 0, aaOutConf = 0, aaFupConf = 0, aaAdopted = 0, aaOrganic = 0, aaOptedOut = 0, aaNoResp = 0, aaNeedsReview = 0, aaNoEmailMongo = 0, aaDupMongo = 0;
-  // Recently-sent list: real send timestamps straight from Mongo
-  // (outreach_sent_confirmed_date), not computed or guessed. Name falls
-  // back to whatever the collection actually has, down to the raw
-  // Zen Planner id if no name field is populated for that row.
-  const recentlySent = [];
-  const recentlyReplied = [];
+  let aaTotal = 0, aaDraft = 0, aaFupDraft = 0, aaOutConf = 0, aaFupConf = 0, aaAdopted = 0, aaOrganic = 0, aaOptedOut = 0, aaNoResp = 0, aaNeedsReview = 0;
   for (const r of Object.values(seen)) {
     aaTotal++;
     if (r.status === "draft_created" && !r.outreach_sent_confirmed_date) aaDraft++;
@@ -518,23 +511,7 @@ async function buildAppAdoption(db, gToken) {
     if (toBool(r.opted_out)) aaOptedOut++;
     if (r.status === "no_response") aaNoResp++;
     if (r.status === "replied_other") aaNeedsReview++;
-    if (r.status === "No email") aaNoEmailMongo++;
-    if (r.status === "Duplicate") aaDupMongo++;
-    if (r.outreach_sent_confirmed_date) {
-      const name = r.full_name || r.name || [r.first_name, r.last_name].filter(Boolean).join(" ") || `Member ${r.zp_person_id}`;
-      recentlySent.push({ name, sent_at: r.outreach_sent_confirmed_date });
-    }
-    // Only listed if the collection actually has a reply-timestamp field
-    // populated - no fallback to created_at, since that isn't when they
-    // replied and would mislabel the list.
-    const repliedAt = r.replied_at || r.reply_date || r.last_reply_date;
-    if (r.status === "replied_other" && repliedAt) {
-      const name = r.full_name || r.name || [r.first_name, r.last_name].filter(Boolean).join(" ") || `Member ${r.zp_person_id}`;
-      recentlyReplied.push({ name, replied_at: repliedAt });
-    }
   }
-  recentlySent.sort((a, b) => new Date(b.sent_at || 0) - new Date(a.sent_at || 0));
-  recentlyReplied.sort((a, b) => new Date(b.replied_at || 0) - new Date(a.replied_at || 0));
   console.log(`AppAdoption: ${aaTotal} tracked members`);
 
   const notJoining = await db.collection("outreach_tracker_clean").countDocuments({ status: "not_joining" });
@@ -565,17 +542,15 @@ async function buildAppAdoption(db, gToken) {
       total_identified: aaTotal, email_draft_in_gmail: aaDraft, followup_draft_in_gmail: aaFupDraft,
       email_outreach_confirmed: aaOutConf, followup_confirmed: aaFupConf, adopted: aaAdopted,
       already_on_app: aaOrganic, total_joined: aaJoined, opted_out: aaOptedOut, no_response: aaNoResp,
-      needs_dave_review: aaNeedsReview, adoption_rate_pct: adoptionRate, no_email_mongo_count: aaNoEmailMongo,
-      duplicate_mongo_count: aaDupMongo, no_email_sheet_count: noEmailSheet, duplicate_sheet_count: dupSheet,
+      needs_dave_review: aaNeedsReview, adoption_rate_pct: adoptionRate,
+      no_email_count: noEmailSheet, duplicate_count: dupSheet,
       not_joining_confirmed: notJoining, stage_drafted: stDrafted, stage_sent: stSent, stage_followup: stFollowup,
       stage_no_response: stNoResp, stage_adopted: stAdopted, stage_not_joining: stNotJoin,
       stage_opted_out: stOptOut, stage_replied: stReplied,
-      recently_sent: recentlySent.slice(0, 20),
-      recently_replied: recentlyReplied.slice(0, 20),
     },
     summary: {
       total_email_drafts_in_gmail: aaDraft + aaFupDraft, replied_app_adoption: stReplied,
-      app_adoption_no_email_mongo: aaNoEmailMongo, app_adoption_duplicate_mongo: aaDupMongo,
+      app_adoption_no_email: noEmailSheet, app_adoption_duplicate: dupSheet,
       app_adoption_not_joining_confirmed: notJoining,
     },
   };

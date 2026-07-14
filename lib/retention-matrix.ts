@@ -24,6 +24,8 @@ export interface PainPoint {
   frequency: number;
   owner_mentions: number;
   member_mentions: number;
+  twu_actionable: "yes" | "partial" | "no";
+  twu_note: string;
   solutions: Solution[];
 }
 
@@ -100,3 +102,10 @@ export function difficultyLabel(n: number | null): string {
   if (n == null) return "–";
   return DIFFICULTY_WORDS[n] || `${n}/5`;
 }
+
+export const ACTIONABLE_TONE: Record<string, string> = { yes: "hot", partial: "amber", no: "bad" };
+export const ACTIONABLE_TEXT: Record<string, string> = {
+  yes: "App can fix this",
+  partial: "App can help, not fix",
+  no: "Not a software problem",
+};

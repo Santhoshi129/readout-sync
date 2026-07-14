@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { label } from "@/lib/retention-matrix";
+import { label, effectivenessLabel, difficultyLabel } from "@/lib/retention-matrix";
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -104,7 +104,7 @@ export function QuickWinsMatrix({ points }: { points: Point[] }) {
           <>
             <strong style={{ color: "var(--ink)" }}>{active.solution}</strong>
             {" — under "}{label(active.parentPainPoint)}
-            {" · effectiveness "}{active.effectiveness}/5{" · difficulty "}{active.difficulty}/5
+            {" · "}{effectivenessLabel(active.effectiveness)}{" · "}{difficultyLabel(active.difficulty)}
             {" · "}{active.frequency} mention{active.frequency === 1 ? "" : "s"}
           </>
         ) : (

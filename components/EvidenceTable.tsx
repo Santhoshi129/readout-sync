@@ -2,28 +2,34 @@
 // Spreadsheet-style evidence table for Community Research. Flattens the
 // pain-point/solution matrix into one row per solution (pain points with
 // no solution get a single row with a placeholder), then makes every
-// column sortable and the whole thing searchable/filterable client-side -
-// the same UX pattern as RetentionLedger on Retention Signal, applied to
-// this page's own data shape.
+// column sortable and the whole thing searchable/filterable client-side.
+// This is the single "deep dive" table on the page - it carries the TWU
+// actionability tag too, so someone scanning the table doesn't need to
+// cross-reference the connection map separately to know what's buildable.
 import { useMemo, useState, type CSSProperties } from "react";
-import { PainPoint, label, description, effectivenessLabel, difficultyLabel } from "@/lib/retention-matrix";
+import { PainPoint, label, description, effectivenessLabel, difficultyLabel, ACTIONABLE_TONE, ACTIONABLE_TEXT } from "@/lib/retention-matrix";
 
-type SortKey = "pain_point" | "mentions" | "effectiveness" | "difficulty";
+type SortKey = "pain_point" | "mentions" | "effectiveness" | "difficulty" | "actionable";
 type Perspective = "All" | "Member" | "Owner";
+type Actionable = "All" | "yes" | "partial" | "no";
+
+const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", bad: "var(--bad)" };
+const ACTIONABLE_RANK: Record<string, number> = { yes: 0, partial: 1, no: 2 };
 
 interface Row {
   pain_point: string;
   frequency: number;
   owner_mentions: number;
   member_mentions: number;
+  twu_actionable: "yes" | "partial" | "no";
   solution: string | null;
-  sol_frequency: number | null;
   effectiveness: number | null;
   difficulty: number | null;
 }
 
 const SORTS: { key: SortKey; label: string }[] = [
   { key: "mentions", label: "Mentions" },
+  { key: "actionable", label: "TWU can fix" },
   { key: "effectiveness", label: "Effectiveness" },
   { key: "difficulty", label: "Difficulty" },
   { key: "pain_point", label: "Pain point (A–Z)" },
@@ -32,6 +38,7 @@ const SORTS: { key: SortKey; label: string }[] = [
 export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
   const [q, setQ] = useState("");
   const [perspective, setPerspective] = useState<Perspective>("All");
+  const [actionable, setActionable] = useState<Actionable>("All");
   const [sort, setSort] = useState<SortKey>("mentions");
 
   const flat: Row[] = useMemo(() => {
@@ -41,14 +48,14 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
         out.push({
           pain_point: pp.pain_point, frequency: pp.frequency,
           owner_mentions: pp.owner_mentions, member_mentions: pp.member_mentions,
-          solution: null, sol_frequency: null, effectiveness: null, difficulty: null,
+          twu_actionable: pp.twu_actionable, solution: null, effectiveness: null, difficulty: null,
         });
       } else {
         pp.solutions.forEach((s) => {
           out.push({
             pain_point: pp.pain_point, frequency: pp.frequency,
             owner_mentions: pp.owner_mentions, member_mentions: pp.member_mentions,
-            solution: s.solution, sol_frequency: s.frequency,
+            twu_actionable: pp.twu_actionable, solution: s.solution,
             effectiveness: s.effectiveness, difficulty: s.difficulty,
           });
         });
@@ -59,9 +66,10 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
 
   const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    let filtered = flat.filter((r) => {
+    const filtered = flat.filter((r) => {
       if (perspective === "Member" && r.member_mentions === 0) return false;
       if (perspective === "Owner" && r.owner_mentions === 0) return false;
+      if (actionable !== "All" && r.twu_actionable !== actionable) return false;
       if (needle) {
         const hay = [label(r.pain_point), r.solution || ""].join(" ").toLowerCase();
         if (!hay.includes(needle)) return false;
@@ -70,12 +78,13 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
     });
     const by: Record<SortKey, (a: Row, b: Row) => number> = {
       mentions: (a, b) => b.frequency - a.frequency,
+      actionable: (a, b) => ACTIONABLE_RANK[a.twu_actionable] - ACTIONABLE_RANK[b.twu_actionable],
       effectiveness: (a, b) => (b.effectiveness ?? -1) - (a.effectiveness ?? -1),
       difficulty: (a, b) => (a.difficulty ?? 99) - (b.difficulty ?? 99),
       pain_point: (a, b) => label(a.pain_point).localeCompare(label(b.pain_point)),
     };
     return [...filtered].sort(by[sort]);
-  }, [flat, q, perspective, sort]);
+  }, [flat, q, perspective, actionable, sort]);
 
   const chipStyle = (on: boolean): CSSProperties => ({
     background: on ? "rgba(201,168,76,0.12)" : "transparent",
@@ -94,7 +103,7 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
 
   return (
     <div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 18, alignItems: "center" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 12, alignItems: "center" }}>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -116,10 +125,18 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
           ))}
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          {SORTS.map((s) => (
-            <span key={s.key} style={chipStyle(sort === s.key)} onClick={() => setSort(s.key)}>{s.label}</span>
+          {(["All", "yes", "partial", "no"] as Actionable[]).map((a) => (
+            <span key={a} style={chipStyle(actionable === a)} onClick={() => setActionable(a)}>
+              {a === "All" ? "All" : ACTIONABLE_TEXT[a]}
+            </span>
           ))}
         </div>
+      </div>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 18 }}>
+        <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>SORT:</span>
+        {SORTS.map((s) => (
+          <span key={s.key} style={chipStyle(sort === s.key)} onClick={() => setSort(s.key)}>{s.label}</span>
+        ))}
       </div>
 
       <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)", marginBottom: 10 }}>
@@ -127,10 +144,10 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
       </div>
 
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, minWidth: 640 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, minWidth: 720 }}>
           <thead>
             <tr>
-              {["Pain point", "Mentions", "Member / Owner", "Solution", "Effectiveness", "Difficulty"].map((h) => (
+              {["Pain point", "Mentions", "Member / Owner", "TWU can fix?", "Solution", "Effectiveness", "Difficulty"].map((h) => (
                 <th key={h} style={{
                   textAlign: "left", fontFamily: "var(--mono)", fontSize: 10.5, textTransform: "uppercase",
                   letterSpacing: "0.05em", color: "var(--ink-faint)", padding: "0 14px 10px 0",
@@ -143,12 +160,12 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
           </thead>
           <tbody>
             {visible.length === 0 ? (
-              <tr><td colSpan={6} style={{ padding: "24px 0", color: "var(--ink-faint)", textAlign: "center" }}>No rows match this search/filter.</td></tr>
+              <tr><td colSpan={7} style={{ padding: "24px 0", color: "var(--ink-faint)", textAlign: "center" }}>No rows match this search/filter.</td></tr>
             ) : visible.map((r, i) => (
               <tr key={i} style={{ borderBottom: "1px solid var(--border-soft)" }}>
                 <td style={{ padding: "12px 14px 12px 0" }}>
                   <div style={{ fontWeight: 600 }}>{label(r.pain_point)}</div>
-                  <div style={{ fontSize: 11, color: "var(--ink-faint)", maxWidth: 260 }}>{description(r.pain_point)}</div>
+                  <div style={{ fontSize: 11, color: "var(--ink-faint)", maxWidth: 240 }}>{description(r.pain_point)}</div>
                 </td>
                 <td style={{ padding: "12px 14px 12px 0", fontWeight: 700 }}>{r.frequency}</td>
                 <td style={{ padding: "12px 14px 12px 0", fontFamily: "var(--mono)", fontSize: 12 }}>
@@ -156,20 +173,29 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
                   {" / "}
                   <span style={{ color: "var(--amber)" }}>{r.owner_mentions}O</span>
                 </td>
+                <td style={{ padding: "12px 14px 12px 0" }}>
+                  <span style={{
+                    display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--mono)", fontSize: 10.5,
+                    color: TONE_COLOR[ACTIONABLE_TONE[r.twu_actionable]], whiteSpace: "nowrap",
+                  }}>
+                    <i className="dot-legend" style={{ background: TONE_COLOR[ACTIONABLE_TONE[r.twu_actionable]] }} />
+                    {ACTIONABLE_TEXT[r.twu_actionable]}
+                  </span>
+                </td>
                 <td style={{ padding: "12px 14px 12px 0", color: r.solution ? "var(--ink)" : "var(--ink-faint)" }}>
                   {r.solution || "No solution surfaced yet"}
                 </td>
                 <td style={{ padding: "12px 14px 12px 0" }}>
                   {r.effectiveness != null ? (
-                    <span title={`${r.effectiveness}/5`}>
-                      <span style={{ color: r.effectiveness >= 4 ? "var(--hot)" : r.effectiveness <= 2 ? "var(--bad)" : "var(--ink-dim)" }}>{effectivenessLabel(r.effectiveness)}</span>
+                    <span title={`${r.effectiveness}/5`} style={{ color: r.effectiveness >= 4 ? "var(--hot)" : r.effectiveness <= 2 ? "var(--bad)" : "var(--ink-dim)" }}>
+                      {effectivenessLabel(r.effectiveness)}
                     </span>
                   ) : "–"}
                 </td>
                 <td style={{ padding: "12px 14px 12px 0" }}>
                   {r.difficulty != null ? (
-                    <span title={`${r.difficulty}/5`}>
-                      <span style={{ color: r.difficulty <= 2 ? "var(--hot)" : r.difficulty >= 4 ? "var(--bad)" : "var(--ink-dim)" }}>{difficultyLabel(r.difficulty)}</span>
+                    <span title={`${r.difficulty}/5`} style={{ color: r.difficulty <= 2 ? "var(--hot)" : r.difficulty >= 4 ? "var(--bad)" : "var(--ink-dim)" }}>
+                      {difficultyLabel(r.difficulty)}
                     </span>
                   ) : "–"}
                 </td>

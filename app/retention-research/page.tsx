@@ -1,5 +1,6 @@
 import { Topbar } from "@/components/Topbar";
 import { Donut, StatTiles } from "@/components/Charts";
+import { ParetoChart } from "@/components/ParetoChart";
 import { QuickWinsMatrix } from "@/components/QuickWinsMatrix";
 import { PainPointRanking } from "@/components/PainPointRanking";
 import { EvidenceTable } from "@/components/EvidenceTable";
@@ -54,6 +55,16 @@ export default function RetentionResearch() {
               { label: "Leading pain point", value: null, note: label(top.pain_point) },
             ]}
           />
+        </div>
+
+        <div className="section">
+          <div className="section-head">
+            <div className="section-title">Where the problem concentrates</div>
+            <div style={{ color: "var(--ink-dim)", fontSize: 13.5 }}>Ranked by mentions, with cumulative share overlaid.</div>
+          </div>
+          <div className="card" style={{ padding: 32 }}>
+            <ParetoChart rows={rows} />
+          </div>
         </div>
 
         <div className="section">

@@ -242,7 +242,12 @@ async function buildLeadGen(db, gToken) {
       if (has("phone-called") && !has("phone-positive") && !has("phone-negative")) inc("phoneCalledOnly");
       if (has("phone-resolved")) inc("phoneResolved");
       if (has("phone-followup-due") && !has("phone-resolved")) inc("phoneStillDue");
-      if (step >= 1) { inc("inSeq"); if (step <= 5) inc(`t${step}`); }
+      // "In sequence at touch N" means actively being worked right now, not
+      // just carrying a step number - a contact keeps its last step value
+      // even after replying, completing, or stopping, so step alone
+      // overcounted. Active = sent, and none of the terminal/paused states.
+      const isActiveSeq = has("outreach-sent") && !has("replied") && !has("sequence-complete") && !has("sequence-stopped") && !has("followup-draft-ready") && !has("temporarily-paused");
+      if (step >= 1 && step <= 5 && isActiveSeq) { inc("inSeq"); inc(`t${step}`); }
       if (has("replied")) {
         inc("replied");
         // Same step custom field already read into `step` above - just

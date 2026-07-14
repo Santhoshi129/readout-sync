@@ -1,11 +1,10 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Donut, Trend, Compare } from "@/components/Charts";
+import { Funnel, Bars, Ring, Donut, Trend, StatTiles } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
-import { fmt } from "@/lib/format";
 
 export const revalidate = 30;
 
@@ -100,44 +99,23 @@ export default async function MembersDashboard() {
             <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
               <div className="eyebrow muted" style={{ marginBottom: 22 }}>Community coverage</div>
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
-                <Ring value={num(data, "app_adoption.total_joined")} total={num(data, "app_adoption.total_identified")} centerLabel="in the community" />
+                <Ring value={num(data, "app_adoption.total_joined")} total={num(data, "app_adoption.total_identified")} centerLabel="in the community" pctOverride={num(data, "app_adoption.adoption_rate_pct")} />
               </div>
             </div>
           </div>
 
-          <div className="grid grid-2" style={{ gap: 24, marginBottom: 24, alignItems: "stretch" }}>
-            <div className="card" style={{ padding: 32 }}>
-              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Drafted vs sent</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>How much of what&apos;s drafted actually goes out. First invite and follow-up separately.</div>
-              <Compare
-                labelA="Drafted"
-                labelB="Sent"
-                rows={[
-                  { label: "First invite", a: num(data, "app_adoption.email_draft_in_gmail"), b: num(data, "app_adoption.email_outreach_confirmed") },
-                  { label: "Follow-up", a: num(data, "app_adoption.followup_draft_in_gmail"), b: num(data, "app_adoption.followup_confirmed") },
-                ]}
-              />
-            </div>
-            <div className="card" style={{ padding: 32 }}>
-              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Skipped before outreach</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>No usable email, or already tracked. Mongo tracker vs the source sheet.</div>
-              <Compare
-                labelA="Mongo"
-                labelB="Sheet"
-                rows={[
-                  { label: "No email", a: num(data, "app_adoption.no_email_mongo_count"), b: num(data, "app_adoption.no_email_sheet_count") },
-                  { label: "Duplicate", a: num(data, "app_adoption.duplicate_mongo_count"), b: num(data, "app_adoption.duplicate_sheet_count") },
-                ]}
-              />
-              {(() => {
-                const needsReview = num(data, "app_adoption.needs_dave_review") ?? 0;
-                return needsReview > 0 ? (
-                  <div className="stat-flag" style={{ marginTop: 18, fontSize: 11.5 }}>
-                    {fmt(needsReview)} replied contact{needsReview === 1 ? "" : "s"} still waiting on Dave&apos;s manual review.
-                  </div>
-                ) : null;
-              })()}
-            </div>
+          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
+            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Skipped before outreach</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>No usable email, or already tracked. Hover a tile for what it means.</div>
+            <StatTiles
+              tiles={[
+                { label: "No email, Mongo tracker", value: num(data, "app_adoption.no_email_mongo_count"), tone: "amber", note: "Members in outreach_tracker_clean with no usable email on file." },
+                { label: "No email, source sheet", value: num(data, "app_adoption.no_email_sheet_count"), tone: "amber", note: "Same check, straight from the source Google Sheet. Compare against the Mongo count to spot sync gaps." },
+                { label: "Duplicate, Mongo tracker", value: num(data, "app_adoption.duplicate_mongo_count"), tone: "muted", note: "Already tracked under another record. Skipped on purpose, not a failure." },
+                { label: "Duplicate, source sheet", value: num(data, "app_adoption.duplicate_sheet_count"), tone: "muted", note: "Same check, straight from the source Google Sheet." },
+                { label: "Needs Dave's review", value: num(data, "app_adoption.needs_dave_review"), tone: "bad", note: "Replied with something that isn't a clean yes/no. Waiting on a manual read." },
+              ]}
+            />
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

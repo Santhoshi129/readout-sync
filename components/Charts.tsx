@@ -16,15 +16,23 @@ export function Ring({
   value,
   total,
   centerLabel,
+  pctOverride,
 }: {
   value: number | null;
   total: number | null;
   centerLabel?: string;
+  // When the exact percentage is already computed server-side (e.g.
+  // adoption_rate_pct), pass it here so this ring shows the identical
+  // number as everywhere else on the page instead of re-deriving its own
+  // rounded version, which can land on a different whole number (36.7%
+  // upstream vs a locally rounded 37% here).
+  pctOverride?: number | null;
 }) {
   const v = value ?? 0;
   const t = total ?? 0;
   const trackable = t > 0;
-  const pctNum = trackable ? Math.round((v / t) * 100) : 0;
+  const pctNum = trackable ? (pctOverride ?? Math.round((v / t) * 100)) : 0;
+  const pctDisplay = pctOverride != null ? pctOverride : pctNum;
   const R = 78;
   const C = 2 * Math.PI * R;
   const dash = (Math.min(pctNum, 100) / 100) * C;
@@ -52,7 +60,7 @@ export function Ring({
           transform="rotate(-90 100 100)"
         />
         <text x="100" y="96" textAnchor="middle" fontSize="42" fontWeight="800" fill={trackable ? "var(--amber)" : "var(--ink-faint)"}>
-          {trackable ? `${pctNum}%` : "N/A"}
+          {trackable ? `${pctDisplay}%` : "N/A"}
         </text>
         <text x="100" y="122" textAnchor="middle" fontSize="13" fill="var(--ink-faint)" fontFamily="var(--mono)">
           {trackable ? <>{fmt(v)} / {fmt(t)}</> : "denominator not tracked yet"}
@@ -272,14 +280,21 @@ export function Compare({
 export function Donut({
   segments,
   centerLabel,
+  centerValue,
 }: {
   segments: { label: string; value: number | null; tone: string }[];
   centerLabel: string;
+  // When a known authoritative total exists elsewhere (e.g. the raw
+  // email_replied tag count), pass it here so the big number in the
+  // middle matches that instead of the sum of these segments, which can
+  // legitimately differ when classification runs behind or double-tags.
+  centerValue?: number | null;
 }) {
   const mounted = useMounted();
   const [hover, setHover] = useState<number | null>(null);
   const clean = segments.map((s) => ({ ...s, value: s.value ?? 0 }));
   const total = clean.reduce((a, s) => a + s.value, 0);
+  const displayTotal = centerValue ?? total;
   const R = 70;
   const SW = 30;
   const C = 2 * Math.PI * R;
@@ -324,7 +339,7 @@ export function Donut({
           ) : null
         )}
         <text x="100" y={active ? 92 : 96} textAnchor="middle" fontSize={active ? 30 : 34} fontWeight="800" fill="var(--ink)">
-          {active ? fmt(active.value) : fmt(total)}
+          {active ? fmt(active.value) : fmt(displayTotal)}
         </text>
         <text x="100" y={active ? 114 : 120} textAnchor="middle" fontSize="11" fill="var(--ink-faint)" fontFamily="var(--mono)" letterSpacing="1.5">
           {(active ? `${active.label.toUpperCase()} \u00b7 ${active.pct}%` : centerLabel.toUpperCase())}
@@ -484,6 +499,7 @@ export function ReplyBreakdown({
   negativeLabel = "Negative",
   automatedLabel = "Automated / other",
   centerLabel = "replied",
+  centerValue,
   hoverPrefix = "Hover for what's inside",
   breakdown,
 }: {
@@ -494,6 +510,7 @@ export function ReplyBreakdown({
   negativeLabel?: string;
   automatedLabel?: string;
   centerLabel?: string;
+  centerValue?: number | null;
   hoverPrefix?: string;
   breakdown: { label: string; value: number | null; tone: string }[];
 }) {
@@ -502,6 +519,7 @@ export function ReplyBreakdown({
     <div>
       <Donut
         centerLabel={centerLabel}
+        centerValue={centerValue}
         segments={[
           { label: positiveLabel, value: positive, tone: "hot" },
           { label: negativeLabel, value: negative, tone: "bad" },
@@ -528,6 +546,52 @@ export function ReplyBreakdown({
     </div>
   );
 }
+
+// Clean stat-tile grid: big number, short label, and a note that only
+// expands on hover so the card stays uncluttered at rest but still
+// explains itself when someone actually wants to know. This is the same
+// visual language as the flow detail pages' "Report: live impact" tiles,
+// reused here so the main dashboards get it too.
+export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tone?: string }[] }) {
+  return (
+    <div className="grid grid-3" style={{ gap: 16 }}>
+      {tiles.map((t, i) => (
+        <StatTile key={i} {...t} />
+      ))}
+    </div>
+  );
+}
+
+function StatTile({ label, value, note, tone }: { label: string; value: number | null; note?: string; tone?: string }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      className="card"
+      style={{ padding: 24 }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "var(--font-head)", fontSize: 32, fontWeight: 800, marginTop: 8 }}>
+        <Counter value={value} />
+      </div>
+      {note && (
+        <div
+          style={{
+            color: "var(--ink-faint)", fontSize: 11.5, lineHeight: 1.5,
+            maxHeight: hover ? 60 : 0, opacity: hover ? 1 : 0, marginTop: hover ? 10 : 0,
+            overflow: "hidden", transition: "all 200ms ease",
+          }}
+        >
+          {note}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export function GeoList({ rows }: { rows: { label: string; count: number; names?: string[] }[] }) {
   const mounted = useMounted();

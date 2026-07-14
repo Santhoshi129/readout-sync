@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown, StatTiles } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
@@ -169,7 +169,7 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Channel effectiveness</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel. Not volume, but how well each one actually converts what it sends.</div>
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel: how well each one converts what it sends. (Composition of those replies is the Reply intelligence card below.)</div>
             {(() => {
               const emailSent = num(data, "lead_gen.email_outreach_sent") ?? 0;
               const emailReplied = num(data, "lead_gen.email_replied") ?? 0;
@@ -208,7 +208,7 @@ export default async function GymOwnersDashboard() {
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
             <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 680 }}>
-              What came back on each channel: positive, negative, automated.
+              Not rate, composition. Of the replies that came in on each channel, what kind were they: positive, negative, automated.
             </div>
             <div className="grid grid-3" style={{ gap: 20 }}>
               <div>
@@ -218,6 +218,7 @@ export default async function GymOwnersDashboard() {
                   positive={num(data, "reply_breakdown.interested")}
                   negative={num(data, "reply_breakdown.not_interested")}
                   automated={sum(data, ["reply_breakdown.auto_responder", "reply_breakdown.auto_ack", "reply_breakdown.other"])}
+                  centerValue={num(data, "lead_gen.email_replied")}
                   negativeLabel="Negative (unsubscribed)"
                   breakdown={[
                     { label: "Auto-responder (redirect)", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
@@ -228,11 +229,13 @@ export default async function GymOwnersDashboard() {
                 {(() => {
                   const classified = num(data, "reply_breakdown.total_classified") ?? 0;
                   const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
-                  return classified < knownReplies ? (
+                  if (classified === knownReplies) return null;
+                  const behind = classified < knownReplies;
+                  return (
                     <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
-                      Classified ({classified}) trails raw replies ({knownReplies}). Classifier is behind upstream.
+                      Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}). Classifier is {behind ? "behind" : "double-counting somewhere"} upstream.
                     </div>
-                  ) : null;
+                  );
                 })()}
               </div>
 
@@ -276,34 +279,24 @@ export default async function GymOwnersDashboard() {
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Instagram outreach progress</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits. Separate from what they replied.</div>
-            {(() => {
-              const readyOnly = num(data, "lead_gen.ig_outreach_ready") ?? 0;
-              const readyAndSent = num(data, "lead_gen.ig_outreach_ready_and_sent") ?? 0;
-              const sentOnly = num(data, "lead_gen.ig_outreach_sent_only") ?? 0;
-              const needsReview = num(data, "lead_gen.ig_needs_review") ?? 0;
-              const needsReviewNotSent = num(data, "lead_gen.ig_needs_review_not_sent") ?? 0;
-              const dupMatched = num(data, "lead_gen.ig_duplicate_matched") ?? 0;
-              const sentNoHandle = num(data, "lead_gen.ig_sent_no_handle") ?? 0;
-              return (
-                <ReplyBreakdown
-                  centerLabel="IG contacts"
-                  hoverPrefix="Hover for the data-quality flags inside"
-                  positiveLabel="Ready (backlog)"
-                  negativeLabel="Ready \u2192 sent"
-                  automatedLabel="Sent, no ready tag"
-                  positive={readyOnly}
-                  negative={readyAndSent}
-                  automated={sentOnly}
-                  breakdown={[
-                    { label: "Needs review", value: needsReview, tone: "bad" },
-                    { label: "Needs review, never DM'd", value: needsReviewNotSent, tone: "bad" },
-                    { label: "Duplicate-matched (fixed)", value: dupMatched, tone: "hot" },
-                    { label: "Sent, no handle on file", value: sentNoHandle, tone: "warm" },
-                  ]}
-                />
-              );
-            })()}
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Where every IG-bound contact actually sits. Separate from what they replied. Hover a tile for what it means.</div>
+            <StatTiles
+              tiles={[
+                { label: "Ready, backlog", value: num(data, "lead_gen.ig_outreach_ready"), tone: "cold", note: "Tagged ig-outreach-ready and not yet DM'd. The real still-waiting queue." },
+                { label: "Ready, then sent", value: num(data, "lead_gen.ig_outreach_ready_and_sent"), tone: "warm", note: "Went through the normal path: qualified, then DM'd." },
+                { label: "Sent, no ready tag", value: num(data, "lead_gen.ig_outreach_sent_only"), tone: "hot", note: "DM'd without ever carrying the ready tag. Worth a look if this climbs." },
+              ]}
+            />
+            <div style={{ marginTop: 20 }}>
+              <StatTiles
+                tiles={[
+                  { label: "Needs review", value: num(data, "lead_gen.ig_needs_review"), tone: "bad", note: "Scraping couldn't find a usable handle. Needs manual lookup." },
+                  { label: "Needs review, never DM'd", value: num(data, "lead_gen.ig_needs_review_not_sent"), tone: "bad", note: "The subset of needs-review contacts that also have no ig-outreach-sent tag. Nobody's tried this gym yet." },
+                  { label: "Duplicate-matched (fixed)", value: num(data, "lead_gen.ig_duplicate_matched"), tone: "hot", note: "GHL auto-created a duplicate on DM send; this workflow found the real match and corrected it." },
+                  { label: "Sent, no handle on file", value: num(data, "lead_gen.ig_sent_no_handle"), tone: "warm", note: "Tagged as sent but the Instagram Handle field is empty. The exact gap this data-quality check exists to catch." },
+                ]}
+              />
+            </div>
           </div>
 
           {/* Email funnel: strictly sequential, same channel end to end.
@@ -324,34 +317,31 @@ export default async function GymOwnersDashboard() {
             </div>
             <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
               <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply rate</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied \u00f7 sent. The same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
+              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied ÷ sent. The same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
-                <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" />
+                <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" pctOverride={num(data, "lead_gen.email_reply_rate_pct")} />
               </div>
             </div>
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 4 }}>Failed logs</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Gyms that never made it into GHL. From the Failed Logs sheet, by source.</div>
-            <Compare
-              labelA="CrossFit"
-              labelB="HYROX"
-              rows={[
-                { label: "No email found", a: num(data, "lead_sources_failed.cf_no_email"), b: num(data, "lead_sources_failed.hy_no_email") },
-                { label: "Duplicate, skipped", a: num(data, "lead_sources_failed.cf_duplicates_skipped"), b: num(data, "lead_sources_failed.hy_duplicates_skipped") },
-                { label: "Other failure", a: (num(data, "lead_sources_failed.cf_failed") ?? 0) - (num(data, "lead_sources_failed.cf_no_email") ?? 0) - (num(data, "lead_sources_failed.cf_duplicates_skipped") ?? 0), b: (num(data, "lead_sources_failed.hy_failed") ?? 0) - (num(data, "lead_sources_failed.hy_no_email") ?? 0) - (num(data, "lead_sources_failed.hy_duplicates_skipped") ?? 0) },
+            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Gyms that never made it into GHL. From the Failed Logs sheet. Hover a tile for what it means.</div>
+            <StatTiles
+              tiles={[
+                { label: "No email, CrossFit", value: num(data, "lead_sources_failed.cf_no_email"), tone: "amber", note: "Scraped but no usable email found. Never made it to GHL." },
+                { label: "No email, HYROX", value: num(data, "lead_sources_failed.hy_no_email"), tone: "amber", note: "Scraped but no usable email found. Never made it to GHL." },
+                { label: "Total failed, both sources", value: num(data, "lead_sources_failed.total_failed"), tone: "bad", note: "Every gym that dropped out before reaching GHL, any reason, both sources combined." },
               ]}
             />
-            <div className="grid grid-2" style={{ gap: 16, marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
-              <div>
-                <div className="stat-label">Total failed, both sources</div>
-                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={num(data, "lead_sources_failed.total_failed")} /></div>
-              </div>
-              <div>
-                <div className="stat-label">Never made it to GHL, all reasons combined</div>
-                <div style={{ fontFamily: "var(--font-head)", fontSize: 26, fontWeight: 800, marginTop: 4 }}><Counter value={sum(data, ["lead_sources_failed.total_no_email", "lead_sources_failed.total_duplicates_skipped"])} /></div>
-              </div>
+            <div style={{ marginTop: 16 }}>
+              <StatTiles
+                tiles={[
+                  { label: "Duplicate, CrossFit", value: num(data, "lead_sources_failed.cf_duplicates_skipped"), tone: "muted", note: "Already existed in GHL. Skipped on purpose, not a failure." },
+                  { label: "Duplicate, HYROX", value: num(data, "lead_sources_failed.hy_duplicates_skipped"), tone: "muted", note: "Already existed in GHL. Skipped on purpose, not a failure." },
+                  { label: "Never made it, all reasons", value: sum(data, ["lead_sources_failed.total_no_email", "lead_sources_failed.total_duplicates_skipped"]), tone: "warm", note: "No-email plus duplicate-skipped, both sources. The rest of total failed is other error types." },
+                ]}
+              />
             </div>
           </div>
 
@@ -418,29 +408,6 @@ export default async function GymOwnersDashboard() {
                 { label: "Replied (any outcome)", a: num(data, "lead_gen.email_replied"), b: sum(data, ["lead_gen.ig_replied_positive", "lead_gen.ig_replied_negative"]) },
               ]}
             />
-          </div>
-
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Recently replied</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 18 }}>The actual gyms, not just the count. The last ones to write back, either channel. Live from GHL, capped to the most recent 20.</div>
-            {(data?.lead_gen?.replied_contacts?.length ?? 0) > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {data!.lead_gen.replied_contacts.slice(0, 10).map((c, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 4px", borderBottom: i < 9 ? "1px solid var(--border-soft)" : "none" }}>
-                    <span style={{ fontSize: 13.5 }}>{c.name}</span>
-                    <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      {c.touch != null && (
-                        <span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--amber)", border: "1px solid var(--border-soft)", borderRadius: 4, padding: "1px 6px" }}>T{c.touch}</span>
-                      )}
-                      <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{c.channel}</span>
-                      <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-dim)" }}>{c.time}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No named replies in the current live payload yet.</div>
-            )}
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>

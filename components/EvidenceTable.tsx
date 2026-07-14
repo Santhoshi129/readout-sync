@@ -6,7 +6,7 @@
 // the same UX pattern as RetentionLedger on Retention Signal, applied to
 // this page's own data shape.
 import { useMemo, useState, type CSSProperties } from "react";
-import { PainPoint, label, description } from "@/lib/retention-matrix";
+import { PainPoint, label, description, effectivenessLabel, difficultyLabel } from "@/lib/retention-matrix";
 
 type SortKey = "pain_point" | "mentions" | "effectiveness" | "difficulty";
 type Perspective = "All" | "Member" | "Owner";
@@ -160,10 +160,18 @@ export function EvidenceTable({ rows: painPoints }: { rows: PainPoint[] }) {
                   {r.solution || "No solution surfaced yet"}
                 </td>
                 <td style={{ padding: "12px 14px 12px 0" }}>
-                  {r.effectiveness != null ? `${r.effectiveness}/5` : "–"}
+                  {r.effectiveness != null ? (
+                    <span title={`${r.effectiveness}/5`}>
+                      <span style={{ color: r.effectiveness >= 4 ? "var(--hot)" : r.effectiveness <= 2 ? "var(--bad)" : "var(--ink-dim)" }}>{effectivenessLabel(r.effectiveness)}</span>
+                    </span>
+                  ) : "–"}
                 </td>
                 <td style={{ padding: "12px 14px 12px 0" }}>
-                  {r.difficulty != null ? `${r.difficulty}/5` : "–"}
+                  {r.difficulty != null ? (
+                    <span title={`${r.difficulty}/5`}>
+                      <span style={{ color: r.difficulty <= 2 ? "var(--hot)" : r.difficulty >= 4 ? "var(--bad)" : "var(--ink-dim)" }}>{difficultyLabel(r.difficulty)}</span>
+                    </span>
+                  ) : "–"}
                 </td>
               </tr>
             ))}

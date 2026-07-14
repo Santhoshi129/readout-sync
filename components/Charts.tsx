@@ -405,7 +405,16 @@ export function Trend({
   const minV = Math.min(0, ...allVals);
   const range = maxV - minV || 1;
 
-  const x = (i: number) => padL + (i / (points.length - 1)) * innerW;
+  // Time-proportional, not index-proportional: with 10-minute snapshots,
+  // equal spacing per point made a handful of clustered-in-time points
+  // look evenly spread across the whole width, which is what made the
+  // line look like it was landing in a different, confusing spot every
+  // time the data changed. Spacing by real elapsed time means gaps in
+  // history show as visual gaps instead of being silently smoothed away.
+  const t0 = new Date(points[0].ts).getTime();
+  const t1 = new Date(points[points.length - 1].ts).getTime();
+  const trange = t1 - t0 || 1;
+  const x = (i: number) => padL + ((new Date(points[i].ts).getTime() - t0) / trange) * innerW;
   const y = (v: number) => padT + innerH - ((v - minV) / range) * innerH;
 
   const pathFor = (key: string) =>

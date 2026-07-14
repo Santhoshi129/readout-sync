@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, Donut, GeoList, Trend, ReplyBreakdown } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, GeoList, Trend, StatTiles } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
@@ -75,7 +75,6 @@ export default async function GymOwnersDashboard() {
 
           <PipelineMap
             title="Lead journey, stage by stage"
-            note="The live shape of the gym-owner pipeline in GHL. Hover a stage for what it means; a few stages carry extra detail below the description."
             stages={[
               { name: "New Lead Acquired", count: num(data, "lead_gen.stage_new_lead"), desc: "First email just went out. In the 5-touch sequence now.", tone: "cold" },
               {
@@ -155,8 +154,7 @@ export default async function GymOwnersDashboard() {
           />
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>14-day trend</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Saved automatically every 10 minutes, every time the sync runs. This is real history building up over time, not a guess.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>14-day trend</div>
             <Trend
               points={history}
               series={[
@@ -168,8 +166,7 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Channel effectiveness</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Reply rate per outbound channel: how well each one converts what it sends. (Composition of those replies is the Reply intelligence card below.)</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Channel effectiveness</div>
             {(() => {
               const emailSent = num(data, "lead_gen.email_outreach_sent") ?? 0;
               const emailReplied = num(data, "lead_gen.email_replied") ?? 0;
@@ -206,75 +203,53 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply intelligence</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22, maxWidth: 680 }}>
-              Not rate, composition. Of the replies that came in on each channel, what kind were they: positive, negative, automated.
-            </div>
-            <div className="grid grid-3" style={{ gap: 20 }}>
-              <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Email</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Via Reply Detector classifier</div>
-                <ReplyBreakdown
-                  positive={num(data, "reply_breakdown.interested")}
-                  negative={num(data, "reply_breakdown.not_interested")}
-                  automated={sum(data, ["reply_breakdown.auto_responder", "reply_breakdown.auto_ack", "reply_breakdown.other"])}
-                  centerValue={num(data, "lead_gen.email_replied")}
-                  negativeLabel="Negative (unsubscribed)"
-                  breakdown={[
-                    { label: "Auto-responder (redirect)", value: num(data, "reply_breakdown.auto_responder"), tone: "warm" },
-                    { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
-                    { label: "Other / uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
-                  ]}
-                />
-                {(() => {
-                  const classified = num(data, "reply_breakdown.total_classified") ?? 0;
-                  const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
-                  if (classified === knownReplies) return null;
-                  const behind = classified < knownReplies;
-                  return (
-                    <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
-                      Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}). Classifier is {behind ? "behind" : "double-counting somewhere"} upstream.
-                    </div>
-                  );
-                })()}
-              </div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Reply intelligence</div>
+            <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 10, color: "var(--ink-dim)" }}>Email · via Reply Detector classifier</div>
+            <StatTiles
+              tiles={[
+                { label: "Positive", value: num(data, "reply_breakdown.interested"), tone: "hot" },
+                { label: "Negative, unsubscribed", value: num(data, "reply_breakdown.not_interested"), tone: "bad" },
+                { label: "Auto-responder", value: num(data, "reply_breakdown.auto_responder"), tone: "warm", note: "Redirected us to another address. Feeds the Alt Email pipeline." },
+                { label: "Auto-ack", value: num(data, "reply_breakdown.auto_ack"), tone: "amber" },
+                { label: "Other, uncategorized", value: num(data, "reply_breakdown.other"), tone: "muted" },
+              ]}
+            />
+            {(() => {
+              const classified = num(data, "reply_breakdown.total_classified") ?? 0;
+              const knownReplies = num(data, "lead_gen.email_replied") ?? 0;
+              if (classified === knownReplies) return null;
+              const behind = classified < knownReplies;
+              return (
+                <div className="stat-flag" style={{ marginTop: 14, fontSize: 11.5 }}>
+                  Classified ({classified}) {behind ? "trails" : "exceeds"} raw replies ({knownReplies}). Classifier is {behind ? "behind" : "double-counting somewhere"} upstream.
+                </div>
+              );
+            })()}
 
-              <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Instagram, main channel</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Mari classifies every DM reply by hand: positive or negative, no automated bucket</div>
-                <Donut
-                  centerLabel="replied"
-                  segments={[
-                    { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
-                    { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
-                  ]}
-                />
-              </div>
+            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 26, marginBottom: 10, color: "var(--ink-dim)" }}>Instagram, main channel · Mari classifies by hand</div>
+            <StatTiles
+              tiles={[
+                { label: "Positive", value: num(data, "lead_gen.ig_replied_positive"), tone: "hot" },
+                { label: "Negative", value: num(data, "lead_gen.ig_replied_negative"), tone: "bad" },
+              ]}
+            />
 
-              <div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, marginBottom: 4 }}>Alt Outreaching (both feeders)</div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 14 }}>Two different flows land here on different tags, shown together since they share the one destination stage.</div>
-                <div style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-dim)", marginBottom: 8 }}>Via email auto-responder redirect</div>
-                <Donut
-                  centerLabel="replied"
-                  segments={[
-                    { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
-                    { label: "Not interested", value: num(data, "alt_email_outreach.not_interested"), tone: "bad" },
-                  ]}
-                />
-                <div style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-dim)", marginTop: 20, marginBottom: 8 }}>Via IG Bridge (positive + redirect)</div>
-                <ReplyBreakdown
-                  centerLabel="replied"
-                  positive={num(data, "ig_bridge_outreach.replied_interested")}
-                  negative={num(data, "ig_bridge_outreach.replied_not_interested")}
-                  automated={sum(data, ["ig_bridge_outreach.auto_ack", "ig_bridge_outreach.needs_review"])}
-                  breakdown={[
-                    { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
-                    { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
-                  ]}
-                />
-              </div>
-            </div>
+            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 26, marginBottom: 10, color: "var(--ink-dim)" }}>Alt Outreaching, via email auto-responder redirect</div>
+            <StatTiles
+              tiles={[
+                { label: "Interested", value: num(data, "alt_email_outreach.interested"), tone: "hot" },
+                { label: "Not interested", value: num(data, "alt_email_outreach.not_interested"), tone: "bad" },
+              ]}
+            />
+            <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 18, marginBottom: 10, color: "var(--ink-dim)" }}>Alt Outreaching, via IG Bridge (positive + redirect)</div>
+            <StatTiles
+              tiles={[
+                { label: "Interested", value: num(data, "ig_bridge_outreach.replied_interested"), tone: "hot" },
+                { label: "Not interested", value: num(data, "ig_bridge_outreach.replied_not_interested"), tone: "bad" },
+                { label: "Auto-ack", value: num(data, "ig_bridge_outreach.auto_ack"), tone: "amber" },
+                { label: "Needs review", value: num(data, "ig_bridge_outreach.needs_review"), tone: "muted" },
+              ]}
+            />
           </div>
 
           {/* Email funnel: strictly sequential, same channel end to end.
@@ -294,8 +269,7 @@ export default async function GymOwnersDashboard() {
               />
             </div>
             <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column" }}>
-              <div className="eyebrow muted" style={{ marginBottom: 4 }}>Reply rate</div>
-              <div style={{ color: "var(--ink-faint)", fontSize: 11.5, marginBottom: 18 }}>Replied ÷ sent. The same definition used everywhere else on this dashboard that says &quot;reply rate.&quot;</div>
+              <div className="eyebrow muted" style={{ marginBottom: 18 }}>Reply rate</div>
               <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
                 <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" pctOverride={num(data, "lead_gen.email_reply_rate_pct")} />
               </div>
@@ -303,8 +277,7 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>CrossFit vs HYROX</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Same funnel, two lead sources: which one is actually pulling weight.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>CrossFit vs HYROX</div>
             <Compare
               labelA="CrossFit"
               labelB="HYROX"
@@ -328,8 +301,7 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Hot vs warm leads</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>Prospect score band, by source. Hot scores 65+, warm scores 20-64.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Hot vs warm leads</div>
             <Compare
               labelA="Hot"
               labelB="Warm"
@@ -342,8 +314,7 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Direct vs generic email quality</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>A direct, named contact email scores well above a generic info@ inbox. This is how clean each source's contact data actually is.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Direct vs generic email quality</div>
             <Compare
               labelA="Direct"
               labelB="Generic"
@@ -355,8 +326,7 @@ export default async function GymOwnersDashboard() {
           </div>
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 4 }}>Email vs Instagram</div>
-            <div style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 22 }}>The two outbound channels, head to head: volume sent and what came back.</div>
+            <div className="eyebrow muted" style={{ marginBottom: 22 }}>Email vs Instagram</div>
             <Compare
               labelA="Email"
               labelB="Instagram"

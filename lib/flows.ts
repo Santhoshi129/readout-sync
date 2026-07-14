@@ -191,14 +191,23 @@ export const FLOWS: Flow[] = [
       "Gyms that go all five touches with silence are handed off for a phone or Instagram try instead of being dropped.",
     ],
     metrics: [
-      { label: "Reply rate", path: "lead_gen.email_reply_rate_pct", suffix: "%" },
-      { label: "Replied", path: "lead_gen.email_replied" },
-      { label: "Sequence complete", path: "lead_gen.sequence_complete" },
-      { label: "Responded (stage)", path: "lead_gen.stage_responded" },
-      { label: "No response (stage)", path: "lead_gen.stage_no_response" },
+      { label: "In sequence now", path: "lead_gen.touch_sequence.in_sequence", note: "Currently on an active touch step - hasn't replied, completed, or stopped yet." },
+      { label: "Sequence complete (exhausted)", path: "lead_gen.sequence_complete", note: "Went all 5 touches with no reply. Tagged sequence-complete, handed to phone/IG." },
+      { label: "Sequence stopped (replied)", path: "lead_gen.sequence_stopped", note: "A reply arrived and halted the sequence early. Tagged sequence-stopped, not sequence-complete - a different outcome from exhausting all 5 touches." },
       { label: "Dead (stage)", path: "lead_gen.stage_dead" },
     ],
     charts: [
+      {
+        kind: "bars",
+        title: "Touch step distribution (current step, any status)",
+        series: [
+          { label: "Touch 1", path: "lead_gen.touch_sequence.step_1", tone: "cold" },
+          { label: "Touch 2", path: "lead_gen.touch_sequence.step_2", tone: "cold" },
+          { label: "Touch 3", path: "lead_gen.touch_sequence.step_3", tone: "warm" },
+          { label: "Touch 4", path: "lead_gen.touch_sequence.step_4", tone: "warm" },
+          { label: "Touch 5", path: "lead_gen.touch_sequence.step_5", tone: "hot" },
+        ],
+      },
       {
         kind: "bars",
         title: "Pipeline stage distribution",
@@ -252,8 +261,8 @@ export const FLOWS: Flow[] = [
       { label: "No response", path: "app_adoption.no_response" },
       { label: "Needs Dave review", path: "app_adoption.needs_dave_review" },
       { label: "Not joining (confirmed)", path: "app_adoption.not_joining_confirmed" },
-      { label: "No email (Mongo)", path: "app_adoption.no_email_mongo_count", note: "Filtered out before outreach - no usable email on file." },
-      { label: "Duplicate (Mongo)", path: "app_adoption.duplicate_mongo_count", note: "Already tracked under another record - skipped on purpose." },
+      { label: "No email (skipped)", path: "app_adoption.no_email_count", note: "From the source Google Sheet - filtered out before outreach, no usable email on file." },
+      { label: "Duplicate (skipped)", path: "app_adoption.duplicate_count", note: "From the source Google Sheet - already tracked, skipped on purpose." },
     ],
     charts: [
       {
@@ -265,12 +274,10 @@ export const FLOWS: Flow[] = [
       },
       {
         kind: "bars",
-        title: "Skipped before outreach: Mongo vs source sheet",
+        title: "Skipped before outreach",
         series: [
-          { label: "No email, Mongo", path: "app_adoption.no_email_mongo_count", tone: "amber" },
-          { label: "No email, sheet", path: "app_adoption.no_email_sheet_count", tone: "amber" },
-          { label: "Duplicate, Mongo", path: "app_adoption.duplicate_mongo_count", tone: "muted" },
-          { label: "Duplicate, sheet", path: "app_adoption.duplicate_sheet_count", tone: "muted" },
+          { label: "No email", path: "app_adoption.no_email_count", tone: "amber" },
+          { label: "Duplicate", path: "app_adoption.duplicate_count", tone: "muted" },
         ],
       },
     ],
@@ -282,9 +289,6 @@ export const FLOWS: Flow[] = [
       { tag: "zp-member / app-adoption-outreach", why: "Confirms the contact is a real Zen Planner member and marks them as part of this program." },
       { tag: "outreach-draft-ready", why: "Invite drafted in Gmail and waiting on David to send - the hand-off point for this flow." },
       { tag: "outreach-sent / app-not-joining", why: "Set on the incoming tag webhook - outreach-sent confirms the send, app-not-joining is David's manual signal that a member has declined." },
-    ],
-    canaries: [
-      { label: "No-email (Mongo vs Sheet)", path: "app_adoption.no_email_mongo_count", expect: "should track sheet count" },
     ],
   },
 
@@ -349,6 +353,9 @@ export const FLOWS: Flow[] = [
       "It reacts instantly and correctly: interested gets flagged for David, not-interested is closed out, and an out-of-office quietly pauses the sequence until they're back.",
     ],
     metrics: [
+      { label: "Reply rate", path: "lead_gen.email_reply_rate_pct", suffix: "%" },
+      { label: "Replied", path: "lead_gen.email_replied" },
+      { label: "Responded (stage)", path: "lead_gen.stage_responded" },
       { label: "Interested", path: "reply_breakdown.interested" },
       { label: "Not interested", path: "reply_breakdown.not_interested" },
       { label: "Auto-responder", path: "reply_breakdown.auto_responder" },

@@ -25,5 +25,5 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           GHL_LG_TOKEN: ${{ secrets.GHL_LG_TOKEN }}
           GHL_AA_TOKEN: ${{ secrets.GHL_AA_TOKEN }}
-          GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_SA_EMAIL }}
-          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_KEY }}

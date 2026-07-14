@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-07-14T20:10:37.254Z",
+  "total_classified_items": 43,
+  "subreddits": ["crossfit", "hyrox", "gymowners"],
+  "matrix": [
+    { "pain_point": "community_culture_negative", "frequency": 8, "owner_mentions": 0, "member_mentions": 8,
+      "solutions": [{ "solution": "remote coaching", "frequency": 1, "effectiveness": 3, "difficulty": 3 }] },
+    { "pain_point": "no_shows_late_cancellations", "frequency": 6, "owner_mentions": 0, "member_mentions": 6,
+      "solutions": [
+        { "solution": "no-show fee", "frequency": 1, "effectiveness": 3, "difficulty": 3 },
+        { "solution": "quiet word", "frequency": 1, "effectiveness": 4, "difficulty": 2 }
+      ] },
+    { "pain_point": "pricing_cost_value", "frequency": 5, "owner_mentions": 0, "member_mentions": 5, "solutions": [] },
+    { "pain_point": "coaching_quality_inconsistency", "frequency": 4, "owner_mentions": 0, "member_mentions": 4, "solutions": [] },
+    { "pain_point": "other", "frequency": 3, "owner_mentions": 1, "member_mentions": 0, "solutions": [] },
+    { "pain_point": "motivation_engagement_decline", "frequency": 3, "owner_mentions": 0, "member_mentions": 3, "solutions": [] },
+    { "pain_point": "programming_dissatisfaction", "frequency": 3, "owner_mentions": 0, "member_mentions": 3, "solutions": [] },
+    { "pain_point": "injury_safety_concerns", "frequency": 3, "owner_mentions": 0, "member_mentions": 3,
+      "solutions": [{ "solution": "focus on form", "frequency": 1, "effectiveness": 3, "difficulty": 2 }] },
+    { "pain_point": "business_ownership_change", "frequency": 2, "owner_mentions": 2, "member_mentions": 0, "solutions": [] },
+    { "pain_point": "facility_experience_decline", "frequency": 2, "owner_mentions": 0, "member_mentions": 2, "solutions": [] },
+    { "pain_point": "scheduling_access_issues", "frequency": 2, "owner_mentions": 1, "member_mentions": 1, "solutions": [] },
+    { "pain_point": "communication_gaps", "frequency": 1, "owner_mentions": 1, "member_mentions": 0,
+      "solutions": [{ "solution": "town hall", "frequency": 1, "effectiveness": 3, "difficulty": 3 }] },
+    { "pain_point": "competition_goal_misalignment", "frequency": 1, "owner_mentions": 1, "member_mentions": 0, "solutions": [] }
+  ]
+}

@@ -702,6 +702,30 @@ export const FLOWS: Flow[] = [
   },
 
   {
+    slug: "community-research",
+    name: "Community Research Pipeline",
+    order: 15,
+    goLive: "2026-07-14",
+    category: "platform",
+    oneLine: "Pulls gym-owner Reddit discussions, classifies them against a fixed pain-point taxonomy, and scores solutions for effectiveness and difficulty.",
+    technical: [
+      "n8n calls Reddit's free public .json endpoints directly (paced, descriptive User-Agent) - no paid scraping service, no Reddit API approval needed.",
+      "Classification batches multiple posts/comments per call through an OpenRouter model, with a validate-and-parse step that strips markdown fences and retries on invalid JSON.",
+      "Output is a fixed schema (pain point, severity, app-relevance, solution, effectiveness, difficulty, confidence tier) per finding, currently shipped to the dashboard as static committed JSON per community.",
+    ],
+    business: [
+      "Turns scattered gym-owner complaints into a ranked, buildable list: which retention problems come up most, and which of the proposed fixes are cheap and actually worked.",
+      "This is the same kind of automation as the outreach flows above - scheduled, unattended, producing structured output a human reviews rather than hand-processes.",
+    ],
+    metrics: [],
+    charts: [],
+    changelog: [
+      { date: "2026-07-14", status: "done", text: "Gym-owner community fully classified and live on the dashboard." },
+      { date: "2026-07-16", status: "in-progress", text: "CrossFit, HYROX, F45, Orangetheory in the classification queue - Orangetheory alone is ~2.4M comments, being pulled and processed in batches rather than all at once." },
+    ],
+  },
+
+  {
     slug: "temp-away",
     name: "Temp Away & Paused Contacts",
     order: 14,

@@ -102,6 +102,17 @@ export function SectionInsight({
                 {f.readable_date && (
                   <span style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)" }}>{f.readable_date}</span>
                 )}
+                {f.permalink && (
+                  <a
+                    href={f.permalink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", marginLeft: "auto", whiteSpace: "nowrap" }}
+                  >
+                    view reddit thread ↗
+                  </a>
+                )}
               </div>
               <div style={{ color: "var(--ink)" }}>{f.pain_point_reasoning}</div>
               {f.evidence_snippet && (

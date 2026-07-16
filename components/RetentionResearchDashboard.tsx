@@ -8,6 +8,7 @@ import { AppRelevanceDonut } from "@/components/AppRelevanceDonut";
 import { SolutionBars } from "@/components/SolutionBars";
 import { PerspectiveBars } from "@/components/PerspectiveBars";
 import { PriorityMatrixTable } from "@/components/PriorityMatrixTable";
+import { OpportunityMap } from "@/components/OpportunityMap";
 import { TimelineChart } from "@/components/TimelineChart";
 import { FindingsTable, TableFilters } from "@/components/FindingsTable";
 import { KeyTakeaways } from "@/components/KeyTakeaways";
@@ -116,13 +117,16 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Build-first priority matrix
-            <InfoTip text="Ranks every pain point by how many findings are core-fit for TWU's software, weighted by how severe the problem is, so high-severity, directly-buildable, mostly-unsolved issues rank at the top." />
+            <InfoTip text="The map plots every pain point by severity and how solvable it is with TWU's actual product, bubble size is volume, color is how unsolved it still is. The table below ranks the same data and expands per row for a confidence breakdown, the most-tried fix, and a recommendation." />
           </div>
           <div className="eyebrow muted">pain point x app fit x severity, excludes the catch-all "other" bucket</div>
         </div>
         {priority.length > 0 ? (
           <>
             <div style={{ marginTop: 22 }}>
+              <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+            </div>
+            <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
               <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
             </div>
             <SectionInsight
@@ -221,7 +225,7 @@ export function RetentionResearchDashboard({
           <div className="section-head" style={{ marginBottom: 0 }}>
             <div className="section-title">
               Can software fix it?
-              <InfoTip text="Core fit means TWU's app can address this directly. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, or facility problem software can't touch." />
+              <InfoTip text="Core fit means it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
             </div>
           </div>
           <div style={{ marginTop: 22 }}>

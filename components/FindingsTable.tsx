@@ -10,6 +10,7 @@ import {
   APP_RELEVANCE_TONE,
   painPointLabel,
   solutionCategoryLabel,
+  perspectiveLabel,
 } from "@/lib/retention-research";
 
 type SortKey = "default" | "severity" | "confidence" | "newest";
@@ -20,6 +21,7 @@ export type TableFilters = {
   relevance: AppRelevance | "All";
   solutionCategory: string | "All";
   severity: number | "All";
+  perspective: string | "All";
 };
 
 const TONE_COLOR: Record<string, string> = {
@@ -49,7 +51,7 @@ export function FindingsTable({
   const [sort, setSort] = useState<SortKey>("default");
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const { painPoint, tier, relevance, solutionCategory, severity } = filters;
+  const { painPoint, tier, relevance, solutionCategory, severity, perspective } = filters;
   const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
 
   const painPoints = useMemo(() => {
@@ -64,8 +66,9 @@ export function FindingsTable({
     if (relevance !== "All") chips.push({ key: "relevance", label: `App fit: ${APP_RELEVANCE_LABEL[relevance].split(": ")[0]}` });
     if (solutionCategory !== "All") chips.push({ key: "solutionCategory", label: `Solution: ${solutionCategoryLabel(solutionCategory)}` });
     if (severity !== "All") chips.push({ key: "severity", label: `Severity: ${severity}/5` });
+    if (perspective !== "All") chips.push({ key: "perspective", label: `Voice: ${perspectiveLabel(perspective)}` });
     return chips;
-  }, [painPoint, tier, relevance, solutionCategory, severity]);
+  }, [painPoint, tier, relevance, solutionCategory, severity, perspective]);
 
   const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -75,6 +78,7 @@ export function FindingsTable({
       if (relevance !== "All" && f.app_relevance !== relevance) return false;
       if (solutionCategory !== "All" && f.solution_category !== solutionCategory) return false;
       if (severity !== "All" && f.pain_severity !== severity) return false;
+      if (perspective !== "All" && (f.perspective || "unclear") !== perspective) return false;
       if (needle) {
         const hay = [f.pain_point_reasoning, f.solution, f.evidence_snippet].filter(Boolean).join(" ").toLowerCase();
         if (!hay.includes(needle)) return false;
@@ -90,7 +94,7 @@ export function FindingsTable({
       newest: (a, b) => (b.readable_date ?? "").localeCompare(a.readable_date ?? ""),
     };
     return [...filtered].sort(by[sort]);
-  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, sort]);
+  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, perspective, sort]);
 
   const chipStyle = (on: boolean): CSSProperties => ({
     background: on ? "rgba(201,168,76,0.12)" : "transparent",
@@ -135,7 +139,7 @@ export function FindingsTable({
           ))}
           <span
             style={{ ...chipStyle(false), marginLeft: "auto" }}
-            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All" })}
+            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" })}
           >
             Clear all
           </span>
@@ -197,6 +201,17 @@ export function FindingsTable({
         {(["All", "core_fit", "partial_fit", "not_addressable"] as const).map((r) => (
           <span key={r} style={chipStyle(relevance === r)} onClick={() => set({ relevance: r })}>
             {r === "All" ? "All" : APP_RELEVANCE_LABEL[r].split(": ")[0]}
+          </span>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+        <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>
+          VOICE:
+        </span>
+        {(["All", "owner", "member", "vendor", "coach", "employee", "unclear"] as const).map((p) => (
+          <span key={p} style={chipStyle(perspective === p)} onClick={() => set({ perspective: p })}>
+            {p === "All" ? "All" : perspectiveLabel(p)}
           </span>
         ))}
       </div>

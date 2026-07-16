@@ -163,7 +163,80 @@ export function timelineBreakdown(findings: Finding[]) {
 }
 
 // ---------------------------------------------------------------------------
-// Executive summary — computed from the real numbers in the selected
+// Perspective, who is actually talking
+// ---------------------------------------------------------------------------
+export const PERSPECTIVE_LABEL: Record<string, string> = {
+  owner: "Gym owner",
+  member: "Member",
+  vendor: "Vendor / product seller",
+  coach: "Coach or staff",
+  employee: "Employee",
+  unclear: "Unclear",
+};
+export function perspectiveLabel(p: string | null): string {
+  const key = p || "unclear";
+  return PERSPECTIVE_LABEL[key] || key;
+}
+
+export function perspectiveBreakdown(findings: Finding[]): [string, number][] {
+  const map: Record<string, number> = {};
+  findings.forEach((f) => {
+    const k = f.perspective || "unclear";
+    map[k] = (map[k] || 0) + 1;
+  });
+  return Object.entries(map).sort((a, b) => b[1] - a[1]);
+}
+
+export function soWhatPerspective(rows: [string, number][], total: number): string {
+  if (total === 0) return "No findings to summarize yet.";
+  const memberCount = rows.find(([k]) => k === "member")?.[1] ?? 0;
+  const ownerCount = rows.find(([k]) => k === "owner")?.[1] ?? 0;
+  const memberPct = Math.round((memberCount / total) * 100);
+  const ownerPct = Math.round((ownerCount / total) * 100);
+  return `${ownerPct}% of findings are owners describing what they see in members, secondhand. Only ${memberPct}% (${memberCount} of ${total}) are members speaking for themselves. Read the frequency counts above as owner perception of churn drivers, not verified member sentiment, until that gap closes.`;
+}
+
+// ---------------------------------------------------------------------------
+// Priority matrix, pain point crossed with buildability and severity
+// ---------------------------------------------------------------------------
+export type PriorityRow = {
+  pain_point: string;
+  total: number;
+  core_fit: number;
+  partial_fit: number;
+  not_addressable: number;
+  avgSeverity: number;
+  solutionRate: number;
+  strongPct: number;
+  score: number;
+};
+
+export function priorityMatrix(findings: Finding[]): PriorityRow[] {
+  const pp = painPointBreakdown(findings).filter(([p]) => p !== "other");
+  const rows: PriorityRow[] = pp.map(([p, v]) => {
+    const rowFindings = findings.filter((f) => f.pain_point === p);
+    const core_fit = rowFindings.filter((f) => f.app_relevance === "core_fit").length;
+    const partial_fit = rowFindings.filter((f) => f.app_relevance === "partial_fit").length;
+    const not_addressable = rowFindings.filter((f) => f.app_relevance === "not_addressable").length;
+    const severities = rowFindings.map((f) => f.pain_severity).filter((s): s is number => s != null);
+    const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+    const solutionRate = rowFindings.length > 0 ? rowFindings.filter((f) => f.solution).length / rowFindings.length : 0;
+    const strongPct = v.total > 0 ? Math.round((v.strong / v.total) * 100) : 0;
+    const score = core_fit * avgSeverity;
+    return { pain_point: p, total: v.total, core_fit, partial_fit, not_addressable, avgSeverity, solutionRate, strongPct, score };
+  });
+  return rows.sort((a, b) => b.score - a.score);
+}
+
+export function soWhatPriority(matrix: PriorityRow[]): string {
+  const top = matrix.find((r) => r.score > 0);
+  if (!top) return "No pain point currently combines enough core-fit findings and severity to rank. Widen the classification pass before prioritizing a build.";
+  const solvedPct = Math.round(top.solutionRate * 100);
+  return `${painPointLabel(top.pain_point)} ranks first: ${top.core_fit} core-fit findings at an average severity of ${top.avgSeverity.toFixed(1)}/5, and a solution is on record in only ${solvedPct}% of them. That combination, high severity, directly buildable, mostly unsolved, is the clearest build-first case in this data.`;
+}
+
+// ---------------------------------------------------------------------------
+// Executive summary, computed from the real numbers in the selected
 // dataset, not hand-typed, so it can never drift from what the charts show.
 // ---------------------------------------------------------------------------
 export function executiveSummary(ds: CommunityDataset): string[] {

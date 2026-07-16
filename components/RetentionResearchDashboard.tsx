@@ -6,6 +6,8 @@ import { PainPointStackedBars } from "@/components/PainPointStackedBars";
 import { SeverityBars } from "@/components/SeverityBars";
 import { AppRelevanceDonut } from "@/components/AppRelevanceDonut";
 import { SolutionBars } from "@/components/SolutionBars";
+import { PerspectiveBars } from "@/components/PerspectiveBars";
+import { PriorityMatrixTable } from "@/components/PriorityMatrixTable";
 import { TimelineChart } from "@/components/TimelineChart";
 import { FindingsTable, TableFilters } from "@/components/FindingsTable";
 import { KeyTakeaways } from "@/components/KeyTakeaways";
@@ -21,6 +23,8 @@ import {
   solutionCategoryBreakdown,
   timelineBreakdown,
   confidenceTierBreakdown,
+  perspectiveBreakdown,
+  priorityMatrix,
   executiveSummary,
   keyTakeaways,
   soWhatPainPoints,
@@ -28,12 +32,15 @@ import {
   soWhatAppRelevance,
   soWhatSolutions,
   soWhatTimeline,
+  soWhatPerspective,
+  soWhatPriority,
   painPointLabel,
   solutionCategoryLabel,
+  perspectiveLabel,
   APP_RELEVANCE_LABEL,
 } from "@/lib/retention-research";
 
-const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All" };
+const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" };
 
 
 export function RetentionResearchDashboard({
@@ -64,6 +71,8 @@ export function RetentionResearchDashboard({
   const solutions = useMemo(() => solutionCategoryBreakdown(findings), [findings]);
   const timeline = useMemo(() => timelineBreakdown(findings), [findings]);
   const tiers = useMemo(() => confidenceTierBreakdown(findings), [findings]);
+  const perspective = useMemo(() => perspectiveBreakdown(findings), [findings]);
+  const priority = useMemo(() => priorityMatrix(findings), [findings]);
   const solutionsMentioned = findings.filter((f) => f.solution).length;
 
   const select = (key: keyof TableFilters, value: string | number) => {
@@ -75,6 +84,19 @@ export function RetentionResearchDashboard({
   const severityMatches = filters.severity === "All" ? null : findings.filter((f) => f.pain_severity === filters.severity);
   const relevanceMatches = filters.relevance === "All" ? null : findings.filter((f) => f.app_relevance === filters.relevance);
   const solutionMatches = filters.solutionCategory === "All" ? null : findings.filter((f) => f.solution_category === filters.solutionCategory);
+  const perspectiveMatches = filters.perspective === "All" ? null : findings.filter((f) => (f.perspective || "unclear") === filters.perspective);
+
+  const priorityActivePainPoint = filters.painPoint !== "All" && filters.relevance === "core_fit" ? filters.painPoint : null;
+  const priorityMatches = priorityActivePainPoint
+    ? findings.filter((f) => f.pain_point === priorityActivePainPoint && f.app_relevance === "core_fit")
+    : null;
+  const selectPriority = (pp: string) => {
+    setFilters((prev) =>
+      prev.painPoint === pp && prev.relevance === "core_fit"
+        ? { ...prev, painPoint: "All", relevance: "All" }
+        : { ...prev, painPoint: pp, relevance: "core_fit" }
+    );
+  };
 
   return (
     <div className="wrap">
@@ -89,6 +111,32 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <KeyTakeaways points={takeaways} />
       </section>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            Build-first priority matrix
+            <InfoTip text="Ranks every pain point by how many findings are core-fit for TWU's software, weighted by how severe the problem is, so high-severity, directly-buildable, mostly-unsolved issues rank at the top." />
+          </div>
+          <div className="eyebrow muted">pain point x app fit x severity, excludes the catch-all "other" bucket</div>
+        </div>
+        {priority.length > 0 ? (
+          <>
+            <div style={{ marginTop: 22 }}>
+              <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
+            </div>
+            <SectionInsight
+              totalInView={findings.length}
+              matches={priorityMatches}
+              selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
+              generalText={soWhatPriority(priority)}
+              onClear={() => setFilters((prev) => ({ ...prev, painPoint: "All", relevance: "All" }))}
+            />
+          </>
+        ) : (
+          <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
+        )}
+      </div>
 
       <div className="briefing">
         {summary.map((s, i) => (
@@ -191,6 +239,30 @@ export function RetentionResearchDashboard({
             onClear={() => clear("relevance")}
           />
         </div>
+      </div>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            Who is actually talking
+            <InfoTip text="Whether the finding comes from a gym owner describing what they observe, a member describing their own experience, a vendor, coach, or employee. Owner and member accounts carry very different evidentiary weight." />
+          </div>
+          <div className="eyebrow muted">voice behind each finding</div>
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <PerspectiveBars
+            rows={perspective}
+            active={filters.perspective === "All" ? null : filters.perspective}
+            onSelect={(p) => select("perspective", p)}
+          />
+        </div>
+        <SectionInsight
+          totalInView={findings.length}
+          matches={perspectiveMatches}
+          selectionLabel={filters.perspective === "All" ? null : perspectiveLabel(filters.perspective)}
+          generalText={soWhatPerspective(perspective, findings.length)}
+          onClear={() => clear("perspective")}
+        />
       </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>

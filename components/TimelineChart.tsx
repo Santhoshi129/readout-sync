@@ -48,18 +48,23 @@ export function TimelineChart({ rows }: { rows: [string, number][] }) {
           );
         })}
       </div>
-      <div style={{ display: "flex", gap: 6 }}>
+      <div style={{ display: "flex", gap: 6, height: rows.length > 12 ? 70 : 20 }}>
         {rows.map(([q], i) => (
           <div
             key={q}
             style={{
               flex: 1,
+              display: "flex",
+              alignItems: rows.length > 12 ? "flex-start" : "center",
+              justifyContent: "center",
               textAlign: "center",
               fontFamily: "var(--mono)",
-              fontSize: 9,
-              color: hover === i ? "var(--amber)" : "var(--ink-faint)",
+              fontSize: 10.5,
+              fontWeight: hover === i ? 700 : 500,
+              color: hover === i ? "var(--amber-bright)" : "var(--ink-dim)",
               writingMode: rows.length > 12 ? "vertical-rl" : "horizontal-tb",
               minWidth: 8,
+              transition: "color 150ms ease",
             }}
           >
             {q.replace("20", "'")}

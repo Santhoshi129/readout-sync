@@ -195,24 +195,24 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   sentences.push(
-    `Of ${ds.total_analyzed.toLocaleString()} posts and comments analyzed in ${ds.label}, ${n} (${relDensity.toFixed(
+    `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were run through classification. ${n} (${relDensity.toFixed(
       1
-    )}%) surfaced a specific, identifiable member-retention pain point. That is a small slice, and a reminder that this is a targeted extraction from a much larger, mostly off-topic corpus, not a survey of gym owners broadly.`
+    )}%) named a specific member-retention pain point. This is a targeted pull, not a survey of gym owners at large, so treat the base rate as a floor, not a headline number.`
   );
 
   sentences.push(
-    `${painPointLabel(top[0])} is the leading cluster at ${top[1].total} findings (${topPct}% of the relevant set)` +
+    `${painPointLabel(top[0])} leads at ${top[1].total} findings (${topPct}% of the relevant set)` +
       (second
-        ? `, followed by ${painPointLabel(second[0])} at ${second[1].total}.`
+        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}.`
         : ".")
   );
 
   sentences.push(
-    `${coreFitPct}% of findings (${coreFit} of ${n}) describe a problem TWU's software can directly address; ${notAddressablePct}% (${notAddressable}) describe staffing, facility, or culture issues that are outside what an app can fix on its own.`
+    `${coreFitPct}% of findings (${coreFit} of ${n}) sit squarely in TWU's product lane. ${notAddressablePct}% (${notAddressable}) are staffing, facility, or culture calls no app will fix.`
   );
 
   sentences.push(
-    `Confidence is skewed toward the low end: only ${ct.strong} findings (${strongPct}%) are rated strong-confidence, while ${ct.weak} (${weakPct}%) are weak. Read the pattern-level conclusions above with that in mind, and treat individual weak-tier rows as leads worth watching rather than settled facts.`
+    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. Build the roadmap on the strong and moderate rows; use the weak tier to decide where the next classification pass should dig deeper.`
   );
 
   return sentences;
@@ -243,10 +243,10 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} is the #1 retention risk: ${topPct}% of everything relevant we found.`,
-    `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is something TWU's software can directly fix, not a staffing or facility issue.`,
-    `Only ${strongPct}% of findings are strong-confidence. This is a solid first read, not a final verdict; treat it as where to look next, not where to stop looking.`,
-    `A concrete solution was even mentioned in ${solutionsPct}% of findings (${solutionsMentioned} of ${n}), and most gym owners are naming the problem without naming a fix, which is itself the opportunity.`,
+    `${painPointLabel(top[0])} is the #1 retention risk in this data: ${topPct}% of everything relevant we found.`,
+    `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is buildable, not a staffing or facility issue.`,
+    `Confidence is still thin at ${strongPct}% strong-tier. This is a working first pass, worth a second, larger classification run before anyone quotes these percentages as final.`,
+    `A concrete solution shows up in only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}). Most owners are naming the problem, not a fix. That gap is the opening.`,
   ];
 }
 
@@ -259,14 +259,14 @@ export function soWhatPainPoints(rows: ReturnType<typeof painPointBreakdown>, to
   const top3 = rows.slice(0, 3);
   const top3Total = top3.reduce((s, [, v]) => s + v.total, 0);
   const top3Pct = Math.round((top3Total / total) * 100);
-  return `The top 3 pain points (${top3.map(([p]) => painPointLabel(p)).join(", ")}) account for ${top3Pct}% of all relevant findings. Retention risk here is concentrated, not spread evenly across a dozen issues.`;
+  return `${top3.map(([p]) => painPointLabel(p)).join(", ")} account for ${top3Pct}% of every relevant finding. Retention risk is concentrated in a handful of issues, not spread thin across a dozen.`;
 }
 
 export function soWhatSeverity(hist: { severity: number; count: number }[], total: number): string {
   if (total === 0) return "No severity-scored findings yet.";
   const highSeverity = hist.filter((h) => h.severity >= 4).reduce((s, h) => s + h.count, 0);
   const pct = Math.round((highSeverity / total) * 100);
-  return `${pct}% of findings are rated high severity (4-5/5), meaning the member described this as a real reason they left or nearly left, not a minor annoyance.`;
+  return `${pct}% of findings score 4 or 5 on severity, meaning the member called this out as a real reason they left or nearly did, not a passing gripe.`;
 }
 
 export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>, total: number): string {
@@ -274,14 +274,14 @@ export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>,
   const coreFit = ar.find((a) => a.key === "core_fit")?.count ?? 0;
   const partial = ar.find((a) => a.key === "partial_fit")?.count ?? 0;
   const pct = total > 0 ? Math.round(((coreFit + partial) / total) * 100) : 0;
-  return `${pct}% of the retention problem is at least partially solvable with software. The rest is coaching, staffing, and facility quality, which no app touches directly.`;
+  return `${pct}% of this problem set is at least partially solvable with software. The rest is coaching, staffing, and facility quality, and no app touches that directly.`;
 }
 
 export function soWhatSolutions(rows: [string, number][], mentioned: number, total: number): string {
   if (total === 0) return "No findings to summarize yet.";
   const top = rows[0];
-  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. Most gym owners are describing the problem, not a solution they tried.`;
-  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix (${top[1]} mentions), but only ${mentioned} of ${total} findings name any solution at all. Most of this problem space is still unaddressed.`;
+  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. Owners are describing the problem, not a solution they tried.`;
+  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, but only ${mentioned} of ${total} findings name any solution at all. Most of this problem space is still unaddressed.`;
 }
 
 export function soWhatTimeline(rows: [string, number][]): string {
@@ -289,9 +289,9 @@ export function soWhatTimeline(rows: [string, number][]): string {
   const midpoint = Math.floor(rows.length / 2);
   const earlier = rows.slice(0, midpoint).reduce((s, [, c]) => s + c, 0);
   const later = rows.slice(midpoint).reduce((s, [, c]) => s + c, 0);
-  if (later > earlier * 1.3) return "Mentions have picked up in the more recent half of the timeframe. This looks like a growing conversation, not a settled one.";
-  if (earlier > later * 1.3) return "Mentions were more concentrated earlier in the timeframe than recently, worth checking whether that's fewer posts or a problem that's actually easing.";
-  return "Mentions are roughly steady across the timeframe, with no strong recent spike or drop-off.";
+  if (later > earlier * 1.3) return "Mentions have picked up in the more recent half of the timeframe. This is a growing conversation, not a settled one.";
+  if (earlier > later * 1.3) return "Mentions were heavier earlier in the timeframe than recently. Worth checking whether that's fewer posts or the problem actually easing.";
+  return "Mentions are roughly steady across the timeframe, no strong recent spike or drop-off.";
 }
 
 // ---------------------------------------------------------------------------

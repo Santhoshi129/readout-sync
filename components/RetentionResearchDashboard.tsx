@@ -35,9 +35,6 @@ import {
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All" };
 
-function scrollToTable() {
-  document.getElementById("findings-table")?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
 export function RetentionResearchDashboard({
   communities,
@@ -141,7 +138,6 @@ export function RetentionResearchDashboard({
               selectionLabel={filters.painPoint === "All" ? null : painPointLabel(filters.painPoint)}
               generalText={soWhatPainPoints(painPoints, findings.length)}
               onClear={() => clear("painPoint")}
-              onViewAll={scrollToTable}
             />
           </>
         ) : (
@@ -170,7 +166,6 @@ export function RetentionResearchDashboard({
             selectionLabel={filters.severity === "All" ? null : `Severity ${filters.severity}/5`}
             generalText={soWhatSeverity(severity, findings.length)}
             onClear={() => clear("severity")}
-            onViewAll={scrollToTable}
           />
         </div>
 
@@ -194,7 +189,6 @@ export function RetentionResearchDashboard({
             selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
             generalText={soWhatAppRelevance(appRel, findings.length)}
             onClear={() => clear("relevance")}
-            onViewAll={scrollToTable}
           />
         </div>
       </div>
@@ -219,7 +213,6 @@ export function RetentionResearchDashboard({
               selectionLabel={filters.solutionCategory === "All" ? null : solutionCategoryLabel(filters.solutionCategory)}
               generalText={soWhatSolutions(solutions, solutionsMentioned, findings.length)}
               onClear={() => clear("solutionCategory")}
-              onViewAll={scrollToTable}
             />
           </>
         ) : (
@@ -241,7 +234,6 @@ export function RetentionResearchDashboard({
           selectionLabel={null}
           generalText={soWhatTimeline(timeline)}
           onClear={() => {}}
-          onViewAll={scrollToTable}
         />
       </div>
 

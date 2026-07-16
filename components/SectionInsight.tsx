@@ -10,14 +10,12 @@ export function SectionInsight({
   selectionLabel,
   generalText,
   onClear,
-  onViewAll,
 }: {
   totalInView: number;
   matches: Finding[] | null;
   selectionLabel: string | null;
   generalText: string;
   onClear: () => void;
-  onViewAll: () => void;
 }) {
   if (!matches || !selectionLabel) {
     return (
@@ -39,9 +37,9 @@ export function SectionInsight({
     );
   }
 
-  const examples = [...matches]
-    .sort((a, b) => (b.pain_severity ?? 0) - (a.pain_severity ?? 0))
-    .slice(0, 2);
+  const examples = [...matches].sort(
+    (a, b) => (b.pain_severity ?? 0) - (a.pain_severity ?? 0)
+  );
   const pct = totalInView > 0 ? Math.round((matches.length / totalInView) * 100) : 0;
 
   return (
@@ -55,7 +53,7 @@ export function SectionInsight({
         padding: "18px 20px",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 6, flexWrap: "wrap" }}>
         <div style={{ fontSize: 14, color: "var(--ink)" }}>
           <strong style={{ color: "var(--amber)" }}>{selectionLabel}</strong>
           {": "}
@@ -65,11 +63,23 @@ export function SectionInsight({
           clear selection
         </button>
       </div>
+      <div style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", marginBottom: 12 }}>
+        scroll for every matching finding
+      </div>
 
       {examples.length > 0 ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 14,
+            maxHeight: 340,
+            overflowY: "auto",
+            paddingRight: 8,
+          }}
+        >
           {examples.map((f) => (
-            <div key={f.id} style={{ fontSize: 13, lineHeight: 1.55 }}>
+            <div key={f.id} style={{ fontSize: 13, lineHeight: 1.55, paddingBottom: 12, borderBottom: "1px solid var(--border-soft)" }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
                 <span
                   style={{
@@ -89,6 +99,9 @@ export function SectionInsight({
                     severity {f.pain_severity}/5
                   </span>
                 )}
+                {f.readable_date && (
+                  <span style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)" }}>{f.readable_date}</span>
+                )}
               </div>
               <div style={{ color: "var(--ink)" }}>{f.pain_point_reasoning}</div>
               {f.evidence_snippet && (
@@ -104,16 +117,18 @@ export function SectionInsight({
                   “{f.evidence_snippet}”
                 </blockquote>
               )}
+              {(f.solution || f.effectiveness_reasoning) && (
+                <div style={{ marginTop: 6, fontSize: 12, color: "var(--ink-faint)" }}>
+                  {f.solution ? `Solution tried: ${f.solution}. ` : ""}
+                  {f.effectiveness_reasoning ? `Outcome: ${f.effectiveness_reasoning}` : ""}
+                </div>
+              )}
             </div>
           ))}
         </div>
       ) : (
         <div style={{ color: "var(--ink-faint)", fontSize: 13 }}>No findings in this slice.</div>
       )}
-
-      <button onClick={onViewAll} style={{ ...linkBtn, marginTop: 14 }}>
-        view all {matches.length} in the findings table ↓
-      </button>
     </div>
   );
 }

@@ -61,7 +61,7 @@ export function FindingsTable({
     const chips: { key: keyof TableFilters; label: string }[] = [];
     if (painPoint !== "All") chips.push({ key: "painPoint", label: `Pain point: ${painPointLabel(painPoint)}` });
     if (tier !== "All") chips.push({ key: "tier", label: `Confidence: ${tier}` });
-    if (relevance !== "All") chips.push({ key: "relevance", label: `App fit: ${APP_RELEVANCE_LABEL[relevance].split(" — ")[0]}` });
+    if (relevance !== "All") chips.push({ key: "relevance", label: `App fit: ${APP_RELEVANCE_LABEL[relevance].split(": ")[0]}` });
     if (solutionCategory !== "All") chips.push({ key: "solutionCategory", label: `Solution: ${solutionCategoryLabel(solutionCategory)}` });
     if (severity !== "All") chips.push({ key: "severity", label: `Severity: ${severity}/5` });
     return chips;
@@ -196,7 +196,7 @@ export function FindingsTable({
         </span>
         {(["All", "core_fit", "partial_fit", "not_addressable"] as const).map((r) => (
           <span key={r} style={chipStyle(relevance === r)} onClick={() => set({ relevance: r })}>
-            {r === "All" ? "All" : APP_RELEVANCE_LABEL[r].split(" — ")[0]}
+            {r === "All" ? "All" : APP_RELEVANCE_LABEL[r].split(": ")[0]}
           </span>
         ))}
       </div>
@@ -317,7 +317,7 @@ export function FindingsTable({
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {APP_RELEVANCE_LABEL[f.app_relevance].split(" — ")[0]}
+                        {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
                       </span>
                     )}
                   </div>

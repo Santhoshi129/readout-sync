@@ -86,8 +86,8 @@ export function painPointLabel(p: string): string {
 }
 
 export const APP_RELEVANCE_LABEL: Record<AppRelevance, string> = {
-  core_fit: "Core fit — directly addressable",
-  partial_fit: "Partial fit — can help",
+  core_fit: "Core fit: directly addressable",
+  partial_fit: "Partial fit: can help",
   not_addressable: "Not addressable by software",
 };
 export const APP_RELEVANCE_TONE: Record<AppRelevance, string> = {
@@ -197,7 +197,7 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   sentences.push(
     `Of ${ds.total_analyzed.toLocaleString()} posts and comments analyzed in ${ds.label}, ${n} (${relDensity.toFixed(
       1
-    )}%) surfaced a specific, identifiable member-retention pain point — a small slice, and a reminder that this is a targeted extraction from a much larger, mostly off-topic corpus, not a survey of gym owners broadly.`
+    )}%) surfaced a specific, identifiable member-retention pain point. That is a small slice, and a reminder that this is a targeted extraction from a much larger, mostly off-topic corpus, not a survey of gym owners broadly.`
   );
 
   sentences.push(
@@ -212,7 +212,7 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   );
 
   sentences.push(
-    `Confidence is skewed toward the low end: only ${ct.strong} findings (${strongPct}%) are rated strong-confidence, while ${ct.weak} (${weakPct}%) are weak — read the pattern-level conclusions above with that in mind, and treat individual weak-tier rows as leads worth watching rather than settled facts.`
+    `Confidence is skewed toward the low end: only ${ct.strong} findings (${strongPct}%) are rated strong-confidence, while ${ct.weak} (${weakPct}%) are weak. Read the pattern-level conclusions above with that in mind, and treat individual weak-tier rows as leads worth watching rather than settled facts.`
   );
 
   return sentences;
@@ -243,10 +243,10 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} is the #1 retention risk — ${topPct}% of everything relevant we found.`,
+    `${painPointLabel(top[0])} is the #1 retention risk: ${topPct}% of everything relevant we found.`,
     `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is something TWU's software can directly fix, not a staffing or facility issue.`,
-    `Only ${strongPct}% of findings are strong-confidence — this is a solid first read, not a final verdict; treat it as where to look next, not where to stop looking.`,
-    `A concrete solution was even mentioned in ${solutionsPct}% of findings (${solutionsMentioned} of ${n}) — most gym owners are naming the problem without naming a fix, which is itself the opportunity.`,
+    `Only ${strongPct}% of findings are strong-confidence. This is a solid first read, not a final verdict; treat it as where to look next, not where to stop looking.`,
+    `A concrete solution was even mentioned in ${solutionsPct}% of findings (${solutionsMentioned} of ${n}), and most gym owners are naming the problem without naming a fix, which is itself the opportunity.`,
   ];
 }
 
@@ -259,14 +259,14 @@ export function soWhatPainPoints(rows: ReturnType<typeof painPointBreakdown>, to
   const top3 = rows.slice(0, 3);
   const top3Total = top3.reduce((s, [, v]) => s + v.total, 0);
   const top3Pct = Math.round((top3Total / total) * 100);
-  return `The top 3 pain points (${top3.map(([p]) => painPointLabel(p)).join(", ")}) account for ${top3Pct}% of all relevant findings — retention risk here is concentrated, not spread evenly across a dozen issues.`;
+  return `The top 3 pain points (${top3.map(([p]) => painPointLabel(p)).join(", ")}) account for ${top3Pct}% of all relevant findings. Retention risk here is concentrated, not spread evenly across a dozen issues.`;
 }
 
 export function soWhatSeverity(hist: { severity: number; count: number }[], total: number): string {
   if (total === 0) return "No severity-scored findings yet.";
   const highSeverity = hist.filter((h) => h.severity >= 4).reduce((s, h) => s + h.count, 0);
   const pct = Math.round((highSeverity / total) * 100);
-  return `${pct}% of findings are rated high severity (4-5/5) — meaning the member described this as a real reason they left or nearly left, not a minor annoyance.`;
+  return `${pct}% of findings are rated high severity (4-5/5), meaning the member described this as a real reason they left or nearly left, not a minor annoyance.`;
 }
 
 export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>, total: number): string {
@@ -274,14 +274,14 @@ export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>,
   const coreFit = ar.find((a) => a.key === "core_fit")?.count ?? 0;
   const partial = ar.find((a) => a.key === "partial_fit")?.count ?? 0;
   const pct = total > 0 ? Math.round(((coreFit + partial) / total) * 100) : 0;
-  return `${pct}% of the retention problem is at least partially solvable with software — the rest is coaching, staffing, and facility quality, which no app touches directly.`;
+  return `${pct}% of the retention problem is at least partially solvable with software. The rest is coaching, staffing, and facility quality, which no app touches directly.`;
 }
 
 export function soWhatSolutions(rows: [string, number][], mentioned: number, total: number): string {
   if (total === 0) return "No findings to summarize yet.";
   const top = rows[0];
-  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings — most gym owners are describing the problem, not a solution they tried.`;
-  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix (${top[1]} mentions), but only ${mentioned} of ${total} findings name any solution at all — most of this problem space is still unaddressed.`;
+  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. Most gym owners are describing the problem, not a solution they tried.`;
+  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix (${top[1]} mentions), but only ${mentioned} of ${total} findings name any solution at all. Most of this problem space is still unaddressed.`;
 }
 
 export function soWhatTimeline(rows: [string, number][]): string {
@@ -289,9 +289,9 @@ export function soWhatTimeline(rows: [string, number][]): string {
   const midpoint = Math.floor(rows.length / 2);
   const earlier = rows.slice(0, midpoint).reduce((s, [, c]) => s + c, 0);
   const later = rows.slice(midpoint).reduce((s, [, c]) => s + c, 0);
-  if (later > earlier * 1.3) return "Mentions have picked up in the more recent half of the timeframe — this looks like a growing conversation, not a settled one.";
-  if (earlier > later * 1.3) return "Mentions were more concentrated earlier in the timeframe than recently — worth checking whether that's fewer posts or a problem that's actually easing.";
-  return "Mentions are roughly steady across the timeframe — no strong recent spike or drop-off.";
+  if (later > earlier * 1.3) return "Mentions have picked up in the more recent half of the timeframe. This looks like a growing conversation, not a settled one.";
+  if (earlier > later * 1.3) return "Mentions were more concentrated earlier in the timeframe than recently, worth checking whether that's fewer posts or a problem that's actually easing.";
+  return "Mentions are roughly steady across the timeframe, with no strong recent spike or drop-off.";
 }
 
 // ---------------------------------------------------------------------------
@@ -299,13 +299,13 @@ export function soWhatTimeline(rows: [string, number][]): string {
 // exec will hit on this page.
 // ---------------------------------------------------------------------------
 export const GLOSSARY: { term: string; meaning: string }[] = [
-  { term: "Confidence tier", meaning: "How sure the classifier is that this is a real, on-topic retention finding — based on how specific, credible, and unambiguous the source post is. Strong = high trust; weak = plausible but read with caution." },
-  { term: "Core fit", meaning: "TWU's software can directly address this problem today — e.g. booking, reminders, progress tracking, check-ins." },
+  { term: "Confidence tier", meaning: "How sure the classifier is that this is a real, on-topic retention finding, based on how specific, credible, and unambiguous the source post is. Strong = high trust; weak = plausible but read with caution." },
+  { term: "Core fit", meaning: "TWU's software can directly address this problem today, e.g. booking, reminders, progress tracking, check-ins." },
   { term: "Partial fit", meaning: "Software can help around the edges (surface data, prompt a conversation) but can't solve the underlying issue alone." },
-  { term: "Not addressable", meaning: "A staffing, facility, coaching, or culture problem — outside what any app can fix directly." },
-  { term: "Severity (1-5)", meaning: "How serious the member/owner made this problem sound — 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
-  { term: "Difficulty (1-5)", meaning: "How hard the mentioned solution would be to implement — 1 is trivial, 5 is a major operational lift." },
-  { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source — only scored when a solution and an outcome were both mentioned." },
-  { term: "Relevance density", meaning: "The share of all posts/comments analyzed that turned out to be an on-topic, specific retention finding — most Reddit discussion in these communities isn't about retention at all." },
-  { term: "Self-reported", meaning: "The result came from whoever built or sells the solution talking about their own product — treated as lower-trust than a first-hand owner or member account." },
+  { term: "Not addressable", meaning: "A staffing, facility, coaching, or culture problem, outside what any app can fix directly." },
+  { term: "Severity (1-5)", meaning: "How serious the member/owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
+  { term: "Difficulty (1-5)", meaning: "How hard the mentioned solution would be to implement. 1 is trivial, 5 is a major operational lift." },
+  { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source. Only scored when a solution and an outcome were both mentioned." },
+  { term: "Relevance density", meaning: "The share of all posts/comments analyzed that turned out to be an on-topic, specific retention finding. Most Reddit discussion in these communities isn't about retention at all." },
+  { term: "Self-reported", meaning: "The result came from whoever built or sells the solution talking about their own product, treated as lower-trust than a first-hand owner or member account." },
 ];

@@ -71,7 +71,7 @@ export function AppRelevanceDonut({
           {highlighted ? highlighted.count : total}
         </text>
         <text x="100" y={highlighted ? 114 : 120} textAnchor="middle" fontSize="11" fill="var(--ink-faint)" fontFamily="var(--mono)" letterSpacing="1.5">
-          {(highlighted ? `${highlighted.label.split(" — ")[0].toUpperCase()} \u00b7 ${highlighted.pct}%` : "FINDINGS")}
+          {(highlighted ? `${highlighted.label.split(": ")[0].toUpperCase()} \u00b7 ${highlighted.pct}%` : "FINDINGS")}
         </text>
       </svg>
 

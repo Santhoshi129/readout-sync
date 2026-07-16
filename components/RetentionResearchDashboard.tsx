@@ -10,6 +10,7 @@ import { TimelineChart } from "@/components/TimelineChart";
 import { FindingsTable, TableFilters } from "@/components/FindingsTable";
 import { KeyTakeaways } from "@/components/KeyTakeaways";
 import { RetentionGlossary } from "@/components/RetentionGlossary";
+import { SectionInsight } from "@/components/SectionInsight";
 import { InfoTip } from "@/components/InfoTip";
 import {
   CommunityDataset,
@@ -27,6 +28,9 @@ import {
   soWhatAppRelevance,
   soWhatSolutions,
   soWhatTimeline,
+  painPointLabel,
+  solutionCategoryLabel,
+  APP_RELEVANCE_LABEL,
 } from "@/lib/retention-research";
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All" };
@@ -65,13 +69,15 @@ export function RetentionResearchDashboard({
   const tiers = useMemo(() => confidenceTierBreakdown(findings), [findings]);
   const solutionsMentioned = findings.filter((f) => f.solution).length;
 
-  const toggle = (patch: Partial<TableFilters>, key: keyof TableFilters, value: string | number) => {
-    setFilters((prev) => {
-      const next = prev[key] === value ? { ...prev, [key]: "All" } : { ...prev, ...patch };
-      return next;
-    });
-    scrollToTable();
+  const select = (key: keyof TableFilters, value: string | number) => {
+    setFilters((prev) => (prev[key] === value ? { ...prev, [key]: "All" } : { ...prev, [key]: value }));
   };
+  const clear = (key: keyof TableFilters) => setFilters((prev) => ({ ...prev, [key]: "All" }));
+
+  const painPointMatches = filters.painPoint === "All" ? null : findings.filter((f) => f.pain_point === filters.painPoint);
+  const severityMatches = filters.severity === "All" ? null : findings.filter((f) => f.pain_severity === filters.severity);
+  const relevanceMatches = filters.relevance === "All" ? null : findings.filter((f) => f.app_relevance === filters.relevance);
+  const solutionMatches = filters.solutionCategory === "All" ? null : findings.filter((f) => f.solution_category === filters.solutionCategory);
 
   return (
     <div className="wrap">
@@ -99,120 +105,156 @@ export function RetentionResearchDashboard({
         <RetentionGlossary />
       </section>
 
-      <section className="section" style={{ borderTop: "none", paddingTop: 0 }}>
+      <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
             { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted" },
             { label: "Relevant findings", value: ds.relevant_count, tone: "amber" },
-            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate · ${tiers.weak} weak` },
+            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak` },
           ]}
         />
       </section>
 
-      <section className="section">
-        <div className="section-head">
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Pain point frequency
-            <InfoTip text="How many relevant findings fall into each pain-point category, split by how confident the classifier is in each one." />
+            <InfoTip text="How many relevant findings fall into each pain point category, split by how confident the classifier is in each one." />
           </div>
           <div className="eyebrow muted">
-            by confidence tier <InfoTip text="Strong = high trust the finding is real and on-topic. Moderate = plausible. Weak = worth watching, not yet a settled fact." />
+            by confidence tier
+            <InfoTip text="Strong means high trust the finding is real and on topic. Moderate means plausible. Weak means worth watching, not yet a settled fact." />
           </div>
         </div>
         {painPoints.length > 0 ? (
           <>
-            <PainPointStackedBars
-              rows={painPoints}
-              active={filters.painPoint === "All" ? null : filters.painPoint}
-              onSelect={(pp) => toggle({ painPoint: pp }, "painPoint", pp)}
-            />
-            <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13.5, lineHeight: 1.6, fontStyle: "italic" }}>
-              {soWhatPainPoints(painPoints, findings.length)}
+            <div style={{ marginTop: 22 }}>
+              <PainPointStackedBars
+                rows={painPoints}
+                active={filters.painPoint === "All" ? null : filters.painPoint}
+                onSelect={(pp) => select("painPoint", pp)}
+              />
             </div>
+            <SectionInsight
+              totalInView={findings.length}
+              matches={painPointMatches}
+              selectionLabel={filters.painPoint === "All" ? null : painPointLabel(filters.painPoint)}
+              generalText={soWhatPainPoints(painPoints, findings.length)}
+              onClear={() => clear("painPoint")}
+              onViewAll={scrollToTable}
+            />
           </>
         ) : (
-          <div style={{ color: "var(--ink-faint)" }}>No findings yet.</div>
+          <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
         )}
-      </section>
-
-      <div className="grid grid-2" style={{ gap: 24 }}>
-        <section className="section">
-          <div className="section-head">
-            <div className="section-title">
-              Severity distribution
-              <InfoTip text="How serious the member/owner made the problem sound — 1 is a passing annoyance, 5 is a stated reason someone left or nearly left." />
-            </div>
-          </div>
-          <SeverityBars
-            rows={severity}
-            active={filters.severity === "All" ? null : filters.severity}
-            onSelect={(s) => toggle({ severity: s }, "severity", s)}
-          />
-          <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13, lineHeight: 1.6, fontStyle: "italic" }}>
-            {soWhatSeverity(severity, findings.length)}
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="section-head">
-            <div className="section-title">
-              Can software fix it?
-              <InfoTip text="Core fit = TWU's app can address this directly. Partial fit = it can help around the edges. Not addressable = a staffing, coaching, or facility problem software can't touch." />
-            </div>
-          </div>
-          <AppRelevanceDonut
-            segments={appRel.map((a) => ({ key: a.key as AppRelevance, label: a.label, count: a.count, tone: a.key === "core_fit" ? "hot" : a.key === "partial_fit" ? "amber" : "muted" }))}
-            active={filters.relevance === "All" ? null : (filters.relevance as AppRelevance)}
-            onSelect={(k) => toggle({ relevance: k }, "relevance", k)}
-          />
-          <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13, lineHeight: 1.6, fontStyle: "italic" }}>
-            {soWhatAppRelevance(appRel, findings.length)}
-          </div>
-        </section>
       </div>
 
-      <section className="section">
-        <div className="section-head">
+      <div className="grid grid-2" style={{ gap: 24, marginBottom: 24 }}>
+        <div className="card" style={{ padding: 28 }}>
+          <div className="section-head" style={{ marginBottom: 0 }}>
+            <div className="section-title">
+              Severity distribution
+              <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left." />
+            </div>
+          </div>
+          <div style={{ marginTop: 22 }}>
+            <SeverityBars
+              rows={severity}
+              active={filters.severity === "All" ? null : filters.severity}
+              onSelect={(s) => select("severity", s)}
+            />
+          </div>
+          <SectionInsight
+            totalInView={findings.length}
+            matches={severityMatches}
+            selectionLabel={filters.severity === "All" ? null : `Severity ${filters.severity}/5`}
+            generalText={soWhatSeverity(severity, findings.length)}
+            onClear={() => clear("severity")}
+            onViewAll={scrollToTable}
+          />
+        </div>
+
+        <div className="card" style={{ padding: 28 }}>
+          <div className="section-head" style={{ marginBottom: 0 }}>
+            <div className="section-title">
+              Can software fix it?
+              <InfoTip text="Core fit means TWU's app can address this directly. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, or facility problem software can't touch." />
+            </div>
+          </div>
+          <div style={{ marginTop: 22 }}>
+            <AppRelevanceDonut
+              segments={appRel.map((a) => ({ key: a.key as AppRelevance, label: a.label, count: a.count, tone: a.key === "core_fit" ? "hot" : a.key === "partial_fit" ? "amber" : "muted" }))}
+              active={filters.relevance === "All" ? null : (filters.relevance as AppRelevance)}
+              onSelect={(k) => select("relevance", k)}
+            />
+          </div>
+          <SectionInsight
+            totalInView={findings.length}
+            matches={relevanceMatches}
+            selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
+            generalText={soWhatAppRelevance(appRel, findings.length)}
+            onClear={() => clear("relevance")}
+            onViewAll={scrollToTable}
+          />
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Solutions mentioned</div>
           <div className="eyebrow muted">{solutionsMentioned} of {findings.length} findings name one</div>
         </div>
         {solutions.length > 0 ? (
           <>
-            <SolutionBars
-              rows={solutions}
-              active={filters.solutionCategory === "All" ? null : filters.solutionCategory}
-              onSelect={(s) => toggle({ solutionCategory: s }, "solutionCategory", s)}
-            />
-            <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13.5, lineHeight: 1.6, fontStyle: "italic" }}>
-              {soWhatSolutions(solutions, solutionsMentioned, findings.length)}
+            <div style={{ marginTop: 22 }}>
+              <SolutionBars
+                rows={solutions}
+                active={filters.solutionCategory === "All" ? null : filters.solutionCategory}
+                onSelect={(s) => select("solutionCategory", s)}
+              />
             </div>
+            <SectionInsight
+              totalInView={findings.length}
+              matches={solutionMatches}
+              selectionLabel={filters.solutionCategory === "All" ? null : solutionCategoryLabel(filters.solutionCategory)}
+              generalText={soWhatSolutions(solutions, solutionsMentioned, findings.length)}
+              onClear={() => clear("solutionCategory")}
+              onViewAll={scrollToTable}
+            />
           </>
         ) : (
-          <div style={{ color: "var(--ink-faint)" }}>No solutions surfaced yet.</div>
+          <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No solutions surfaced yet.</div>
         )}
-      </section>
+      </div>
 
-      <section className="section">
-        <div className="section-head">
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Timeline</div>
-          <div className="eyebrow muted">findings by quarter, 2014–2026</div>
+          <div className="eyebrow muted">findings by quarter, 2014 to 2026</div>
         </div>
-        <TimelineChart rows={timeline} />
-        <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13.5, lineHeight: 1.6, fontStyle: "italic" }}>
-          {soWhatTimeline(timeline)}
+        <div style={{ marginTop: 22 }}>
+          <TimelineChart rows={timeline} />
         </div>
-      </section>
+        <SectionInsight
+          totalInView={findings.length}
+          matches={null}
+          selectionLabel={null}
+          generalText={soWhatTimeline(timeline)}
+          onClear={() => {}}
+          onViewAll={scrollToTable}
+        />
+      </div>
 
       <section className="section">
         <div className="section-head">
           <div className="section-title">Top findings</div>
-          <div className="eyebrow muted">pain point → solution tried → outcome · click any chart above to filter this</div>
+          <div className="eyebrow muted">pain point to solution tried to outcome. click any chart above to filter this</div>
         </div>
         <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} />
       </section>
 
       <div className="foot">
-        Retention Research · classified from public Reddit discussions · static build, not live-syncing.
+        Retention Research. classified from public Reddit discussions. static build, not live-syncing.
       </div>
     </div>
   );

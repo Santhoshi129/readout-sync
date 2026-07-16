@@ -12,7 +12,7 @@ export function RetentionGlossary() {
         data-open={open}
         style={{ border: "none", borderRadius: 16 }}
       >
-        <span>How to read this page — glossary of terms</span>
+        <span>How to read this page: glossary of terms</span>
         <span className="chev">&#9656;</span>
       </button>
       {open && (

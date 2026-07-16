@@ -133,6 +133,18 @@ export function RetentionResearchDashboard({
         ))}
       </div>
 
+      <div
+        className="card"
+        style={{ padding: "18px 22px", marginBottom: 24, border: "1px solid var(--border)", borderLeft: "3px solid var(--ink-dim)" }}
+      >
+        <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--ink-dim)", marginBottom: 8 }}>
+          HOW THESE NUMBERS WERE MADE
+        </div>
+        <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
+          Every pain point, severity score, and confidence tier on this page came from a single automated classification pass over the raw text, an LLM reading each post once and assigning a label. I haven't audited a sample against a manual read yet, so treat these as the classifier's read, not verified ground truth. The confidence tier tells you how sure the classifier itself was, not how accurate it's been checked to be, those are different claims, and it's worth keeping them separate when you're deciding how much weight to put on any single number here.
+        </div>
+      </div>
+
       <section style={{ marginBottom: 32 }}>
         <RetentionGlossary />
       </section>

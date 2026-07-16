@@ -1,5 +1,5 @@
 import { getReadout } from "@/lib/readout";
-import { COMMUNITIES, combinedDataset, painPointLabel, painPointBreakdown } from "@/lib/retention-research";
+import { COMMUNITIES, combinedDataset } from "@/lib/retention-research";
 import { FLOWS } from "@/lib/flows";
 import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
@@ -10,7 +10,6 @@ export const revalidate = 30;
 export default async function Landing() {
   const { data, error, fetchedAt } = await getReadout();
   const communityResearch = combinedDataset();
-  const topPainPoint = painPointBreakdown(communityResearch.findings).filter(([p]) => p !== "other")[0];
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
@@ -94,10 +93,6 @@ export default async function Landing() {
             <div>
               <div className="stat-label">Relevant findings</div>
               <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.relevant_count)}</div>
-            </div>
-            <div>
-              <div className="stat-label">Leading pain point</div>
-              <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{topPainPoint ? painPointLabel(topPainPoint[0]) : "N/A"}</div>
             </div>
           </div>
         </a>

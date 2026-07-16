@@ -196,7 +196,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Severity distribution
-            <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left, as I read it." />
+            <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left." />
           </div>
         </div>
         <div style={{ marginTop: 22 }}>
@@ -223,7 +223,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Who is actually talking
-            <InfoTip text="Whether the finding comes from a gym owner describing what they observe, a member describing their own experience, a vendor, coach, or employee. I weight owner and member accounts very differently because of that." />
+            <InfoTip text="Whether this finding comes from a gym owner describing what they observe, a member describing their own experience, a vendor, a coach, or an employee. Owner and member accounts carry different evidentiary weight, since owners are often reporting on member behavior secondhand." />
           </div>
           <div className="eyebrow muted">voice behind each finding</div>
         </div>

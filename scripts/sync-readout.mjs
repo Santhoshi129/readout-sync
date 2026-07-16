@@ -576,7 +576,17 @@ async function main() {
   let db;
   try {
     await client.connect();
-    db = client.db();
+    // client.db() with no argument silently falls back to whatever database
+    // is (or isn't) named in the connection string path - often "test" by
+    // default. Pin it explicitly via MONGODB_DB_NAME so this always reads
+    // the same database n8n's own Mongo credential writes to, regardless of
+    // what the raw connection string happens to contain.
+    const dbName = process.env.MONGODB_DB_NAME;
+    if (!dbName) {
+      console.log("::error title=Readout Sync Failed::MONGODB_DB_NAME secret is not set - add it in Settings > Secrets and variables > Actions, set to the exact 'Database' value from n8n's MongoDB credential. Without it, client.db() falls back to whatever's in the connection string path (often 'test'), which silently reads an empty database.");
+      process.exit(1);
+    }
+    db = client.db(dbName);
   } catch (e) {
     console.log(`::error title=Readout Sync Failed::MongoDB connection failed: ${e?.message || e}. If this is Atlas, check the cluster's Network Access / IP allowlist - GitHub Actions runners use rotating IPs, so the allowlist needs 0.0.0.0/0 (Allow Access from Anywhere), not a fixed IP.`);
     process.exit(1);

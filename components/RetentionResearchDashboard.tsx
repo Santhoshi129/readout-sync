@@ -141,7 +141,7 @@ export function RetentionResearchDashboard({
           HOW THESE NUMBERS WERE MADE
         </div>
         <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-          Every pain point, severity score, and confidence tier on this page came from a single automated classification pass over the raw text, an LLM reading each post once and assigning a label. I haven't audited a sample against a manual read yet, so treat these as the classifier's read, not verified ground truth. The confidence tier tells you how sure the classifier itself was, not how accurate it's been checked to be, those are different claims, and it's worth keeping them separate when you're deciding how much weight to put on any single number here.
+          I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. It runs as one automated pass per post right now, that's what makes it possible to cover 6,700+ posts instead of a hand-picked sample. What it hasn't had yet is a manual audit pass, spot-checking the classifier's calls against my own re-read of the same posts, that's next before I'd treat any single number here as final. Confidence tier reflects how sure the classifier was applying my rubric, not independent verification, worth keeping those two things separate.
         </div>
       </div>
 

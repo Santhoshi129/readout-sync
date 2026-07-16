@@ -419,13 +419,13 @@ export function soWhatTimeline(rows: [string, number][]): string {
 // exec will hit on this page.
 // ---------------------------------------------------------------------------
 export const GLOSSARY: { term: string; meaning: string }[] = [
-  { term: "Confidence tier", meaning: "How sure the classifier is that this is a real, on-topic retention finding, based on how specific, credible, and unambiguous the source post is. Strong = high trust; weak = plausible but read with caution." },
-  { term: "Core fit", meaning: "Directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that." },
-  { term: "Partial fit", meaning: "Connection and visibility features can help around the edges (surface who's showing up, prompt a conversation) but can't solve the underlying issue alone." },
-  { term: "Not addressable", meaning: "A staffing, facility, coaching, pricing, or culture problem, outside what a connection layer can fix directly." },
-  { term: "Severity (1-5)", meaning: "How serious the member/owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
-  { term: "Difficulty (1-5)", meaning: "How hard the mentioned solution would be to implement. 1 is trivial, 5 is a major operational lift." },
-  { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source. Only scored when a solution and an outcome were both mentioned." },
-  { term: "Relevance density", meaning: "The share of all posts/comments analyzed that turned out to be an on-topic, specific retention finding. Most Reddit discussion in these communities isn't about retention at all." },
-  { term: "Self-reported", meaning: "The result came from whoever built or sells the solution talking about their own product, treated as lower-trust than a first-hand owner or member account." },
+  { term: "Confidence tier", meaning: "How sure I am that this is a real, on-topic retention finding, based on how specific, credible, and unambiguous the source post is. Strong means I trust it. Weak means I'd read it with caution." },
+  { term: "Core fit", meaning: "I call it core fit when it's directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that." },
+  { term: "Partial fit", meaning: "Connection and visibility features can help around the edges (surface who's showing up, prompt a conversation) but I don't think they solve the underlying issue alone." },
+  { term: "Not addressable", meaning: "A staffing, facility, coaching, pricing, or culture problem. Outside what I think a connection layer can fix directly." },
+  { term: "Severity (1-5)", meaning: "How serious the member or owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
+  { term: "Difficulty (1-5)", meaning: "How hard I'd rate the mentioned solution to implement. 1 is trivial, 5 is a major operational lift." },
+  { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source. I only score this when a solution and an outcome were both mentioned." },
+  { term: "Relevance density", meaning: "The share of everything I analyzed that turned out to be an on-topic, specific retention finding. Most Reddit discussion in these communities isn't about retention at all." },
+  { term: "Self-reported", meaning: "The result came from whoever built or sells the solution talking about their own product. I treat that as lower-trust than a first-hand owner or member account." },
 ];

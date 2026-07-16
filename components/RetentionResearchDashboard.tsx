@@ -7,6 +7,7 @@ import { SeverityBars } from "@/components/SeverityBars";
 import { AppRelevanceDonut } from "@/components/AppRelevanceDonut";
 import { SolutionBars } from "@/components/SolutionBars";
 import { PerspectiveBars } from "@/components/PerspectiveBars";
+import { PriorityLeaderboard } from "@/components/PriorityLeaderboard";
 import { PriorityMatrixTable } from "@/components/PriorityMatrixTable";
 import { OpportunityMap } from "@/components/OpportunityMap";
 import { TimelineChart } from "@/components/TimelineChart";
@@ -44,7 +45,6 @@ import {
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" };
 
-
 export function RetentionResearchDashboard({
   communities,
   combined,
@@ -58,6 +58,7 @@ export function RetentionResearchDashboard({
   ];
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
+  const [showDeepDive, setShowDeepDive] = useState(false);
 
   const ds = useMemo(() => {
     if (active === "all") return combined;
@@ -99,22 +100,23 @@ export function RetentionResearchDashboard({
         ? { ...prev, painPoint: "All", relevance: "All" }
         : { ...prev, painPoint: pp, relevance: "core_fit" }
     );
+    setShowDeepDive(true);
   };
 
   return (
     <div className="wrap">
       <section style={{ padding: "48px 0 20px" }}>
         <div className="eyebrow" style={{ marginBottom: 14 }}>Retention Research</div>
-        <div className="hero-sub">Where gym members are actually walking out the door.</div>
+        <div className="hero-sub">Why gym members actually leave, in their own words.</div>
         <div style={{ marginTop: 18, maxWidth: 640, color: "var(--ink-dim)", fontSize: 15, lineHeight: 1.6 }}>
-          I pulled every post and comment in r/gymowner, ran it through classification looking for one thing, why members actually leave, and whether TWU's product can fix it. What follows is that walkthrough: the headline first, then the reasoning behind it, then the actual quotes it's built on. Keep scrolling, each section backs up the one before it.
+          I went through every post and comment in r/gymowner and pulled out the ones where someone actually says why a member walked, not general gym-owner chatter, the specific complaints. This page walks through what I found: the pattern first, then the proof underneath it. I'll flag where TWU's product can actually move the needle, and where it can't, separately, so those two things don't get mixed up.
         </div>
         <div style={{ marginTop: 24 }}>
           <CommunitySelector options={options} active={active} onChange={setActive} />
         </div>
-        <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
+        <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)" }}>
           {communities.length === 1
-            ? `Right now "All communities combined" and "${communities[0].label}" show the same numbers, r/gymowner is the only subreddit I've classified so far. I built the selector to hold more, crossfit, f45, and hyrox are next, so this won't need rebuilding when they land.`
+            ? `"All communities combined" and "${communities[0].label}" are the same numbers right now, r/gymowner is the only one I've classified so far. Crossfit, f45, and hyrox are next, the selector's built to take them without a rebuild.`
             : "Switch between individual communities or the combined view above."}
         </div>
       </section>
@@ -122,61 +124,6 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <KeyTakeaways points={takeaways} />
       </section>
-
-      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
-        <div className="section-head" style={{ marginBottom: 0 }}>
-          <div className="section-title">
-            Build-first priority matrix
-            <InfoTip text="I plotted every pain point by severity and how solvable it is with TWU's actual product, bubble size is volume, color is how unsolved it still is. The table below ranks the same data and expands per row for a confidence breakdown, the most-tried fix, and my recommendation." />
-          </div>
-          <div className="eyebrow muted">pain point x app fit x severity, excludes the catch-all "other" bucket</div>
-        </div>
-        {priority.length > 0 ? (
-          <>
-            {headline.pain_point && (
-              <div
-                style={{
-                  marginTop: 20,
-                  padding: "18px 22px",
-                  borderRadius: 12,
-                  background: "linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.03))",
-                  border: "1px solid var(--amber-deep)",
-                }}
-              >
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.1em", color: "var(--amber)", marginBottom: 8 }}>
-                  BOTTOM LINE
-                </div>
-                <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 6 }}>
-                  Build for {painPointLabel(headline.pain_point)} first.
-                </div>
-                <div style={{ color: "var(--ink-dim)", fontSize: 14 }}>{headline.sentence}</div>
-              </div>
-            )}
-            <div style={{ marginTop: 22, fontSize: 13, color: "var(--ink-faint)" }}>
-              I lay out the full reasoning in the chart and table below. Click any bubble or row to see the real quotes behind it.
-            </div>
-            <div style={{ marginTop: 14 }}>
-              <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
-            </div>
-            <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
-              <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
-            </div>
-            <SectionInsight
-              totalInView={findings.length}
-              matches={priorityMatches}
-              selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
-              generalText={soWhatPriority(priority)}
-              onClear={() => setFilters((prev) => ({ ...prev, painPoint: "All", relevance: "All" }))}
-            />
-          </>
-        ) : (
-          <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
-        )}
-      </div>
-
-      <div style={{ margin: "28px 0", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        Before you take that on faith, here's the fuller picture I built it from:
-      </div>
 
       <div className="briefing">
         {summary.map((s, i) => (
@@ -201,7 +148,7 @@ export function RetentionResearchDashboard({
       </section>
 
       <div style={{ marginBottom: 16, fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        Now the breakdown. Every pain point I found, ranked by how often it came up and how sure I am about each one:
+        Here's the retention picture on its own, no product angle yet, just what's actually driving people out.
       </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -237,56 +184,27 @@ export function RetentionResearchDashboard({
         )}
       </div>
 
-      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        Two more angles on the same findings: how bad each complaint actually is, and how much of it TWU's product can touch.
-      </div>
-
-      <div className="grid grid-2" style={{ gap: 24, marginBottom: 24 }}>
-        <div className="card" style={{ padding: 28 }}>
-          <div className="section-head" style={{ marginBottom: 0 }}>
-            <div className="section-title">
-              Severity distribution
-              <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left, as I read it." />
-            </div>
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            Severity distribution
+            <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left, as I read it." />
           </div>
-          <div style={{ marginTop: 22 }}>
-            <SeverityBars
-              rows={severity}
-              active={filters.severity === "All" ? null : filters.severity}
-              onSelect={(s) => select("severity", s)}
-            />
-          </div>
-          <SectionInsight
-            totalInView={findings.length}
-            matches={severityMatches}
-            selectionLabel={filters.severity === "All" ? null : `Severity ${filters.severity}/5`}
-            generalText={soWhatSeverity(severity, findings.length)}
-            onClear={() => clear("severity")}
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <SeverityBars
+            rows={severity}
+            active={filters.severity === "All" ? null : filters.severity}
+            onSelect={(s) => select("severity", s)}
           />
         </div>
-
-        <div className="card" style={{ padding: 28 }}>
-          <div className="section-head" style={{ marginBottom: 0 }}>
-            <div className="section-title">
-              Can software fix it?
-              <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
-            </div>
-          </div>
-          <div style={{ marginTop: 22 }}>
-            <AppRelevanceDonut
-              segments={appRel.map((a) => ({ key: a.key as AppRelevance, label: a.label, count: a.count, tone: a.key === "core_fit" ? "hot" : a.key === "partial_fit" ? "amber" : "muted" }))}
-              active={filters.relevance === "All" ? null : (filters.relevance as AppRelevance)}
-              onSelect={(k) => select("relevance", k)}
-            />
-          </div>
-          <SectionInsight
-            totalInView={findings.length}
-            matches={relevanceMatches}
-            selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
-            generalText={soWhatAppRelevance(appRel, findings.length)}
-            onClear={() => clear("relevance")}
-          />
-        </div>
+        <SectionInsight
+          totalInView={findings.length}
+          matches={severityMatches}
+          selectionLabel={filters.severity === "All" ? null : `Severity ${filters.severity}/5`}
+          generalText={soWhatSeverity(severity, findings.length)}
+          onClear={() => clear("severity")}
+        />
       </div>
 
       <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
@@ -348,10 +266,6 @@ export function RetentionResearchDashboard({
         )}
       </div>
 
-      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        One more angle before the receipts: has this been getting better or worse over time?
-      </div>
-
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Timeline</div>
@@ -367,6 +281,119 @@ export function RetentionResearchDashboard({
           generalText={soWhatTimeline(timeline)}
           onClear={() => {}}
         />
+      </div>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Everything above is the retention picture on its own. Everything */}
+      {/* below is me applying TWU's actual product to it, a separate,     */}
+      {/* clearly-marked lens on the same data.                            */}
+      {/* ---------------------------------------------------------------- */}
+      <div
+        style={{
+          margin: "40px 0 28px",
+          paddingTop: 28,
+          borderTop: "1px solid var(--border)",
+        }}
+      >
+        <div className="eyebrow" style={{ marginBottom: 10 }}>Now, the product angle</div>
+        <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, marginBottom: 10 }}>
+          That's retention on its own. Here's what TWU can actually do about it.
+        </div>
+        <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, maxWidth: 660 }}>
+          Everything above is the problem, independent of any product. From here on I'm applying one specific lens: what TWU (a community and connection layer, not booking or admin software) can actually fix, versus what's a staffing, coaching, or facility call no app touches.
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            Can TWU actually fix it?
+            <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
+          </div>
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <AppRelevanceDonut
+            segments={appRel.map((a) => ({ key: a.key as AppRelevance, label: a.label, count: a.count, tone: a.key === "core_fit" ? "hot" : a.key === "partial_fit" ? "amber" : "muted" }))}
+            active={filters.relevance === "All" ? null : (filters.relevance as AppRelevance)}
+            onSelect={(k) => select("relevance", k)}
+          />
+        </div>
+        <SectionInsight
+          totalInView={findings.length}
+          matches={relevanceMatches}
+          selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
+          generalText={soWhatAppRelevance(appRel, findings.length)}
+          onClear={() => clear("relevance")}
+        />
+      </div>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            What I'd build first
+            <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket." />
+          </div>
+        </div>
+
+        {priority.length > 0 ? (
+          <>
+            {headline.pain_point && (
+              <div
+                style={{
+                  marginTop: 20,
+                  padding: "18px 22px",
+                  borderRadius: 12,
+                  background: "linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.03))",
+                  border: "1px solid var(--amber-deep)",
+                }}
+              >
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.1em", color: "var(--amber)", marginBottom: 8 }}>
+                  BOTTOM LINE
+                </div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 6 }}>
+                  Build for {painPointLabel(headline.pain_point)} first.
+                </div>
+                <div style={{ color: "var(--ink-dim)", fontSize: 14 }}>{headline.sentence}</div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 22 }}>
+              <PriorityLeaderboard rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+            </div>
+
+            <SectionInsight
+              totalInView={findings.length}
+              matches={priorityMatches}
+              selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
+              generalText={soWhatPriority(priority)}
+              onClear={() => setFilters((prev) => ({ ...prev, painPoint: "All", relevance: "All" }))}
+            />
+
+            <button
+              onClick={() => setShowDeepDive((v) => !v)}
+              className="diagnostics-toggle"
+              data-open={showDeepDive}
+              style={{ marginTop: 22 }}
+            >
+              <span>{showDeepDive ? "Hide the full math" : "Show the full math, the scatter plot and sortable table behind this ranking"}</span>
+              <span className="chev">&#9656;</span>
+            </button>
+
+            {showDeepDive && (
+              <div style={{ marginTop: 20 }}>
+                <div style={{ fontSize: 12.5, color: "var(--ink-dim)", marginBottom: 16 }}>
+                  Same data as the leaderboard above, plotted so you can see how close the calls actually are, plus a sortable table with a confidence breakdown per pain point.
+                </div>
+                <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
+                  <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
+        )}
       </div>
 
       <section className="section">

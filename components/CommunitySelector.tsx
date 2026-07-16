@@ -12,9 +12,14 @@ export function CommunitySelector({
   return (
     <div className="lens" style={{ flexWrap: "wrap" }}>
       {options.map((o) => (
-        <button key={o.id} className={active === o.id ? "on" : ""} onClick={() => onChange(o.id)}>
+        <button
+          key={o.id}
+          className={active === o.id ? "on" : ""}
+          onClick={() => onChange(o.id)}
+          style={active === o.id ? undefined : { color: "var(--ink-dim)" }}
+        >
           {o.label}
-          <span style={{ opacity: 0.65, marginLeft: 7 }}>{o.count}</span>
+          <span style={{ opacity: 0.85, marginLeft: 7, color: active === o.id ? undefined : "var(--ink-dim)" }}>{o.count}</span>
         </button>
       ))}
     </div>

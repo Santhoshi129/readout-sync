@@ -161,7 +161,7 @@ export function PriorityMatrixTable({
                           }}
                         >
                           <div>
-                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", marginBottom: 6, letterSpacing: "0.05em" }}>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
                               CONFIDENCE MIX
                             </div>
                             <div className="bar-track thin" style={{ display: "flex", maxWidth: 280 }}>
@@ -174,7 +174,7 @@ export function PriorityMatrixTable({
                             </div>
                           </div>
                           <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
-                            <span style={{ color: "var(--ink-faint)" }}>Most-tried fix: </span>
+                            <span style={{ color: "var(--ink-dim)" }}>Most-tried fix: </span>
                             {r.topSolution ? `${solutionCategoryLabel(r.topSolution)} (${r.topSolutionCount} mentions)` : "none named yet"}
                           </div>
                           <div style={{ fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>{r.recommendedAction}</div>

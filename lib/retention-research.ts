@@ -209,11 +209,23 @@ export type PriorityRow = {
   solutionRate: number;
   strongPct: number;
   score: number;
+  confidenceMix: { strong: number; moderate: number; weak: number };
+  topSolution: string | null;
+  topSolutionCount: number;
+  recommendedAction: string;
 };
+
+function recommendedAction(rank: number, coreFit: number, solutionRate: number, score: number): string {
+  if (coreFit === 0) return "Not a build target. No core-fit findings in this category.";
+  if (rank === 0 && score > 0) return "Build first. The strongest combination of severity, buildable volume, and unsolved gap in this data.";
+  if (solutionRate >= 0.7) return `Largely solved already, ${Math.round(solutionRate * 100)}% of findings mention a fix. Low marginal value in building more here.`;
+  if (rank <= 2 && score > 0) return "Strong candidate. Sequence this right after the #1 pick above.";
+  return "Lower priority relative to the rest of this list, either lighter severity, smaller buildable volume, or partly addressed already.";
+}
 
 export function priorityMatrix(findings: Finding[]): PriorityRow[] {
   const pp = painPointBreakdown(findings).filter(([p]) => p !== "other");
-  const rows: PriorityRow[] = pp.map(([p, v]) => {
+  const rows: Omit<PriorityRow, "recommendedAction">[] = pp.map(([p, v]) => {
     const rowFindings = findings.filter((f) => f.pain_point === p);
     const core_fit = rowFindings.filter((f) => f.app_relevance === "core_fit").length;
     const partial_fit = rowFindings.filter((f) => f.app_relevance === "partial_fit").length;
@@ -223,9 +235,28 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
     const solutionRate = rowFindings.length > 0 ? rowFindings.filter((f) => f.solution).length / rowFindings.length : 0;
     const strongPct = v.total > 0 ? Math.round((v.strong / v.total) * 100) : 0;
     const score = core_fit * avgSeverity;
-    return { pain_point: p, total: v.total, core_fit, partial_fit, not_addressable, avgSeverity, solutionRate, strongPct, score };
+    const solutionCounts: Record<string, number> = {};
+    rowFindings.forEach((f) => {
+      if (f.solution_category) solutionCounts[f.solution_category] = (solutionCounts[f.solution_category] || 0) + 1;
+    });
+    const topSolutionEntry = Object.entries(solutionCounts).sort((a, b) => b[1] - a[1])[0];
+    return {
+      pain_point: p,
+      total: v.total,
+      core_fit,
+      partial_fit,
+      not_addressable,
+      avgSeverity,
+      solutionRate,
+      strongPct,
+      score,
+      confidenceMix: { strong: v.strong, moderate: v.moderate, weak: v.weak },
+      topSolution: topSolutionEntry ? topSolutionEntry[0] : null,
+      topSolutionCount: topSolutionEntry ? topSolutionEntry[1] : 0,
+    };
   });
-  return rows.sort((a, b) => b.score - a.score);
+  const sorted = rows.sort((a, b) => b.score - a.score);
+  return sorted.map((r, i) => ({ ...r, recommendedAction: recommendedAction(i, r.core_fit, r.solutionRate, r.score) }));
 }
 
 export function soWhatPriority(matrix: PriorityRow[]): string {
@@ -373,9 +404,9 @@ export function soWhatTimeline(rows: [string, number][]): string {
 // ---------------------------------------------------------------------------
 export const GLOSSARY: { term: string; meaning: string }[] = [
   { term: "Confidence tier", meaning: "How sure the classifier is that this is a real, on-topic retention finding, based on how specific, credible, and unambiguous the source post is. Strong = high trust; weak = plausible but read with caution." },
-  { term: "Core fit", meaning: "TWU's software can directly address this problem today, e.g. booking, reminders, progress tracking, check-ins." },
-  { term: "Partial fit", meaning: "Software can help around the edges (surface data, prompt a conversation) but can't solve the underlying issue alone." },
-  { term: "Not addressable", meaning: "A staffing, facility, coaching, or culture problem, outside what any app can fix directly." },
+  { term: "Core fit", meaning: "Directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that." },
+  { term: "Partial fit", meaning: "Connection and visibility features can help around the edges (surface who's showing up, prompt a conversation) but can't solve the underlying issue alone." },
+  { term: "Not addressable", meaning: "A staffing, facility, coaching, pricing, or culture problem, outside what a connection layer can fix directly." },
   { term: "Severity (1-5)", meaning: "How serious the member/owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
   { term: "Difficulty (1-5)", meaning: "How hard the mentioned solution would be to implement. 1 is trivial, 5 is a major operational lift." },
   { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source. Only scored when a solution and an outcome were both mentioned." },

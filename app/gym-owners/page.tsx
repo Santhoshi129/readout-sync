@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Compare, GeoList, Trend, Donut } from "@/components/Charts";
+import { Funnel, Bars, Ring, Compare, GeoList, Donut } from "@/components/Charts";
 import { Counter } from "@/components/Counter";
 import { GymOwnerBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
@@ -153,17 +153,10 @@ export default async function GymOwnersDashboard() {
             ]}
           />
 
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>14-day trend</div>
-            <Trend
-              points={history}
-              series={[
-                { key: "total_contacts_in_ghl", label: "Contacts in CRM", tone: "cold" },
-                { key: "email_replied", label: "Email replies", tone: "amber" },
-                { key: "total_drafts_created", label: "Drafts created", tone: "warm" },
-              ]}
-            />
-          </div>
+          {/* 14-day trend card removed for now - history snapshots include
+              zeros from failed/partial sync runs, producing fake crater dips
+              that misrepresent real activity. Re-add once the history
+              writer skips failed runs instead of logging 0. */}
 
           <div className="card" style={{ padding: 32, marginBottom: 24 }}>
             <div className="eyebrow muted" style={{ marginBottom: 22 }}>Channel effectiveness</div>

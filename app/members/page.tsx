@@ -1,7 +1,7 @@
 import { getReadout, getHistory, getSyncStatus } from "@/lib/readout";
 import { FLOWS } from "@/lib/flows";
 import { Topbar } from "@/components/Topbar";
-import { Funnel, Bars, Ring, Donut, Trend } from "@/components/Charts";
+import { Funnel, Bars, Ring, Donut } from "@/components/Charts";
 import { MemberBriefing } from "@/components/Briefing";
 import { num, sum, section, Head, FlowCard } from "@/lib/dashboard-ui";
 import { PipelineMap } from "@/components/PipelineMap";
@@ -117,17 +117,10 @@ export default async function MembersDashboard() {
           </div>
 
 
-          <div className="card" style={{ padding: 32, marginBottom: 24 }}>
-            <div className="eyebrow muted" style={{ marginBottom: 22 }}>14-day trend</div>
-            <Trend
-              points={history}
-              series={[
-                { key: "total_identified", label: "Identified", tone: "cold" },
-                { key: "adopted", label: "Adopted", tone: "amber" },
-                { key: "total_joined", label: "In community", tone: "hot" },
-              ]}
-            />
-          </div>
+          {/* 14-day trend card removed for now - history snapshots include
+              zeros from failed/partial sync runs, producing fake crater dips
+              that misrepresent real activity. Re-add once the history
+              writer skips failed runs instead of logging 0. */}
 
           <div className="eyebrow muted" style={{ marginBottom: 12 }}>{flows.length} automations</div>
           <div className="grid grid-3">

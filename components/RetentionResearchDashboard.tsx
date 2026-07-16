@@ -9,11 +9,13 @@ import { SolutionBars } from "@/components/SolutionBars";
 import { PerspectiveBars } from "@/components/PerspectiveBars";
 import { PriorityLeaderboard } from "@/components/PriorityLeaderboard";
 import { PriorityMatrixTable } from "@/components/PriorityMatrixTable";
+import { QuickWinsMatrix } from "@/components/QuickWinsMatrix";
 import { OpportunityMap } from "@/components/OpportunityMap";
 import { TimelineChart } from "@/components/TimelineChart";
 import { FindingsTable, TableFilters } from "@/components/FindingsTable";
 import { KeyTakeaways } from "@/components/KeyTakeaways";
 import { RetentionGlossary } from "@/components/RetentionGlossary";
+import { MethodologyPanel } from "@/components/MethodologyPanel";
 import { SectionInsight } from "@/components/SectionInsight";
 import { InfoTip } from "@/components/InfoTip";
 import {
@@ -37,6 +39,8 @@ import {
   soWhatPerspective,
   soWhatPriority,
   priorityHeadline,
+  solutionQuadrant,
+  soWhatQuickWins,
   painPointLabel,
   solutionCategoryLabel,
   perspectiveLabel,
@@ -78,6 +82,8 @@ export function RetentionResearchDashboard({
   const priority = useMemo(() => priorityMatrix(findings), [findings]);
   const headline = useMemo(() => priorityHeadline(priority), [priority]);
   const solutionsMentioned = findings.filter((f) => f.solution).length;
+  const quickWins = useMemo(() => solutionQuadrant(findings), [findings]);
+  const scoredSolutionsCount = findings.filter((f) => f.solution_category && f.solution_category !== "other" && f.difficulty != null && f.effectiveness != null).length;
 
   const select = (key: keyof TableFilters, value: string | number) => {
     setFilters((prev) => (prev[key] === value ? { ...prev, [key]: "All" } : { ...prev, [key]: value }));
@@ -133,17 +139,7 @@ export function RetentionResearchDashboard({
         ))}
       </div>
 
-      <div
-        className="card"
-        style={{ padding: "18px 22px", marginBottom: 24, border: "1px solid var(--border)", borderLeft: "3px solid var(--ink-dim)" }}
-      >
-        <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--ink-dim)", marginBottom: 8 }}>
-          HOW THESE NUMBERS WERE MADE
-        </div>
-        <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-          I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. It runs as one automated pass per post right now, that's what makes it possible to cover 6,700+ posts instead of a hand-picked sample. What it hasn't had yet is a manual audit pass, spot-checking the classifier's calls against my own re-read of the same posts, that's next before I'd treat any single number here as final. Confidence tier reflects how sure the classifier was applying my rubric, not independent verification, worth keeping those two things separate.
-        </div>
-      </div>
+      <MethodologyPanel findings={combined.findings} />
 
       <section style={{ marginBottom: 32 }}>
         <RetentionGlossary />
@@ -280,6 +276,25 @@ export function RetentionResearchDashboard({
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
+          <div className="section-title">
+            Quick wins
+            <InfoTip text="Difficulty and effectiveness as reported in the source post, for solutions where both were mentioned. A different question than the priority matrix further down: not which pain point to target, but which specific fixes are cheap and actually worked." />
+          </div>
+          <div className="eyebrow muted">{scoredSolutionsCount} of {findings.length} findings score both</div>
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <QuickWinsMatrix rows={quickWins} />
+        </div>
+        <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13.5, lineHeight: 1.6 }}>
+          <span style={{ color: "var(--ink-faint)", fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.06em", marginRight: 8 }}>
+            MY READ:
+          </span>
+          {soWhatQuickWins(quickWins, scoredSolutionsCount, findings.length)}
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+        <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Timeline</div>
           <div className="eyebrow muted">findings by quarter, 2014 to 2026</div>
         </div>
@@ -346,6 +361,9 @@ export function RetentionResearchDashboard({
             <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket." />
           </div>
         </div>
+        <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
+          This ranks where the data still shows unresolved pain, not a claim that TWU has zero footprint here already. If something below already exists in the product, read it as the data saying the gap isn't fully closed yet, not as a request to build from scratch.
+        </div>
 
         {priority.length > 0 ? (
           <>
@@ -363,7 +381,7 @@ export function RetentionResearchDashboard({
                   BOTTOM LINE
                 </div>
                 <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 6 }}>
-                  Build for {painPointLabel(headline.pain_point)} first.
+                  {painPointLabel(headline.pain_point)} ranks highest in this data.
                 </div>
                 <div style={{ color: "var(--ink-dim)", fontSize: 14 }}>{headline.sentence}</div>
               </div>

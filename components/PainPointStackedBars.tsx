@@ -8,6 +8,12 @@ const TIER_COLOR: Record<string, string> = {
   weak: "var(--muted)",
 };
 
+const TIER_DEF: Record<string, string> = {
+  strong: "Strong: the classifier found this specific, credible, and unambiguous, high trust it's a real, on-topic retention finding.",
+  moderate: "Moderate: plausible and on-topic, but the source was less specific or less certain than a strong-tier finding.",
+  weak: "Weak: worth watching, not yet a settled fact, treat as a lead rather than something to build a conclusion on.",
+};
+
 function useMounted() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -30,7 +36,7 @@ export function PainPointStackedBars({
     <div>
       <div className="compare-legend" style={{ marginBottom: 22 }}>
         {(["strong", "moderate", "weak"] as const).map((t) => (
-          <span key={t}>
+          <span key={t} title={TIER_DEF[t]} style={{ cursor: "help" }}>
             <i className="dot-legend" style={{ background: TIER_COLOR[t] }} /> {t[0].toUpperCase() + t.slice(1)}
           </span>
         ))}
@@ -67,7 +73,6 @@ export function PainPointStackedBars({
               <div
                 className="bar-track thin"
                 style={{ display: "flex", opacity: active && !isActive ? 0.45 : 1, transition: "opacity 150ms ease" }}
-                title={`${painPointLabel(pp)}: ${v.total} (strong ${v.strong} · moderate ${v.moderate} · weak ${v.weak})`}
               >
                 {(["strong", "moderate", "weak"] as const).map((t) => {
                   const w = mounted ? (v[t] / max) * 100 : 0;
@@ -75,11 +80,13 @@ export function PainPointStackedBars({
                     <div
                       key={t}
                       className="bar-fill"
+                      title={`${TIER_DEF[t]} ${v[t]} of ${v.total} ${painPointLabel(pp)} findings are ${t}-tier.`}
                       style={{
                         width: `${w}%`,
                         background: TIER_COLOR[t],
                         transitionDelay: `${i * 50}ms`,
                         flex: "none",
+                        cursor: "help",
                       }}
                     />
                   ) : null;

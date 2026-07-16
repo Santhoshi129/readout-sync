@@ -76,7 +76,7 @@ export function PriorityLeaderboard({
                       padding: "3px 10px",
                     }}
                   >
-                    BUILD THIS FIRST
+                    HIGHEST PRIORITY IN THIS DATA
                   </span>
                 )}
               </div>

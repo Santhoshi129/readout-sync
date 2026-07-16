@@ -266,6 +266,16 @@ export function soWhatPriority(matrix: PriorityRow[]): string {
   return `${painPointLabel(top.pain_point)} ranks first: ${top.core_fit} core-fit findings at an average severity of ${top.avgSeverity.toFixed(1)}/5, and a solution is on record in only ${solvedPct}% of them. That combination, high severity, directly buildable, mostly unsolved, is the clearest build-first case in this data.`;
 }
 
+export function priorityHeadline(matrix: PriorityRow[]): { pain_point: string | null; sentence: string } {
+  const top = matrix.find((r) => r.score > 0);
+  if (!top) return { pain_point: null, sentence: "Not enough data yet to name a clear build-first pick." };
+  const solvedPct = Math.round(top.solutionRate * 100);
+  return {
+    pain_point: top.pain_point,
+    sentence: `${top.core_fit} findings TWU can directly fix, only ${solvedPct}% already have a solution on record.`,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Executive summary, computed from the real numbers in the selected
 // dataset, not hand-typed, so it can never drift from what the charts show.
@@ -281,7 +291,10 @@ export function executiveSummary(ds: CommunityDataset): string[] {
     ];
   }
 
-  const pp = painPointBreakdown(f);
+  const pp = painPointBreakdown(f).filter(([p]) => p !== "other");
+  if (pp.length === 0) {
+    return [`Every relevant finding for ${ds.label} landed in the uncategorized "other" bucket. The classification taxonomy needs another pass before this can support a specific conclusion.`];
+  }
   const top = pp[0];
   const second = pp[1];
   const topPct = Math.round((top[1].total / n) * 100);
@@ -305,10 +318,10 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   );
 
   sentences.push(
-    `${painPointLabel(top[0])} leads at ${top[1].total} findings (${topPct}% of the relevant set)` +
+    `${painPointLabel(top[0])} comes up most often, ${top[1].total} findings (${topPct}% of the relevant set)` +
       (second
-        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}.`
-        : ".")
+        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's raw mention frequency, the priority matrix further down weighs severity and buildability too, and ranks a different pain point to build first.`
+        : ". That's raw mention frequency, not a build recommendation.")
   );
 
   sentences.push(
@@ -332,7 +345,8 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const n = f.length;
   if (n === 0) return [`No relevant findings yet for ${ds.label}.`];
 
-  const pp = painPointBreakdown(f);
+  const pp = painPointBreakdown(f).filter(([p]) => p !== "other");
+  if (pp.length === 0) return [`Every relevant finding for ${ds.label} landed in the uncategorized "other" bucket. Needs another classification pass before a specific pick is possible.`];
   const top = pp[0];
   const topPct = Math.round((top[1].total / n) * 100);
 
@@ -347,7 +361,7 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} is the #1 retention risk in this data: ${topPct}% of everything relevant we found.`,
+    `${painPointLabel(top[0])} is mentioned most often, ${topPct}% of everything relevant we found. That's frequency, not the build-first pick, see the priority matrix below for what to build.`,
     `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is buildable, not a staffing or facility issue.`,
     `Confidence is still thin at ${strongPct}% strong-tier. This is a working first pass, worth a second, larger classification run before anyone quotes these percentages as final.`,
     `A concrete solution shows up in only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}). Most owners are naming the problem, not a fix. That gap is the opening.`,
@@ -360,7 +374,9 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
 // ---------------------------------------------------------------------------
 export function soWhatPainPoints(rows: ReturnType<typeof painPointBreakdown>, total: number): string {
   if (rows.length === 0 || total === 0) return "No findings to summarize yet.";
-  const top3 = rows.slice(0, 3);
+  const named = rows.filter(([p]) => p !== "other");
+  if (named.length === 0) return "Every relevant finding is uncategorized. Nothing specific to name yet.";
+  const top3 = named.slice(0, 3);
   const top3Total = top3.reduce((s, [, v]) => s + v.total, 0);
   const top3Pct = Math.round((top3Total / total) * 100);
   return `${top3.map(([p]) => painPointLabel(p)).join(", ")} account for ${top3Pct}% of every relevant finding. Retention risk is concentrated in a handful of issues, not spread thin across a dozen.`;

@@ -9,9 +9,18 @@ import {
   APP_RELEVANCE_LABEL,
   APP_RELEVANCE_TONE,
   painPointLabel,
+  solutionCategoryLabel,
 } from "@/lib/retention-research";
 
 type SortKey = "default" | "severity" | "confidence" | "newest";
+
+export type TableFilters = {
+  painPoint: string | "All";
+  tier: ConfidenceTier | "All";
+  relevance: AppRelevance | "All";
+  solutionCategory: string | "All";
+  severity: number | "All";
+};
 
 const TONE_COLOR: Record<string, string> = {
   hot: "var(--hot)",
@@ -27,18 +36,36 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: "newest", label: "Newest first" },
 ];
 
-export function FindingsTable({ findings }: { findings: Finding[] }) {
+export function FindingsTable({
+  findings,
+  filters,
+  onFiltersChange,
+}: {
+  findings: Finding[];
+  filters: TableFilters;
+  onFiltersChange: (f: TableFilters) => void;
+}) {
   const [q, setQ] = useState("");
-  const [painPoint, setPainPoint] = useState<string>("All");
-  const [tier, setTier] = useState<ConfidenceTier | "All">("All");
-  const [relevance, setRelevance] = useState<AppRelevance | "All">("All");
   const [sort, setSort] = useState<SortKey>("default");
   const [openId, setOpenId] = useState<string | null>(null);
 
+  const { painPoint, tier, relevance, solutionCategory, severity } = filters;
+  const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
+
   const painPoints = useMemo(() => {
-    const set = new Set(findings.map((f) => f.pain_point));
-    return ["All", ...Array.from(set).sort((a, b) => painPointLabel(a).localeCompare(painPointLabel(b)))];
+    const set2 = new Set(findings.map((f) => f.pain_point));
+    return ["All", ...Array.from(set2).sort((a, b) => painPointLabel(a).localeCompare(painPointLabel(b)))];
   }, [findings]);
+
+  const activeFilterChips = useMemo(() => {
+    const chips: { key: keyof TableFilters; label: string }[] = [];
+    if (painPoint !== "All") chips.push({ key: "painPoint", label: `Pain point: ${painPointLabel(painPoint)}` });
+    if (tier !== "All") chips.push({ key: "tier", label: `Confidence: ${tier}` });
+    if (relevance !== "All") chips.push({ key: "relevance", label: `App fit: ${APP_RELEVANCE_LABEL[relevance].split(" — ")[0]}` });
+    if (solutionCategory !== "All") chips.push({ key: "solutionCategory", label: `Solution: ${solutionCategoryLabel(solutionCategory)}` });
+    if (severity !== "All") chips.push({ key: "severity", label: `Severity: ${severity}/5` });
+    return chips;
+  }, [painPoint, tier, relevance, solutionCategory, severity]);
 
   const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -46,6 +73,8 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
       if (painPoint !== "All" && f.pain_point !== painPoint) return false;
       if (tier !== "All" && f.confidence_tier !== tier) return false;
       if (relevance !== "All" && f.app_relevance !== relevance) return false;
+      if (solutionCategory !== "All" && f.solution_category !== solutionCategory) return false;
+      if (severity !== "All" && f.pain_severity !== severity) return false;
       if (needle) {
         const hay = [f.pain_point_reasoning, f.solution, f.evidence_snippet].filter(Boolean).join(" ").toLowerCase();
         if (!hay.includes(needle)) return false;
@@ -61,7 +90,7 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
       newest: (a, b) => (b.readable_date ?? "").localeCompare(a.readable_date ?? ""),
     };
     return [...filtered].sort(by[sort]);
-  }, [findings, q, painPoint, tier, relevance, sort]);
+  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, sort]);
 
   const chipStyle = (on: boolean): CSSProperties => ({
     background: on ? "rgba(201,168,76,0.12)" : "transparent",
@@ -79,7 +108,40 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
   });
 
   return (
-    <div>
+    <div id="findings-table">
+      {activeFilterChips.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 8,
+            alignItems: "center",
+            marginBottom: 16,
+            padding: "10px 14px",
+            border: "1px solid var(--border)",
+            borderRadius: 10,
+            background: "rgba(201,168,76,0.04)",
+          }}
+        >
+          <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)" }}>FILTERED BY CHART SELECTION:</span>
+          {activeFilterChips.map((c) => (
+            <span
+              key={c.key}
+              style={chipStyle(true)}
+              onClick={() => set({ [c.key]: "All" } as Partial<TableFilters>)}
+            >
+              {c.label} ✕
+            </span>
+          ))}
+          <span
+            style={{ ...chipStyle(false), marginLeft: "auto" }}
+            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All" })}
+          >
+            Clear all
+          </span>
+        </div>
+      )}
+
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 12, alignItems: "center" }}>
         <input
           value={q}
@@ -98,7 +160,7 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
         />
         <select
           value={painPoint}
-          onChange={(e) => setPainPoint(e.target.value)}
+          onChange={(e) => set({ painPoint: e.target.value })}
           style={{
             background: "var(--card-raised)",
             border: "1px solid var(--border)",
@@ -122,7 +184,7 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
           CONFIDENCE:
         </span>
         {(["All", "strong", "moderate", "weak"] as const).map((t) => (
-          <span key={t} style={chipStyle(tier === t)} onClick={() => setTier(t)}>
+          <span key={t} style={chipStyle(tier === t)} onClick={() => set({ tier: t })}>
             {t === "All" ? "All" : t}
           </span>
         ))}
@@ -133,7 +195,7 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
           APP FIT:
         </span>
         {(["All", "core_fit", "partial_fit", "not_addressable"] as const).map((r) => (
-          <span key={r} style={chipStyle(relevance === r)} onClick={() => setRelevance(r)}>
+          <span key={r} style={chipStyle(relevance === r)} onClick={() => set({ relevance: r })}>
             {r === "All" ? "All" : APP_RELEVANCE_LABEL[r].split(" — ")[0]}
           </span>
         ))}

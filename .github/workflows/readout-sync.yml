@@ -23,6 +23,7 @@ jobs:
       - run: node scripts/sync-readout.mjs
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
           GHL_LG_TOKEN: ${{ secrets.GHL_LG_TOKEN }}
           GHL_AA_TOKEN: ${{ secrets.GHL_AA_TOKEN }}
           GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_EMAIL }}

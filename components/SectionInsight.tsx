@@ -30,7 +30,7 @@ export function SectionInsight({
         }}
       >
         <span style={{ color: "var(--ink-faint)", fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.06em", marginRight: 8 }}>
-          READ:
+          MY READ:
         </span>
         {generalText}
       </div>

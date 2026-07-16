@@ -112,6 +112,11 @@ export function RetentionResearchDashboard({
         <div style={{ marginTop: 24 }}>
           <CommunitySelector options={options} active={active} onChange={setActive} />
         </div>
+        <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
+          {communities.length === 1
+            ? `Right now "All communities combined" and "${communities[0].label}" show the same numbers, r/gymowner is the only subreddit I've classified so far. I built the selector to hold more, crossfit, f45, and hyrox are next, so this won't need rebuilding when they land.`
+            : "Switch between individual communities or the combined view above."}
+        </div>
       </section>
 
       <section style={{ marginBottom: 24 }}>
@@ -122,7 +127,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Build-first priority matrix
-            <InfoTip text="The map plots every pain point by severity and how solvable it is with TWU's actual product, bubble size is volume, color is how unsolved it still is. The table below ranks the same data and expands per row for a confidence breakdown, the most-tried fix, and a recommendation." />
+            <InfoTip text="I plotted every pain point by severity and how solvable it is with TWU's actual product, bubble size is volume, color is how unsolved it still is. The table below ranks the same data and expands per row for a confidence breakdown, the most-tried fix, and my recommendation." />
           </div>
           <div className="eyebrow muted">pain point x app fit x severity, excludes the catch-all "other" bucket</div>
         </div>
@@ -148,7 +153,7 @@ export function RetentionResearchDashboard({
               </div>
             )}
             <div style={{ marginTop: 22, fontSize: 13, color: "var(--ink-faint)" }}>
-              The chart and table below show the full reasoning. Click any bubble or row to see the real quotes behind it.
+              I lay out the full reasoning in the chart and table below. Click any bubble or row to see the real quotes behind it.
             </div>
             <div style={{ marginTop: 14 }}>
               <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
@@ -203,11 +208,11 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Pain point frequency
-            <InfoTip text="How many relevant findings fall into each pain point category, split by how confident the classifier is in each one. The 'Other' bar is a catch-all for findings that didn't fit a specific category, it's shown here for completeness but excluded from every ranking and recommendation elsewhere on this page." />
+            <InfoTip text="How many relevant findings I found in each pain point category, split by how confident I am in each one. The 'Other' bar is a catch-all for findings that didn't fit a specific category, I left it here for completeness but excluded it from every ranking and recommendation elsewhere on this page." />
           </div>
           <div className="eyebrow muted">
             by confidence tier
-            <InfoTip text="Strong means high trust the finding is real and on topic. Moderate means plausible. Weak means worth watching, not yet a settled fact." />
+            <InfoTip text="Strong means I trust the finding is real and on topic. Moderate means plausible. Weak means worth watching, not yet a settled fact to me." />
           </div>
         </div>
         {painPoints.length > 0 ? (
@@ -241,7 +246,7 @@ export function RetentionResearchDashboard({
           <div className="section-head" style={{ marginBottom: 0 }}>
             <div className="section-title">
               Severity distribution
-              <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left." />
+              <InfoTip text="How serious the member or owner made the problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or nearly left, as I read it." />
             </div>
           </div>
           <div style={{ marginTop: 22 }}>
@@ -264,7 +269,7 @@ export function RetentionResearchDashboard({
           <div className="section-head" style={{ marginBottom: 0 }}>
             <div className="section-title">
               Can software fix it?
-              <InfoTip text="Core fit means it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
+              <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
             </div>
           </div>
           <div style={{ marginTop: 22 }}>
@@ -292,7 +297,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Who is actually talking
-            <InfoTip text="Whether the finding comes from a gym owner describing what they observe, a member describing their own experience, a vendor, coach, or employee. Owner and member accounts carry very different evidentiary weight." />
+            <InfoTip text="Whether the finding comes from a gym owner describing what they observe, a member describing their own experience, a vendor, coach, or employee. I weight owner and member accounts very differently because of that." />
           </div>
           <div className="eyebrow muted">voice behind each finding</div>
         </div>
@@ -376,7 +381,7 @@ export function RetentionResearchDashboard({
       </section>
 
       <div className="foot">
-        Retention Research. classified from public Reddit discussions. static build, not live-syncing.
+        Retention Research, I classified this from public Reddit discussions. Static build, not live-syncing, I'll refresh it when the next batch of communities is done.
       </div>
     </div>
   );

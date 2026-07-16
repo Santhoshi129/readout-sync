@@ -282,7 +282,10 @@ export function RetentionResearchDashboard({
           </div>
           <div className="eyebrow muted">{scoredSolutionsCount} of {findings.length} findings score both</div>
         </div>
-        <div style={{ marginTop: 22 }}>
+        <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
+          Different question than the priority ranking further down: that one ranks which pain point to target, this one ranks which specific fixes are cheap to build and reportedly worked.
+        </div>
+        <div style={{ marginTop: 12 }}>
           <QuickWinsMatrix rows={quickWins} />
         </div>
         <div style={{ marginTop: 18, color: "var(--ink-dim)", fontSize: 13.5, lineHeight: 1.6 }}>
@@ -362,7 +365,7 @@ export function RetentionResearchDashboard({
           </div>
         </div>
         <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
-          This ranks where the data still shows unresolved pain, not a claim that TWU has zero footprint here already. If something below already exists in the product, read it as the data saying the gap isn't fully closed yet, not as a request to build from scratch.
+          According to this r/gymowner research analysis, this is how pain points rank by unresolved severity and how much TWU can address. It's not a claim TWU has zero footprint here already, if something below already exists in the product, read it as the data saying the gap isn't fully closed yet.
         </div>
 
         {priority.length > 0 ? (

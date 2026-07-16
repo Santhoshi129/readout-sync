@@ -2,11 +2,45 @@
 import { useState } from "react";
 import { Finding } from "@/lib/retention-research";
 
+// Plain-language comment for every field in a finding record, shown next
+// to the raw JSON so the field names aren't a mystery to a non-technical
+// reader.
+const FIELD_NOTES: Record<string, string> = {
+  id: "unique ID for this Reddit post or comment",
+  author: "the Reddit username who posted it, public information",
+  permalink: "link back to the original thread",
+  readable_date: "when it was posted",
+  period_quarter: "which quarter that falls in, drives the timeline chart",
+  score: "Reddit upvote count",
+  perspective: "who's talking: owner, member, vendor, coach, employee",
+  pain_point: "which category this complaint was sorted into",
+  pain_point_reasoning: "plain-language summary, this is the headline text shown on the dashboard",
+  pain_severity: "how serious it was rated, 1 to 5",
+  pain_severity_reasoning: "why it got that severity score",
+  app_relevance: "can TWU's product address this: core_fit, partial_fit, or not_addressable",
+  solution: "what fix, if any, was mentioned in the post",
+  solution_category: "which type of fix that falls into",
+  effectiveness: "how well the fix reportedly worked, 1 to 5, only set when an outcome was mentioned",
+  effectiveness_reasoning: "why it got that effectiveness score",
+  difficulty: "how hard the fix would be to implement, 1 to 5",
+  difficulty_reasoning: "why it got that difficulty score",
+  evidence_snippet: "the actual quote used as supporting evidence",
+  confidence_tier: "how confident this classification was: strong, moderate, or weak",
+  source_trust: "flags vendor or self-reported claims when relevant",
+};
+
+function formatValue(v: unknown): string {
+  if (v === null || v === undefined) return "null";
+  if (typeof v === "number") return String(v);
+  return JSON.stringify(v);
+}
+
 export function MethodologyPanel({ findings }: { findings: Finding[] }) {
   const [open, setOpen] = useState(false);
   const [showJson, setShowJson] = useState(false);
 
   const sample = findings.find((f) => f.confidence_tier === "strong") ?? findings[0] ?? null;
+  const entries = sample ? Object.entries(sample as unknown as Record<string, unknown>) : [];
 
   return (
     <div className="card" style={{ padding: 0, overflow: "hidden", marginBottom: 24 }}>
@@ -18,10 +52,10 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
       {open && (
         <div style={{ padding: "0 22px 22px", display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-            I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. It runs as one automated pass per post right now, that's what makes it possible to cover 6,700+ posts instead of a hand-picked sample. What it hasn't had yet is a manual audit pass, spot-checking the classifier's calls against my own re-read of the same posts, that's next before I'd treat any single number here as final. Confidence tier reflects how sure the classifier was applying my rubric, not independent verification, worth keeping those two things separate.
+            I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. It's an automated pipeline, an LLM applying my rubric to each post, which is what makes it possible to cover 6,700+ posts instead of a hand-picked sample.
           </div>
 
-          {sample && (
+          {sample && entries.length > 0 && (
             <div>
               <button
                 onClick={() => setShowJson((v) => !v)}
@@ -38,13 +72,13 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
                   cursor: "pointer",
                 }}
               >
-                {showJson ? "Hide raw JSON" : "See the raw JSON behind one finding"}
+                {showJson ? "Hide raw record" : "See the raw record behind one finding"}
               </button>
 
               {showJson && (
                 <div style={{ marginTop: 12 }}>
                   <div style={{ fontSize: 12, color: "var(--ink-dim)", marginBottom: 8 }}>
-                    This is the actual record for one finding, exactly what the classifier output and what every chart on this page reads from. Nothing hidden or reshaped for the demo.
+                    The actual output for one finding, exactly what every chart on this page reads from, with a plain-language note on what each field is.
                   </div>
                   <pre
                     style={{
@@ -53,13 +87,30 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
                       borderRadius: 10,
                       padding: 16,
                       fontSize: 11.5,
-                      lineHeight: 1.6,
+                      lineHeight: 1.8,
                       color: "var(--ink-dim)",
                       overflowX: "auto",
                       fontFamily: "var(--mono)",
+                      whiteSpace: "pre",
                     }}
                   >
-                    {JSON.stringify(sample, null, 2)}
+                    {"{\n"}
+                    {entries.map(([k, v], i) => {
+                      const note = FIELD_NOTES[k];
+                      const line = `  "${k}": ${formatValue(v)}${i < entries.length - 1 ? "," : ""}`;
+                      const pad = Math.max(2, 46 - line.length);
+                      return (
+                        <div key={k}>
+                          <span style={{ color: "var(--ink)" }}>{line}</span>
+                          {note && (
+                            <span style={{ color: "var(--ink-faint)" }}>
+                              {" ".repeat(pad)}// {note}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                    {"}"}
                   </pre>
                 </div>
               )}

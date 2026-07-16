@@ -25,7 +25,9 @@ async function getMongoDb(): Promise<any | null> {
       mongoClientPromise = client.connect();
     }
     const client = await mongoClientPromise;
-    return client.db();
+    const dbName = process.env.MONGODB_DB_NAME;
+    if (!dbName) return null; // same failure mode as the sync script: no silent fallback to the wrong db
+    return client.db(dbName);
   } catch {
     mongoClientPromise = null;
     return null;

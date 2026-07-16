@@ -330,7 +330,7 @@ export function RetentionResearchDashboard({
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
-            What I'd build first
+            Priority ranking
             <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket." />
           </div>
         </div>
@@ -402,7 +402,7 @@ export function RetentionResearchDashboard({
           <div className="eyebrow muted">every finding above, individually. pain point to solution tried to outcome, check my work</div>
         </div>
         <div style={{ marginTop: -10, marginBottom: 18, fontSize: 13.5, color: "var(--ink-dim)" }}>
-          If you've read this far, you've already seen the analysis. This is the raw material it's built on, searchable and filterable, with a link back to the original post on every row.
+          Every finding I used above, in raw form: searchable, filterable, and linked back to the original Reddit post so you can check any of it yourself.
         </div>
         <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} />
       </section>

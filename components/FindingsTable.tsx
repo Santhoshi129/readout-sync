@@ -359,14 +359,26 @@ export function FindingsTable({
                           marginBottom: 10,
                         }}
                       >
-                        “{f.evidence_snippet}”
+                        "{f.evidence_snippet}"
                       </blockquote>
+                    )}
+                    {(f.pain_severity_reasoning || f.difficulty_reasoning) && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10, fontSize: 12, color: "var(--ink-dim)" }}>
+                        {f.pain_severity_reasoning && (
+                          <div><span style={{ color: "var(--ink-faint)" }}>Why this severity: </span>{f.pain_severity_reasoning}</div>
+                        )}
+                        {f.difficulty_reasoning && (
+                          <div><span style={{ color: "var(--ink-faint)" }}>Why this difficulty: </span>{f.difficulty_reasoning}</div>
+                        )}
+                      </div>
                     )}
                     <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontSize: 11.5, color: "var(--ink-faint)" }}>
                       {f.readable_date && <span>{f.readable_date}</span>}
                       {f.perspective && <span>perspective: {f.perspective}</span>}
                       {f.difficulty != null && <span>difficulty {f.difficulty}/5</span>}
+                      {f.effectiveness != null && <span>effectiveness {f.effectiveness}/5</span>}
                       {f.solution_category && <span>solution type: {f.solution_category.replace(/_/g, " ")}</span>}
+                      {f.score != null && <span>{f.score} upvotes</span>}
                       <a href={f.permalink} target="_blank" rel="noreferrer" style={{ color: "var(--amber)" }}>
                         View source ↗
                       </a>

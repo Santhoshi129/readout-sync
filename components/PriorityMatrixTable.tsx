@@ -1,6 +1,7 @@
 "use client";
 import { Fragment, useMemo, useState } from "react";
 import { PriorityRow, painPointLabel, solutionCategoryLabel } from "@/lib/retention-research";
+import { InfoTip } from "@/components/InfoTip";
 
 type SortKey = "score" | "core_fit" | "avgSeverity" | "solutionRate" | "total";
 
@@ -13,6 +14,11 @@ const SORTS: { key: SortKey; label: string }[] = [
 ];
 
 const TIER_COLOR: Record<string, string> = { strong: "var(--hot)", moderate: "var(--amber)", weak: "var(--muted)" };
+const TIER_DEF: Record<string, string> = {
+  strong: "Specific, credible, unambiguous. High trust it's a real, on-topic retention finding.",
+  moderate: "Plausible and on-topic, but less specific or certain than strong.",
+  weak: "Worth watching, not yet settled. A lead, not a conclusion.",
+};
 
 export function PriorityMatrixTable({
   rows,
@@ -25,6 +31,7 @@ export function PriorityMatrixTable({
 }) {
   const [sort, setSort] = useState<SortKey>("score");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [hoverConf, setHoverConf] = useState<string | null>(null);
 
   const sorted = useMemo(() => [...rows].sort((a, b) => b[sort] - a[sort]), [rows, sort]);
   const maxScore = Math.max(0.001, ...rows.map((r) => r.score));
@@ -62,9 +69,24 @@ export function PriorityMatrixTable({
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, minWidth: 760 }}>
           <thead>
             <tr>
-              {["Pain point", "Priority", "Core-fit findings", "Avg severity", "Solved already", "Confidence"].map((h) => (
+              {(
+                [
+                  { label: "Pain point", tip: null },
+                  { label: "Priority", tip: null },
+                  {
+                    label: "Core-fit findings",
+                    tip: "A finding is one classified Reddit post or comment, not a whole thread. A single thread can produce several findings if more than one comment mentions this pain point. Core-fit means TWU's product can address it directly.",
+                  },
+                  {
+                    label: "Avg severity",
+                    tip: "Severity (1-5) is set per finding based on how the member described the impact: a passing annoyance scores low, a stated reason someone left or nearly left scores 4-5. This column averages that score across every finding in the row.",
+                  },
+                  { label: "Solved already", tip: null },
+                  { label: "Confidence", tip: null },
+                ] as { label: string; tip: string | null }[]
+              ).map((h) => (
                 <th
-                  key={h}
+                  key={h.label}
                   style={{
                     textAlign: "left",
                     fontFamily: "var(--mono)",
@@ -77,7 +99,8 @@ export function PriorityMatrixTable({
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {h}
+                  {h.label}
+                  {h.tip && <InfoTip text={h.tip} />}
                 </th>
               ))}
             </tr>
@@ -167,13 +190,50 @@ export function PriorityMatrixTable({
                               <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
                                 CONFIDENCE MIX
                               </div>
-                              <div className="bar-track thin" style={{ display: "flex", width: 200 }}>
-                                {(["strong", "moderate", "weak"] as const).map((t) => {
-                                  const w = r.total > 0 ? (r.confidenceMix[t] / r.total) * 100 : 0;
-                                  return r.confidenceMix[t] > 0 ? (
-                                    <div key={t} style={{ width: `${w}%`, background: TIER_COLOR[t], height: "100%" }} title={`${t}: ${r.confidenceMix[t]}`} />
-                                  ) : null;
-                                })}
+                              <div style={{ position: "relative", padding: "10px 0", margin: "-10px 0", width: 200 }}>
+                                <div className="bar-track thin" style={{ display: "flex", width: "100%" }}>
+                                  {(["strong", "moderate", "weak"] as const).map((t) => {
+                                    const w = r.total > 0 ? (r.confidenceMix[t] / r.total) * 100 : 0;
+                                    const key = `${r.pain_point}:${t}`;
+                                    if (r.confidenceMix[t] === 0) return null;
+                                    return (
+                                      <div
+                                        key={t}
+                                        onMouseEnter={() => setHoverConf(key)}
+                                        onMouseLeave={() => setHoverConf((h) => (h === key ? null : h))}
+                                        style={{ width: `${w}%`, position: "relative", cursor: "help" }}
+                                      >
+                                        <div style={{ width: "100%", height: "100%", background: TIER_COLOR[t] }} />
+                                        {hoverConf === key && (
+                                          <div
+                                            style={{
+                                              position: "absolute",
+                                              bottom: "140%",
+                                              left: "50%",
+                                              transform: "translateX(-50%)",
+                                              width: 200,
+                                              background: "var(--card-raised)",
+                                              border: "1px solid var(--border)",
+                                              borderRadius: 10,
+                                              padding: "9px 11px",
+                                              fontSize: 11.5,
+                                              color: "var(--ink-dim)",
+                                              lineHeight: 1.5,
+                                              zIndex: 50,
+                                              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                                              pointerEvents: "none",
+                                            }}
+                                          >
+                                            <div style={{ color: "var(--ink)", fontWeight: 700, marginBottom: 3 }}>
+                                              {r.confidenceMix[t]} of {r.total} findings
+                                            </div>
+                                            {TIER_DEF[t]}
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                             <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>

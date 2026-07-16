@@ -10,7 +10,7 @@ export const revalidate = 30;
 export default async function Landing() {
   const { data, error, fetchedAt } = await getReadout();
   const communityResearch = combinedDataset();
-  const topPainPoint = painPointBreakdown(communityResearch.findings)[0];
+  const topPainPoint = painPointBreakdown(communityResearch.findings).filter(([p]) => p !== "other")[0];
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
@@ -81,25 +81,23 @@ export default async function Landing() {
         </div>
 
         <a href="/retention-research" className="card click" style={{ padding: 40, marginBottom: 32 }}>
-          <div style={{ flex: 1, minWidth: 280 }}>
-            <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Retention Research</span>
-            <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Community Research</div>
-            <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
-              Reddit discussions ({COMMUNITIES.map((c) => c.label).join(", ")}), classified against a fixed pain-point taxonomy and scored for effectiveness, difficulty, and whether the app can actually fix it.
+          <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Retention Research</span>
+          <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Community Research</div>
+          <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
+            Reddit discussions ({COMMUNITIES.map((c) => c.label).join(", ")}), classified against a fixed pain-point taxonomy and scored for effectiveness, difficulty, and whether the app can actually fix it.
+          </div>
+          <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
+            <div>
+              <div className="stat-label">Posts/comments analyzed</div>
+              <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_analyzed)}</div>
             </div>
-            <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
-              <div>
-                <div className="stat-label">Posts/comments analyzed</div>
-                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_analyzed)}</div>
-              </div>
-              <div>
-                <div className="stat-label">Relevant findings</div>
-                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.relevant_count)}</div>
-              </div>
-              <div>
-                <div className="stat-label">Leading pain point</div>
-                <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{topPainPoint ? painPointLabel(topPainPoint[0]) : "N/A"}</div>
-              </div>
+            <div>
+              <div className="stat-label">Relevant findings</div>
+              <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.relevant_count)}</div>
+            </div>
+            <div>
+              <div className="stat-label">Leading pain point</div>
+              <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{topPainPoint ? painPointLabel(topPainPoint[0]) : "N/A"}</div>
             </div>
           </div>
         </a>

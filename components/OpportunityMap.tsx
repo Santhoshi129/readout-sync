@@ -146,20 +146,20 @@ export function OpportunityMap({
             );
           })}
 
-          <text x={plotW / 2} y={plotH + 38} textAnchor="middle" fontSize="10.5" fontFamily="var(--mono)" fill="var(--ink-dim)" letterSpacing="0.05em">
-            FINDINGS TWU'S PRODUCT CAN DIRECTLY SOLVE (COUNT)
+          <text x={plotW / 2} y={plotH + 36} textAnchor="middle" fontSize="9.5" fontFamily="var(--mono)" fill="var(--ink-dim)" letterSpacing="0.02em">
+            Findings TWU can fix (count)
           </text>
           <text
             x={-plotH / 2}
             y={-42}
             textAnchor="middle"
-            fontSize="10.5"
+            fontSize="9.5"
             fontFamily="var(--mono)"
             fill="var(--ink-dim)"
-            letterSpacing="0.05em"
+            letterSpacing="0.02em"
             transform="rotate(-90)"
           >
-            AVERAGE SEVERITY
+            Average severity
           </text>
         </g>
       </svg>

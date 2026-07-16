@@ -261,18 +261,18 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
 
 export function soWhatPriority(matrix: PriorityRow[]): string {
   const top = matrix.find((r) => r.score > 0);
-  if (!top) return "No pain point currently combines enough core-fit findings and severity to rank. Widen the classification pass before prioritizing a build.";
+  if (!top) return "No pain point currently combines enough core-fit findings and severity for me to rank. I'd widen the classification pass before prioritizing a build.";
   const solvedPct = Math.round(top.solutionRate * 100);
-  return `${painPointLabel(top.pain_point)} ranks first: ${top.core_fit} core-fit findings at an average severity of ${top.avgSeverity.toFixed(1)}/5, and a solution is on record in only ${solvedPct}% of them. That combination, high severity, directly buildable, mostly unsolved, is the clearest build-first case in this data.`;
+  return `${painPointLabel(top.pain_point)} ranks first in my scoring: ${top.core_fit} core-fit findings at an average severity of ${top.avgSeverity.toFixed(1)}/5, and a solution is on record in only ${solvedPct}% of them. High severity, directly buildable, mostly unsolved, that's the clearest build-first case I see in this data.`;
 }
 
 export function priorityHeadline(matrix: PriorityRow[]): { pain_point: string | null; sentence: string } {
   const top = matrix.find((r) => r.score > 0);
-  if (!top) return { pain_point: null, sentence: "Not enough data yet to name a clear build-first pick." };
+  if (!top) return { pain_point: null, sentence: "Not enough data yet for me to name a clear build-first pick." };
   const solvedPct = Math.round(top.solutionRate * 100);
   return {
     pain_point: top.pain_point,
-    sentence: `${top.core_fit} findings TWU can directly fix, only ${solvedPct}% already have a solution on record.`,
+    sentence: `${top.core_fit} findings I'd call directly fixable by TWU, and only ${solvedPct}% already have a solution on record.`,
   };
 }
 
@@ -312,24 +312,24 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   sentences.push(
-    `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were run through classification. ${n} (${relDensity.toFixed(
+    `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification. ${n} (${relDensity.toFixed(
       1
-    )}%) named a specific member-retention pain point. This is a targeted pull, not a survey of gym owners at large, so treat the base rate as a floor, not a headline number.`
+    )}%) named a specific member-retention pain point. This is a targeted pull, not a survey of gym owners at large, so I'd treat the base rate as a floor, not a headline number.`
   );
 
   sentences.push(
     `${painPointLabel(top[0])} comes up most often, ${top[1].total} findings (${topPct}% of the relevant set)` +
       (second
-        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's raw mention frequency, the priority matrix further down weighs severity and buildability too, and ranks a different pain point to build first.`
-        : ". That's raw mention frequency, not a build recommendation.")
+        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's raw mention frequency though, further down I weigh severity and buildability too, and rank a different pain point to build first.`
+        : ". That's raw mention frequency, not my build recommendation.")
   );
 
   sentences.push(
-    `${coreFitPct}% of findings (${coreFit} of ${n}) sit squarely in TWU's product lane. ${notAddressablePct}% (${notAddressable}) are staffing, facility, or culture calls no app will fix.`
+    `${coreFitPct}% of findings (${coreFit} of ${n}) sit squarely in TWU's product lane, in my read. ${notAddressablePct}% (${notAddressable}) are staffing, facility, or culture calls no app will fix.`
   );
 
   sentences.push(
-    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. Build the roadmap on the strong and moderate rows; use the weak tier to decide where the next classification pass should dig deeper.`
+    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. I'd build the roadmap on the strong and moderate rows, and use the weak tier to decide where I run the next classification pass.`
   );
 
   return sentences;
@@ -361,10 +361,10 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} is mentioned most often, ${topPct}% of everything relevant we found. That's frequency, not the build-first pick, see the priority matrix below for what to build.`,
-    `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is buildable, not a staffing or facility issue.`,
-    `Confidence is still thin at ${strongPct}% strong-tier. This is a working first pass, worth a second, larger classification run before anyone quotes these percentages as final.`,
-    `A concrete solution shows up in only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}). Most owners are naming the problem, not a fix. That gap is the opening.`,
+    `${painPointLabel(top[0])} is mentioned most often, ${topPct}% of everything relevant I found. That's frequency though, not my build-first pick, I'll get to that in the priority matrix below.`,
+    `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is buildable in my read, not a staffing or facility issue.`,
+    `I'd flag confidence as still thin, ${strongPct}% strong-tier. I'd treat this as a working first pass and run a second, larger classification before I'd quote these percentages as final.`,
+    `A concrete solution shows up in only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}). Most owners are naming the problem, not a fix. I think that gap is the opening.`,
   ];
 }
 

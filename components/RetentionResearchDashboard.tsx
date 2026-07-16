@@ -106,6 +106,9 @@ export function RetentionResearchDashboard({
       <section style={{ padding: "48px 0 20px" }}>
         <div className="eyebrow" style={{ marginBottom: 14 }}>Retention Research</div>
         <div className="hero-sub">Where gym members are actually walking out the door.</div>
+        <div style={{ marginTop: 18, maxWidth: 640, color: "var(--ink-dim)", fontSize: 15, lineHeight: 1.6 }}>
+          I pulled every post and comment in r/gymowner, ran it through classification looking for one thing, why members actually leave, and whether TWU's product can fix it. What follows is that walkthrough: the headline first, then the reasoning behind it, then the actual quotes it's built on. Keep scrolling, each section backs up the one before it.
+        </div>
         <div style={{ marginTop: 24 }}>
           <CommunitySelector options={options} active={active} onChange={setActive} />
         </div>
@@ -166,6 +169,10 @@ export function RetentionResearchDashboard({
         )}
       </div>
 
+      <div style={{ margin: "28px 0", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        Before you take that on faith, here's the fuller picture I built it from:
+      </div>
+
       <div className="briefing">
         {summary.map((s, i) => (
           <div key={i} className={i === 0 ? "briefing-lead" : "briefing-sub"}>
@@ -187,6 +194,10 @@ export function RetentionResearchDashboard({
           ]}
         />
       </section>
+
+      <div style={{ marginBottom: 16, fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        Now the breakdown. Every pain point I found, ranked by how often it came up and how sure I am about each one:
+      </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
@@ -219,6 +230,10 @@ export function RetentionResearchDashboard({
         ) : (
           <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
         )}
+      </div>
+
+      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        Two more angles on the same findings: how bad each complaint actually is, and how much of it TWU's product can touch.
       </div>
 
       <div className="grid grid-2" style={{ gap: 24, marginBottom: 24 }}>
@@ -269,6 +284,10 @@ export function RetentionResearchDashboard({
         </div>
       </div>
 
+      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        Before you weight any of that too heavily, here's whose voice is actually behind it.
+      </div>
+
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
@@ -291,6 +310,10 @@ export function RetentionResearchDashboard({
           generalText={soWhatPerspective(perspective, findings.length)}
           onClear={() => clear("perspective")}
         />
+      </div>
+
+      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        Given all that, here's what gym owners say they've actually tried.
       </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -320,6 +343,10 @@ export function RetentionResearchDashboard({
         )}
       </div>
 
+      <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+        One more angle before the receipts: has this been getting better or worse over time?
+      </div>
+
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Timeline</div>
@@ -339,8 +366,11 @@ export function RetentionResearchDashboard({
 
       <section className="section">
         <div className="section-head">
-          <div className="section-title">Top findings</div>
-          <div className="eyebrow muted">pain point to solution tried to outcome. click any chart above to filter this</div>
+          <div className="section-title">The receipts</div>
+          <div className="eyebrow muted">every finding above, individually. pain point to solution tried to outcome, check my work</div>
+        </div>
+        <div style={{ marginTop: -10, marginBottom: 18, fontSize: 13.5, color: "var(--ink-dim)" }}>
+          If you've read this far, you've already seen the analysis. This is the raw material it's built on, searchable and filterable, with a link back to the original post on every row.
         </div>
         <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} />
       </section>

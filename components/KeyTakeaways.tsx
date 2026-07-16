@@ -1,7 +1,7 @@
 export function KeyTakeaways({ points }: { points: string[] }) {
   return (
     <div className="card" style={{ padding: "26px 30px", border: "1px solid var(--border)", borderLeft: "3px solid var(--amber)" }}>
-      <div className="eyebrow" style={{ marginBottom: 16 }}>Key takeaways · read this, skip the rest if you're short on time</div>
+      <div className="eyebrow" style={{ marginBottom: 16 }}>If you only read one thing, read this</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {points.map((p, i) => (
           <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>

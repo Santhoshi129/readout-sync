@@ -151,33 +151,38 @@ export function PriorityMatrixTable({
                         <div
                           style={{
                             marginLeft: 22,
-                            padding: "14px 18px",
+                            padding: "16px 20px",
                             borderRadius: 10,
                             background: "var(--card-raised)",
                             border: "1px solid var(--border-soft)",
                             display: "flex",
                             flexDirection: "column",
-                            gap: 12,
+                            gap: 14,
                           }}
                         >
-                          <div>
-                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
-                              CONFIDENCE MIX
+                          <div style={{ fontSize: 13.5, color: "var(--ink)", lineHeight: 1.6 }}>{r.recommendedAction}</div>
+
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 24, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
+                            <div>
+                              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
+                                CONFIDENCE MIX
+                              </div>
+                              <div className="bar-track thin" style={{ display: "flex", width: 200 }}>
+                                {(["strong", "moderate", "weak"] as const).map((t) => {
+                                  const w = r.total > 0 ? (r.confidenceMix[t] / r.total) * 100 : 0;
+                                  return r.confidenceMix[t] > 0 ? (
+                                    <div key={t} style={{ width: `${w}%`, background: TIER_COLOR[t], height: "100%" }} title={`${t}: ${r.confidenceMix[t]}`} />
+                                  ) : null;
+                                })}
+                              </div>
                             </div>
-                            <div className="bar-track thin" style={{ display: "flex", maxWidth: 280 }}>
-                              {(["strong", "moderate", "weak"] as const).map((t) => {
-                                const w = r.total > 0 ? (r.confidenceMix[t] / r.total) * 100 : 0;
-                                return r.confidenceMix[t] > 0 ? (
-                                  <div key={t} style={{ width: `${w}%`, background: TIER_COLOR[t], height: "100%" }} title={`${t}: ${r.confidenceMix[t]}`} />
-                                ) : null;
-                              })}
+                            <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
+                              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
+                                MOST-TRIED FIX
+                              </div>
+                              {r.topSolution ? `${solutionCategoryLabel(r.topSolution)} (${r.topSolutionCount} mentions)` : "None named yet"}
                             </div>
                           </div>
-                          <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
-                            <span style={{ color: "var(--ink-dim)" }}>Most-tried fix: </span>
-                            {r.topSolution ? `${solutionCategoryLabel(r.topSolution)} (${r.topSolutionCount} mentions)` : "none named yet"}
-                          </div>
-                          <div style={{ fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>{r.recommendedAction}</div>
                         </div>
                       </td>
                     </tr>

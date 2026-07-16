@@ -48,7 +48,32 @@ export type CommunityDataset = {
 };
 
 // --- registry: add new communities here as their JSONL files are classified ---
-export const COMMUNITIES: CommunityDataset[] = [gymownerData as CommunityDataset];
+// The raw classified data (LLM-generated reasoning text) contains stray
+// em dashes in several free-text fields. Clean those at load time so
+// every finding rendered on the page, not just my own authored copy,
+// is free of them.
+function cleanText<T extends string | null | undefined>(s: T): T {
+  if (!s) return s;
+  return s.replace(/\s*—\s*/g, " - ") as T;
+}
+
+function sanitizeFinding(f: Finding): Finding {
+  return {
+    ...f,
+    pain_point_reasoning: cleanText(f.pain_point_reasoning),
+    pain_severity_reasoning: cleanText(f.pain_severity_reasoning),
+    evidence_snippet: cleanText(f.evidence_snippet),
+    solution: cleanText(f.solution),
+    effectiveness_reasoning: cleanText(f.effectiveness_reasoning),
+    difficulty_reasoning: cleanText(f.difficulty_reasoning),
+  };
+}
+
+function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
+  return { ...ds, findings: ds.findings.map(sanitizeFinding) };
+}
+
+export const COMMUNITIES: CommunityDataset[] = [gymownerData as CommunityDataset].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {
   const latest = COMMUNITIES.reduce(
@@ -215,12 +240,27 @@ export type PriorityRow = {
   recommendedAction: string;
 };
 
-function recommendedAction(rank: number, coreFit: number, solutionRate: number, score: number): string {
-  if (coreFit === 0) return "Not a build target. No core-fit findings in this category.";
-  if (rank === 0 && score > 0) return "Build first. The strongest combination of severity, buildable volume, and unsolved gap in this data.";
-  if (solutionRate >= 0.7) return `Largely solved already, ${Math.round(solutionRate * 100)}% of findings mention a fix. Low marginal value in building more here.`;
-  if (rank <= 2 && score > 0) return "Strong candidate. Sequence this right after the #1 pick above.";
-  return "Lower priority relative to the rest of this list, either lighter severity, smaller buildable volume, or partly addressed already.";
+function recommendedAction(rank: number, coreFit: number, avgSeverity: number, solutionRate: number, score: number): string {
+  const solvedPct = Math.round(solutionRate * 100);
+  if (coreFit === 0) {
+    return "No findings here fall within what TWU's product can currently address, regardless of how often it comes up, so it sits outside the buildable set entirely.";
+  }
+  if (rank === 0 && score > 0) {
+    return `This is the highest score in the set because it pairs the largest buildable volume (${coreFit} core-fit findings) with a solve rate still under two-thirds (${solvedPct}%). Average severity is moderate (${avgSeverity.toFixed(
+      1
+    )}/5) rather than extreme, so the case here is really about scale and an open gap, not raw pain intensity.`;
+  }
+  if (solutionRate >= 0.7) {
+    return `${solvedPct}% of these findings already show someone attempting a fix, the highest solve rate in the set. Most of the addressable value here looks already captured, so further build investment would likely see diminishing returns.`;
+  }
+  if (rank <= 2 && score > 0) {
+    return `Second-tier by score: ${coreFit} core-fit findings at ${avgSeverity.toFixed(
+      1
+    )}/5 severity, with ${solvedPct}% already showing an attempted fix. Close enough to the top pick that it's worth sequencing right after it rather than treating the gap between them as decisive.`;
+  }
+  return `Lands lower in this ranking on a mix of smaller buildable volume (${coreFit} findings) and ${
+    solvedPct >= 50 ? `a solve rate that's already over half (${solvedPct}%)` : `a below-average severity (${avgSeverity.toFixed(1)}/5)`
+  }, not because it's unimportant, just less urgent than what's ranked above it.`;
 }
 
 export function priorityMatrix(findings: Finding[]): PriorityRow[] {
@@ -256,7 +296,7 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
     };
   });
   const sorted = rows.sort((a, b) => b.score - a.score);
-  return sorted.map((r, i) => ({ ...r, recommendedAction: recommendedAction(i, r.core_fit, r.solutionRate, r.score) }));
+  return sorted.map((r, i) => ({ ...r, recommendedAction: recommendedAction(i, r.core_fit, r.avgSeverity, r.solutionRate, r.score) }));
 }
 
 export function soWhatPriority(matrix: PriorityRow[]): string {

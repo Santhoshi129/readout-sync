@@ -35,6 +35,7 @@ import {
   soWhatTimeline,
   soWhatPerspective,
   soWhatPriority,
+  priorityHeadline,
   painPointLabel,
   solutionCategoryLabel,
   perspectiveLabel,
@@ -74,6 +75,7 @@ export function RetentionResearchDashboard({
   const tiers = useMemo(() => confidenceTierBreakdown(findings), [findings]);
   const perspective = useMemo(() => perspectiveBreakdown(findings), [findings]);
   const priority = useMemo(() => priorityMatrix(findings), [findings]);
+  const headline = useMemo(() => priorityHeadline(priority), [priority]);
   const solutionsMentioned = findings.filter((f) => f.solution).length;
 
   const select = (key: keyof TableFilters, value: string | number) => {
@@ -123,7 +125,29 @@ export function RetentionResearchDashboard({
         </div>
         {priority.length > 0 ? (
           <>
-            <div style={{ marginTop: 22 }}>
+            {headline.pain_point && (
+              <div
+                style={{
+                  marginTop: 20,
+                  padding: "18px 22px",
+                  borderRadius: 12,
+                  background: "linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.03))",
+                  border: "1px solid var(--amber-deep)",
+                }}
+              >
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.1em", color: "var(--amber)", marginBottom: 8 }}>
+                  BOTTOM LINE
+                </div>
+                <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 6 }}>
+                  Build for {painPointLabel(headline.pain_point)} first.
+                </div>
+                <div style={{ color: "var(--ink-dim)", fontSize: 14 }}>{headline.sentence}</div>
+              </div>
+            )}
+            <div style={{ marginTop: 22, fontSize: 13, color: "var(--ink-faint)" }}>
+              The chart and table below show the full reasoning. Click any bubble or row to see the real quotes behind it.
+            </div>
+            <div style={{ marginTop: 14 }}>
               <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
             </div>
             <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
@@ -168,7 +192,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Pain point frequency
-            <InfoTip text="How many relevant findings fall into each pain point category, split by how confident the classifier is in each one." />
+            <InfoTip text="How many relevant findings fall into each pain point category, split by how confident the classifier is in each one. The 'Other' bar is a catch-all for findings that didn't fit a specific category, it's shown here for completeness but excluded from every ranking and recommendation elsewhere on this page." />
           </div>
           <div className="eyebrow muted">
             by confidence tier

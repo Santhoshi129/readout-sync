@@ -1,5 +1,6 @@
 "use client";
 import { PriorityRow, painPointLabel, solutionCategoryLabel } from "@/lib/retention-research";
+import { InfoTip } from "@/components/InfoTip";
 
 const MEDAL = ["#e6c766", "#b8b8b8", "#c9834c"];
 
@@ -85,10 +86,12 @@ export function PriorityLeaderboard({
                 <div>
                   <span style={{ color: "var(--ink)", fontWeight: 700 }}>{r.core_fit}</span>{" "}
                   <span style={{ color: "var(--ink-dim)" }}>findings TWU can fix</span>
+                  <InfoTip text="A finding is one classified Reddit post or comment, not a whole thread. One thread can produce several findings if more than one comment mentions this pain point." />
                 </div>
                 <div>
                   <span style={{ color: "var(--ink)", fontWeight: 700 }}>{r.avgSeverity.toFixed(1)}/5</span>{" "}
                   <span style={{ color: "var(--ink-dim)" }}>average severity</span>
+                  <InfoTip text="Severity is set per finding based on how the member described the impact: passing annoyance scores low, a stated reason someone left or nearly left scores 4-5. This is the average across every finding here." />
                 </div>
               </div>
 

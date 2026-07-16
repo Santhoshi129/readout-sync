@@ -9,9 +9,9 @@ const TIER_COLOR: Record<string, string> = {
 };
 
 const TIER_DEF: Record<string, string> = {
-  strong: "Strong: the classifier found this specific, credible, and unambiguous, high trust it's a real, on-topic retention finding.",
-  moderate: "Moderate: plausible and on-topic, but the source was less specific or less certain than a strong-tier finding.",
-  weak: "Weak: worth watching, not yet a settled fact, treat as a lead rather than something to build a conclusion on.",
+  strong: "Strong: specific, credible, unambiguous. High trust it's a real, on-topic retention finding.",
+  moderate: "Moderate: plausible and on-topic, but less specific or less certain than strong.",
+  weak: "Weak: worth watching, not yet settled. Treat as a lead, not a conclusion.",
 };
 
 function useMounted() {
@@ -31,6 +31,7 @@ export function PainPointStackedBars({
 }) {
   const mounted = useMounted();
   const max = Math.max(1, ...rows.map(([, v]) => v.total));
+  const [hoverKey, setHoverKey] = useState<string | null>(null);
 
   return (
     <div>
@@ -71,26 +72,73 @@ export function PainPointStackedBars({
                 {painPointLabel(pp)}
               </div>
               <div
-                className="bar-track thin"
-                style={{ display: "flex", opacity: active && !isActive ? 0.45 : 1, transition: "opacity 150ms ease" }}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  padding: "10px 0",
+                  margin: "-10px 0",
+                  opacity: active && !isActive ? 0.45 : 1,
+                  transition: "opacity 150ms ease",
+                }}
               >
-                {(["strong", "moderate", "weak"] as const).map((t) => {
-                  const w = mounted ? (v[t] / max) * 100 : 0;
-                  return v[t] > 0 ? (
-                    <div
-                      key={t}
-                      className="bar-fill"
-                      title={`${TIER_DEF[t]} ${v[t]} of ${v.total} ${painPointLabel(pp)} findings are ${t}-tier.`}
-                      style={{
-                        width: `${w}%`,
-                        background: TIER_COLOR[t],
-                        transitionDelay: `${i * 50}ms`,
-                        flex: "none",
-                        cursor: "help",
-                      }}
-                    />
-                  ) : null;
-                })}
+                <div className="bar-track thin" style={{ display: "flex", width: "100%" }}>
+                  {(["strong", "moderate", "weak"] as const).map((t) => {
+                    const w = mounted ? (v[t] / max) * 100 : 0;
+                    const key = `${pp}:${t}`;
+                    if (v[t] === 0) return null;
+                    return (
+                      <div
+                        key={t}
+                        onMouseEnter={(e) => {
+                          e.stopPropagation();
+                          setHoverKey(key);
+                        }}
+                        onMouseLeave={() => setHoverKey((h) => (h === key ? null : h))}
+                        style={{
+                          width: `${w}%`,
+                          flex: "none",
+                          cursor: "help",
+                          position: "relative",
+                        }}
+                      >
+                        <div
+                          className="bar-fill"
+                          style={{
+                            width: "100%",
+                            background: TIER_COLOR[t],
+                            transitionDelay: `${i * 50}ms`,
+                          }}
+                        />
+                        {hoverKey === key && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              bottom: "140%",
+                              left: "50%",
+                              transform: "translateX(-50%)",
+                              width: 220,
+                              background: "var(--card-raised)",
+                              border: "1px solid var(--border)",
+                              borderRadius: 10,
+                              padding: "10px 12px",
+                              fontSize: 12,
+                              color: "var(--ink-dim)",
+                              lineHeight: 1.5,
+                              zIndex: 50,
+                              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                              pointerEvents: "none",
+                            }}
+                          >
+                            <div style={{ color: "var(--ink)", fontWeight: 700, marginBottom: 4 }}>
+                              {v[t]} of {v.total} findings
+                            </div>
+                            {TIER_DEF[t]}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               <div style={{ textAlign: "right", fontSize: 16, fontWeight: 700 }}>{v.total}</div>
             </div>

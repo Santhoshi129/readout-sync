@@ -308,7 +308,7 @@ export function soWhatPriority(matrix: PriorityRow[]): string {
 
 export function priorityHeadline(matrix: PriorityRow[]): { pain_point: string | null; sentence: string } {
   const top = matrix.find((r) => r.score > 0);
-  if (!top) return { pain_point: null, sentence: "Not enough data yet for me to name a clear build-first pick." };
+  if (!top) return { pain_point: null, sentence: "Not enough data yet for me to name a clear top priority." };
   const solvedPct = Math.round(top.solutionRate * 100);
   return {
     pain_point: top.pain_point,
@@ -317,7 +317,49 @@ export function priorityHeadline(matrix: PriorityRow[]): { pain_point: string | 
 }
 
 // ---------------------------------------------------------------------------
-// Executive summary, computed from the real numbers in the selected
+// Solution quick-wins, difficulty vs effectiveness for solutions that have
+// both scored, a different axis than the priority matrix (which pain point
+// to target) - this is which fixes are cheap AND actually work.
+// ---------------------------------------------------------------------------
+export type SolutionQuadrantRow = {
+  category: string;
+  count: number;
+  avgDifficulty: number;
+  avgEffectiveness: number;
+};
+
+export function solutionQuadrant(findings: Finding[]): SolutionQuadrantRow[] {
+  const scored = findings.filter((f) => f.solution_category && f.solution_category !== "other" && f.difficulty != null && f.effectiveness != null);
+  const map: Record<string, { difficulty: number[]; effectiveness: number[] }> = {};
+  scored.forEach((f) => {
+    const k = f.solution_category as string;
+    if (!map[k]) map[k] = { difficulty: [], effectiveness: [] };
+    map[k].difficulty.push(f.difficulty as number);
+    map[k].effectiveness.push(f.effectiveness as number);
+  });
+  return Object.entries(map)
+    .map(([category, v]) => ({
+      category,
+      count: v.difficulty.length,
+      avgDifficulty: v.difficulty.reduce((a, b) => a + b, 0) / v.difficulty.length,
+      avgEffectiveness: v.effectiveness.reduce((a, b) => a + b, 0) / v.effectiveness.length,
+    }))
+    .sort((a, b) => b.count - a.count);
+}
+
+export function soWhatQuickWins(rows: SolutionQuadrantRow[], scoredCount: number, total: number): string {
+  if (rows.length === 0) return "Not enough findings score both difficulty and effectiveness yet to compare solutions this way.";
+  const quickWins = rows.filter((r) => r.avgDifficulty <= 2.5 && r.avgEffectiveness >= 3.5);
+  const base = `Only ${scoredCount} of ${total} findings have both a difficulty and an effectiveness score, small enough that I'd treat this as directional, not final.`;
+  if (quickWins.length === 0) {
+    return `${base} Nothing in this data lands cleanly in the easy-and-effective corner yet, most tried fixes are either a real lift to implement or came back with mixed results.`;
+  }
+  return `${base} ${quickWins.map((r) => solutionCategoryLabel(r.category)).join(", ")} ${
+    quickWins.length === 1 ? "is" : "are"
+  } the standout${quickWins.length === 1 ? "" : "s"}: low reported difficulty, high reported effectiveness. Worth prioritizing on cost alone even before weighing it against the pain-point ranking above.`;
+}
+
+
 // dataset, not hand-typed, so it can never drift from what the charts show.
 // ---------------------------------------------------------------------------
 export function executiveSummary(ds: CommunityDataset): string[] {
@@ -409,14 +451,28 @@ export function soWhatPainPoints(rows: ReturnType<typeof painPointBreakdown>, to
   const top3 = named.slice(0, 3);
   const top3Total = top3.reduce((s, [, v]) => s + v.total, 0);
   const top3Pct = Math.round((top3Total / total) * 100);
-  return `${top3.map(([p]) => painPointLabel(p)).join(", ")} account for ${top3Pct}% of every relevant finding. Retention risk is concentrated in a handful of issues, not spread thin across a dozen.`;
+  const [topName, topStats] = top3[0];
+  const topStrongPct = topStats.total > 0 ? Math.round((topStats.strong / topStats.total) * 100) : 0;
+  const tail = named.slice(3);
+  const tailTotal = tail.reduce((s, [, v]) => s + v.total, 0);
+  return `${top3.map(([p]) => painPointLabel(p)).join(", ")} account for ${top3Pct}% of every relevant finding between them, retention risk is concentrated in a handful of issues, not spread thin across a dozen. ${painPointLabel(
+    topName
+  )} alone is ${topStats.total} findings, and only ${topStrongPct}% of those are strong-confidence, so the volume is real but I'd still want more high-confidence coverage before treating it as fully settled. The remaining ${tail.length} categories split the other ${tailTotal} findings between them, a long tail of smaller, more specific complaints rather than one dominant runner-up.`;
 }
 
 export function soWhatSeverity(hist: { severity: number; count: number }[], total: number): string {
   if (total === 0) return "No severity-scored findings yet.";
   const highSeverity = hist.filter((h) => h.severity >= 4).reduce((s, h) => s + h.count, 0);
+  const midSeverity = hist.filter((h) => h.severity === 3).reduce((s, h) => s + h.count, 0);
+  const lowSeverity = hist.filter((h) => h.severity <= 2).reduce((s, h) => s + h.count, 0);
   const pct = Math.round((highSeverity / total) * 100);
-  return `${pct}% of findings score 4 or 5 on severity, meaning the member called this out as a real reason they left or nearly did, not a passing gripe.`;
+  const midPct = Math.round((midSeverity / total) * 100);
+  const lowPct = Math.round((lowSeverity / total) * 100);
+  const weightedSum = hist.reduce((s, h) => s + h.severity * h.count, 0);
+  const avg = total > 0 ? weightedSum / total : 0;
+  return `${pct}% of findings score 4 or 5, meaning the member called this out as a real reason they left or nearly did, not a passing gripe. ${midPct}% sit at a middling 3, noticeable but not described as a breaking point, and ${lowPct}% are low-severity annoyances (1-2). The average across everything relevant is ${avg.toFixed(
+    1
+  )}/5, so most of what's here is real but not extreme, the genuine 5s are a minority worth reading individually rather than a pattern that defines the whole set.`;
 }
 
 export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>, total: number): string {

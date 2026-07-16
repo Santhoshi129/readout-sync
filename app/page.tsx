@@ -1,5 +1,5 @@
 import { getReadout } from "@/lib/readout";
-import { getRetentionMatrix, label as rmLabel } from "@/lib/retention-matrix";
+import { COMMUNITIES, combinedDataset, painPointLabel, painPointBreakdown } from "@/lib/retention-research";
 import { FLOWS } from "@/lib/flows";
 import { fmt } from "@/lib/format";
 import { Topbar } from "@/components/Topbar";
@@ -9,7 +9,8 @@ export const revalidate = 30;
 
 export default async function Landing() {
   const { data, error, fetchedAt } = await getReadout();
-  const communityResearch = getRetentionMatrix();
+  const communityResearch = combinedDataset();
+  const topPainPoint = painPointBreakdown(communityResearch.findings)[0];
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
@@ -84,20 +85,20 @@ export default async function Landing() {
             <span className="chip" style={{ marginBottom: 16, display: "inline-flex" }}>Retention Research</span>
             <div style={{ fontFamily: "var(--font-head)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 10 }}>Community Research</div>
             <div style={{ color: "var(--ink-dim)", fontSize: 14.5, lineHeight: 1.6, marginBottom: 28, maxWidth: 460 }}>
-              Reddit discussions from r/CrossFit, r/HYROX, and r/GymOwners, classified against a fixed pain-point taxonomy and scored for effectiveness, difficulty, and whether the app can actually fix it.
+              Reddit discussions ({COMMUNITIES.map((c) => c.label).join(", ")}), classified against a fixed pain-point taxonomy and scored for effectiveness, difficulty, and whether the app can actually fix it.
             </div>
             <div style={{ display: "flex", gap: 32, flexWrap: "wrap", rowGap: 16 }}>
               <div>
-                <div className="stat-label">Discussions analyzed</div>
-                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_classified_items)}</div>
+                <div className="stat-label">Posts/comments analyzed</div>
+                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.total_analyzed)}</div>
               </div>
               <div>
-                <div className="stat-label">Categories</div>
-                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.matrix.length)}</div>
+                <div className="stat-label">Relevant findings</div>
+                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{fmt(communityResearch.relevant_count)}</div>
               </div>
               <div>
                 <div className="stat-label">Leading pain point</div>
-                <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{rmLabel(communityResearch.matrix[0]?.pain_point)}</div>
+                <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: "var(--amber)" }}>{topPainPoint ? painPointLabel(topPainPoint[0]) : "N/A"}</div>
               </div>
             </div>
           </div>

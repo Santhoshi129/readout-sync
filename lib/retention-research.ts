@@ -394,7 +394,7 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
     `${painPointLabel(top[0])} comes up more than anything else, ${topPct}% of everything I found. That's just frequency, though, my actual build pick is further down.`,
     `Over half of what I found (${coreFitPct}%, ${coreFit} of ${n}) is stuff TWU can actually fix. It's not all staffing or facility complaints, a good chunk of this is ours to solve.`,
     `Confidence is still thin, only ${strongPct}% strong-tier. I'd treat this as a first pass, not gospel, and I want a bigger classification run before anyone repeats these percentages as final.`,
-    `Only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}) mention someone actually trying a fix. Most owners are just naming the problem. That's the gap worth building into.`,
+    `Only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}) mention someone actually trying a fix. That could mean a real gap, or it could just mean people vent about problems on Reddit more than they document what they tried. I can't tell the difference from this data alone, worth treating as a lead, not a conclusion.`,
   ];
 }
 
@@ -430,8 +430,8 @@ export function soWhatAppRelevance(ar: ReturnType<typeof appRelevanceBreakdown>,
 export function soWhatSolutions(rows: [string, number][], mentioned: number, total: number): string {
   if (total === 0) return "No findings to summarize yet.";
   const top = rows[0];
-  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. Owners are describing the problem, not a solution they tried.`;
-  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, but only ${mentioned} of ${total} findings name any solution at all. Most of this problem space is still unaddressed.`;
+  if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. That's either a real gap or just what people happen to write about on Reddit, hard to tell apart from this alone.`;
+  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, but only ${mentioned} of ${total} findings name any solution at all. I'd read that as unaddressed problem space until proven otherwise, but posts skew toward venting over documenting fixes, so some of that gap is probably reporting bias, not a real vacuum.`;
 }
 
 export function soWhatTimeline(rows: [string, number][]): string {

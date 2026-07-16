@@ -13,7 +13,11 @@ export default async function Landing() {
 
   const gymOwnerFlows = FLOWS.filter((f) => section(f.category) === "gym-owner");
   const memberFlows = FLOWS.filter((f) => section(f.category) === "member");
-  const platformFlows = FLOWS.filter((f) => section(f.category) === "platform");
+  // "community-research" already has its own dedicated card above (built from
+  // the retention-research dataset) - exclude it here so it doesn't also show
+  // up as a duplicate row in the generic platform-flows list below. It still
+  // counts toward FLOWS.length for the automations total.
+  const platformFlows = FLOWS.filter((f) => section(f.category) === "platform" && f.slug !== "community-research");
 
   return (
     <>

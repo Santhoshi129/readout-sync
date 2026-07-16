@@ -299,12 +299,6 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const second = pp[1];
   const topPct = Math.round((top[1].total / n) * 100);
 
-  const ar = appRelevanceBreakdown(f);
-  const coreFit = ar.find((a) => a.key === "core_fit")?.count ?? 0;
-  const notAddressable = ar.find((a) => a.key === "not_addressable")?.count ?? 0;
-  const coreFitPct = Math.round((coreFit / n) * 100);
-  const notAddressablePct = Math.round((notAddressable / n) * 100);
-
   const ct = confidenceTierBreakdown(f);
   const strongPct = Math.round((ct.strong / n) * 100);
   const weakPct = Math.round((ct.weak / n) * 100);
@@ -312,24 +306,20 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   sentences.push(
-    `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification. ${n} (${relDensity.toFixed(
+    `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relDensity.toFixed(
       1
-    )}%) named a specific member-retention pain point. This is a targeted pull, not a survey of gym owners at large, so I'd treat the base rate as a floor, not a headline number.`
+    )}%) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 
   sentences.push(
     `${painPointLabel(top[0])} comes up most often, ${top[1].total} findings (${topPct}% of the relevant set)` +
       (second
-        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's raw mention frequency though, further down I weigh severity and buildability too, and rank a different pain point to build first.`
-        : ". That's raw mention frequency, not my build recommendation.")
+        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's just how often people mention it though, not what I'd build first, I get to that later once I've laid out the full picture.`
+        : ". That's mention frequency, not my build recommendation.")
   );
 
   sentences.push(
-    `${coreFitPct}% of findings (${coreFit} of ${n}) sit squarely in TWU's product lane, in my read. ${notAddressablePct}% (${notAddressable}) are staffing, facility, or culture calls no app will fix.`
-  );
-
-  sentences.push(
-    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. I'd build the roadmap on the strong and moderate rows, and use the weak tier to decide where I run the next classification pass.`
+    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. I'm comfortable acting on the strong and moderate rows. The weak tier is more useful as a map of where I'd point the next classification pass than as something to quote.`
   );
 
   return sentences;
@@ -361,10 +351,10 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} is mentioned most often, ${topPct}% of everything relevant I found. That's frequency though, not my build-first pick, I'll get to that in the priority matrix below.`,
-    `${coreFitPct}% of the problem set (${coreFit} of ${n} findings) is buildable in my read, not a staffing or facility issue.`,
-    `I'd flag confidence as still thin, ${strongPct}% strong-tier. I'd treat this as a working first pass and run a second, larger classification before I'd quote these percentages as final.`,
-    `A concrete solution shows up in only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}). Most owners are naming the problem, not a fix. I think that gap is the opening.`,
+    `${painPointLabel(top[0])} comes up more than anything else, ${topPct}% of everything I found. That's just frequency, though, my actual build pick is further down.`,
+    `Over half of what I found (${coreFitPct}%, ${coreFit} of ${n}) is stuff TWU can actually fix. It's not all staffing or facility complaints, a good chunk of this is ours to solve.`,
+    `Confidence is still thin, only ${strongPct}% strong-tier. I'd treat this as a first pass, not gospel, and I want a bigger classification run before anyone repeats these percentages as final.`,
+    `Only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}) mention someone actually trying a fix. Most owners are just naming the problem. That's the gap worth building into.`,
   ];
 }
 

@@ -519,6 +519,16 @@ async function buildAppAdoption(db, gToken) {
   }
   console.log(`AppAdoption: ${aaTotal} tracked members`);
 
+  // TEMP DIAGNOSTIC - remove once total_identified is confirmed correct.
+  // Surfaces what the query actually saw, straight in the payload, since we
+  // can't read this script's console output from outside GitHub Actions.
+  const _debug = {
+    db_name_used: db.databaseName,
+    raw_doc_count: rowsIn.length,
+    sample_doc_keys: rowsIn[0] ? Object.keys(rowsIn[0]) : [],
+    sample_doc: rowsIn[0] || null,
+  };
+
   const notJoining = await db.collection("outreach_tracker_clean").countDocuments({ status: "not_joining" });
 
   let noEmailSheet = 0, dupSheet = 0;
@@ -552,6 +562,7 @@ async function buildAppAdoption(db, gToken) {
       not_joining_confirmed: notJoining, stage_drafted: stDrafted, stage_sent: stSent, stage_followup: stFollowup,
       stage_no_response: stNoResp, stage_adopted: stAdopted, stage_not_joining: stNotJoin,
       stage_opted_out: stOptOut, stage_replied: stReplied,
+      _debug,
     },
     summary: {
       total_email_drafts_in_gmail: aaDraft + aaFupDraft, replied_app_adoption: stReplied,

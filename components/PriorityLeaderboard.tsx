@@ -107,9 +107,22 @@ export function PriorityLeaderboard({
 
               <div style={{ marginTop: 12, fontSize: 13.5, color: "var(--ink)", lineHeight: 1.5 }}>{r.recommendedAction}</div>
 
-              {r.topSolution && (
-                <div style={{ marginTop: 6, fontSize: 12, color: "var(--ink-dim)" }}>
-                  Most tried so far: {solutionCategoryLabel(r.topSolution)} ({r.topSolutionCount} mentions)
+              {r.solutions.length > 0 && (
+                <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
+                  <span style={{ color: "var(--ink-faint)" }}>Solutions discussed: </span>
+                  {r.solutions.slice(0, 3).map((s, i) => (
+                    <span key={s.category}>
+                      {i > 0 && ", "}
+                      <span style={{ color: "var(--ink)" }}>{solutionCategoryLabel(s.category)}</span>
+                      {" ("}
+                      {s.count} mention{s.count === 1 ? "" : "s"}
+                      {s.avgEffectiveness != null ? `, ${s.avgEffectiveness.toFixed(1)}/5 effectiveness` : ", not yet scored"}
+                      {")"}
+                    </span>
+                  ))}
+                  {r.solutions.length > 3 && (
+                    <span style={{ color: "var(--ink-faint)" }}> +{r.solutions.length - 3} more, see full table below</span>
+                  )}
                 </div>
               )}
             </div>

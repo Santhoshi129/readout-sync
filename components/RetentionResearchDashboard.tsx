@@ -115,16 +115,36 @@ export function RetentionResearchDashboard({
         <div className="eyebrow" style={{ marginBottom: 14 }}>Retention Research</div>
         <div className="hero-sub">Why gym members actually leave, in their own words.</div>
         <div style={{ marginTop: 18, maxWidth: 640, color: "var(--ink-dim)", fontSize: 15, lineHeight: 1.6 }}>
-          I went through every post and comment in r/gymowner and pulled out the ones where someone actually says why a member walked, not general gym-owner chatter, the specific complaints. This page walks through what I found: the pattern first, then the proof underneath it. I'll flag where TWU's product can actually move the needle, and where it can't, separately, so those two things don't get mixed up.
+          I went through every post and comment in {communities.length === 1 ? communities[0].label : `${communities.length} gym-and-fitness communities (${communities.map((c) => c.label).join(", ")})`} and pulled out the ones where someone actually says why a member walked, not general chatter, the specific complaints. Each community gets its own read, since they don't talk about retention the same way, plus a combined view. I'll flag where TWU's product can actually move the needle, and where it can't, separately, so those two things don't get mixed up.
         </div>
         <div style={{ marginTop: 24 }}>
           <CommunitySelector options={options} active={active} onChange={setActive} />
         </div>
         <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)" }}>
           {communities.length === 1
-            ? `"All communities combined" and "${communities[0].label}" are the same numbers right now, r/gymowner is the only one I've classified so far. Crossfit, f45, and hyrox are next, the selector's built to take them without a rebuild.`
-            : "Switch between individual communities or the combined view above."}
+            ? `"All communities combined" and "${communities[0].label}" are the same numbers right now, ${communities[0].label} is the only one I've classified so far. The selector's built to take more without a rebuild.`
+            : "Switch between individual communities or the combined view above. Each community keeps its own native pain-point categories rather than being forced into another community's list, the combined view is a union of all of them, not a merge."}
         </div>
+        {ds.data_note && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: "12px 16px",
+              borderRadius: 10,
+              background: "rgba(201,168,76,0.08)",
+              border: "1px solid var(--amber-deep)",
+              fontSize: 13,
+              color: "var(--ink-dim)",
+              maxWidth: 640,
+              lineHeight: 1.5,
+            }}
+          >
+            <span style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--amber)", marginRight: 8 }}>
+              DATA NOTE
+            </span>
+            {ds.data_note}
+          </div>
+        )}
       </section>
 
       <section style={{ marginBottom: 24 }}>
@@ -244,7 +264,7 @@ export function RetentionResearchDashboard({
       </div>
 
       <div style={{ margin: "28px 0 16px", fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        Given all that, here's what gym owners say they've actually tried.
+        Given all that, here's what's actually been tried, by owners and members alike.
       </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -365,7 +385,7 @@ export function RetentionResearchDashboard({
           </div>
         </div>
         <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
-          According to this r/gymowner research analysis, this is how pain points rank by unresolved severity and how much TWU can address. It's not a claim TWU has zero footprint here already, if something below already exists in the product, read it as the data saying the gap isn't fully closed yet.
+          According to {ds.subreddit === "all" ? "this combined" : `this ${ds.label}`} research analysis, this is how pain points rank by unresolved severity and how much TWU can address. It's not a claim TWU has zero footprint here already, if something below already exists in the product, read it as the data saying the gap isn't fully closed yet.
         </div>
 
         {priority.length > 0 ? (

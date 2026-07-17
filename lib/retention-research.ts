@@ -10,6 +10,8 @@
 // change — every chart and the findings table key off `subreddit` in the
 // data itself.
 import gymownerData from "@/data/retention-research/gymowner.json";
+import hyroxData from "@/data/retention-research/hyrox.json";
+import crossfitData from "@/data/retention-research/crossfit.json";
 
 export type AppRelevance = "core_fit" | "partial_fit" | "not_addressable";
 export type ConfidenceTier = "weak" | "moderate" | "strong";
@@ -44,6 +46,10 @@ export type CommunityDataset = {
   generated_at: string;
   total_analyzed: number;
   relevant_count: number;
+  // Optional, community-specific data-quality caveat (e.g. a partial pull).
+  // Rendered directly under the intro on that community's tab. Null/absent
+  // means the dataset is complete, same standard as gymowner.
+  data_note?: string | null;
   findings: Finding[];
 };
 
@@ -73,7 +79,11 @@ function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
   return { ...ds, findings: ds.findings.map(sanitizeFinding) };
 }
 
-export const COMMUNITIES: CommunityDataset[] = [gymownerData as CommunityDataset].map(sanitizeDataset);
+export const COMMUNITIES: CommunityDataset[] = [
+  gymownerData as CommunityDataset,
+  crossfitData as CommunityDataset,
+  hyroxData as CommunityDataset,
+].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {
   const latest = COMMUNITIES.reduce(
@@ -104,6 +114,11 @@ export const PAIN_POINT_LABEL: Record<string, string> = {
   coaching_quality_inconsistency: "Coaching Quality Inconsistency",
   community_culture_negative: "Negative Community Culture",
   scheduling_access_issues: "Scheduling & Access Issues",
+  // Categories below didn't appear in r/gymowner's data — CrossFit/HYROX
+  // communities surface different pain points, and these are native to
+  // them, not forced into the gymowner list.
+  business_ownership_change: "Business / Affiliation Change",
+  programming_dissatisfaction: "Programming Dissatisfaction",
   other: "Other",
 };
 export function painPointLabel(p: string): string {
@@ -218,7 +233,10 @@ export function soWhatPerspective(rows: [string, number][], total: number): stri
   const ownerCount = rows.find(([k]) => k === "owner")?.[1] ?? 0;
   const memberPct = Math.round((memberCount / total) * 100);
   const ownerPct = Math.round((ownerCount / total) * 100);
-  return `${ownerPct}% of findings are owners describing what they see in members, secondhand. Only ${memberPct}% (${memberCount} of ${total}) are members speaking for themselves. Read the frequency counts above as owner perception of churn drivers, not verified member sentiment, until that gap closes.`;
+  if (ownerCount >= memberCount) {
+    return `${ownerPct}% of findings are owners describing what they see in members, secondhand. Only ${memberPct}% (${memberCount} of ${total}) are members speaking for themselves. Read the frequency counts above as owner perception of churn drivers, not verified member sentiment, until that gap closes.`;
+  }
+  return `${memberPct}% of findings are members describing their own experience directly, versus ${ownerPct}% (${ownerCount} of ${total}) that are owners reporting on member behavior secondhand. That's a stronger evidentiary base than owner-perception data, though it also means this community skews toward why an individual left, not how an operator would systematically catch it.`;
 }
 
 // ---------------------------------------------------------------------------

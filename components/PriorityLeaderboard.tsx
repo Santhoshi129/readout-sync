@@ -1,8 +1,92 @@
 "use client";
+import { useState } from "react";
+import type { CSSProperties } from "react";
 import { PriorityRow, painPointLabel, solutionCategoryLabel } from "@/lib/retention-research";
 import { InfoTip } from "@/components/InfoTip";
 
 const MEDAL = ["#e6c766", "#b8b8b8", "#c9834c"];
+
+function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"] }) {
+  const [showAll, setShowAll] = useState(false);
+  if (solutions.length === 0) return null;
+  const shown = showAll ? solutions : solutions.slice(0, 3);
+  const hidden = solutions.length - shown.length;
+
+  const toggleBtnStyle: CSSProperties = {
+    marginTop: 8,
+    background: "transparent",
+    border: "1px solid var(--border)",
+    borderRadius: 999,
+    color: "var(--amber)",
+    fontFamily: "var(--mono)",
+    fontSize: 10.5,
+    letterSpacing: "0.05em",
+    padding: "5px 12px",
+    cursor: "pointer",
+  };
+
+  return (
+    <div style={{ marginTop: 12 }} onClick={(e) => e.stopPropagation()}>
+      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8, display: "flex", alignItems: "center" }}>
+        SOLUTIONS DISCUSSED FOR THIS PROBLEM
+        <InfoTip text="Every distinct fix people mentioned trying for this pain point, ranked by how often it came up. Effectiveness (1-5) is how well the fix reportedly worked, based on the outcome the person described. Difficulty (1-5) is how hard that fix looked to build or run. Both are averaged only over findings that reported both scores, so a fix mentioned once with no outcome shows as 'not yet scored' rather than a misleading average." />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {shown.map((s) => (
+          <div
+            key={s.category}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: 10,
+              fontSize: 12.5,
+              padding: "7px 0",
+              borderTop: "1px solid var(--border-soft)",
+            }}
+          >
+            <span style={{ color: "var(--ink)", fontWeight: 600, minWidth: 160 }}>{solutionCategoryLabel(s.category)}</span>
+            <span style={{ color: "var(--ink-dim)" }}>
+              {s.count} mention{s.count === 1 ? "" : "s"}
+            </span>
+            {s.avgEffectiveness != null ? (
+              <span
+                title={`Effectiveness ${s.avgEffectiveness.toFixed(1)}/5 - how well this fix reportedly worked, averaged across ${s.scoredCount} finding${
+                  s.scoredCount === 1 ? "" : "s"
+                } that reported an outcome. 5 means it clearly worked, 1 means it was tried and didn't help.`}
+                style={{ color: "var(--hot)", cursor: "help", borderBottom: "1px dotted var(--hot)" }}
+              >
+                {s.avgEffectiveness.toFixed(1)}/5 effectiveness
+              </span>
+            ) : (
+              <span
+                title="No finding for this specific fix reported both a difficulty and an effectiveness outcome, so there isn't enough to average yet - it's still a real mention, just not a scored one."
+                style={{ color: "var(--ink-faint)", cursor: "help", borderBottom: "1px dotted var(--ink-faint)" }}
+              >
+                not yet scored
+              </span>
+            )}
+            {s.avgDifficulty != null && (
+              <span
+                title={`Difficulty ${s.avgDifficulty.toFixed(1)}/5 - how hard this fix looked to build or run, based on what the finding described, averaged across the same ${
+                  s.scoredCount
+                } scored finding${s.scoredCount === 1 ? "" : "s"}. 5 is a major lift, 1 is close to trivial.`}
+                style={{ color: "var(--cold)", cursor: "help", borderBottom: "1px dotted var(--cold)" }}
+              >
+                {s.avgDifficulty.toFixed(1)}/5 difficulty
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+      {solutions.length > 3 && (
+        <button onClick={() => setShowAll((v) => !v)} style={toggleBtnStyle}>
+          {showAll ? "Show fewer" : `+${hidden} more solution${hidden === 1 ? "" : "s"}`}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export function PriorityLeaderboard({
   rows,
@@ -107,24 +191,7 @@ export function PriorityLeaderboard({
 
               <div style={{ marginTop: 12, fontSize: 13.5, color: "var(--ink)", lineHeight: 1.5 }}>{r.recommendedAction}</div>
 
-              {r.solutions.length > 0 && (
-                <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-                  <span style={{ color: "var(--ink-faint)" }}>Solutions discussed: </span>
-                  {r.solutions.slice(0, 3).map((s, i) => (
-                    <span key={s.category}>
-                      {i > 0 && ", "}
-                      <span style={{ color: "var(--ink)" }}>{solutionCategoryLabel(s.category)}</span>
-                      {" ("}
-                      {s.count} mention{s.count === 1 ? "" : "s"}
-                      {s.avgEffectiveness != null ? `, ${s.avgEffectiveness.toFixed(1)}/5 effectiveness` : ", not yet scored"}
-                      {")"}
-                    </span>
-                  ))}
-                  {r.solutions.length > 3 && (
-                    <span style={{ color: "var(--ink-faint)" }}> +{r.solutions.length - 3} more, see full table below</span>
-                  )}
-                </div>
-              )}
+              <SolutionsBreakdown solutions={r.solutions} />
             </div>
           </div>
         );

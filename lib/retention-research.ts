@@ -10,8 +10,9 @@
 // change — every chart and the findings table key off `subreddit` in the
 // data itself.
 import gymownerData from "@/data/retention-research/gymowner.json";
-import hyroxData from "@/data/retention-research/hyrox.json";
-import crossfitData from "@/data/retention-research/crossfit.json";
+// crossfit and hyrox imports paused - see note above COMMUNITIES below
+// import hyroxData from "@/data/retention-research/hyrox.json";
+// import crossfitData from "@/data/retention-research/crossfit.json";
 import f45Data from "@/data/retention-research/f45.json";
 
 export type AppRelevance = "core_fit" | "partial_fit" | "not_addressable";
@@ -80,10 +81,12 @@ function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
   return { ...ds, findings: ds.findings.map(sanitizeFinding) };
 }
 
+// crossfit and hyrox temporarily pulled from the live registry (not deleted -
+// data files still on disk) while r/crossfit's comment set gets fully
+// re-pulled and classified. Re-add both imports to COMMUNITIES below once
+// that's done.
 export const COMMUNITIES: CommunityDataset[] = [
   gymownerData as CommunityDataset,
-  crossfitData as CommunityDataset,
-  hyroxData as CommunityDataset,
   f45Data as CommunityDataset,
 ].map(sanitizeDataset);
 

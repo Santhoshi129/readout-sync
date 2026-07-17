@@ -529,7 +529,7 @@ export function soWhatTimeline(rows: [string, number][]): string {
 // ---------------------------------------------------------------------------
 export const GLOSSARY: { term: string; meaning: string }[] = [
   { term: "Confidence tier", meaning: "How sure I am that this is a real, on-topic retention finding, based on how specific, credible, and unambiguous the source post is. Strong means I trust it. Weak means I'd read it with caution." },
-  { term: "Core fit", meaning: "I call it core fit when it's directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that." },
+  { term: "Core fit", meaning: "I call it core fit when it's directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that. This is judged against TWU's stated purpose, not a verified list of what's already built, a core fit finding may already exist in the product." },
   { term: "Partial fit", meaning: "Connection and visibility features can help around the edges (surface who's showing up, prompt a conversation) but I don't think they solve the underlying issue alone." },
   { term: "Not addressable", meaning: "A staffing, facility, coaching, pricing, or culture problem. Outside what I think a connection layer can fix directly." },
   { term: "Severity (1-5)", meaning: "How serious the member or owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },

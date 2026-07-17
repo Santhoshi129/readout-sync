@@ -358,7 +358,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Can TWU actually fix it?
-            <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches." />
+            <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches. This judges fit against TWU's stated purpose, not against a verified list of what TWU has already built - a core fit finding may already be solved." />
           </div>
         </div>
         <div style={{ marginTop: 22 }}>
@@ -385,7 +385,10 @@ export function RetentionResearchDashboard({
           </div>
         </div>
         <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
-          According to {ds.subreddit === "all" ? "this combined" : `this ${ds.label}`} research analysis, this is how pain points rank by unresolved severity and how much TWU can address. It's not a claim TWU has zero footprint here already, if something below already exists in the product, read it as the data saying the gap isn't fully closed yet.
+          According to {ds.subreddit === "all" ? "this combined" : `this ${ds.label}`} research analysis, this is how pain points rank by unresolved severity and how much TWU can address. This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap.
+        </div>
+        <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
+          One thing we do know for certain (from TWU's own engagement API): chat/channels, events, member connections, and profiles are live features today. What we don't know is whether they already cover the specific pattern a given finding describes.
         </div>
 
         {priority.length > 0 ? (

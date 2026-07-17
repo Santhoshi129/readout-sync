@@ -297,14 +297,14 @@ export function PriorityMatrixTable({
                                   >
                                     <div style={{ fontSize: 12.5, color: "var(--ink)" }}>{solutionCategoryLabel(s.category)}</div>
                                     <div style={{ textAlign: "right", fontSize: 12, color: "var(--ink-dim)" }}>{s.count}</div>
-                                    <div>
+                                    <div title={s.effectivenessWhy ? `Why: ${s.effectivenessWhy}` : undefined} style={{ cursor: s.effectivenessWhy ? "help" : "default" }}>
                                       {s.avgEffectiveness != null ? (
                                         <Dots value={s.avgEffectiveness} color="var(--hot)" />
                                       ) : (
                                         <span style={{ fontSize: 10.5, color: "var(--ink-faint)" }}>not scored</span>
                                       )}
                                     </div>
-                                    <div>
+                                    <div title={s.difficultyWhy ? `Why: ${s.difficultyWhy}` : undefined} style={{ cursor: s.difficultyWhy ? "help" : "default" }}>
                                       {s.avgDifficulty != null ? (
                                         <Dots value={6 - s.avgDifficulty} color="var(--cold)" />
                                       ) : (

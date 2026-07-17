@@ -51,9 +51,11 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
             </span>
             {s.avgEffectiveness != null ? (
               <span
-                title={`Effectiveness ${s.avgEffectiveness.toFixed(1)}/5 - how well this fix reportedly worked, averaged across ${s.scoredCount} finding${
-                  s.scoredCount === 1 ? "" : "s"
-                } that reported an outcome. 5 means it clearly worked, 1 means it was tried and didn't help.`}
+                title={
+                  s.effectivenessWhy
+                    ? `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5 - why: ${s.effectivenessWhy}`
+                    : `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5, averaged across ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
+                }
                 style={{ color: "var(--hot)", cursor: "help", borderBottom: "1px dotted var(--hot)" }}
               >
                 {s.avgEffectiveness.toFixed(1)}/5 effectiveness
@@ -68,9 +70,11 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
             )}
             {s.avgDifficulty != null && (
               <span
-                title={`Difficulty ${s.avgDifficulty.toFixed(1)}/5 - how hard this fix looked to build or run, based on what the finding described, averaged across the same ${
-                  s.scoredCount
-                } scored finding${s.scoredCount === 1 ? "" : "s"}. 5 is a major lift, 1 is close to trivial.`}
+                title={
+                  s.difficultyWhy
+                    ? `Difficulty ${s.avgDifficulty.toFixed(1)}/5 - why: ${s.difficultyWhy}`
+                    : `Difficulty ${s.avgDifficulty.toFixed(1)}/5, averaged across the same ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
+                }
                 style={{ color: "var(--cold)", cursor: "help", borderBottom: "1px dotted var(--cold)" }}
               >
                 {s.avgDifficulty.toFixed(1)}/5 difficulty

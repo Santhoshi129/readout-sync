@@ -175,6 +175,36 @@ export function painPointBreakdown(findings: Finding[]) {
   return Object.entries(map).sort((a, b) => b[1].total - a[1].total);
 }
 
+const TIER_RANK: Record<ConfidenceTier, number> = { strong: 0, moderate: 1, weak: 2 };
+
+// Real, concrete examples of what people actually said for each pain point,
+// for hover reference next to the frequency count - a bare number like
+// "124" doesn't mean anything on its own, "people getting bored of the same
+// format" does. Picks the clearest, highest-confidence findings, not a
+// random sample, so the example shown is representative, not a fluke.
+export type PainPointExample = { reasoning: string; evidence: string | null };
+export function painPointExamples(findings: Finding[], perPoint = 3): Record<string, PainPointExample[]> {
+  const byPoint: Record<string, Finding[]> = {};
+  findings.forEach((f) => {
+    const k = f.pain_point || "other";
+    if (!byPoint[k]) byPoint[k] = [];
+    if (f.pain_point_reasoning) byPoint[k].push(f);
+  });
+  const out: Record<string, PainPointExample[]> = {};
+  Object.entries(byPoint).forEach(([pp, group]) => {
+    const sorted = [...group].sort((a, b) => {
+      const tierDiff = TIER_RANK[a.confidence_tier] - TIER_RANK[b.confidence_tier];
+      if (tierDiff !== 0) return tierDiff;
+      return (b.pain_severity ?? 0) - (a.pain_severity ?? 0);
+    });
+    out[pp] = sorted.slice(0, perPoint).map((f) => ({
+      reasoning: f.pain_point_reasoning as string,
+      evidence: f.evidence_snippet,
+    }));
+  });
+  return out;
+}
+
 export function severityHistogram(findings: Finding[]) {
   return [1, 2, 3, 4, 5].map((n) => ({
     severity: n,

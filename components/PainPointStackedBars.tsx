@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { painPointLabel } from "@/lib/retention-research";
+import { painPointLabel, PainPointExample } from "@/lib/retention-research";
 
 const TIER_COLOR: Record<string, string> = {
   strong: "var(--hot)",
@@ -24,14 +24,17 @@ export function PainPointStackedBars({
   rows,
   active,
   onSelect,
+  examples,
 }: {
   rows: [string, { weak: number; moderate: number; strong: number; total: number }][];
   active?: string | null;
   onSelect?: (pp: string) => void;
+  examples?: Record<string, PainPointExample[]>;
 }) {
   const mounted = useMounted();
   const max = Math.max(1, ...rows.map(([, v]) => v.total));
   const [hoverKey, setHoverKey] = useState<string | null>(null);
+  const [hoverLabel, setHoverLabel] = useState<string | null>(null);
 
   return (
     <div>
@@ -68,8 +71,54 @@ export function PainPointStackedBars({
                 transition: "background 150ms ease",
               }}
             >
-              <div style={{ fontSize: 13.5, color: isActive ? "var(--amber)" : "var(--ink-dim)", fontWeight: isActive ? 700 : 400 }}>
-                {painPointLabel(pp)}
+              <div
+                style={{ position: "relative" }}
+                onMouseEnter={() => setHoverLabel(pp)}
+                onMouseLeave={() => setHoverLabel((h) => (h === pp ? null : h))}
+              >
+                <div
+                  style={{
+                    fontSize: 13.5,
+                    color: isActive ? "var(--amber)" : "var(--ink-dim)",
+                    fontWeight: isActive ? 700 : 400,
+                    cursor: examples?.[pp]?.length ? "help" : "default",
+                    borderBottom: examples?.[pp]?.length ? "1px dotted var(--ink-faint)" : "none",
+                    display: "inline-block",
+                  }}
+                >
+                  {painPointLabel(pp)}
+                </div>
+                {hoverLabel === pp && examples?.[pp]?.length ? (
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      left: 0,
+                      marginTop: 8,
+                      width: 320,
+                      background: "var(--card-raised)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 10,
+                      padding: "12px 14px",
+                      fontSize: 12,
+                      color: "var(--ink-dim)",
+                      lineHeight: 1.55,
+                      zIndex: 60,
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                      cursor: "default",
+                    }}
+                  >
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.06em", color: "var(--ink-faint)", marginBottom: 8 }}>
+                      WHAT PEOPLE ACTUALLY SAID
+                    </div>
+                    {examples[pp].map((ex, idx) => (
+                      <div key={idx} style={{ marginBottom: idx < examples[pp].length - 1 ? 10 : 0 }}>
+                        <div style={{ color: "var(--ink)" }}>{ex.reasoning}</div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
               <div
                 style={{

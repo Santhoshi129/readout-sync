@@ -26,6 +26,7 @@ import {
   severityHistogram,
   appRelevanceBreakdown,
   solutionCategoryBreakdown,
+  solutionExamples,
   timelineBreakdown,
   confidenceTierBreakdown,
   perspectiveBreakdown,
@@ -78,6 +79,7 @@ export function RetentionResearchDashboard({
   const severity = useMemo(() => severityHistogram(findings), [findings]);
   const appRel = useMemo(() => appRelevanceBreakdown(findings), [findings]);
   const solutions = useMemo(() => solutionCategoryBreakdown(findings), [findings]);
+  const solutionRefs = useMemo(() => solutionExamples(findings), [findings]);
   const timeline = useMemo(() => timelineBreakdown(findings), [findings]);
   const tiers = useMemo(() => confidenceTierBreakdown(findings), [findings]);
   const perspective = useMemo(() => perspectiveBreakdown(findings), [findings]);
@@ -282,6 +284,7 @@ export function RetentionResearchDashboard({
                 rows={solutions}
                 active={filters.solutionCategory === "All" ? null : filters.solutionCategory}
                 onSelect={(s) => select("solutionCategory", s)}
+                examples={solutionRefs}
               />
             </div>
             <SectionInsight

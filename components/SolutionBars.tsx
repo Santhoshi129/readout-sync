@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/Counter";
-import { solutionCategoryLabel } from "@/lib/retention-research";
+import { solutionCategoryLabel, SolutionExample } from "@/lib/retention-research";
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -13,19 +13,23 @@ export function SolutionBars({
   rows,
   active,
   onSelect,
+  examples,
 }: {
   rows: [string, number][];
   active?: string | null;
   onSelect?: (s: string) => void;
+  examples?: Record<string, SolutionExample[]>;
 }) {
   const mounted = useMounted();
   const max = Math.max(1, ...rows.map(([, c]) => c));
+  const [hoverLabel, setHoverLabel] = useState<string | null>(null);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {rows.map(([s, c], i) => {
         const isActive = active === s;
         const w = Math.max(1.5, (c / max) * 100);
+        const ex = examples?.[s];
         return (
           <div
             key={s}
@@ -43,8 +47,57 @@ export function SolutionBars({
               background: isActive ? "rgba(201,168,76,0.08)" : "transparent",
             }}
           >
-            <div style={{ fontSize: 13.5, color: isActive ? "var(--amber)" : "var(--ink-dim)", fontWeight: isActive ? 700 : 400 }}>
-              {solutionCategoryLabel(s)}
+            <div
+              style={{ position: "relative" }}
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                setHoverLabel(s);
+              }}
+              onMouseLeave={() => setHoverLabel((h) => (h === s ? null : h))}
+            >
+              <div
+                style={{
+                  fontSize: 13.5,
+                  color: isActive ? "var(--amber)" : "var(--ink-dim)",
+                  fontWeight: isActive ? 700 : 400,
+                  cursor: ex?.length ? "help" : "default",
+                  borderBottom: ex?.length ? "1px dotted var(--ink-faint)" : "none",
+                  display: "inline-block",
+                }}
+              >
+                {solutionCategoryLabel(s)}
+              </div>
+              {hoverLabel === s && ex?.length ? (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    marginTop: 8,
+                    width: 300,
+                    background: "var(--card-raised)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: "12px 14px",
+                    fontSize: 12,
+                    color: "var(--ink-dim)",
+                    lineHeight: 1.55,
+                    zIndex: 60,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                    cursor: "default",
+                  }}
+                >
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.06em", color: "var(--ink-faint)", marginBottom: 8 }}>
+                    HOW THIS ACTUALLY PLAYED OUT
+                  </div>
+                  {ex.map((e, idx) => (
+                    <div key={idx} style={{ marginBottom: idx < ex.length - 1 ? 5 : 0 }} title={e.text}>
+                      • {e.short}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
             <div className="bar-track thin" title={`${solutionCategoryLabel(s)}: ${c}`} style={{ opacity: active && !isActive ? 0.45 : 1, transition: "opacity 150ms ease" }}>
               <div className="bar-fill" style={{ width: mounted ? `${w}%` : 0, transitionDelay: `${i * 60}ms`, background: "var(--amber)" }} />

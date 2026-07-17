@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { painPointLabel, PainPointExample } from "@/lib/retention-research";
+import { painPointLabel, PainPointExample, PAIN_POINT_MEANING } from "@/lib/retention-research";
 
 const TIER_COLOR: Record<string, string> = {
   strong: "var(--hot)",
@@ -81,14 +81,14 @@ export function PainPointStackedBars({
                     fontSize: 13.5,
                     color: isActive ? "var(--amber)" : "var(--ink-dim)",
                     fontWeight: isActive ? 700 : 400,
-                    cursor: examples?.[pp]?.length ? "help" : "default",
-                    borderBottom: examples?.[pp]?.length ? "1px dotted var(--ink-faint)" : "none",
+                    cursor: PAIN_POINT_MEANING[pp] || examples?.[pp]?.length ? "help" : "default",
+                    borderBottom: PAIN_POINT_MEANING[pp] || examples?.[pp]?.length ? "1px dotted var(--ink-faint)" : "none",
                     display: "inline-block",
                   }}
                 >
                   {painPointLabel(pp)}
                 </div>
-                {hoverLabel === pp && examples?.[pp]?.length ? (
+                {hoverLabel === pp ? (
                   <div
                     onClick={(e) => e.stopPropagation()}
                     style={{
@@ -109,14 +109,23 @@ export function PainPointStackedBars({
                       cursor: "default",
                     }}
                   >
-                    <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.06em", color: "var(--ink-faint)", marginBottom: 8 }}>
-                      WHAT PEOPLE ACTUALLY SAID
-                    </div>
-                    {examples[pp].map((ex, idx) => (
-                      <div key={idx} style={{ marginBottom: idx < examples[pp].length - 1 ? 10 : 0 }}>
-                        <div style={{ color: "var(--ink)" }}>{ex.reasoning}</div>
+                    {PAIN_POINT_MEANING[pp] && (
+                      <div style={{ color: "var(--ink)", marginBottom: examples?.[pp]?.length ? 10 : 0, paddingBottom: examples?.[pp]?.length ? 10 : 0, borderBottom: examples?.[pp]?.length ? "1px solid var(--border-soft)" : "none" }}>
+                        {PAIN_POINT_MEANING[pp]}
                       </div>
-                    ))}
+                    )}
+                    {examples?.[pp]?.length ? (
+                      <>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.06em", color: "var(--ink-faint)", marginBottom: 6 }}>
+                          IN THEIR OWN WORDS
+                        </div>
+                        {examples[pp].map((ex, idx) => (
+                          <div key={idx} style={{ marginBottom: idx < examples[pp].length - 1 ? 5 : 0 }} title={ex.reasoning}>
+                            • {ex.short}
+                          </div>
+                        ))}
+                      </>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

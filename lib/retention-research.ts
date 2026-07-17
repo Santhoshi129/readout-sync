@@ -130,6 +130,39 @@ export function painPointLabel(p: string): string {
   return PAIN_POINT_LABEL[p] || p.replace(/_/g, " ");
 }
 
+// A synthesized, plain-language "what this actually looks like" for each
+// category - not a repeat of a finding's own text, a distillation of the
+// pattern across all findings in that category. This is what answers
+// "programming dissatisfaction means what" without making someone read
+// three full quotes to figure it out themselves.
+export const PAIN_POINT_MEANING: Record<string, string> = {
+  motivation_engagement_decline:
+    "Someone who was showing up regularly loses steam over time - hits a goal with nothing to chase next, gets bored of the routine, or just quietly stops without a single triggering complaint.",
+  lack_of_accountability_support:
+    "Nobody catches a member drifting until it's too late - no system flags declining attendance early enough for a real conversation to happen before they've already mentally checked out.",
+  communication_gaps:
+    "A message that should have reached someone didn't - a renewal, a class change, a policy update - and the member finds out the hard way instead of being told directly.",
+  onboarding_reentry_friction:
+    "The first weeks (or the return after a break) are confusing or unwelcoming enough that someone leaves before ever getting comfortable, not because the core product failed them.",
+  pricing_cost_value:
+    "The price itself is rarely the whole story - it's usually 'the price for what I'm actually getting' - a single-location membership, a format they've outgrown, a value they no longer feel.",
+  no_shows_late_cancellations:
+    "Booking and cancellation policy friction - fees, caps, or rules that frustrate loyal members while (in theory) targeting the people abusing the system.",
+  facility_experience_decline:
+    "The physical space itself got worse - equipment, cleanliness, crowding - and that decline is what's cited as the actual reason someone stopped coming.",
+  coaching_quality_inconsistency:
+    "The coach or trainer experience varies too much class to class to trust - a great coach one day, a disengaged one the next, and that inconsistency is what erodes trust in the program.",
+  community_culture_negative:
+    "The social fabric of the group turned unwelcoming - cliquishness, unfriendliness, or a shift in who's in the room - and that, not the workout itself, is what pushed someone out.",
+  scheduling_access_issues:
+    "The class or facility isn't actually reachable when the member needs it - times that don't fit their life, locations too far, capacity that fills before they can book.",
+  business_ownership_change:
+    "A change at the business level - ownership, affiliation, closure - not a member complaint at all, but it still directly caused people to leave.",
+  programming_dissatisfaction:
+    "The workouts themselves stopped delivering - same format on repeat, plateaued results despite consistent effort, or a training style that doesn't match what the member actually wants.",
+  other: "Doesn't cleanly fit one of the named categories above - real signal, just not common enough on its own to warrant a dedicated category yet.",
+};
+
 export const APP_RELEVANCE_LABEL: Record<AppRelevance, string> = {
   core_fit: "Core fit: directly addressable",
   partial_fit: "Partial fit: can help",
@@ -150,6 +183,32 @@ export const CONFIDENCE_RANK: Record<ConfidenceTier, number> = { strong: 3, mode
 
 export function solutionCategoryLabel(s: string): string {
   return s.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
+}
+
+// Same purpose as painPointExamples, but for the Solutions Mentioned chart -
+// hovering a solution category should show what that fix actually looked
+// like in practice, not just leave the reader to guess from the label.
+export type SolutionExample = { text: string; short: string };
+export function solutionExamples(findings: Finding[], perCategory = 3): Record<string, SolutionExample[]> {
+  const byCat: Record<string, Finding[]> = {};
+  findings.forEach((f) => {
+    if (!f.solution_category || !f.solution) return;
+    if (!byCat[f.solution_category]) byCat[f.solution_category] = [];
+    byCat[f.solution_category].push(f);
+  });
+  const out: Record<string, SolutionExample[]> = {};
+  Object.entries(byCat).forEach(([cat, group]) => {
+    const sorted = [...group].sort((a, b) => {
+      const tierDiff = TIER_RANK[a.confidence_tier] - TIER_RANK[b.confidence_tier];
+      if (tierDiff !== 0) return tierDiff;
+      return (b.effectiveness ?? 0) - (a.effectiveness ?? 0);
+    });
+    out[cat] = sorted.slice(0, perCategory).map((f) => ({
+      text: f.solution as string,
+      short: shorten(f.solution as string),
+    }));
+  });
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -177,12 +236,21 @@ export function painPointBreakdown(findings: Finding[]) {
 
 const TIER_RANK: Record<ConfidenceTier, number> = { strong: 0, moderate: 1, weak: 2 };
 
+// Truncates to a word boundary rather than mid-word, so a shortened quote
+// never ends looking like a typo.
+function shorten(text: string, maxLen = 62): string {
+  if (text.length <= maxLen) return text;
+  const cut = text.slice(0, maxLen);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 20 ? cut.slice(0, lastSpace) : cut).trim() + "…";
+}
+
 // Real, concrete examples of what people actually said for each pain point,
 // for hover reference next to the frequency count - a bare number like
 // "124" doesn't mean anything on its own, "people getting bored of the same
 // format" does. Picks the clearest, highest-confidence findings, not a
 // random sample, so the example shown is representative, not a fluke.
-export type PainPointExample = { reasoning: string; evidence: string | null };
+export type PainPointExample = { reasoning: string; short: string; evidence: string | null };
 export function painPointExamples(findings: Finding[], perPoint = 3): Record<string, PainPointExample[]> {
   const byPoint: Record<string, Finding[]> = {};
   findings.forEach((f) => {
@@ -199,6 +267,7 @@ export function painPointExamples(findings: Finding[], perPoint = 3): Record<str
     });
     out[pp] = sorted.slice(0, perPoint).map((f) => ({
       reasoning: f.pain_point_reasoning as string,
+      short: shorten(f.pain_point_reasoning as string),
       evidence: f.evidence_snippet,
     }));
   });
@@ -300,6 +369,14 @@ export type PriorityRow = {
     scoredCount: number;
     avgEffectiveness: number | null;
     avgDifficulty: number | null;
+    // Why THIS score, for THIS solution, under THIS pain point specifically -
+    // pulled from the actual finding's own effectiveness_reasoning /
+    // difficulty_reasoning text, not a restatement of the generic 1-5
+    // definition. Representative finding: highest-confidence one that
+    // scored both, so the reasoning shown is the most trustworthy one
+    // backing that average, not an arbitrary pick.
+    effectivenessWhy: string | null;
+    difficultyWhy: string | null;
   }[];
   recommendedAction: string;
 };
@@ -349,12 +426,18 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
     const solutions = Object.entries(solutionGroups)
       .map(([category, group]) => {
         const scored = group.filter((f) => f.difficulty != null && f.effectiveness != null);
+        const rep =
+          scored.length > 0
+            ? [...scored].sort((a, b) => TIER_RANK[a.confidence_tier] - TIER_RANK[b.confidence_tier])[0]
+            : null;
         return {
           category,
           count: group.length,
           scoredCount: scored.length,
           avgEffectiveness: scored.length > 0 ? scored.reduce((a, f) => a + (f.effectiveness as number), 0) / scored.length : null,
           avgDifficulty: scored.length > 0 ? scored.reduce((a, f) => a + (f.difficulty as number), 0) / scored.length : null,
+          effectivenessWhy: rep?.effectiveness_reasoning ?? null,
+          difficultyWhy: rep?.difficulty_reasoning ?? null,
         };
       })
       .sort((a, b) => b.count - a.count);
@@ -406,24 +489,42 @@ export type SolutionQuadrantRow = {
   count: number;
   avgDifficulty: number;
   avgEffectiveness: number;
+  effectivenessWhy: string | null;
+  difficultyWhy: string | null;
+  // Which pain points this fix actually got tried against, most-mentioned
+  // first - the quick-wins matrix pools solutions across every problem, so
+  // this is what tells you which problem a given "quick win" would target.
+  painPoints: { pain_point: string; count: number }[];
 };
 
 export function solutionQuadrant(findings: Finding[]): SolutionQuadrantRow[] {
   const scored = findings.filter((f) => f.solution_category && f.solution_category !== "other" && f.difficulty != null && f.effectiveness != null);
-  const map: Record<string, { difficulty: number[]; effectiveness: number[] }> = {};
+  const map: Record<string, Finding[]> = {};
   scored.forEach((f) => {
     const k = f.solution_category as string;
-    if (!map[k]) map[k] = { difficulty: [], effectiveness: [] };
-    map[k].difficulty.push(f.difficulty as number);
-    map[k].effectiveness.push(f.effectiveness as number);
+    if (!map[k]) map[k] = [];
+    map[k].push(f);
   });
   return Object.entries(map)
-    .map(([category, v]) => ({
-      category,
-      count: v.difficulty.length,
-      avgDifficulty: v.difficulty.reduce((a, b) => a + b, 0) / v.difficulty.length,
-      avgEffectiveness: v.effectiveness.reduce((a, b) => a + b, 0) / v.effectiveness.length,
-    }))
+    .map(([category, group]) => {
+      const rep = [...group].sort((a, b) => TIER_RANK[a.confidence_tier] - TIER_RANK[b.confidence_tier])[0];
+      const ppCounts: Record<string, number> = {};
+      group.forEach((f) => {
+        const k = f.pain_point || "other";
+        ppCounts[k] = (ppCounts[k] || 0) + 1;
+      });
+      return {
+        category,
+        count: group.length,
+        avgDifficulty: group.reduce((a, f) => a + (f.difficulty as number), 0) / group.length,
+        avgEffectiveness: group.reduce((a, f) => a + (f.effectiveness as number), 0) / group.length,
+        effectivenessWhy: rep?.effectiveness_reasoning ?? null,
+        difficultyWhy: rep?.difficulty_reasoning ?? null,
+        painPoints: Object.entries(ppCounts)
+          .map(([pain_point, count]) => ({ pain_point, count }))
+          .sort((a, b) => b.count - a.count),
+      };
+    })
     .sort((a, b) => b.count - a.count);
 }
 

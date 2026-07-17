@@ -159,7 +159,7 @@ export function RetentionResearchDashboard({
         ))}
       </div>
 
-      <MethodologyPanel findings={combined.findings} />
+      <MethodologyPanel findings={findings} />
 
       <section style={{ marginBottom: 32 }}>
         <RetentionGlossary />

@@ -260,6 +260,17 @@ export type PriorityRow = {
   confidenceMix: { strong: number; moderate: number; weak: number };
   topSolution: string | null;
   topSolutionCount: number;
+  // Every solution category mentioned under this specific pain point, not
+  // just the top one - effectiveness/difficulty averaged only over the
+  // findings in THIS row that have both scored, so it never mixes in
+  // outcomes from a different pain point's attempt at the same fix.
+  solutions: {
+    category: string;
+    count: number;
+    scoredCount: number;
+    avgEffectiveness: number | null;
+    avgDifficulty: number | null;
+  }[];
   recommendedAction: string;
 };
 
@@ -298,11 +309,26 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
     const solutionRate = rowFindings.length > 0 ? rowFindings.filter((f) => f.solution).length / rowFindings.length : 0;
     const strongPct = v.total > 0 ? Math.round((v.strong / v.total) * 100) : 0;
     const score = core_fit * avgSeverity;
-    const solutionCounts: Record<string, number> = {};
+    const solutionGroups: Record<string, Finding[]> = {};
     rowFindings.forEach((f) => {
-      if (f.solution_category) solutionCounts[f.solution_category] = (solutionCounts[f.solution_category] || 0) + 1;
+      if (f.solution_category) {
+        if (!solutionGroups[f.solution_category]) solutionGroups[f.solution_category] = [];
+        solutionGroups[f.solution_category].push(f);
+      }
     });
-    const topSolutionEntry = Object.entries(solutionCounts).sort((a, b) => b[1] - a[1])[0];
+    const solutions = Object.entries(solutionGroups)
+      .map(([category, group]) => {
+        const scored = group.filter((f) => f.difficulty != null && f.effectiveness != null);
+        return {
+          category,
+          count: group.length,
+          scoredCount: scored.length,
+          avgEffectiveness: scored.length > 0 ? scored.reduce((a, f) => a + (f.effectiveness as number), 0) / scored.length : null,
+          avgDifficulty: scored.length > 0 ? scored.reduce((a, f) => a + (f.difficulty as number), 0) / scored.length : null,
+        };
+      })
+      .sort((a, b) => b.count - a.count);
+    const topSolutionEntry = solutions[0];
     return {
       pain_point: p,
       total: v.total,
@@ -314,8 +340,9 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
       strongPct,
       score,
       confidenceMix: { strong: v.strong, moderate: v.moderate, weak: v.weak },
-      topSolution: topSolutionEntry ? topSolutionEntry[0] : null,
-      topSolutionCount: topSolutionEntry ? topSolutionEntry[1] : 0,
+      topSolution: topSolutionEntry ? topSolutionEntry.category : null,
+      topSolutionCount: topSolutionEntry ? topSolutionEntry.count : 0,
+      solutions,
     };
   });
   const sorted = rows.sort((a, b) => b.score - a.score);

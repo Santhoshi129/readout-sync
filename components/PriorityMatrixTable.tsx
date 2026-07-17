@@ -13,6 +13,25 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: "total", label: "Total findings" },
 ];
 
+function Dots({ value, max = 5, color }: { value: number; max?: number; color: string }) {
+  return (
+    <span style={{ display: "inline-flex", gap: 2 }}>
+      {Array.from({ length: max }).map((_, i) => (
+        <span
+          key={i}
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: i < Math.round(value) ? color : "var(--border)",
+            display: "inline-block",
+          }}
+        />
+      ))}
+    </span>
+  );
+}
+
 const TIER_COLOR: Record<string, string> = { strong: "var(--hot)", moderate: "var(--amber)", weak: "var(--muted)" };
 const TIER_DEF: Record<string, string> = {
   strong: "Specific, credible, unambiguous. High trust it's a real, on-topic retention finding.",
@@ -236,12 +255,66 @@ export function PriorityMatrixTable({
                                 </div>
                               </div>
                             </div>
-                            <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
-                              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>
-                                MOST-TRIED FIX
-                              </div>
-                              {r.topSolution ? `${solutionCategoryLabel(r.topSolution)} (${r.topSolutionCount} mentions)` : "None named yet"}
+                          </div>
+
+                          <div style={{ paddingTop: 4 }}>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 10, letterSpacing: "0.05em" }}>
+                              SOLUTIONS DISCUSSED FOR THIS PROBLEM
+                              <InfoTip text="Every distinct fix mentioned in a finding under this pain point, ranked by how often it came up. Effectiveness and difficulty are only averaged over the findings that reported both - a solution can be frequently mentioned but rarely scored, that's called out separately." />
                             </div>
+                            {r.solutions.length === 0 ? (
+                              <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No solution mentioned in any finding under this pain point yet.</div>
+                            ) : (
+                              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                                <div
+                                  style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 70px 90px 90px",
+                                    gap: 10,
+                                    fontFamily: "var(--mono)",
+                                    fontSize: 9.5,
+                                    color: "var(--ink-faint)",
+                                    letterSpacing: "0.04em",
+                                    padding: "0 2px",
+                                  }}
+                                >
+                                  <div>FIX</div>
+                                  <div style={{ textAlign: "right" }}>MENTIONS</div>
+                                  <div>EFFECTIVENESS</div>
+                                  <div>DIFFICULTY</div>
+                                </div>
+                                {r.solutions.map((s) => (
+                                  <div
+                                    key={s.category}
+                                    style={{
+                                      display: "grid",
+                                      gridTemplateColumns: "1fr 70px 90px 90px",
+                                      gap: 10,
+                                      alignItems: "center",
+                                      padding: "7px 2px",
+                                      borderTop: "1px solid var(--border-soft)",
+                                    }}
+                                  >
+                                    <div style={{ fontSize: 12.5, color: "var(--ink)" }}>{solutionCategoryLabel(s.category)}</div>
+                                    <div style={{ textAlign: "right", fontSize: 12, color: "var(--ink-dim)" }}>{s.count}</div>
+                                    <div>
+                                      {s.avgEffectiveness != null ? (
+                                        <Dots value={s.avgEffectiveness} color="var(--hot)" />
+                                      ) : (
+                                        <span style={{ fontSize: 10.5, color: "var(--ink-faint)" }}>not scored</span>
+                                      )}
+                                    </div>
+                                    <div>
+                                      {s.avgDifficulty != null ? (
+                                        <Dots value={6 - s.avgDifficulty} color="var(--cold)" />
+                                      ) : (
+                                        <span style={{ fontSize: 10.5, color: "var(--ink-faint)" }}>not scored</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </td>

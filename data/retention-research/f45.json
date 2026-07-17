@@ -1,10 +1,10 @@
 {
   "subreddit": "f45",
   "label": "r/f45",
-  "generated_at": "2026-07-17T06:17:42.000Z",
+  "generated_at": "2026-07-17T06:32:02.000Z",
   "total_analyzed": 32852,
   "relevant_count": 455,
-  "data_note": "This community's classification run covered 32,852 posts and comments. The first third (records 1-10,800) was exported without source metadata, no permalink, date, or confidence tier, so its 214 relevant findings can't be verified or displayed here and are excluded. What's shown below is the 455 relevant findings from records 10,801-32,852, which do have full source data. Treat frequency counts as a floor, the true relevant count is higher. Separately, this batch scored confidence on a 1-5 scale instead of the weak/moderate/strong tiers used elsewhere; mapped here as 1-2=weak, 3=moderate, 4-5=strong.",
+  "data_note": "This community's classification run covered 32,852 posts and comments. Records 1-10,800 were exported without source metadata (no permalink, author, date, or confidence tier) and the original raw source file for that range isn't available to backfill it from, so its 214 relevant findings are excluded rather than shown without a verifiable source. What's below is the 455 relevant findings from records 10,801-32,852, confirmed to have real Reddit permalinks. Confidence tier here is 1-5 (confirmed: 5 = highest confidence, derived from how explicit the stated outcome was), mapped to weak/moderate/strong as null-1=weak, 2-3=moderate, 4-5=strong to match the tier system used elsewhere. Treat frequency counts as a floor, the true relevant count across the full run is higher.",
   "findings": [
     {
       "id": "eztk9kh",
@@ -49,7 +49,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "we are under going an expansion and the owner's had a massive ego boost. Seems less about community lately, and more about profit.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -72,7 +72,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Just requires a direct conversation with the studio",
       "evidence_snippet": "you're paying money for slipping service, and you're not the only one",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -187,7 +187,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "it's hard to go heavy at F45 because your restricted by time...I find it hard to slow the movements down when in club...the pressure of moving stations quick enough for the next person",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -279,7 +279,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "the people I've met at OTF are the only thing holding me into my membership there...in my area with a corporate discount it's cheaper than OTF as well. And yes, EVERYONE was really friendly!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -371,7 +371,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I stopped asking a long time ago. I've been around and mentioned Friday evening classes, Sunday classes while others around agreed and same ol' story.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -578,7 +578,7 @@
       "difficulty": 3,
       "difficulty_reasoning": "Requires trainers to build individual familiarity with each member over time",
       "evidence_snippet": "My favourite trainers - refer to me by name - correct me...tell me when I'm doing well...don't skip the high five at the end - stand with me and push me at the ones I'm bad at",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1015,7 +1015,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I see other locations that have a lot of team building, organized meet ups (end of challenge celebrations), just overall community bonding, that my F45 really lacks...I just wish there was more 'hoo-rah!' behind everything.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1130,7 +1130,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "No comparison in quality of workout. Barry's beats F45 hands down. I burn twice as many calories doing a Barry's class...The cost between the two is not comparable. Barry's is in a different stratosphere for price point.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1222,7 +1222,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "The slides bear crawl is one of those exercises that makes me want to not support F45 and go elsewhere. There is nothing functional about it. It's a gimmick exercise...this is just dragging yourself on furniture movers.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1337,7 +1337,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "why do members who have been with f45 for a year still have to pay the same rate the following year etc...If my wife and I stay with f45 for the next 10 years we would have paid 60k...they must be over charging.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1406,7 +1406,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "No gym mechanism involved; relied entirely on member's own willpower to walk back in",
       "evidence_snippet": "I took 3 weeks off for a medical procedure and recovery. The first week was rough... Walking through the door is the hardest part.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1452,7 +1452,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Mindset reframe via peer encouragement; no operational change needed",
       "evidence_snippet": "I LOVE F45 and am not just going to lose weight, I really love the community and the routine but as it's such a big investment £££ I've got high expectations on reaults",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1521,7 +1521,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Studio must set goals, run scans, and honor refunds; several studios already run these",
       "evidence_snippet": "One of my friends got all her money back her studio as the goal was 10% body fat... I'm currently doing a 4 week challenge where I get my money back if I reach 7kg or 4.5% body fat.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1544,7 +1544,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Requires attentive coaches who monitor members during class; already standard practice at this studio",
       "evidence_snippet": "Coach came over and checked on me within a minute or so... We've got a fantastic coaching staff. I've got every intention of lifting less and modifying when I go back.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1728,7 +1728,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Relied on existing friendly community culture rather than any formal program",
       "evidence_snippet": "in the last 5 months I enjoyed every single session, and now i am going there 15-20 mins early... just to be able to have a lil chit chat with the trainers or other members",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1774,7 +1774,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I hated it at my gym, and don't knpw how to bring it up. It was top crowded, too hot, and too many people to get tips from trainers.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -1958,7 +1958,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Literally today the two trainers at my studio spent the class talking about the show they're watching. And the owner was sitting on a bench texting.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2234,7 +2234,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Needed patience and modified expectations for the first weeks back",
       "evidence_snippet": "I returned to F45 this week (6 weeks post op) and it felt so damn good... Relieved to know you don't lose all of your fitness after surgery!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2395,7 +2395,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Joining an online community is trivial; requires no studio action",
       "evidence_snippet": "So glad I discovered this community as my studio doesn't have a great community feeling and I'm going to need inspiration to push me through !",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2418,7 +2418,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I do not want to take an allergy pill every time i go to a workout. Ill see how long this continues. Eventually i ll mention something or ill switch location.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2510,7 +2510,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Simple self-managed break; no gym intervention needed",
       "evidence_snippet": "Yip I did this. Had a month off over Christmas and came back and fallen in love with it again",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2625,7 +2625,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "classes fill up or are insanely busy, and these people are paying way less than me...where’s the loyalty to the people that pay week in and week out?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2717,7 +2717,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Just needed to sign up and push through soreness of the first weeks back",
       "evidence_snippet": "I went once last week, got 47 or 48 - couldnt go thursday (or walk lol) I should never have taken a break :O",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2740,7 +2740,7 @@
       "difficulty": 3,
       "difficulty_reasoning": "Community/friendship culture takes sustained studio effort but no special program described",
       "evidence_snippet": "I've made friends at the gym I'm at and I'm much more motivated to go than I have ever been to another gym!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2763,7 +2763,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Simple pricing option the studio already offers; member just chose it",
       "evidence_snippet": "mine offers a per class subsidised package if you buy 10 or 20 classes... I don't feel the pressure to do '3 x per week to get my money's worth'",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2786,7 +2786,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Simple pause request the studio honored without friction",
       "evidence_snippet": "Yes, it is expensive at $40 a week... For the holidays I asked for a 2 week break and it was no issue.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2809,7 +2809,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "i took 6 weeks off over xmas/NY - im paying the price! Really bad!... I have regrets for taking time off ..... but likely i needed it",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2832,7 +2832,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Built into existing HR/streak tech; reliability is the weak point",
       "evidence_snippet": "Our Lionheart was down today and that was demoralising, but I pushed through and had a great workout. Hate having streaks broken!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -2855,7 +2855,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I'm taking a break now because of the corona virus that's going around - trying to avoid being out and about for too long/much, so I'm missing it!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3039,7 +3039,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Standard trial-to-membership ladder; no special intervention needed",
       "evidence_snippet": "It is expensive for sure and at times I've debated if it's too expensive as well. But for me the team workout keeps me motivated in a way that working out in a gym alone just can't.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3062,7 +3062,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Member self-arranged workaround; pack expiry policy itself unchanged",
       "evidence_snippet": "the 10 classes had to be used in 30 days, so I was better off paying monthly. I try to forget how much I pay because it's high, even though I got in on a founders discount.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3246,7 +3246,7 @@
       "difficulty": null,
       "difficulty_reasoning": "No fitness-adjusted scoring or normalization offered by the gym",
       "evidence_snippet": "I focus too much on the board.....I'm always last as well. I'm busting my arse as it's disheartening... But that doesn't help when people are jumping for joy that they've 'won' the day.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3315,7 +3315,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Requires paying two boutique memberships simultaneously",
       "evidence_snippet": "Did wonders for my cardio but I lost muscle. So added F45... I’m already seeing changes in my body so here’s to being in it for the long haul.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3407,7 +3407,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I've had traditional gym memberships before but it was extremely hard to stay on track, and with Orangetheory I would skip some days because I didn't want to use the treadmill. With F45 I always go at least 3-5x a week",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3637,7 +3637,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Self-driven modification; needs trainer tolerance of scaled movement",
       "evidence_snippet": "its frustrating as it has now been a week... I am going to try to go on Monday and do what I can even if its marching in place at every station. I miss it and want to get back in my routine.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -3729,7 +3729,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "They said only with a doctors note saying I'm not able to complete my contract. :( I asked about buy out or early termination fees. And the doctor is the only option.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4166,7 +4166,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I left OTF for F45 and the tornado style workout is a pretty accurate description of these workouts. Absolutely love them because they're fast paced and never get boring!!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4189,7 +4189,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "the membership isn't as flexible as OTF...no interchanging of studios cross town or nationally with your membership. The 10 packs and drop ins are limited in terms of the expiration dates.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4327,7 +4327,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I have to keep my membership at a standard gym so i can do a weights program outside of F45 - since I cant come and use the F45 equipment out of class hours",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4373,7 +4373,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I used to do crossfit and loved this option...but moved and with no boxes in my area...f45 was the closest thing",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4488,7 +4488,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I see so many people with completely horrible forms at OTF and the coaches hardly ever correct them!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4511,7 +4511,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I feel like a few specific muscle groups are always overstrained because I'm repeating an exercise in a block way more times than I probably should be!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4580,7 +4580,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I do love my home studio as I am used to it but due to sizing we miss out on ropes/sleds etc a fair bit.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4718,7 +4718,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Requires trainer attentiveness and willingness to adapt movements/monitoring per individual",
       "evidence_snippet": "Trainers have been great with mods and keeping an eye on how I'm doing!...I've been keeping up with classes 5-6 times a week my whole pregnancy so far.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4741,7 +4741,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "stopped attending for the duration of my pregnancy as I just couldn't find the energy for it. Went back to it 2 months after delivery.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4879,7 +4879,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I rejoined F45... fast forward 18 months, and I'm still at F45... allows me to walk in, do the workout and walk back out in 45 minutes.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -4902,7 +4902,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I just felt like I wasn't going to get to do that at f45... Not 100% sure if I'm going to give up f45 entirely yet though.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5063,7 +5063,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Simple opt-in pause offered directly by the studio, no friction described",
       "evidence_snippet": "My gym did say they would put a membership to pending for up to 2 months a year.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5086,7 +5086,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Automatic no-penalty pause applied by gym, no member effort required",
       "evidence_snippet": "I'm really happy with my gym's response in Canada... pausing anyone's membership if you are sick and for a week after any travel without penalty.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5155,7 +5155,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "It's annoying as membership is expensive and I want to keep going but I want my club to step up.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5178,7 +5178,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Just required members to object/ask; resolved by studio policy",
       "evidence_snippet": "You shouldn't have to pay for online videos if your studio is closed.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5224,7 +5224,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Member has to weigh their own finances against the offer; no hard barrier",
       "evidence_snippet": "they will extend the membership by 2 weeks once they reopen...I can't continue to indefinitely pay money for a service I'm not receiving.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5477,7 +5477,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I don't think it's worth paying $260 a month for that. Will they allow us to suspend payments until we come back?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5500,7 +5500,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I believe our studio is still charging people while they are closed... where's the incentive to keep paying?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5868,7 +5868,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Simple opt-in toggle for members to rejoin live sessions",
       "evidence_snippet": "everyones membership has been suspended and they have added live sessions each day...if you still want the live sessions you can opt. back in for half the membership.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5914,7 +5914,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Simple choice among 3 clearly presented pricing tiers",
       "evidence_snippet": "pay upfront for two months (~$320) and get a 3rd month free. I am opting for option 3, its really the best deal, if you can afford it.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5937,7 +5937,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I haven't committed yet because of this considering there's lots of free content right now or less expensive options. Until the app has worked out it's kinks, I'll hold off.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -5960,7 +5960,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Required studio to run a regular schedule of video content and live calls",
       "evidence_snippet": "my gym is also doing daily online videos from our coaches...a weekly happy hour on zoom to chat with everyone and 3 live workouts a week on zoom",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6075,7 +6075,7 @@
       "difficulty": 3,
       "difficulty_reasoning": "Required an uncomfortable one-on-one conversation with the trainer",
       "evidence_snippet": "I would privately talk with the trainer first and let them know how you feel...That person is now my favorite trainer.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6121,7 +6121,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I was thinking of freezing my membership because I'm really busy this time of year, but red diamond is my favorite.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6190,7 +6190,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Requires owner attentiveness during demos and willingness to adjust programming station by station",
       "evidence_snippet": "We changed up those two stations yesterday to better alternatives. The members appreciate it",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6213,7 +6213,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Simple feedback loop between member and coaches",
       "evidence_snippet": "I gave feedback about some resistance days not really doing much for me now coaches provide alternatives instead of just saying up the weight.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6259,7 +6259,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I just switched from OTF and love it. You get cardio in but don't spend half an hour on a treadmill.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6466,7 +6466,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "particularly when booking a class right after work...my day can blow right up...$20 later…",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6512,7 +6512,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "We had a brief period where things were looking rough because they had 3 trainers quit in very quick succession, but things are fine now.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6535,7 +6535,7 @@
       "difficulty": 3,
       "difficulty_reasoning": "Required time to rebuild a stable trainer team in an expensive market",
       "evidence_snippet": "great trainers were quitting or moving to other studios...tough to keep trainers who were mostly young or coached as a side hustle",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6696,7 +6696,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "We got a new studio manager a few months ago and then the head coach left a month ago. THANK goodness!...our studio has improved.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6719,7 +6719,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "there are times where I consider if I should stick with f45 or change it up...We've had a pretty consistent set of trainers since I've been going",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6857,7 +6857,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "the trainers were all hyped when I joined but now one of them will sit at the computer for half the classes.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -6972,7 +6972,7 @@
       "difficulty": 3,
       "difficulty_reasoning": "Requires significant studio investment in prize money to run",
       "evidence_snippet": "our gym has $15000 at the start of the year. $10000 for the win and an extra $5000 if you referred someone. Needless to say the gym was packed for that challenge!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7018,7 +7018,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Our coaches suck except the owner and one coach...I gave feedback to a couple coaches about personally pushing and they seemed surprised like they had no idea they should be doing that.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7041,7 +7041,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Requires trainers to consistently greet, tour, and encourage new members but no special tools needed",
       "evidence_snippet": "NOPE it was not like that at all...no judgement...Would I do it again? Yes...Can't wait for my second class!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7064,7 +7064,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I wish there was a system that would allow for a cheaper drop in or a monthly fee...so I don't have to miss workouts.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7087,7 +7087,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Now I'm torn...F45 is hard and I worry I might get burnt out...I also feel that the F45 is more for youngish crowd. I'm in my early 40s.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7179,7 +7179,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I haven't had a good strength class in almost two months now...I wish they would leave the deadball sumo squat and hip thrusters to Hollywood...",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7202,7 +7202,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Not once was a single piece of equipment or mat wiped down...completely unsanitary",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7248,7 +7248,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Couldn't bring myself to go back this afternoon in case that guy from this morning was there...Staying home tonight",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7317,7 +7317,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "just got slugged a $5 fee for late cancellation...seems steep when your already paying $66 a week",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7363,7 +7363,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "loved it but I can't decide if I want to ditch my orangetheory membership for it",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7409,7 +7409,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "considering of moving away from doing f45 and probably join equinox (cheaper compared to f45 too)",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7524,7 +7524,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "go to book my 630 am class and the slot is not there...I a little pissed. There was no notice.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7593,7 +7593,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Just required a conversation with the owner who was accommodating",
       "evidence_snippet": "I've spoken to the owner and he was very helpful so we have shifted my starting date to a later time when it works with my current situation.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7731,7 +7731,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I've asked multiple times for blowing fans...nothing seems to change...this isn't a cheap gym membership, I don't understand",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7846,7 +7846,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "In the last few years we've had so much GM turnover at our studio — 3 GMs even since the year started",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -7938,7 +7938,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Every since the change, the new system had killed my motivation. I hate it.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8145,7 +8145,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "this seems a little over priced considering the class times and the working outs only 45 minutes",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8260,7 +8260,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "It's so frustrating and honestly puts a bad taste in my mouth for this owner/studio.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8306,7 +8306,7 @@
       "difficulty": 1,
       "difficulty_reasoning": "Purely a software/feature toggle by corporate, no member effort required",
       "evidence_snippet": "Leaderboard gives me a sense of competition and I definitely push myself more than normal to make it to top 3 of leaderboard, and so happy that it's back!",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8582,7 +8582,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "why do you lose your entire class count if it's something absolutely beyond your control like a studio closing?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8628,7 +8628,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "I won't be quitting anytime soon but would love to see more appropriate studio or class sizes.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8651,7 +8651,7 @@
       "difficulty": null,
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "Havnt had any tech support, after many mentions to them, and it just seems like a lazy way out of updating their local system.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8904,7 +8904,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "If I go to fewer than 9 classes a month it ends up being around $25/class or more...does it feel like a bummer to anyone else?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -8996,7 +8996,7 @@
       "difficulty": 2,
       "difficulty_reasoning": "Simple travel-based pause request that was refused rather than accommodated",
       "evidence_snippet": "Have a three week work trip and told I couldn't pause by the owner. Feel like I'm just throwing money away now",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9249,7 +9249,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "If the music is crap they just make the class such low energy...it's every single one [coach]",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9272,7 +9272,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "My gym is expensive and now I have a day I don't feel is a good fit for me...I'm annoyed",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9479,7 +9479,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "So sad to see my old studio closed and shuttered",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9502,7 +9502,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "The challenge requires strict calorie counting and severe restrictions, which is a path to disordered eating",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9663,7 +9663,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "They always encouraged their members during classes, and that's a big part of why, almost a year later, I'm still showing up.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9686,7 +9686,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "We're sadly moving out of the city (London) so I had to give my notice and now my membership is up.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -9732,7 +9732,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "This time I get there a minute after and got inside but the assistant coach won't let me join the class...Is this common?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -10169,7 +10169,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I just want to go workout and pay a lot of money to do so. I don't want to be on a team or have a partner.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -10261,7 +10261,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "81 a week for a 3 month contract!!! Is F45 literally charging Lagree and Equinox prices now?",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -10307,7 +10307,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "Some of the coaches are great while others have favorites and I don't feel really so anything for everyone else...its affected my motivation of going.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {
@@ -10445,7 +10445,7 @@
       "difficulty": null,
       "difficulty_reasoning": null,
       "evidence_snippet": "I loved the one I went to regularly 2 years ago...This year I started going to a different one because we moved and while I love the trainers I find the programming way easier.",
-      "confidence_tier": "weak",
+      "confidence_tier": "moderate",
       "source_trust": "standard"
     },
     {

@@ -87,7 +87,7 @@
       "pain_point_reasoning": "Builder describes a gap: boxes lack a tool to publish WODs and track members; building a box-level website/member-tracking product.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Implies recurring need boxes have for member tracking, no quantified impact.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Building a box-level platform for gyms to use as their website, publish workouts, and track their members.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -96,7 +96,7 @@
       "difficulty_reasoning": "Full member-tracking + CMS build for gyms.",
       "evidence_snippet": "I am working on something, although at first it will be box level based.. Something for boxes to use as websites, publish their work outs and track the members.",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "self_reported"
     },
     {
       "id": "c1tdl9s",
@@ -110,7 +110,7 @@
       "pain_point_reasoning": "Member uses BTWB because gym posts the WOD and it ranks him vs the rest of the gym - engagement via progress tracking/leaderboard.",
       "pain_severity": null,
       "pain_severity_reasoning": "Describes tool use, no impact quantified.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Uses Beyond the Whiteboard tied to his box: clicks the posted WOD, logs time, and it ranks him against everyone else at the gym.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -133,7 +133,7 @@
       "pain_point_reasoning": "BTWB creator; product lets members log WODs and see gym leaderboard/progress - engagement/tracking tool for boxes and members.",
       "pain_severity": null,
       "pain_severity_reasoning": "No specific problem impact quantified.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Beyond the Whiteboard: members log workouts, gym posts WODs, results ranked against others in the gym; tracks progress over time.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -142,7 +142,7 @@
       "difficulty_reasoning": "Established SaaS workout-tracking platform.",
       "evidence_snippet": "IAMA creator of Beyond the Whiteboard... refer you the features listings on the homepage.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "self_reported"
     },
     {
       "id": "c1uhhiq",
@@ -786,7 +786,7 @@
       "difficulty_reasoning": "Building a niche marketing agency/service, not a product feature.",
       "evidence_snippet": "there are pretty much no companies specifically providing services for crossfit gyms... I would provide: SEO",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "self_reported"
     },
     {
       "id": "1lfhi3",
@@ -1338,7 +1338,7 @@
       "difficulty_reasoning": "Standing up a physical cleaning-service business.",
       "evidence_snippet": "Gym Owners - How much do you spend on cleaning? ... starting up a gym cleaning company... weekly floor clean... monthly deep clean",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "self_reported"
     },
     {
       "id": "3baclp",
@@ -1867,7 +1867,7 @@
       "difficulty_reasoning": "Building a voice-assistant integration product plus gym onboarding.",
       "evidence_snippet": "I'm building an Alexa and Google voice service and need some gyms to beta test with.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "self_reported"
     },
     {
       "id": "6ho0n1",
@@ -2042,7 +2042,7 @@
       "pain_point_reasoning": "Beyond the Whiteboard user frustrated its metrics are minimal and the android app messy for a paid service - dissatisfaction with a box tracking tool.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Recurring dissatisfaction with a paid tracking product; considering alternatives.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Seeking a better-metrics alternative to Beyond the Whiteboard for tracking workout data.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -2341,7 +2341,7 @@
       "pain_point_reasoning": "Evaluating whether a Beyond the Whiteboard membership is worth it and whether tracking stats actually improve fitness - a tracking-tool value question.",
       "pain_severity": null,
       "pain_severity_reasoning": "Tool-value evaluation, no impact quantified.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Considering Beyond the Whiteboard to log workouts and track progress stats.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -2525,7 +2525,7 @@
       "pain_point_reasoning": "Owner wants a free class-scheduling/sign-up service (like Zen Planner/Mindbody) after prior marketing-heavy tools didn't work - a booking-software need.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Operational booking-software gap; a prior tool 'DID NOT WORK', but no member loss quantified.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Wants a bare-bones free scheduling tool for members to sign up for classes, without marketing bloat.",
       "solution_category": "software_management_tool",
       "effectiveness": null,

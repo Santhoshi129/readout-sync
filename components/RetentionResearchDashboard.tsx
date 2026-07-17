@@ -22,6 +22,7 @@ import {
   CommunityDataset,
   AppRelevance,
   painPointBreakdown,
+  painPointExamples,
   severityHistogram,
   appRelevanceBreakdown,
   solutionCategoryBreakdown,
@@ -73,6 +74,7 @@ export function RetentionResearchDashboard({
   const takeaways = useMemo(() => keyTakeaways(ds), [ds]);
   const summary = useMemo(() => executiveSummary(ds), [ds]);
   const painPoints = useMemo(() => painPointBreakdown(findings), [findings]);
+  const painPointRefs = useMemo(() => painPointExamples(findings), [findings]);
   const severity = useMemo(() => severityHistogram(findings), [findings]);
   const appRel = useMemo(() => appRelevanceBreakdown(findings), [findings]);
   const solutions = useMemo(() => solutionCategoryBreakdown(findings), [findings]);
@@ -197,6 +199,7 @@ export function RetentionResearchDashboard({
                 rows={painPoints}
                 active={filters.painPoint === "All" ? null : filters.painPoint}
                 onSelect={(pp) => select("painPoint", pp)}
+                examples={painPointRefs}
               />
             </div>
             <SectionInsight

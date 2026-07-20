@@ -50,6 +50,7 @@ import {
   communityCountNote,
   analyzedNote,
   relevantNote,
+  NO_SOLUTION_KEY,
 } from "@/lib/retention-research";
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" };
@@ -101,7 +102,16 @@ export function RetentionResearchDashboard({
   const painPointMatches = filters.painPoint === "All" ? null : findings.filter((f) => f.pain_point === filters.painPoint);
   const severityMatches = filters.severity === "All" ? null : findings.filter((f) => f.pain_severity === filters.severity);
   const relevanceMatches = filters.relevance === "All" ? null : findings.filter((f) => f.app_relevance === filters.relevance);
-  const solutionMatches = filters.solutionCategory === "All" ? null : findings.filter((f) => f.solution_category === filters.solutionCategory);
+  const solutionMatches =
+    filters.solutionCategory === "All"
+      ? null
+      : filters.solutionCategory === NO_SOLUTION_KEY
+      // "No Solution Mentioned" is a synthetic bucket computed from the
+      // solution field being empty, not a real solution_category value in
+      // the data - filtering by plain equality against it never matched
+      // anything, which is why clicking that bar always came back empty.
+      ? findings.filter((f) => !f.solution)
+      : findings.filter((f) => f.solution_category === filters.solutionCategory);
   const perspectiveMatches = filters.perspective === "All" ? null : findings.filter((f) => (f.perspective || "unclear") === filters.perspective);
 
   const priorityActivePainPoint = filters.painPoint !== "All" && filters.relevance === "core_fit" ? filters.painPoint : null;

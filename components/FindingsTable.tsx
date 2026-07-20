@@ -13,6 +13,7 @@ import {
   solutionCategoryLabel,
   perspectiveLabel,
   sourceLink,
+  NO_SOLUTION_KEY,
 } from "@/lib/retention-research";
 
 type SortKey = "default" | "severity" | "confidence" | "newest";
@@ -96,7 +97,12 @@ export function FindingsTable({
       if (painPoint !== "All" && f.pain_point !== painPoint) return false;
       if (tier !== "All" && f.confidence_tier !== tier) return false;
       if (relevance !== "All" && f.app_relevance !== relevance) return false;
-      if (solutionCategory !== "All" && f.solution_category !== solutionCategory) return false;
+      // "No Solution Mentioned" is a synthetic bucket (solution field
+      // empty), not a real solution_category value - plain equality
+      // against it never matches, same bug as the chart's own filter.
+      if (solutionCategory !== "All") {
+        if (solutionCategory === NO_SOLUTION_KEY ? !!f.solution : f.solution_category !== solutionCategory) return false;
+      }
       if (severity !== "All" && f.pain_severity !== severity) return false;
       if (perspective !== "All" && (f.perspective || "unclear") !== perspective) return false;
       if (needle) {

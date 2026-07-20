@@ -374,6 +374,23 @@ export function FindingsTable({
                         </span>
                       )
                     )}
+                    {f.permalink && (
+                      <a
+                        href={f.permalink}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          fontFamily: "var(--mono)",
+                          fontSize: 9.5,
+                          color: "var(--amber)",
+                          whiteSpace: "nowrap",
+                          textDecoration: "none",
+                        }}
+                      >
+                        reddit thread ↗
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -421,9 +438,6 @@ export function FindingsTable({
                       {f.effectiveness != null && <span>effectiveness {f.effectiveness}/5</span>}
                       {f.solution_category && <span>solution type: {f.solution_category.replace(/_/g, " ")}</span>}
                       {f.score != null && <span>{f.score} upvotes</span>}
-                      <a href={f.permalink} target="_blank" rel="noreferrer" style={{ color: "var(--amber)" }}>
-                        View source ↗
-                      </a>
                     </div>
                   </div>
                 )}

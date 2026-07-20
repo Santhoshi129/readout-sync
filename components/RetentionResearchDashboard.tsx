@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { StatTiles } from "@/components/Charts";
 import { CommunitySelector } from "@/components/CommunitySelector";
 import { PainPointStackedBars } from "@/components/PainPointStackedBars";
@@ -68,6 +68,7 @@ export function RetentionResearchDashboard({
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
   const [showDeepDive, setShowDeepDive] = useState(false);
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const ds = useMemo(() => {
     if (active === "all") return combined;
@@ -108,12 +109,26 @@ export function RetentionResearchDashboard({
     ? findings.filter((f) => f.pain_point === priorityActivePainPoint && f.app_relevance === "core_fit")
     : null;
   const selectPriority = (pp: string) => {
+    const isDeselecting = filters.painPoint === pp && filters.relevance === "core_fit";
     setFilters((prev) =>
       prev.painPoint === pp && prev.relevance === "core_fit"
         ? { ...prev, painPoint: "All", relevance: "All" }
         : { ...prev, painPoint: pp, relevance: "core_fit" }
     );
     setShowDeepDive(true);
+    // "see evidence" is supposed to make the scatter plot mean something -
+    // without this, picking a pain point from the leaderboard/table just
+    // flips a "selected" label with the actual highlighted bubble sitting
+    // off-screen above it. Double rAF waits for showDeepDive's re-render
+    // (the map isn't even mounted yet on the first click) before scrolling.
+    // Skipped when clearing a selection - nothing new to look at then.
+    if (!isDeselecting) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          mapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      });
+    }
   };
 
   return (
@@ -429,7 +444,9 @@ export function RetentionResearchDashboard({
                 <div style={{ fontSize: 12.5, color: "var(--ink-dim)", marginBottom: 16 }}>
                   Same data as the leaderboard above, plotted so you can see how close the calls actually are, plus a sortable table with a confidence breakdown per pain point.
                 </div>
-                <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                <div ref={mapRef}>
+                  <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                </div>
                 <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
                   <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
                 </div>

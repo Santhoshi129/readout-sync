@@ -10,10 +10,7 @@
 // change — every chart and the findings table key off `subreddit` in the
 // data itself.
 import gymownerData from "@/data/retention-research/gymowner.json";
-// hyrox pulled from the live registry pending a data review - flagged as
-// possibly wrong. Data file is still on disk at data/retention-research/
-// hyrox.json; re-add the import and registry entry below once resolved.
-// import hyroxData from "@/data/retention-research/hyrox.json";
+import hyroxData from "@/data/retention-research/hyrox.json";
 import crossfitData from "@/data/retention-research/crossfit.json";
 import f45Data from "@/data/retention-research/f45.json";
 import orangetheoryData from "@/data/retention-research/orangetheory.json";
@@ -102,6 +99,7 @@ export const COMMUNITIES: CommunityDataset[] = [
   f45Data as CommunityDataset,
   orangetheoryData as CommunityDataset,
   crossfitData as CommunityDataset,
+  hyroxData as CommunityDataset,
 ].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {

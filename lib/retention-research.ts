@@ -257,6 +257,7 @@ export const CONFIDENCE_TONE: Record<ConfidenceTier, string> = {
 export const CONFIDENCE_RANK: Record<ConfidenceTier, number> = { strong: 3, moderate: 2, weak: 1 };
 
 export function solutionCategoryLabel(s: string): string {
+  if (s === NO_SOLUTION_KEY) return "No Solution Mentioned";
   return s.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
 }
 
@@ -365,12 +366,22 @@ export function appRelevanceBreakdown(findings: Finding[]) {
   }));
 }
 
+// Synthetic key for findings where nobody described trying anything -
+// computed from the solution field being empty, not from raw category
+// labels, so it's consistent across communities regardless of how each
+// one's source data happened to tag (or not tag) "nothing was tried."
+export const NO_SOLUTION_KEY = "no_solution_mentioned";
+
 export function solutionCategoryBreakdown(findings: Finding[]) {
   const map: Record<string, number> = {};
+  let noSolution = 0;
   findings.forEach((f) => {
     if (f.solution_category) map[f.solution_category] = (map[f.solution_category] || 0) + 1;
+    else if (!f.solution) noSolution++;
   });
-  return Object.entries(map).sort((a, b) => b[1] - a[1]);
+  const entries = Object.entries(map);
+  if (noSolution > 0) entries.push([NO_SOLUTION_KEY, noSolution]);
+  return entries.sort((a, b) => b[1] - a[1]);
 }
 
 export function timelineBreakdown(findings: Finding[]) {
@@ -493,12 +504,21 @@ export function priorityMatrix(findings: Finding[]): PriorityRow[] {
   const pp = painPointBreakdown(findings).filter(([p]) => p !== "other");
   const rows: Omit<PriorityRow, "recommendedAction">[] = pp.map(([p, v]) => {
     const rowFindings = findings.filter((f) => f.pain_point === p);
-    const core_fit = rowFindings.filter((f) => f.app_relevance === "core_fit").length;
+    const coreFindings = rowFindings.filter((f) => f.app_relevance === "core_fit");
+    const core_fit = coreFindings.length;
     const partial_fit = rowFindings.filter((f) => f.app_relevance === "partial_fit").length;
     const not_addressable = rowFindings.filter((f) => f.app_relevance === "not_addressable").length;
-    const severities = rowFindings.map((f) => f.pain_severity).filter((s): s is number => s != null);
+    // Severity and solve-rate are computed from the core-fit subset, not
+    // every finding under this pain point - the ranking score and the
+    // recommendation text are both specifically about what TWU could
+    // actually build, so the numbers backing them need to describe that
+    // same subset. Mixing in not-addressable findings here previously
+    // produced a solve-rate that didn't match the buildable set it was
+    // narrated as describing (e.g. one pain point's core-fit findings
+    // were 100% solved while the all-findings figure read 43%).
+    const severities = coreFindings.map((f) => f.pain_severity).filter((s): s is number => s != null);
     const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
-    const solutionRate = rowFindings.length > 0 ? rowFindings.filter((f) => f.solution).length / rowFindings.length : 0;
+    const solutionRate = core_fit > 0 ? coreFindings.filter((f) => f.solution).length / core_fit : 0;
     const strongPct = v.total > 0 ? Math.round((v.strong / v.total) * 100) : 0;
     const score = core_fit * avgSeverity;
     const solutionGroups: Record<string, Finding[]> = {};
@@ -620,9 +640,13 @@ export function soWhatQuickWins(rows: SolutionQuadrantRow[], scoredCount: number
   if (quickWins.length === 0) {
     return `${base} Nothing in this data lands cleanly in the easy-and-effective corner yet, most tried fixes are either a real lift to implement or came back with mixed results.`;
   }
-  return `${base} ${quickWins.map((r) => solutionCategoryLabel(r.category)).join(", ")} ${
-    quickWins.length === 1 ? "is" : "are"
-  } the standout${quickWins.length === 1 ? "" : "s"}: low reported difficulty, high reported effectiveness. Worth prioritizing on cost alone even before weighing it against the pain-point ranking above.`;
+  const NAMED_CAP = 5;
+  const byVolume = [...quickWins].sort((a, b) => b.count - a.count);
+  const named = byVolume.slice(0, NAMED_CAP);
+  const rest = byVolume.length - named.length;
+  const namedList = named.map((r) => `${solutionCategoryLabel(r.category)} (${r.count})`).join(", ");
+  const restNote = rest > 0 ? `, plus ${rest} more that clear the same bar with fewer mentions` : "";
+  return `${quickWins.length} solution${quickWins.length === 1 ? "" : "s"} clear the easy-and-effective bar. By volume, ${namedList}${restNote} are the standouts worth prioritizing on cost alone, even before weighing it against the pain-point ranking above.`;
 }
 
 
@@ -755,7 +779,16 @@ export function soWhatSolutions(rows: [string, number][], mentioned: number, tot
   if (total === 0) return "No findings to summarize yet.";
   const top = rows[0];
   if (!top) return `A specific fix was named in only ${mentioned} of ${total} findings. That's either a real gap or just what people happen to write about on Reddit, hard to tell apart from this alone.`;
-  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, but only ${mentioned} of ${total} findings name any solution at all. I'd read that as unaddressed problem space until proven otherwise, but posts skew toward venting over documenting fixes, so some of that gap is probably reporting bias, not a real vacuum.`;
+  const realSolutions = rows.filter(([cat]) => cat !== NO_SOLUTION_KEY);
+  if (top[0] === NO_SOLUTION_KEY) {
+    const topReal = realSolutions[0];
+    const noSolvePct = Math.round((top[1] / total) * 100);
+    if (!topReal) {
+      return `${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying a fix at all - that's the single biggest bucket here, bigger than any actual solution. Read it as unaddressed problem space until proven otherwise; posts skew toward venting over documenting fixes, so some of this gap is reporting bias, not a real vacuum. No solution category has enough volume yet to call a clear runner-up.`;
+    }
+    return `The single biggest bucket isn't a solution at all: ${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying anything. That's not a fix, it's the absence of one - people venting about the problem without describing what (if anything) they did about it. Once you set that aside, the actual most-tried fix is ${solutionCategoryLabel(topReal[0])} (${topReal[1]} mentions). Treat the no-solution share as a floor on unaddressed problem space, not a headline finding on its own; some of it is reporting bias (Reddit skews toward venting over documenting fixes), not proof nothing was ever tried.`;
+  }
+  return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, out of ${mentioned} of ${total} findings that name any solution at all.`;
 }
 
 export function soWhatTimeline(rows: [string, number][]): string {

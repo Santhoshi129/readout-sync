@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState, useEffect, type CSSProperties } from "react";
 import {
   Finding,
   ConfidenceTier,
@@ -50,13 +50,32 @@ export function FindingsTable({
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("default");
   const [openId, setOpenId] = useState<string | null>(null);
+  const PAGE_SIZE = 25;
+  const [shown, setShown] = useState(PAGE_SIZE);
 
   const { painPoint, tier, relevance, solutionCategory, severity, perspective } = filters;
   const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
 
+  // Resets pagination back to the first page whenever the active filter
+  // set changes - covers both this table's own filter chips AND filters
+  // set externally (clicking a bar on a chart above sets the same
+  // `filters` prop), so "load more" never carries a stale count into a
+  // freshly-filtered result.
+  useEffect(() => setShown(PAGE_SIZE), [filters, findings]);
+
   const painPoints = useMemo(() => {
     const set2 = new Set(findings.map((f) => f.pain_point));
     return ["All", ...Array.from(set2).sort((a, b) => painPointLabel(a).localeCompare(painPointLabel(b)))];
+  }, [findings]);
+
+  // Derived from the actual data rather than a fixed list - different
+  // communities use different perspective values (e.g. orangetheory has
+  // "staff" where others might have "coach"/"employee"), so a hardcoded
+  // option list silently drops whichever ones aren't in it, with no way
+  // to filter to them at all.
+  const perspectives = useMemo(() => {
+    const set2 = new Set(findings.map((f) => f.perspective || "unclear"));
+    return ["All", ...Array.from(set2).sort((a, b) => perspectiveLabel(a).localeCompare(perspectiveLabel(b)))];
   }, [findings]);
 
   const activeFilterChips = useMemo(() => {
@@ -149,7 +168,10 @@ export function FindingsTable({
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 12, alignItems: "center" }}>
         <input
           value={q}
-          onChange={(e) => setQ(e.target.value)}
+          onChange={(e) => {
+            setQ(e.target.value);
+            setShown(PAGE_SIZE);
+          }}
           placeholder="Search findings, solutions, quotes…"
           style={{
             flex: "1 1 220px",
@@ -209,7 +231,7 @@ export function FindingsTable({
         <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>
           VOICE:
         </span>
-        {(["All", "owner", "member", "vendor", "coach", "employee", "unclear"] as const).map((p) => (
+        {perspectives.map((p) => (
           <span key={p} style={chipStyle(perspective === p)} onClick={() => set({ perspective: p })}>
             {p === "All" ? "All" : perspectiveLabel(p)}
           </span>
@@ -228,7 +250,7 @@ export function FindingsTable({
       </div>
 
       <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)", marginBottom: 10 }}>
-        {visible.length} of {findings.length} findings
+        {Math.min(shown, visible.length)} of {visible.length} shown ({findings.length} total findings)
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -237,7 +259,7 @@ export function FindingsTable({
             No findings match this search/filter.
           </div>
         ) : (
-          visible.map((f) => {
+          visible.slice(0, shown).map((f) => {
             const open = openId === f.id;
             const hasOutcome = !!f.effectiveness_reasoning;
             return (
@@ -388,6 +410,25 @@ export function FindingsTable({
               </div>
             );
           })
+        )}
+        {shown < visible.length && (
+          <button
+            onClick={() => setShown((s) => s + PAGE_SIZE)}
+            style={{
+              alignSelf: "flex-start",
+              background: "none",
+              border: "1px solid var(--border)",
+              borderRadius: 8,
+              padding: "8px 16px",
+              marginTop: 4,
+              color: "var(--ink-dim)",
+              fontSize: 12.5,
+              fontFamily: "var(--mono)",
+              cursor: "pointer",
+            }}
+          >
+            Load {Math.min(PAGE_SIZE, visible.length - shown)} more ({visible.length - shown} remaining)
+          </button>
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 import { CSSProperties } from "react";
-import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, withTextFragment } from "@/lib/retention-research";
+import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, sourceLink } from "@/lib/retention-research";
 import { NumberTip } from "@/components/NumberTip";
 
 const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--ink-faint)" };
@@ -138,7 +138,7 @@ export function SectionInsight({
                 )}
                 {f.permalink && (
                   <a
-                    href={withTextFragment(f.permalink, f.evidence_snippet)}
+                    href={sourceLink(f.permalink)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}

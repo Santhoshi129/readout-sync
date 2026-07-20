@@ -10,8 +10,7 @@
 // change — every chart and the findings table key off `subreddit` in the
 // data itself.
 import gymownerData from "@/data/retention-research/gymowner.json";
-// hyrox import still paused - see note above COMMUNITIES below
-// import hyroxData from "@/data/retention-research/hyrox.json";
+import hyroxData from "@/data/retention-research/hyrox.json";
 import crossfitData from "@/data/retention-research/crossfit.json";
 import f45Data from "@/data/retention-research/f45.json";
 import orangetheoryData from "@/data/retention-research/orangetheory.json";
@@ -87,15 +86,12 @@ function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
   return { ...ds, findings: ds.findings.map(sanitizeFinding) };
 }
 
-// crossfit and hyrox temporarily pulled from the live registry (not deleted -
-// data files still on disk) while r/crossfit's comment set gets fully
-// re-pulled and classified. Re-add both imports to COMMUNITIES below once
-// that's done.
 export const COMMUNITIES: CommunityDataset[] = [
   gymownerData as CommunityDataset,
   f45Data as CommunityDataset,
   orangetheoryData as CommunityDataset,
   crossfitData as CommunityDataset,
+  hyroxData as CommunityDataset,
 ].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {
@@ -144,29 +140,20 @@ export function ratioOrPct(n: number, d: number): string {
   return `roughly 1 per ${Math.round(d / n).toLocaleString()}, on average`;
 }
 
-// Reddit can only auto-scroll-and-highlight a permalink when it points to
-// a specific comment - a link to a post only opens the post at the top,
-// with no way to jump to one sentence inside a long body. About half of
-// this dataset's findings are sourced from post bodies rather than
-// comments, so their permalinks alone always land you at the top with no
-// pointer to what to look for. Browser-native Text Fragments
-// (#:~:text=...) work on any page, post or comment, so appending one gets
-// a real scroll-to-and-highlight in Chrome/Edge regardless of which type
-// the source is. Falls back to a normal link (no highlight, but still the
-// right page) on browsers that don't support it - never breaks the link.
-export function withTextFragment(permalink: string, quote: string | null | undefined): string {
-  // old.reddit.com is fully server-rendered, so the whole comment thread
-  // exists in the initial HTML. new reddit.com's client-rendered UI often
-  // doesn't have the target comment mounted in the DOM until it's scrolled
-  // into view, which silently breaks the browser's text-fragment matching -
-  // the link still opens, the highlight just never fires. Rewriting the
-  // host fixes that regardless of whether the fragment below matches.
-  const base = permalink.replace(/^https?:\/\/(www\.)?reddit\.com/, "https://old.reddit.com");
-  if (!quote) return base;
-  const firstSentence = quote.split(/[.!?](?:\s|$)/)[0].trim();
-  if (!firstSentence) return base;
-  const fragment = encodeURIComponent(firstSentence.slice(0, 200));
-  return `${base}#:~:text=${fragment}`;
+// old.reddit.com is fully server-rendered and natively highlights the
+// target comment (yellow background) whenever the permalink points to one -
+// no guesswork needed, it just works off the comment ID already in the URL.
+// new reddit.com's client-rendered UI doesn't reliably do this at all (the
+// target comment often isn't even mounted in the DOM on load). A prior
+// version of this also appended a browser Text Fragment (#:~:text=...)
+// built from the finding's own evidence_snippet, but that snippet is
+// LLM-paraphrased, not a verbatim copy of the Reddit text, so the fragment
+// often failed to match and produced no highlight anyway - dropped rather
+// than ship something that only sometimes works. For post-only permalinks
+// (no comment ID to anchor to), this still lands on the right page; the
+// quote is already shown directly in the card itself.
+export function sourceLink(permalink: string): string {
+  return permalink.replace(/^https?:\/\/(www\.)?reddit\.com/, "https://old.reddit.com");
 }
 
 // One-line "why this number" explanation for a community's relevant-findings

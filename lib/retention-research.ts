@@ -14,6 +14,7 @@ import gymownerData from "@/data/retention-research/gymowner.json";
 // import hyroxData from "@/data/retention-research/hyrox.json";
 // import crossfitData from "@/data/retention-research/crossfit.json";
 import f45Data from "@/data/retention-research/f45.json";
+import orangetheoryData from "@/data/retention-research/orangetheory.json";
 
 export type AppRelevance = "core_fit" | "partial_fit" | "not_addressable";
 export type ConfidenceTier = "weak" | "moderate" | "strong";
@@ -88,6 +89,7 @@ function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
 export const COMMUNITIES: CommunityDataset[] = [
   gymownerData as CommunityDataset,
   f45Data as CommunityDataset,
+  orangetheoryData as CommunityDataset,
 ].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {

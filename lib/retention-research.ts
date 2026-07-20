@@ -153,17 +153,6 @@ export function ratioOrPct(n: number, d: number): string {
 // same words shown on the card. Highlighting isn't guaranteed to fire on
 // every click (it depends on Reddit's own page rendering, out of our
 // control), but the link itself always goes to the right place either way.
-// Findings aren't individually tagged with which community they came from
-// (that's only known at the file level, data/retention-research/<x>.json) -
-// but every permalink is a full reddit.com/r/<subreddit>/... URL, so the
-// community is always recoverable from it. Used anywhere combined findings
-// need to show or filter by source community (the receipts table, cross-
-// community drill-downs) without changing the underlying data schema.
-export function communityFromPermalink(permalink: string): string {
-  const m = permalink.match(/reddit\.com\/r\/([^/]+)/i);
-  return m ? `r/${m[1]}` : "unknown";
-}
-
 export function sourceLink(permalink: string, quote?: string | null): string {
   if (!quote) return permalink;
   const firstSentence = quote.split(/[.!?](?:\s|$)/)[0].trim();

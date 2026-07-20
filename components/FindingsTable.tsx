@@ -14,11 +14,10 @@ import {
   perspectiveLabel,
   sourceLink,
   sourceStatusLabel,
-  communityFromPermalink,
   NO_SOLUTION_KEY,
 } from "@/lib/retention-research";
 
-type SortKey = "default" | "severity" | "confidence" | "newest" | "community";
+type SortKey = "default" | "severity" | "confidence" | "newest";
 
 export type TableFilters = {
   painPoint: string | "All";
@@ -27,7 +26,6 @@ export type TableFilters = {
   solutionCategory: string | "All";
   severity: number | "All";
   perspective: string | "All";
-  community: string | "All";
 };
 
 const TONE_COLOR: Record<string, string> = {
@@ -42,7 +40,6 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: "confidence", label: "Confidence tier" },
   { key: "severity", label: "Severity" },
   { key: "newest", label: "Newest first" },
-  { key: "community", label: "Community" },
 ];
 
 export function FindingsTable({
@@ -59,7 +56,7 @@ export function FindingsTable({
   const PAGE_SIZE = 25;
   const [shown, setShown] = useState(PAGE_SIZE);
 
-  const { painPoint, tier, relevance, solutionCategory, severity, perspective, community } = filters;
+  const { painPoint, tier, relevance, solutionCategory, severity, perspective } = filters;
   const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
 
   // Resets pagination back to the first page whenever the active filter
@@ -84,13 +81,6 @@ export function FindingsTable({
     return ["All", ...Array.from(set2).sort((a, b) => perspectiveLabel(a).localeCompare(perspectiveLabel(b)))];
   }, [findings]);
 
-  // Only meaningful on the combined tab (multiple communities pooled) -
-  // on a single-community tab this resolves to one option, harmless.
-  const communityOptions = useMemo(() => {
-    const set2 = new Set(findings.map((f) => communityFromPermalink(f.permalink)));
-    return ["All", ...Array.from(set2).sort()];
-  }, [findings]);
-
   const activeFilterChips = useMemo(() => {
     const chips: { key: keyof TableFilters; label: string }[] = [];
     if (painPoint !== "All") chips.push({ key: "painPoint", label: `Pain point: ${painPointLabel(painPoint)}` });
@@ -99,9 +89,8 @@ export function FindingsTable({
     if (solutionCategory !== "All") chips.push({ key: "solutionCategory", label: `Solution: ${solutionCategoryLabel(solutionCategory)}` });
     if (severity !== "All") chips.push({ key: "severity", label: `Severity: ${severity}/5` });
     if (perspective !== "All") chips.push({ key: "perspective", label: `Voice: ${perspectiveLabel(perspective)}` });
-    if (community !== "All") chips.push({ key: "community", label: `Community: ${community}` });
     return chips;
-  }, [painPoint, tier, relevance, solutionCategory, severity, perspective, community]);
+  }, [painPoint, tier, relevance, solutionCategory, severity, perspective]);
 
   const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -117,7 +106,6 @@ export function FindingsTable({
       }
       if (severity !== "All" && f.pain_severity !== severity) return false;
       if (perspective !== "All" && (f.perspective || "unclear") !== perspective) return false;
-      if (community !== "All" && communityFromPermalink(f.permalink) !== community) return false;
       if (needle) {
         const hay = [f.pain_point_reasoning, f.solution, f.evidence_snippet].filter(Boolean).join(" ").toLowerCase();
         if (!hay.includes(needle)) return false;
@@ -131,10 +119,9 @@ export function FindingsTable({
       severity: (a, b) => (b.pain_severity ?? 0) - (a.pain_severity ?? 0),
       confidence: (a, b) => CONFIDENCE_RANK[b.confidence_tier] - CONFIDENCE_RANK[a.confidence_tier],
       newest: (a, b) => (b.readable_date ?? "").localeCompare(a.readable_date ?? ""),
-      community: (a, b) => communityFromPermalink(a.permalink).localeCompare(communityFromPermalink(b.permalink)) || (b.pain_severity ?? 0) - (a.pain_severity ?? 0),
     };
     return [...filtered].sort(by[sort]);
-  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, perspective, community, sort]);
+  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, perspective, sort]);
 
   const chipStyle = (on: boolean): CSSProperties => ({
     background: on ? "rgba(201,168,76,0.12)" : "transparent",
@@ -179,7 +166,7 @@ export function FindingsTable({
           ))}
           <span
             style={{ ...chipStyle(false), marginLeft: "auto" }}
-            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All" })}
+            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" })}
           >
             Clear all
           </span>
@@ -224,27 +211,6 @@ export function FindingsTable({
             </option>
           ))}
         </select>
-        {communityOptions.length > 2 && (
-          <select
-            value={community}
-            onChange={(e) => set({ community: e.target.value })}
-            style={{
-              background: "var(--card-raised)",
-              border: "1px solid var(--border)",
-              borderRadius: 8,
-              padding: "8px 12px",
-              color: "var(--ink)",
-              fontSize: 12.5,
-              fontFamily: "var(--font)",
-            }}
-          >
-            {communityOptions.map((c) => (
-              <option key={c} value={c}>
-                {c === "All" ? "All communities" : c}
-              </option>
-            ))}
-          </select>
-        )}
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
@@ -312,19 +278,6 @@ export function FindingsTable({
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "space-between" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
-                      <span
-                        style={{
-                          fontFamily: "var(--mono)",
-                          fontSize: 10,
-                          letterSpacing: "0.06em",
-                          color: "var(--ink)",
-                          border: "1px solid var(--border)",
-                          borderRadius: 999,
-                          padding: "1px 8px",
-                        }}
-                      >
-                        {communityFromPermalink(f.permalink)}
-                      </span>
                       <span
                         style={{
                           fontFamily: "var(--mono)",

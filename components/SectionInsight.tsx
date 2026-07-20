@@ -11,12 +11,19 @@ export function SectionInsight({
   selectionLabel,
   generalText,
   onClear,
+  showReasoning = false,
 }: {
   totalInView: number;
   matches: Finding[] | null;
   selectionLabel: string | null;
   generalText: string;
   onClear: () => void;
+  // Only the Can TWU Fix It panel gets the full 'Why this severity /
+  // difficulty / app fit' breakdown - everywhere else (pain point
+  // frequency, severity, who's talking, solutions, priority ranking)
+  // stays a bare quote + link, per explicit direction not to duplicate
+  // that depth across every chart.
+  showReasoning?: boolean;
 }) {
   if (!matches || !selectionLabel) {
     return (
@@ -140,6 +147,11 @@ export function SectionInsight({
                     view reddit thread ↗
                   </a>
                 )}
+                {(f.author || "").toLowerCase() === "[deleted]" && (
+                  <span style={{ fontFamily: "var(--mono)", fontSize: 9, color: "var(--ink-faint)", fontStyle: "italic", whiteSpace: "nowrap" }}>
+                    poster's account deleted
+                  </span>
+                )}
               </div>
               <div style={{ color: "var(--ink)" }}>{f.pain_point_reasoning}</div>
               {f.evidence_snippet && (
@@ -155,7 +167,7 @@ export function SectionInsight({
                   “{f.evidence_snippet}”
                 </blockquote>
               )}
-              {(f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance_reasoning) && (
+              {showReasoning && (f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance_reasoning) && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, fontSize: 11.5, color: "var(--ink-dim)" }}>
                   {f.pain_severity_reasoning && (
                     <div><span style={{ color: "var(--ink-faint)" }}>Why this severity: </span>{f.pain_severity_reasoning}</div>

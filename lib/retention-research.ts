@@ -155,11 +155,18 @@ export function ratioOrPct(n: number, d: number): string {
 // the source is. Falls back to a normal link (no highlight, but still the
 // right page) on browsers that don't support it - never breaks the link.
 export function withTextFragment(permalink: string, quote: string | null | undefined): string {
-  if (!quote) return permalink;
+  // old.reddit.com is fully server-rendered, so the whole comment thread
+  // exists in the initial HTML. new reddit.com's client-rendered UI often
+  // doesn't have the target comment mounted in the DOM until it's scrolled
+  // into view, which silently breaks the browser's text-fragment matching -
+  // the link still opens, the highlight just never fires. Rewriting the
+  // host fixes that regardless of whether the fragment below matches.
+  const base = permalink.replace(/^https?:\/\/(www\.)?reddit\.com/, "https://old.reddit.com");
+  if (!quote) return base;
   const firstSentence = quote.split(/[.!?](?:\s|$)/)[0].trim();
-  if (!firstSentence) return permalink;
+  if (!firstSentence) return base;
   const fragment = encodeURIComponent(firstSentence.slice(0, 200));
-  return `${permalink}#:~:text=${fragment}`;
+  return `${base}#:~:text=${fragment}`;
 }
 
 // One-line "why this number" explanation for a community's relevant-findings

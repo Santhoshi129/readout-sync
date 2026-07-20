@@ -51,7 +51,6 @@ export function FindingsTable({
 }) {
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("default");
-  const [openId, setOpenId] = useState<string | null>(null);
   const PAGE_SIZE = 25;
   const [shown, setShown] = useState(PAGE_SIZE);
 
@@ -262,14 +261,12 @@ export function FindingsTable({
           </div>
         ) : (
           visible.slice(0, shown).map((f) => {
-            const open = openId === f.id;
             const hasOutcome = !!f.effectiveness_reasoning;
             return (
               <div
                 key={f.id}
                 className="card"
-                style={{ padding: "16px 18px", cursor: "pointer" }}
-                onClick={() => setOpenId(open ? null : f.id)}
+                style={{ padding: "16px 18px" }}
               >
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "space-between" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -392,24 +389,27 @@ export function FindingsTable({
                         reddit thread ↗
                       </a>
                     )}
+                    {(f.author || "").toLowerCase() === "[deleted]" && (
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 9, color: "var(--ink-faint)", fontStyle: "italic", whiteSpace: "nowrap" }}>
+                        poster's account deleted
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {open && (
-                  <div
-                    style={{
-                      marginTop: 14,
-                      paddingTop: 14,
-                      borderTop: "1px solid var(--border-soft)",
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {f.evidence_snippet && (
-                      <blockquote
-                        style={{
-                          borderLeft: "2px solid var(--border)",
-                          paddingLeft: 14,
-                          color: "var(--ink-dim)",
+                <div
+                  style={{
+                    marginTop: 14,
+                    paddingTop: 14,
+                    borderTop: "1px solid var(--border-soft)",
+                  }}
+                >
+                  {f.evidence_snippet && (
+                    <blockquote
+                      style={{
+                        borderLeft: "2px solid var(--border)",
+                        paddingLeft: 14,
+                        color: "var(--ink-dim)",
                           fontSize: 13,
                           fontStyle: "italic",
                           lineHeight: 1.6,
@@ -441,7 +441,6 @@ export function FindingsTable({
                       {f.score != null && <span>{f.score} upvotes</span>}
                     </div>
                   </div>
-                )}
               </div>
             );
           })

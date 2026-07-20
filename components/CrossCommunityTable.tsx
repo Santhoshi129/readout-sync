@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
+import { PainPointExample } from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
 
@@ -8,10 +9,16 @@ export function CrossCommunityTable({
   rows,
   communityCount,
   sortBy,
+  active,
+  onSelect,
+  examples,
 }: {
   rows: CrossCommunityRow[];
   communityCount: number;
   sortBy: "coverage" | "buildable";
+  active?: string | null;
+  onSelect?: (pp: string) => void;
+  examples?: Record<string, PainPointExample[]>;
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -42,12 +49,16 @@ export function CrossCommunityTable({
       </div>
       {sorted.map((r) => {
         const isOpen = expanded === r.pain_point;
+        const isActive = active === r.pain_point;
         return (
           <div
             key={r.pain_point}
             className="card click"
-            onClick={() => setExpanded(isOpen ? null : r.pain_point)}
-            style={{ padding: "14px 14px", borderRadius: 10 }}
+            onClick={() => {
+              setExpanded(isOpen ? null : r.pain_point);
+              onSelect?.(r.pain_point);
+            }}
+            style={{ padding: "14px 14px", borderRadius: 10, border: `1px solid ${isActive ? "var(--amber)" : "var(--border)"}`, background: isActive ? "rgba(201,168,76,0.06)" : undefined }}
           >
             <div style={{ display: "grid", gridTemplateColumns: "1fr 100px 110px 110px 40px", gap: 12, alignItems: "center" }}>
               <span style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
@@ -96,10 +107,23 @@ export function CrossCommunityTable({
                   ))}
                 </div>
                 {r.buildableCount > 0 && (
-                  <div style={{ fontSize: 12.5, color: SEVERITY_COLOR(r.avgSeverityBuildable) }}>
+                  <div style={{ fontSize: 12.5, color: SEVERITY_COLOR(r.avgSeverityBuildable), marginBottom: 10 }}>
                     Avg severity on the {r.buildableCount} buildable finding{r.buildableCount === 1 ? "" : "s"}: {r.avgSeverityBuildable.toFixed(1)}/5
                   </div>
                 )}
+                {examples?.[r.pain_point]?.length ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
+                      WHAT PEOPLE ACTUALLY SAID
+                    </div>
+                    {examples[r.pain_point].slice(0, 2).map((ex, i) => (
+                      <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--border)" }}>
+                        {ex.short}
+                        {ex.evidence && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence.length > 140 ? ex.evidence.slice(0, 140) + "…" : ex.evidence}"</div>}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             )}
           </div>

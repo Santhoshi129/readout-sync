@@ -181,3 +181,55 @@ export function soWhatFeatureRanking(rows: CrossCommunityRow[]): string {
   const communitiesWithIt = top.communities.filter((c) => c.count > 0).length;
   return `${top.label} has the widest buildable footprint: ${top.buildableCount} findings TWU could actually act on, spread across ${communitiesWithIt} of the communities, at an average severity of ${top.avgSeverityBuildable.toFixed(1)}/5. That combination of breadth and severity is what makes it the strongest single feature case in the combined data, not just the loudest complaint in any one community.`;
 }
+
+// ---------------------------------------------------------------------------
+// Headline takeaways for the combined tab - each one names real numbers
+// pulled from the axes/coverage data, not a generic description of what
+// the charts below show. This is what a research analyst would open with
+// before anyone even looks at the radar.
+// ---------------------------------------------------------------------------
+export function combinedTakeaways(
+  axes: RadarAxis[],
+  rows: CrossCommunityRow[],
+  communityCount: number
+): string[] {
+  const out: string[] = [];
+  const universal = rows.filter((r) => r.universal);
+  out.push(
+    `${universal.length} of ${rows.length} core pain-point categories show up in every one of the ${communityCount} communities: ${universal.map((r) => r.label).join(", ")}. Those are the closest thing this data has to a platform-wide retention problem rather than something specific to one training format.`
+  );
+
+  const byGap = [...axes].sort((a, b) => Math.abs(b.memberPct - b.ownerPct) - Math.abs(a.memberPct - a.ownerPct));
+  const biggestGap = byGap[0];
+  if (biggestGap) {
+    const memberHigher = biggestGap.memberPct > biggestGap.ownerPct;
+    const gapSize = Math.abs(biggestGap.memberPct - biggestGap.ownerPct).toFixed(1);
+    out.push(
+      memberHigher
+        ? `The sharpest blind spot: ${biggestGap.label} makes up ${biggestGap.memberPct}% of what members say versus only ${biggestGap.ownerPct}% of what owners say (a ${gapSize}-point gap) - owners may be underestimating how much this actually drives people out.`
+        : `Owners talk about ${biggestGap.label} far more than members ever bring it up (${biggestGap.ownerPct}% vs ${biggestGap.memberPct}%, a ${gapSize}-point gap) - a business worry that isn't showing up as a stated reason members leave, at least not in their own words.`
+    );
+  }
+
+  const byBuildable = [...rows].filter((r) => r.buildableCount > 0).sort((a, b) => b.buildableCount - a.buildableCount);
+  const topBuildable = byBuildable[0];
+  if (topBuildable) {
+    const coverage = topBuildable.communities.filter((c) => c.count > 0).length;
+    out.push(
+      `${topBuildable.label} is the single largest buildable opportunity: ${topBuildable.buildableCount} findings TWU could act on directly, present in ${coverage} of ${communityCount} communities, averaging ${topBuildable.avgSeverityBuildable.toFixed(1)}/5 severity.`
+    );
+  }
+
+  const universalButNotBuildable = universal
+    .filter((r) => r.buildableCount / Math.max(1, r.totalCount) < 0.3)
+    .sort((a, b) => b.totalCount - a.totalCount)[0];
+  if (universalButNotBuildable) {
+    const pct = Math.round((universalButNotBuildable.buildableCount / universalButNotBuildable.totalCount) * 100);
+    out.push(
+      `${universalButNotBuildable.label} is universal and high-volume (${universalButNotBuildable.totalCount} findings) but mostly out of TWU's reach - only ${pct}% of its findings are core or partial fit. Real and widespread, just not a product problem.`
+    );
+  }
+  return out;
+}
+
+

@@ -31,6 +31,7 @@ import {
   soWhatCoverage,
   soWhatFeatureRanking,
   longTailStats,
+  combinedTakeaways,
 } from "@/lib/combined-analysis";
 import {
   CommunityDataset,
@@ -125,6 +126,16 @@ export function RetentionResearchDashboard({
   const coverageNarrative = useMemo(() => soWhatCoverage(coverageRows, communities.length), [coverageRows, communities.length]);
   const featureNarrative = useMemo(() => soWhatFeatureRanking(coverageRows), [coverageRows]);
   const longTail = useMemo(() => longTailStats(communities), [communities]);
+  const combinedNotes = useMemo(() => combinedTakeaways(radarAxesData, coverageRows, communities.length), [radarAxesData, coverageRows, communities.length]);
+  const allCombinedExamples = useMemo(() => painPointExamples(communities.flatMap((c) => c.findings), 3), [communities]);
+  const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 2), [memberFindingsForRadar]);
+  const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 2), [ownerFindingsForRadar]);
+  const activePainPointLabel = filters.painPoint !== "All" ? painPointLabel(filters.painPoint) : null;
+  const selectCombinedPainPoint = (pp: string) => select("painPoint", pp);
+  const selectCombinedAxis = (label: string) => {
+    const axis = radarAxesData.find((a) => a.label === label);
+    if (axis) select("painPoint", axis.key);
+  };
   const memberCommunities = communities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
   const ownerCommunities = communities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const radarSeries: RadarSeries[] = [
@@ -535,6 +546,60 @@ export function RetentionResearchDashboard({
             </div>
           </div>
 
+          <section style={{ marginBottom: 24 }}>
+            <KeyTakeaways points={combinedNotes} />
+          </section>
+
+          {activePainPointLabel && (
+            <div
+              className="card"
+              style={{ padding: 24, marginBottom: 24, border: "1px solid var(--amber-deep)", background: "rgba(201,168,76,0.05)" }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+                <div className="eyebrow">Selected: {activePainPointLabel}</div>
+                <button
+                  onClick={() => clear("painPoint")}
+                  style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
+                >
+                  CLEAR
+                </button>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+                <div>
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
+                  {memberExamples[filters.painPoint]?.length ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {memberExamples[filters.painPoint].map((ex, i) => (
+                        <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-a)" }}>
+                          {ex.short}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No member findings in this category.</div>
+                  )}
+                </div>
+                <div>
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
+                  {ownerExamples[filters.painPoint]?.length ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {ownerExamples[filters.painPoint].map((ex, i) => (
+                        <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-b)" }}>
+                          {ex.short}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
+                  )}
+                </div>
+              </div>
+              <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
+                Scroll down to "The receipts" for every individual finding in this category, filtered automatically.
+              </div>
+            </div>
+          )}
+
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
@@ -544,9 +609,51 @@ export function RetentionResearchDashboard({
               <div className="eyebrow muted">by share of findings</div>
             </div>
             <div style={{ marginTop: 22 }}>
-              <RadarChart axisLabels={radarAxesData.map((a) => a.label)} series={radarSeries} />
+              <RadarChart axisLabels={radarAxesData.map((a) => a.label)} series={radarSeries} onSelectAxis={selectCombinedAxis} activeAxis={activePainPointLabel} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
+            <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>
+                EXACT VALUES, SORTED BY GAP SIZE
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 90px 90px 90px", gap: 10, padding: "0 12px 8px", fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
+                  <span>PAIN POINT</span>
+                  <span>MEMBER</span>
+                  <span>OWNER</span>
+                  <span>GAP</span>
+                </div>
+                {[...radarAxesData]
+                  .sort((a, b) => Math.abs(b.memberPct - b.ownerPct) - Math.abs(a.memberPct - a.ownerPct))
+                  .map((a) => {
+                    const gap = a.memberPct - a.ownerPct;
+                    const isActive = activePainPointLabel === a.label;
+                    return (
+                      <div
+                        key={a.key}
+                        onClick={() => selectCombinedPainPoint(a.key)}
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "1fr 90px 90px 90px",
+                          gap: 10,
+                          padding: "8px 12px",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
+                          background: isActive ? "rgba(201,168,76,0.08)" : "transparent",
+                        }}
+                      >
+                        <span style={{ fontSize: 12.5, color: "var(--ink)" }}>{a.label}</span>
+                        <span style={{ fontSize: 12.5, color: "var(--series-a)" }}>{a.memberPct}%</span>
+                        <span style={{ fontSize: 12.5, color: "var(--series-b)" }}>{a.ownerPct}%</span>
+                        <span style={{ fontSize: 12.5, color: Math.abs(gap) >= 8 ? "var(--amber)" : "var(--ink-dim)", fontWeight: Math.abs(gap) >= 8 ? 700 : 400 }}>
+                          {gap > 0 ? "+" : ""}{gap.toFixed(1)}
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
           </div>
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -594,7 +701,7 @@ export function RetentionResearchDashboard({
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} examples={allCombinedExamples} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
               {tableSort === "coverage" ? coverageNarrative : featureNarrative}
@@ -609,15 +716,38 @@ export function RetentionResearchDashboard({
               </div>
             </div>
             <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 12 }}>
-              {topBuildable.map((r) => (
-                <div key={r.pain_point} style={{ display: "grid", gridTemplateColumns: "180px 1fr 50px", gap: 14, alignItems: "center" }}>
-                  <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
-                  <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
-                    <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: "var(--amber)" }} />
+              {topBuildable.map((r) => {
+                const isActive = activePainPointLabel === r.label;
+                const barColor = r.avgSeverityBuildable >= 3.5 ? "var(--bad)" : r.avgSeverityBuildable >= 2.5 ? "var(--amber)" : "var(--hot)";
+                return (
+                  <div
+                    key={r.pain_point}
+                    onClick={() => selectCombinedPainPoint(r.pain_point)}
+                    title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "180px 1fr 50px",
+                      gap: 14,
+                      alignItems: "center",
+                      cursor: "pointer",
+                      padding: "6px 8px",
+                      margin: "-6px -8px",
+                      borderRadius: 8,
+                      border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
+                      background: isActive ? "rgba(201,168,76,0.06)" : "transparent",
+                    }}
+                  >
+                    <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
+                    <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                      <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
+                    </div>
+                    <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
                   </div>
-                  <span style={{ fontSize: 13, color: "var(--amber)", textAlign: "right" }}>{r.buildableCount}</span>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+            <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
+              Bar color is average severity on that pain point's buildable findings: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Click any row to filter the receipts table and pull up evidence above.
             </div>
           </div>
 

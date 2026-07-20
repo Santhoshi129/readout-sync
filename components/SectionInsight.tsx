@@ -138,7 +138,7 @@ export function SectionInsight({
                 )}
                 {f.permalink && (
                   <a
-                    href={sourceLink(f.permalink)}
+                    href={sourceLink(f.permalink, f.evidence_snippet)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}

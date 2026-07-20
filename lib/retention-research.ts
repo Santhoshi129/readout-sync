@@ -97,14 +97,31 @@ export function combinedDataset(): CommunityDataset {
     (acc, c) => (c.generated_at > acc ? c.generated_at : acc),
     COMMUNITIES[0]?.generated_at ?? ""
   );
+  const mixedMethodology = COMMUNITIES.some((c) => c.data_note);
   return {
     subreddit: "all",
     label: "All communities combined",
     generated_at: latest,
     total_analyzed: COMMUNITIES.reduce((s, c) => s + c.total_analyzed, 0),
     relevant_count: COMMUNITIES.reduce((s, c) => s + c.relevant_count, 0),
+    data_note: mixedMethodology
+      ? "This total mixes communities classified exhaustively with at least one classified via a prescreen funnel (raw pull counted in full here) - open an individual community's tab for its own funnel detail before quoting this ratio."
+      : null,
     findings: COMMUNITIES.flatMap((c) => c.findings),
   };
+}
+
+// Formats a rate as a percentage, except when that percentage would round
+// to "0.0%" and misrepresent a real, nonzero count - falls back to a
+// "1 in every N" ratio instead so a small-but-real number never reads as
+// nothing was found. Used anywhere a community's relevant/analyzed ratio
+// gets shown, since raw-pool denominators can be several orders of
+// magnitude larger than the classified-relevant count.
+export function ratioOrPct(n: number, d: number): string {
+  if (d <= 0 || n <= 0) return "0%";
+  const pct = (n / d) * 100;
+  if (pct >= 0.1) return `${pct.toFixed(1)}%`;
+  return `about 1 in every ${Math.round(d / n).toLocaleString()}`;
 }
 
 // One-line "why this number" explanation for a community's relevant-findings
@@ -117,10 +134,10 @@ export function communityCountNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     return `Union of every community below (${COMMUNITIES.length}) at once - each keeps its own pain-point categories rather than being forced into a shared list.`;
   }
-  const pct = ds.total_analyzed > 0 ? Math.round((ds.relevant_count / ds.total_analyzed) * 1000) / 10 : 0;
-  const base = `${ds.relevant_count} of ${ds.total_analyzed.toLocaleString()} records classified came back relevant (${pct}%)`;
+  const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
+  const base = `${ds.relevant_count} relevant out of ${ds.total_analyzed.toLocaleString()} records (${rate})`;
   if (ds.data_note) {
-    return `${base} - this community was narrowed by a prescreen before classification, not reviewed exhaustively like the others. Open its tab for the full funnel.`;
+    return `${base} - this is the raw pull before prescreening, not what actually reached the classifier. Open its tab for the full funnel.`;
   }
   return `${base} - every cleaned record in this community went through classification, nothing was prescreened out first.`;
 }
@@ -130,18 +147,18 @@ export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     const mixed = COMMUNITIES.some((c) => c.data_note);
     return mixed
-      ? "Sum across all communities - most were reviewed exhaustively, at least one was narrowed by a prescreen first. See that community's tab for its funnel."
+      ? "Sum across all communities - most were reviewed exhaustively, at least one includes its full raw pull rather than just what reached classification. See that community's tab for its funnel."
       : "Sum of every cleaned record across all communities, each reviewed exhaustively by the classifier.";
   }
   return ds.data_note
-    ? "Records that survived this community's prescreen and were actually sent through classification, not the full raw pool."
+    ? "The full raw pull for this community before any filtering - only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."
     : "Every cleaned record in this community, reviewed exhaustively by the classifier.";
 }
 
 // Matching one-liner for the top "Relevant findings" stat tile.
 export function relevantNote(ds: CommunityDataset): string {
-  const pct = ds.total_analyzed > 0 ? Math.round((ds.relevant_count / ds.total_analyzed) * 1000) / 10 : 0;
-  return `${pct}% of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter.`;
+  const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
+  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter${ds.data_note ? ", or never reached classification at all" : ""}.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -603,7 +620,7 @@ export function soWhatQuickWins(rows: SolutionQuadrantRow[], scoredCount: number
 export function executiveSummary(ds: CommunityDataset): string[] {
   const f = ds.findings;
   const n = f.length;
-  const relDensity = ds.total_analyzed > 0 ? (ds.relevant_count / ds.total_analyzed) * 100 : 0;
+  const relRate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
 
   if (n === 0) {
     return [
@@ -626,9 +643,9 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   sentences.push(
-    `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relDensity.toFixed(
-      1
-    )}%) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
+    ds.data_note
+      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}; after prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and this community's funnel filtered harder than the others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
+      : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 
   sentences.push(

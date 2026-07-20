@@ -157,7 +157,7 @@ export function RetentionResearchDashboard({
           tiles={[
             { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", tip: analyzedNote(ds) },
             { label: "Relevant findings", value: ds.relevant_count, tone: "amber", tip: relevantNote(ds) },
-            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak` },
+            { label: "Strong confidence", value: tiers.strong, tone: "hot", tip: `${tiers.moderate} moderate, ${tiers.weak} weak - strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
           ]}
         />
       </section>

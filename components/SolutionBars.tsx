@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/Counter";
-import { solutionCategoryLabel, SolutionExample } from "@/lib/retention-research";
+import { solutionCategoryLabel, SolutionExample, NO_SOLUTION_KEY } from "@/lib/retention-research";
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -78,14 +78,37 @@ export function SolutionBars({
                   fontSize: 13.5,
                   color: isActive ? "var(--amber)" : "var(--ink-dim)",
                   fontWeight: isActive ? 700 : 400,
-                  cursor: ex?.length ? "help" : "default",
-                  borderBottom: ex?.length ? "1px dotted var(--ink-faint)" : "none",
+                  cursor: ex?.length || s === NO_SOLUTION_KEY ? "help" : "default",
+                  borderBottom: ex?.length || s === NO_SOLUTION_KEY ? "1px dotted var(--ink-faint)" : "none",
                   display: "inline-block",
                 }}
               >
                 {solutionCategoryLabel(s)}
               </div>
-              {hoverLabel === s && ex?.length ? (
+              {hoverLabel === s && s === NO_SOLUTION_KEY ? (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    marginTop: 8,
+                    width: 300,
+                    background: "var(--card-raised)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: "12px 14px",
+                    fontSize: 12,
+                    color: "var(--ink-dim)",
+                    lineHeight: 1.55,
+                    zIndex: 60,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                    cursor: "default",
+                  }}
+                >
+                  This isn&apos;t a solution - it&apos;s every finding where nobody described trying anything at all. People venting about the problem without saying what (if anything) they did about it. Treat this count as a floor on unaddressed problem space, not a real fix category.
+                </div>
+              ) : hoverLabel === s && ex?.length ? (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   style={{

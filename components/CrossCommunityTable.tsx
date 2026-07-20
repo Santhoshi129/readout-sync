@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
-import { CommunityDataset, PainPointExample, painPointExamples } from "@/lib/retention-research";
+import { CommunityDataset, PainPointExample, painPointExamples, timelineBreakdown } from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
 
@@ -12,7 +12,6 @@ export function CrossCommunityTable({
   active,
   onSelect,
   onSelectCommunity,
-  examples,
   communities,
 }: {
   rows: CrossCommunityRow[];
@@ -21,14 +20,15 @@ export function CrossCommunityTable({
   active?: string | null;
   onSelect?: (pp: string) => void;
   onSelectCommunity?: (subreddit: string, pp: string) => void;
-  examples?: Record<string, PainPointExample[]>;
   // Optional - when passed, clicking a community pill previews that
   // community's own quotes for this pain point right there inline,
-  // instead of only navigating away to the receipts table.
+  // instead of only navigating away to the receipts table. Also powers
+  // the member/owner evidence split rendered inline per row.
   communities?: CommunityDataset[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
+  const [expandedQuote, setExpandedQuote] = useState<string | null>(null); // "<pain_point>::<side>::<index>"
 
   const sorted = [...rows].sort((a, b) => {
     if (sortBy === "coverage") return b.coverage - a.coverage || b.totalCount - a.totalCount;
@@ -162,29 +162,92 @@ export function CrossCommunityTable({
                     </div>
                   );
                 })()}
-                <div style={{ display: "flex", gap: 16, marginBottom: 10, fontSize: 12.5 }}>
+                <div style={{ display: "flex", gap: 16, marginBottom: 16, fontSize: 12.5 }}>
                   <span><span style={{ color: "var(--hot)", fontWeight: 700 }}>{r.coreFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>core fit</span></span>
                   <span><span style={{ color: "var(--amber)", fontWeight: 700 }}>{r.partialFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>partial fit</span></span>
                   <span><span style={{ color: "var(--ink-faint)", fontWeight: 700 }}>{r.totalCount - r.buildableCount}</span> <span style={{ color: "var(--ink-dim)" }}>not addressable</span></span>
+                  {r.buildableCount > 0 && (
+                    <span style={{ color: SEVERITY_COLOR(r.avgSeverityBuildable) }}>avg severity {r.avgSeverityBuildable.toFixed(1)}/5 on buildable</span>
+                  )}
                 </div>
-                {r.buildableCount > 0 && (
-                  <div style={{ fontSize: 12.5, color: SEVERITY_COLOR(r.avgSeverityBuildable), marginBottom: 10 }}>
-                    Avg severity on the {r.buildableCount} buildable finding{r.buildableCount === 1 ? "" : "s"}: {r.avgSeverityBuildable.toFixed(1)}/5
-                  </div>
-                )}
-                {examples?.[r.pain_point]?.length ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
-                      WHAT PEOPLE ACTUALLY SAID
-                    </div>
-                    {examples[r.pain_point].slice(0, 2).map((ex, i) => (
-                      <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--border)" }}>
-                        {ex.short}
-                        {ex.evidence && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence.length > 140 ? ex.evidence.slice(0, 140) + "…" : ex.evidence}"</div>}
+
+                {communities && (() => {
+                  const pooled = communities.flatMap((c) => c.findings).filter((f) => f.pain_point === r.pain_point);
+                  const timeline = timelineBreakdown(pooled);
+                  const maxT = Math.max(1, ...timeline.map(([, v]) => v));
+                  const memberFindings = pooled.filter((f) => f.perspective === "member");
+                  const ownerFindings = pooled.filter((f) => f.perspective === "owner");
+                  const memberQuotes = painPointExamples(memberFindings, 3)[r.pain_point] || [];
+                  const ownerQuotes = painPointExamples(ownerFindings, 3)[r.pain_point] || [];
+
+                  const quoteBlock = (quotes: PainPointExample[], side: "member" | "owner", count: number) => (
+                    <div>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: side === "member" ? "var(--series-a)" : "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>
+                        {side === "member" ? "WHAT MEMBERS SAY" : "WHAT OWNERS SAY"} ({count})
                       </div>
-                    ))}
-                  </div>
-                ) : null}
+                      {quotes.length > 0 ? (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {quotes.map((ex, i) => {
+                            const qKey = `${r.pain_point}::${side}::${i}`;
+                            const isQOpen = expandedQuote === qKey;
+                            return (
+                              <div
+                                key={i}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setExpandedQuote((k) => (k === qKey ? null : qKey));
+                                }}
+                                style={{
+                                  fontSize: 12.5,
+                                  color: "var(--ink-dim)",
+                                  lineHeight: 1.55,
+                                  padding: "8px 10px",
+                                  borderRadius: 6,
+                                  borderLeft: `2px solid ${side === "member" ? "var(--series-a)" : "var(--series-b)"}`,
+                                  background: isQOpen ? "var(--card)" : "transparent",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                {isQOpen ? ex.reasoning : ex.short}
+                                {ex.evidence && (
+                                  <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
+                                    "{isQOpen || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
+                                  </div>
+                                )}
+                                <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
+                                  {isQOpen ? "tap to collapse" : "tap to read full"}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No {side} findings in this category.</div>
+                      )}
+                    </div>
+                  );
+
+                  return (
+                    <>
+                      {timeline.length > 1 && (
+                        <div style={{ marginBottom: 16 }}>
+                          <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>OVER TIME, ALL COMMUNITIES POOLED</div>
+                          <div style={{ display: "flex", gap: 3, alignItems: "flex-end", height: 32 }}>
+                            {timeline.map(([q, count]) => (
+                              <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", alignItems: "flex-end", height: "100%" }}>
+                                <div style={{ width: "100%", background: "var(--amber)", borderRadius: 1, height: `${Math.max(6, (count / maxT) * 100)}%` }} />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                        {quoteBlock(memberQuotes, "member", memberFindings.length)}
+                        {quoteBlock(ownerQuotes, "owner", ownerFindings.length)}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>

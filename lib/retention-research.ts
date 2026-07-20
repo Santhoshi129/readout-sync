@@ -150,20 +150,17 @@ export function ratioOrPct(n: number, d: number): string {
   return `roughly 1 per ${Math.round(d / n).toLocaleString()}, on average`;
 }
 
-// old.reddit.com is fully server-rendered and natively highlights the
-// target comment (yellow background) whenever the permalink points to one -
-// no guesswork needed, it just works off the comment ID already in the URL.
-// new reddit.com's client-rendered UI doesn't reliably do this at all (the
-// target comment often isn't even mounted in the DOM on load). A prior
-// version of this also appended a browser Text Fragment (#:~:text=...)
-// built from the finding's own evidence_snippet, but that snippet is
-// LLM-paraphrased, not a verbatim copy of the Reddit text, so the fragment
-// often failed to match and produced no highlight anyway - dropped rather
-// than ship something that only sometimes works. For post-only permalinks
-// (no comment ID to anchor to), this still lands on the right page; the
-// quote is already shown directly in the card itself.
-export function sourceLink(permalink: string): string {
-  return permalink.replace(/^https?:\/\/(www\.)?reddit\.com/, "https://old.reddit.com");
+// The raw permalink exactly as it sits in the data, with a browser Text
+// Fragment (#:~:text=...) appended so the page jumps to and highlights the
+// same words shown on the card. Highlighting isn't guaranteed to fire on
+// every click (it depends on Reddit's own page rendering, out of our
+// control), but the link itself always goes to the right place either way.
+export function sourceLink(permalink: string, quote?: string | null): string {
+  if (!quote) return permalink;
+  const firstSentence = quote.split(/[.!?](?:\s|$)/)[0].trim();
+  if (!firstSentence) return permalink;
+  const fragment = encodeURIComponent(firstSentence.slice(0, 200));
+  return `${permalink}#:~:text=${fragment}`;
 }
 
 // Falls back to the scrape-time author check (a real but partial signal -

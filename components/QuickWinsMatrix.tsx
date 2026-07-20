@@ -62,6 +62,7 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
             key={r.category}
             onMouseEnter={() => setHover(r.category)}
             onMouseLeave={() => setHover((h) => (h === r.category ? null : h))}
+            onClick={() => setHover((h) => (h === r.category ? null : r.category))}
             style={{ position: "relative" }}
           >
             <div

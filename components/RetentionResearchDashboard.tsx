@@ -159,6 +159,12 @@ export function RetentionResearchDashboard({
         </div>
       </section>
 
+      {ds.subreddit === "all" ? (
+        <div className="card" style={{ padding: 48, textAlign: "center", color: "var(--ink-faint)", marginBottom: 24 }}>
+          Nothing here yet. Pick an individual community above to see its analysis.
+        </div>
+      ) : (
+        <>
       <section style={{ marginBottom: 24 }}>
         <KeyTakeaways points={takeaways} />
       </section>
@@ -479,6 +485,8 @@ export function RetentionResearchDashboard({
         </div>
         <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} />
       </section>
+        </>
+      )}
 
       <div className="foot">
         Retention Research, I classified this from public Reddit discussions. Static build, not live-syncing, I'll refresh it when the next batch of communities is done.

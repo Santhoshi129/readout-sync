@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Finding } from "@/lib/retention-research";
+import { communityFromPermalink, Finding } from "@/lib/retention-research";
 
 // Plain-language comment for every field in a finding record, shown next
 // to the raw JSON so the field names aren't a mystery to a non-technical
@@ -42,6 +42,9 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
 
   const sample = findings.find((f) => f.confidence_tier === "strong") ?? findings[0] ?? null;
   const entries = sample ? Object.entries(sample as unknown as Record<string, unknown>) : [];
+  const communitiesInView = new Set(findings.map((f) => communityFromPermalink(f.permalink)));
+  const isPooled = communitiesInView.size > 1;
+  const sampleCommunity = sample ? communityFromPermalink(sample.permalink) : null;
 
   return (
     <div className="card" style={{ padding: 0, overflow: "hidden", marginBottom: 24 }}>
@@ -78,6 +81,11 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
 
               {showJson && (
                 <div style={{ marginTop: 12 }}>
+                  {isPooled && sample && (
+                    <div style={{ fontSize: 12, color: "var(--ink-dim)", marginBottom: 10, lineHeight: 1.6 }}>
+                      This example happens to be from <span style={{ color: "var(--amber)" }}>{sampleCommunity}</span> - the schema doesn't change when pooled across all {communitiesInView.size} communities. Every finding from every community shares this exact shape; combining them is just a union of the same record type, nothing structural changes. The <span style={{ fontFamily: "var(--mono)" }}>permalink</span> field below is how a finding's source community is identified, since there's no separate community field on the record itself.
+                    </div>
+                  )}
                   <div style={{ fontSize: 12, color: "var(--ink-dim)", marginBottom: 8 }}>
                     The actual output for one finding, exactly what every chart on this page reads from, with a plain-language note on what each field is.
                   </div>

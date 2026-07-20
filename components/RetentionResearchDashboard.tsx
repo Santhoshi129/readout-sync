@@ -20,6 +20,7 @@ import { SectionInsight } from "@/components/SectionInsight";
 import { InfoTip } from "@/components/InfoTip";
 import { GapBarChart } from "@/components/GapBarChart";
 import { CrossCommunityTable } from "@/components/CrossCommunityTable";
+import { PainPointHeatmap } from "@/components/PainPointHeatmap";
 import { DataCoverageTable } from "@/components/DataCoverageTable";
 import {
   MEMBER_SUBREDDITS,
@@ -86,6 +87,7 @@ export function RetentionResearchDashboard({
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
   const evidencePanelRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
+  const [scrollTrigger, setScrollTrigger] = useState(0);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -128,7 +130,6 @@ export function RetentionResearchDashboard({
   const coverageNarrative = useMemo(() => soWhatCoverage(coverageRows, communities.length), [coverageRows, communities.length]);
   const longTail = useMemo(() => longTailStats(communities), [communities]);
   const combinedNotes = useMemo(() => combinedTakeaways(radarAxesData, coverageRows, communities.length), [radarAxesData, coverageRows, communities.length]);
-  const allCombinedExamples = useMemo(() => painPointExamples(communities.flatMap((c) => c.findings), 3), [communities]);
   const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 2), [memberFindingsForRadar]);
   const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 2), [ownerFindingsForRadar]);
   const activePainPointLabel = filters.painPoint !== "All" ? painPointLabel(filters.painPoint) : null;
@@ -140,11 +141,19 @@ export function RetentionResearchDashboard({
     if (activePainPointLabel && evidencePanelRef.current) {
       evidencePanelRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }, [activePainPointLabel]);
+  }, [scrollTrigger]);
   const selectCombinedPainPoint = (pp: string) => select("painPoint", pp);
+  // Only GapBarChart selections page-jump to the shared evidence panel.
+  // Cross-community pain points and Feature development rows now render
+  // their own evidence inline (below the row you clicked), so bumping
+  // scrollTrigger there would yank the page away from what you're
+  // actually looking at.
   const selectCombinedAxis = (label: string) => {
     const axis = radarAxesData.find((a) => a.label === label);
-    if (axis) select("painPoint", axis.key);
+    if (axis) {
+      select("painPoint", axis.key);
+      setScrollTrigger((t) => t + 1);
+    }
   };
   // Community pill click sets both filters explicitly (not a toggle like
   // select()) - clicking r/f45 on the coaching-quality row should always
@@ -755,10 +764,28 @@ export function RetentionResearchDashboard({
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy="coverage" active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} communities={communities} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy="coverage" active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} communities={communities} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
               {coverageNarrative}
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="section-title">
+                Pain point × community map
+                <InfoTip text="Every pain point against every live community, at once. This is the one view on this page that only exists because the data is pooled - no single community's own tab has anything to cross-reference against. Color is normalized per row so a smaller community's real signal doesn't just wash out next to a bigger one." />
+              </div>
+              <div className="eyebrow muted">click a lit cell to jump there</div>
+            </div>
+            <div style={{ marginTop: 22 }}>
+              <PainPointHeatmap
+                rows={coverageRows}
+                communities={communities.map((c) => ({ subreddit: c.subreddit, label: c.label }))}
+                onSelectCell={selectCommunityAndPainPoint}
+                activePainPoint={filters.painPoint === "All" ? null : (filters.painPoint as string)}
+              />
             </div>
           </div>
 
@@ -844,7 +871,7 @@ export function RetentionResearchDashboard({
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
                           SOLUTIONS TRIED FOR THIS, RANKED BY MENTIONS
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
                           {matchingPriorityRow.solutions.slice(0, 4).map((s) => (
                             <div key={s.category} style={{ display: "flex", gap: 12, alignItems: "baseline", fontSize: 12.5, flexWrap: "wrap" }}>
                               <span style={{ color: "var(--ink)", fontWeight: 600, minWidth: 150 }}>{solutionCategoryLabel(s.category)}</span>
@@ -857,6 +884,32 @@ export function RetentionResearchDashboard({
                               {s.avgDifficulty != null && <span style={{ color: "var(--cold)" }}>{s.avgDifficulty.toFixed(1)}/5 difficulty</span>}
                             </div>
                           ))}
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                          <div>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
+                            {memberExamples[r.pain_point]?.length ? (
+                              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                                {memberExamples[r.pain_point].slice(0, 2).map((ex, i) => (
+                                  <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, paddingLeft: 8, borderLeft: "2px solid var(--series-a)" }}>{ex.short}</div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>No member findings in this category.</div>
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
+                            {ownerExamples[r.pain_point]?.length ? (
+                              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                                {ownerExamples[r.pain_point].slice(0, 2).map((ex, i) => (
+                                  <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, paddingLeft: 8, borderLeft: "2px solid var(--series-b)" }}>{ex.short}</div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}

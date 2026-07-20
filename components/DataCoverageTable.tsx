@@ -6,8 +6,23 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
   const [expanded, setExpanded] = useState<string | null>(null);
   const expandedCommunity = communities.find((c) => c.subreddit === expanded) || null;
 
+  const graded = communities.map((c) => {
+    const n = c.findings.length || 1;
+    const strongPct = (c.findings.filter((f) => f.confidence_tier === "strong").length / n) * 100;
+    // Simple, stated-plainly reliability score: exhaustive coverage counts
+    // for more than raw strong-tier percentage alone, since a funneled
+    // community's relevant pool was pre-filtered before classification
+    // ever saw it - the two aren't measuring the same thing.
+    const score = (c.data_note ? 0 : 45) + strongPct * 0.55;
+    const grade = score >= 60 ? "A" : score >= 35 ? "B" : "C";
+    return { c, score, grade };
+  }).sort((a, b) => b.score - a.score);
+
   return (
     <div>
+      <div style={{ marginBottom: 14, fontSize: 12, color: "var(--ink-dim)" }}>
+        Sorted by reliability, not order of addition: <span style={{ fontFamily: "var(--mono)" }}>A</span> = exhaustively classified with a healthy strong-tier share, <span style={{ fontFamily: "var(--mono)" }}>C</span> = funneled and/or thin on strong-tier findings. This is a rough, stated-plainly score, not a precision instrument - read the confidence bar underneath for the real breakdown.
+      </div>
       <div
         style={{
           display: "grid",
@@ -15,7 +30,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
           gap: 14,
         }}
       >
-        {communities.map((c) => {
+        {graded.map(({ c, grade }) => {
           const hitRate = c.total_analyzed > 0 ? (c.relevant_count / c.total_analyzed) * 100 : 0;
           const strong = c.findings.filter((f) => f.confidence_tier === "strong").length;
           const moderate = c.findings.filter((f) => f.confidence_tier === "moderate").length;
@@ -47,6 +62,24 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <span style={{ fontWeight: 700, fontSize: 15 }}>{c.label}</span>
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <span
+                    title={`Reliability grade ${grade}: ${c.data_note ? "funneled" : "exhaustive"} classification, ${strongPct.toFixed(0)}% strong-tier findings`}
+                    style={{
+                      fontFamily: "var(--font-head)",
+                      fontSize: 13,
+                      fontWeight: 800,
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: grade === "A" ? "var(--hot)" : grade === "B" ? "var(--amber)" : "var(--warm)",
+                      border: `1px solid ${grade === "A" ? "var(--hot)" : grade === "B" ? "var(--amber)" : "var(--warm)"}`,
+                    }}
+                  >
+                    {grade}
+                  </span>
                   <span
                     style={{
                       fontFamily: "var(--mono)",

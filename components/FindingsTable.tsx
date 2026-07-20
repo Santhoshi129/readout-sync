@@ -12,7 +12,7 @@ import {
   painPointLabel,
   solutionCategoryLabel,
   perspectiveLabel,
-  withTextFragment,
+  sourceLink,
 } from "@/lib/retention-research";
 
 type SortKey = "default" | "severity" | "confidence" | "newest";
@@ -374,7 +374,7 @@ export function FindingsTable({
                     )}
                     {f.permalink && (
                       <a
-                        href={withTextFragment(f.permalink, f.evidence_snippet)}
+                        href={sourceLink(f.permalink)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={(e) => e.stopPropagation()}

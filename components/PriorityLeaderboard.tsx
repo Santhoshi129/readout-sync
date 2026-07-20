@@ -96,10 +96,17 @@ export function PriorityLeaderboard({
   rows,
   active,
   onSelect,
+  communityBreakdown,
 }: {
   rows: PriorityRow[];
   active?: string | null;
   onSelect?: (pp: string) => void;
+  // Optional: only meaningful when rows were computed from pooled
+  // multi-community findings. Keyed by pain_point, gives the per-community
+  // split of that row's core-fit findings so "347 findings TWU can fix"
+  // doesn't read as an opaque single number with no sense of where it
+  // actually comes from.
+  communityBreakdown?: Record<string, { subreddit: string; label: string; count: number }[]>;
 }) {
   const ranked = rows.filter((r) => r.score > 0).slice(0, 6);
 
@@ -194,6 +201,31 @@ export function PriorityLeaderboard({
               </div>
 
               <div style={{ marginTop: 12, fontSize: 13.5, color: "var(--ink)", lineHeight: 1.5 }}>{r.recommendedAction}</div>
+
+              {communityBreakdown?.[r.pain_point] && (
+                <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 6 }} onClick={(e) => e.stopPropagation()}>
+                  <span style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", alignSelf: "center", marginRight: 2 }}>
+                    CORE-FIT FINDINGS BY COMMUNITY:
+                  </span>
+                  {communityBreakdown[r.pain_point]
+                    .filter((c) => c.count > 0)
+                    .map((c) => (
+                      <span
+                        key={c.subreddit}
+                        style={{
+                          fontSize: 11,
+                          fontFamily: "var(--mono)",
+                          padding: "2px 9px",
+                          borderRadius: 999,
+                          border: "1px solid var(--border)",
+                          color: "var(--ink-dim)",
+                        }}
+                      >
+                        {c.label}: {c.count}
+                      </span>
+                    ))}
+                </div>
+              )}
 
               <SolutionsBreakdown solutions={r.solutions} />
             </div>

@@ -378,6 +378,7 @@ export function RetentionResearchDashboard({
           selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
           generalText={soWhatAppRelevance(appRel, findings.length)}
           onClear={() => clear("relevance")}
+          showReasoning
         />
       </div>
 

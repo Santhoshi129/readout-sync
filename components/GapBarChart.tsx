@@ -55,14 +55,15 @@ export function GapBarChart({
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        {sorted.map((a) => {
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        {sorted.map((a, idx) => {
           const gap = a.memberPct - a.ownerPct;
           const memberLeans = gap > 0;
           const isActive = active === a.label;
           const isHover = hoverKey === a.key;
           const ownerW = Math.max(2, (a.ownerPct / axisMax) * 100);
           const memberW = Math.max(2, (a.memberPct / axisMax) * 100);
+          const leadColor = memberLeans ? "var(--series-a)" : "var(--series-b)";
           return (
             <div
               key={a.key}
@@ -74,51 +75,56 @@ export function GapBarChart({
                 gridTemplateColumns: "180px 1fr 68px",
                 alignItems: "center",
                 gap: 14,
-                padding: "10px 12px",
+                padding: "11px 12px",
                 borderRadius: 10,
                 cursor: onSelect ? "pointer" : "default",
                 border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
-                background: isActive ? "rgba(201,168,76,0.10)" : isHover ? "var(--card-raised)" : "transparent",
-                transition: "background 0.12s ease",
+                background: isActive ? "rgba(201,168,76,0.10)" : isHover ? "var(--card-raised)" : idx % 2 === 0 ? "rgba(255,255,255,0.012)" : "transparent",
+                boxShadow: isActive ? `0 0 0 1px var(--amber), 0 4px 16px -4px rgba(201,168,76,0.35)` : "none",
+                transition: "background 0.12s ease, box-shadow 0.12s ease",
               }}
             >
               <span style={{ fontSize: 12.5, color: isActive ? "var(--ink)" : "var(--ink-dim)", fontWeight: isActive ? 600 : 400, lineHeight: 1.25 }}>
                 {a.label}
               </span>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 2px 1fr", alignItems: "center", height: 22 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 2px 1fr", alignItems: "center", height: 24 }}>
                 {/* owner half - grows right-to-left toward the center line */}
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <div
                     style={{
                       width: `${ownerW}%`,
-                      height: 14,
-                      borderRadius: "8px 2px 2px 8px",
+                      height: 16,
+                      borderRadius: "9px 3px 3px 9px",
                       background: "linear-gradient(90deg, rgba(91,147,214,0.35), var(--series-b))",
+                      boxShadow: !memberLeans && (isHover || isActive) ? "0 0 10px rgba(91,147,214,0.5)" : "none",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "flex-start",
                       paddingLeft: 6,
                       minWidth: 28,
+                      transition: "box-shadow 0.12s ease",
                     }}
                   >
                     <span style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "#0a0a0a", fontWeight: 700 }}>{a.ownerPct}%</span>
                   </div>
                 </div>
-                <div style={{ width: 2, height: 22, background: "var(--border)" }} />
+                <div style={{ width: 2, height: 24, background: "var(--border)" }} />
                 {/* member half - grows left-to-right away from the center line */}
                 <div style={{ display: "flex", justifyContent: "flex-start" }}>
                   <div
                     style={{
                       width: `${memberW}%`,
-                      height: 14,
-                      borderRadius: "2px 8px 8px 2px",
+                      height: 16,
+                      borderRadius: "3px 9px 9px 3px",
                       background: "linear-gradient(90deg, var(--series-a), rgba(230,199,102,0.35))",
+                      boxShadow: memberLeans && (isHover || isActive) ? "0 0 10px rgba(230,199,102,0.5)" : "none",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "flex-end",
                       paddingRight: 6,
                       minWidth: 28,
+                      transition: "box-shadow 0.12s ease",
                     }}
                   >
                     <span style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "#0a0a0a", fontWeight: 700 }}>{a.memberPct}%</span>
@@ -131,7 +137,7 @@ export function GapBarChart({
                   fontSize: 11,
                   fontFamily: "var(--mono)",
                   textAlign: "right",
-                  color: Math.abs(gap) >= 8 ? (memberLeans ? "var(--series-a)" : "var(--series-b)") : "var(--ink-faint)",
+                  color: Math.abs(gap) >= 8 ? leadColor : "var(--ink-faint)",
                   fontWeight: Math.abs(gap) >= 8 ? 700 : 400,
                 }}
               >

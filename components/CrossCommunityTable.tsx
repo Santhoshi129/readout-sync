@@ -100,23 +100,23 @@ export function CrossCommunityTable({
             {isOpen && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
-                  FROM WHERE - hover a pill to preview it here, click to jump to the full list
+                  FROM WHERE - scroll, tap a community to preview it here
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+                <div style={{ display: "flex", flexWrap: "nowrap", gap: 8, marginBottom: 8, overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: 4 }}>
                   {r.communities.map((c) => {
                     const pillKey = `${r.pain_point}::${c.subreddit}`;
                     const isPreviewing = previewPill === pillKey;
                     return (
                       <span
                         key={c.subreddit}
-                        title={c.count > 0 ? `${c.count} finding${c.count === 1 ? "" : "s"} from ${c.label} on ${r.label.toLowerCase()}. Click to see them.` : `${c.label} has no findings in this category.`}
-                        onMouseEnter={() => c.count > 0 && setPreviewPill(pillKey)}
-                        onMouseLeave={() => setPreviewPill((p) => (p === pillKey ? null : p))}
+                        title={c.count > 0 ? `${c.count} finding${c.count === 1 ? "" : "s"} from ${c.label} on ${r.label.toLowerCase()}. Tap to preview.` : `${c.label} has no findings in this category.`}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (c.count > 0) onSelectCommunity?.(c.subreddit, r.pain_point);
+                          if (c.count === 0) return;
+                          setPreviewPill((p) => (p === pillKey ? null : pillKey));
                         }}
                         style={{
+                          flexShrink: 0,
                           fontSize: 11.5,
                           fontFamily: "var(--mono)",
                           padding: "4px 10px",
@@ -124,7 +124,7 @@ export function CrossCommunityTable({
                           border: `1px solid ${isPreviewing ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
                           color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
                           background: isPreviewing ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card-raised)" : "transparent",
-                          cursor: c.count > 0 && onSelectCommunity ? "pointer" : "default",
+                          cursor: c.count > 0 ? "pointer" : "default",
                           transition: "background 0.1s ease, border-color 0.1s ease",
                         }}
                       >
@@ -138,10 +138,16 @@ export function CrossCommunityTable({
                   const community = communities.find((c) => c.subreddit === subreddit);
                   const commFindings = community ? community.findings.filter((f) => f.pain_point === r.pain_point) : [];
                   const commExamples = painPointExamples(commFindings, 2)[r.pain_point] || [];
+                  const openInReceipts = () => community && onSelectCommunity?.(community.subreddit, r.pain_point);
                   return (
                     <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                      <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em", marginBottom: 6 }}>
-                        {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
+                          {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
+                        </div>
+                        <span onClick={(e) => { e.stopPropagation(); openInReceipts(); }} style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", cursor: "pointer", textDecoration: "underline" }}>
+                          see all in receipts &rarr;
+                        </span>
                       </div>
                       {commExamples.length > 0 ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>

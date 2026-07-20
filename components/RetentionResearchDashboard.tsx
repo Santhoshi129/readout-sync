@@ -114,7 +114,6 @@ export function RetentionResearchDashboard({
   // can't be conditional) but only rendered when active === "all" - cheap
   // enough on this dataset size that gating the computation itself isn't
   // worth the complexity.
-  const [tableSort, setTableSort] = useState<"coverage" | "buildable">("buildable");
   const memberFindingsForRadar = useMemo(() => lensFindings(communities, MEMBER_SUBREDDITS), [communities]);
   const ownerFindingsForRadar = useMemo(() => lensFindings(communities, OWNER_SUBREDDITS), [communities]);
   const radarAxesData = useMemo(() => radarAxes(memberFindingsForRadar, ownerFindingsForRadar), [memberFindingsForRadar, ownerFindingsForRadar]);
@@ -125,7 +124,6 @@ export function RetentionResearchDashboard({
   const coverageRows = useMemo(() => crossCommunityPainPoints(communities), [communities]);
   const universalCount = coverageRows.filter((r) => r.universal).length;
   const coverageNarrative = useMemo(() => soWhatCoverage(coverageRows, communities.length), [coverageRows, communities.length]);
-  const featureNarrative = useMemo(() => soWhatFeatureRanking(coverageRows), [coverageRows]);
   const longTail = useMemo(() => longTailStats(communities), [communities]);
   const combinedNotes = useMemo(() => combinedTakeaways(radarAxesData, coverageRows, communities.length), [radarAxesData, coverageRows, communities.length]);
   const allCombinedExamples = useMemo(() => painPointExamples(communities.flatMap((c) => c.findings), 3), [communities]);
@@ -574,189 +572,182 @@ export function RetentionResearchDashboard({
             <KeyTakeaways points={combinedNotes} />
           </section>
 
-          {activePainPointLabel && (
-            <div
-              className="card"
-              style={{ padding: 24, marginBottom: 24, border: "1px solid var(--amber-deep)", background: "rgba(201,168,76,0.05)" }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-                <div className="eyebrow">Selected: {activePainPointLabel}</div>
-                <button
-                  onClick={() => clear("painPoint")}
-                  style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
-                >
-                  CLEAR
-                </button>
-              </div>
-              {PAIN_POINT_MEANING[filters.painPoint] && (
-                <div style={{ fontSize: 14, color: "var(--ink)", lineHeight: 1.55, marginBottom: 20, maxWidth: 760 }}>
-                  {PAIN_POINT_MEANING[filters.painPoint]}
-                </div>
-              )}
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 20 }}>
-                <div>
-                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>FROM WHERE</div>
-                  {selectedCombinedRow ? (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {selectedCombinedRow.communities.map((c) => (
-                        <span
-                          key={c.subreddit}
-                          onClick={() => c.count > 0 && selectCommunityAndPainPoint(c.subreddit, filters.painPoint as string)}
-                          style={{
-                            fontSize: 11.5,
-                            fontFamily: "var(--mono)",
-                            padding: "4px 10px",
-                            borderRadius: 999,
-                            border: `1px solid ${filters.community === `r/${c.subreddit}` ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
-                            color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
-                            background: filters.community === `r/${c.subreddit}` ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card-raised)" : "transparent",
-                            cursor: c.count > 0 ? "pointer" : "default",
-                          }}
-                        >
-                          {c.label}: {c.count}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-                <div>
-                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT (APP FIT)</div>
-                  <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-                    {selectedRelevanceBreakdown.map((a) => (
-                      <span key={a.key} style={{ fontSize: 12.5 }}>
-                        <span style={{ fontWeight: 700, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)" }}>{a.count}</span>{" "}
-                        <span style={{ color: "var(--ink-dim)" }}>{a.label.split(":")[0]}</span>
-                      </span>
-                    ))}
+          {(() => {
+            const byGap = [...radarAxesData].sort((a, b) => Math.abs(b.memberPct - b.ownerPct) - Math.abs(a.memberPct - a.ownerPct));
+            const memberLean = [...radarAxesData].sort((a, b) => (b.memberPct - b.ownerPct) - (a.memberPct - a.ownerPct))[0];
+            const ownerLean = [...radarAxesData].sort((a, b) => (a.memberPct - a.ownerPct) - (b.memberPct - b.ownerPct))[0];
+            return (
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div className="section-head" style={{ marginBottom: 0 }}>
+                  <div className="section-title">
+                    Who talks about what: members vs owners
+                    <InfoTip text="Each row is a pain-point category. Bar length is that category's share of the lens's own findings (not a raw count), so a small group and a large group are still comparable side by side. Sorted by the size of the gap between the two, biggest gap first." />
                   </div>
+                  <div className="eyebrow muted">click a row for the evidence</div>
                 </div>
-              </div>
-
-              <div style={{ marginBottom: 20 }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>WHEN</div>
-                <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 40 }}>
-                  {selectedTimeline.map(([q, count]) => {
-                    const maxT = Math.max(1, ...selectedTimeline.map((t) => t[1]));
-                    return (
-                      <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
-                        <div style={{ width: "100%", maxWidth: 14, background: "var(--series-a)", borderRadius: 2, height: `${Math.max(3, (count / maxT) * 100)}%` }} />
+                {byGap.length > 0 && (
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20, marginBottom: 4 }}>
+                    {memberLean && (
+                      <div
+                        onClick={() => selectCombinedAxis(memberLean.label)}
+                        style={{ cursor: "pointer", padding: "16px 18px", borderRadius: 12, background: "linear-gradient(135deg, rgba(230,199,102,0.14), rgba(230,199,102,0.02))", border: "1px solid var(--series-a)" }}
+                      >
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.08em", color: "var(--series-a)", marginBottom: 6 }}>MEMBERS SAY IT MOST</div>
+                        <div style={{ fontFamily: "var(--font-head)", fontSize: 17, fontWeight: 700 }}>{memberLean.label}</div>
+                        <div style={{ fontSize: 12.5, color: "var(--ink-dim)", marginTop: 4 }}>{memberLean.memberPct}% of member findings vs {memberLean.ownerPct}% of owner findings</div>
                       </div>
-                    );
-                  })}
+                    )}
+                    {ownerLean && (
+                      <div
+                        onClick={() => selectCombinedAxis(ownerLean.label)}
+                        style={{ cursor: "pointer", padding: "16px 18px", borderRadius: 12, background: "linear-gradient(135deg, rgba(91,147,214,0.14), rgba(91,147,214,0.02))", border: "1px solid var(--series-b)" }}
+                      >
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.08em", color: "var(--series-b)", marginBottom: 6 }}>OWNERS SAY IT MOST</div>
+                        <div style={{ fontFamily: "var(--font-head)", fontSize: 17, fontWeight: 700 }}>{ownerLean.label}</div>
+                        <div style={{ fontSize: 12.5, color: "var(--ink-dim)", marginTop: 4 }}>{ownerLean.ownerPct}% of owner findings vs {ownerLean.memberPct}% of member findings</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div style={{ marginTop: 22 }}>
+                  <GapBarChart
+                    axes={radarAxesData}
+                    onSelect={selectCombinedAxis}
+                    active={activePainPointLabel}
+                    memberLabel={`Members (${memberFindingsForRadar.length} findings)`}
+                    ownerLabel={`Owners (${ownerFindingsForRadar.length} findings)`}
+                  />
                 </div>
-                <div style={{ fontSize: 11, color: "var(--ink-faint)", marginTop: 4 }}>
-                  {selectedTimeline.length > 0 ? `${selectedTimeline[0][0]} through ${selectedTimeline[selectedTimeline.length - 1][0]}, ${selectedTimeline.reduce((s, t) => s + t[1], 0)} findings total` : "No dated findings"}
-                </div>
-              </div>
+                <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-                <div>
-                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
-                  {memberExamples[filters.painPoint]?.length ? (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {memberExamples[filters.painPoint].map((ex, i) => (
-                        <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-a)" }}>
-                          {ex.short}
-                        </div>
-                      ))}
+                {activePainPointLabel && (
+                  <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid var(--border)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
+                      <div className="eyebrow" style={{ color: "var(--amber)" }}>Evidence for: {activePainPointLabel}</div>
+                      <button
+                        onClick={() => clear("painPoint")}
+                        style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
+                      >
+                        CLEAR
+                      </button>
                     </div>
-                  ) : (
-                    <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No member findings in this category.</div>
-                  )}
-                </div>
-                <div>
-                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
-                  {ownerExamples[filters.painPoint]?.length ? (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {ownerExamples[filters.painPoint].map((ex, i) => (
-                        <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-b)" }}>
-                          {ex.short}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
-                  )}
-                </div>
-              </div>
-              <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-                {filters.community !== "All" ? `Filtered to ${filters.community}. ` : ""}Scroll down to "The receipts" for every individual finding, filtered automatically.
-              </div>
-            </div>
-          )}
+                    {PAIN_POINT_MEANING[filters.painPoint] && (
+                      <div style={{ fontSize: 14, color: "var(--ink)", lineHeight: 1.55, marginBottom: 18, maxWidth: 760 }}>
+                        {PAIN_POINT_MEANING[filters.painPoint]}
+                      </div>
+                    )}
 
-          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
-            <div className="section-head" style={{ marginBottom: 0 }}>
-              <div className="section-title">
-                Who talks about what: members vs owners
-                <InfoTip text="Each row is a pain-point category. Bar length is that category's share of the lens's own findings (not a raw count), so a small group and a large group are still comparable side by side. Sorted by the size of the gap between the two, biggest gap first." />
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>SOURCE COMMUNITIES</div>
+                        {selectedCombinedRow ? (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                            {selectedCombinedRow.communities.map((c) => (
+                              <span
+                                key={c.subreddit}
+                                onClick={() => c.count > 0 && selectCommunityAndPainPoint(c.subreddit, filters.painPoint as string)}
+                                style={{
+                                  fontSize: 11.5,
+                                  fontFamily: "var(--mono)",
+                                  padding: "4px 10px",
+                                  borderRadius: 999,
+                                  border: `1px solid ${filters.community === `r/${c.subreddit}` ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
+                                  color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
+                                  background: filters.community === `r/${c.subreddit}` ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card)" : "transparent",
+                                  cursor: c.count > 0 ? "pointer" : "default",
+                                }}
+                              >
+                                {c.label}: {c.count}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>CAN TWU FIX THIS?</div>
+                        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                          {selectedRelevanceBreakdown.map((a) => (
+                            <span key={a.key} style={{ fontSize: 13 }}>
+                              <span style={{ fontWeight: 700, fontSize: 16, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)" }}>{a.count}</span>{" "}
+                              <span style={{ color: "var(--ink-dim)" }}>{a.label.split(":")[0]}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)", marginBottom: 14 }}>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>OVER TIME</div>
+                      <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 44 }}>
+                        {selectedTimeline.map(([q, count]) => {
+                          const maxT = Math.max(1, ...selectedTimeline.map((t) => t[1]));
+                          return (
+                            <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
+                              <div style={{ width: "100%", maxWidth: 14, background: "var(--series-a)", borderRadius: 2, height: `${Math.max(3, (count / maxT) * 100)}%` }} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div style={{ fontSize: 11, color: "var(--ink-faint)", marginTop: 6 }}>
+                        {selectedTimeline.length > 0 ? `${selectedTimeline[0][0]} through ${selectedTimeline[selectedTimeline.length - 1][0]}, ${selectedTimeline.reduce((s, t) => s + t[1], 0)} findings total` : "No dated findings"}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-a)" }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT MEMBERS SAY</div>
+                        {memberExamples[filters.painPoint]?.length ? (
+                          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                            {memberExamples[filters.painPoint].map((ex, i) => (
+                              <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-a)" }}>
+                                {ex.short}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No member findings in this category.</div>
+                        )}
+                      </div>
+                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-b)" }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT OWNERS SAY</div>
+                        {ownerExamples[filters.painPoint]?.length ? (
+                          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                            {ownerExamples[filters.painPoint].map((ex, i) => (
+                              <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-b)" }}>
+                                {ex.short}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
+                        )}
+                      </div>
+                    </div>
+                    <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
+                      {filters.community !== "All" ? `Filtered to ${filters.community}. ` : ""}Scroll down to "The receipts" for every individual finding, filtered automatically.
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="eyebrow muted">click a row for the evidence</div>
-            </div>
-            <div style={{ marginTop: 22 }}>
-              <GapBarChart
-                axes={radarAxesData}
-                onSelect={selectCombinedAxis}
-                active={activePainPointLabel}
-                memberLabel={`Members (${memberFindingsForRadar.length} findings)`}
-                ownerLabel={`Owners (${ownerFindingsForRadar.length} findings)`}
-              />
-            </div>
-            <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
-          </div>
+            );
+          })()}
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
                 Cross-community pain points
-                <InfoTip text="Every canonical pain-point category, and which of the live communities actually surface it. 'Universal' means it shows up in every single community, not just the biggest ones. Toggle the sort to rank by buildable volume instead - same rows, different question." />
+                <InfoTip text="Every canonical pain-point category, and which of the live communities actually surface it. 'Universal' means it shows up in every single community, not just the biggest ones. For the buildable-volume ranking of the same categories, see Feature development ranking below - a distinct chart, not a re-sort of this one." />
               </div>
-              <div style={{ display: "flex", gap: 6 }}>
-                <button
-                  onClick={() => setTableSort("buildable")}
-                  title="Sort so the pain points TWU could act on soonest (core-fit + partial-fit findings) show up first, regardless of how many communities mention them."
-                  style={{
-                    fontFamily: "var(--mono)",
-                    fontSize: 10.5,
-                    letterSpacing: "0.05em",
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    border: "1px solid var(--border)",
-                    background: tableSort === "buildable" ? "var(--amber)" : "transparent",
-                    color: tableSort === "buildable" ? "#000" : "var(--ink-dim)",
-                    cursor: "pointer",
-                  }}
-                >
-                  MOST BUILDABLE FIRST
-                </button>
-                <button
-                  onClick={() => setTableSort("coverage")}
-                  title="Sort so pain points mentioned across the most communities show up first - the closest thing this data has to a universal, format-agnostic problem."
-                  style={{
-                    fontFamily: "var(--mono)",
-                    fontSize: 10.5,
-                    letterSpacing: "0.05em",
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    border: "1px solid var(--border)",
-                    background: tableSort === "coverage" ? "var(--amber)" : "transparent",
-                    color: tableSort === "coverage" ? "#000" : "var(--ink-dim)",
-                    cursor: "pointer",
-                  }}
-                >
-                  MOST COMMUNITIES FIRST
-                </button>
-              </div>
+              <div className="eyebrow muted">tap a community pill to preview</div>
             </div>
             <div style={{ marginTop: 6, fontSize: 12, color: "var(--ink-dim)" }}>
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} communities={communities} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy="coverage" active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} communities={communities} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
-              {tableSort === "coverage" ? coverageNarrative : featureNarrative}
+              {coverageNarrative}
             </div>
           </div>
 
@@ -770,34 +761,53 @@ export function RetentionResearchDashboard({
             <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
               <strong>How this number is calculated:</strong> for each pain point, I count every finding across all {communities.length} communities where a classifier marked app_relevance as core_fit or partial_fit, then sum them. It is not weighted by severity or confidence tier - it's a raw count of "TWU could plausibly act on this." Click a row to see exactly which solutions people tried for it and how well they reportedly worked.
             </div>
-            <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 16 }}>
               {topBuildable.map((r) => {
                 const isActive = activePainPointLabel === r.label;
                 const barColor = r.avgSeverityBuildable >= 3.5 ? "var(--bad)" : r.avgSeverityBuildable >= 2.5 ? "var(--amber)" : "var(--hot)";
                 const matchingPriorityRow = priority.find((p) => p.pain_point === r.pain_point);
+                const solutions = matchingPriorityRow?.solutions ?? [];
+                const scored = solutions.filter((s) => s.avgEffectiveness != null && s.avgDifficulty != null);
+                const totalMentions = scored.reduce((s, sol) => s + sol.count, 0);
+                const avgEff = totalMentions > 0 ? scored.reduce((s, sol) => s + (sol.avgEffectiveness ?? 0) * sol.count, 0) / totalMentions : null;
+                const avgDiff = totalMentions > 0 ? scored.reduce((s, sol) => s + (sol.avgDifficulty ?? 0) * sol.count, 0) / totalMentions : null;
                 return (
                   <div key={r.pain_point}>
                     <div
                       onClick={() => selectCombinedPainPoint(r.pain_point)}
                       title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "180px 1fr 50px",
-                        gap: 14,
-                        alignItems: "center",
                         cursor: "pointer",
-                        padding: "6px 8px",
-                        margin: "-6px -8px",
-                        borderRadius: 8,
+                        padding: "10px 12px",
+                        margin: "-10px -12px",
+                        borderRadius: 10,
                         border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
                         background: isActive ? "rgba(201,168,76,0.06)" : "transparent",
                       }}
                     >
-                      <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
-                      <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
-                        <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
+                      <div style={{ display: "grid", gridTemplateColumns: "180px 1fr 50px", gap: 14, alignItems: "center" }}>
+                        <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
+                        <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                          <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
+                        </div>
+                        <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
                       </div>
-                      <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
+                      {avgEff != null && avgDiff != null && (
+                        <div style={{ display: "grid", gridTemplateColumns: "180px 1fr 50px", gap: 14, alignItems: "center", marginTop: 6 }}>
+                          <span style={{ fontSize: 9.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", letterSpacing: "0.04em" }}>EFF / DIFF</span>
+                          <div style={{ position: "relative", height: 6, background: "var(--muted)", borderRadius: 3 }}>
+                            <div
+                              title={`Effectiveness ${avgEff.toFixed(1)}/5`}
+                              style={{ position: "absolute", top: -3, left: `${(avgEff / 5) * 100}%`, width: 12, height: 12, borderRadius: "50%", background: "var(--hot)", border: "2px solid var(--bg)", transform: "translateX(-50%)" }}
+                            />
+                            <div
+                              title={`Difficulty ${avgDiff.toFixed(1)}/5`}
+                              style={{ position: "absolute", top: -3, left: `${(avgDiff / 5) * 100}%`, width: 12, height: 12, borderRadius: "50%", background: "var(--cold)", border: "2px solid var(--bg)", transform: "translateX(-50%)" }}
+                            />
+                          </div>
+                          <span />
+                        </div>
+                      )}
                     </div>
                     {isActive && matchingPriorityRow && matchingPriorityRow.solutions.length > 0 && (
                       <div style={{ marginTop: 10, marginLeft: 8, paddingLeft: 12, borderLeft: "2px solid var(--border)" }}>
@@ -825,7 +835,7 @@ export function RetentionResearchDashboard({
               })}
             </div>
             <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-              Bar color is average severity on that pain point's buildable findings: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Click any row to expand its solutions and pull up full evidence above.
+              Bar color is average severity: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Below each bar, <span style={{ color: "var(--hot)" }}>green dot</span> = weighted avg effectiveness of solutions tried, <span style={{ color: "var(--cold)" }}>blue dot</span> = weighted avg difficulty, both on a 1-5 scale positioned left-to-right - a solution row with the green dot right of the blue one worked well relative to how hard it was. Click any row to expand its solutions and pull up full evidence above.
             </div>
           </div>
 

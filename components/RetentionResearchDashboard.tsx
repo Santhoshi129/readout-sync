@@ -228,9 +228,11 @@ export function RetentionResearchDashboard({
         />
       </section>
 
-      <div style={{ marginBottom: 16, fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
-        Here's the retention picture on its own, no product angle yet, just what's actually driving people out.
-      </div>
+      {!showCombinedExtras && (
+        <>
+          <div style={{ marginBottom: 16, fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
+            Here's the retention picture on its own, no product angle yet, just what's actually driving people out.
+          </div>
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
@@ -509,6 +511,8 @@ export function RetentionResearchDashboard({
           <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
         )}
       </div>
+        </>
+      )}
 
       {showCombinedExtras && (
         <>
@@ -615,6 +619,53 @@ export function RetentionResearchDashboard({
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="section-title">
+                Priority ranking
+                <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is, computed across every community's findings pooled together. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket and the long-tail non-canonical labels noted above." />
+              </div>
+            </div>
+            <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
+              This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap.
+            </div>
+            {priority.length > 0 ? (
+              <>
+                {headline.pain_point && (
+                  <div
+                    style={{
+                      marginTop: 20,
+                      padding: "18px 22px",
+                      borderRadius: 12,
+                      background: "linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.03))",
+                      border: "1px solid var(--amber-deep)",
+                    }}
+                  >
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.1em", color: "var(--amber)", marginBottom: 8 }}>
+                      BOTTOM LINE
+                    </div>
+                    <div style={{ fontFamily: "var(--font-head)", fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 6 }}>
+                      {painPointLabel(headline.pain_point)} ranks highest in this data.
+                    </div>
+                    <div style={{ color: "var(--ink-dim)", fontSize: 14 }}>{headline.sentence}</div>
+                  </div>
+                )}
+                <div style={{ marginTop: 22 }}>
+                  <PriorityLeaderboard rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                </div>
+                <SectionInsight
+                  totalInView={findings.length}
+                  matches={priorityMatches}
+                  selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
+                  generalText={soWhatPriority(priority)}
+                  onClear={() => setFilters((prev) => ({ ...prev, painPoint: "All", relevance: "All" }))}
+                />
+              </>
+            ) : (
+              <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>
+            )}
           </div>
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>

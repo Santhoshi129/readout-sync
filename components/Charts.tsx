@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { fmt } from "@/lib/format";
 import { Counter } from "@/components/Counter";
+import { InfoTip } from "@/components/InfoTip";
 
 const TONE: Record<string, string> = {
   cold: "var(--cold)",
@@ -567,7 +568,7 @@ export function ReplyBreakdown({
 // explains itself when someone actually wants to know. This is the same
 // visual language as the flow detail pages' "Report: live impact" tiles,
 // reused here so the main dashboards get it too.
-export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tone?: string; suffix?: string; flag?: string }[] }) {
+export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tip?: string; tone?: string; suffix?: string; flag?: string }[] }) {
   return (
     <div className="grid grid-3" style={{ gap: 16 }}>
       {tiles.map((t, i) => (
@@ -577,7 +578,7 @@ export function StatTiles({ tiles }: { tiles: { label: string; value: number | n
   );
 }
 
-function StatTile({ label, value, note, tone, suffix, flag }: { label: string; value: number | null; note?: string; tone?: string; suffix?: string; flag?: string }) {
+function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: string; value: number | null; note?: string; tip?: string; tone?: string; suffix?: string; flag?: string }) {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -594,8 +595,9 @@ function StatTile({ label, value, note, tone, suffix, flag }: { label: string; v
         }}
       />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
+        <div style={{ display: "flex", alignItems: "center", fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
           {label}
+          {tip && <InfoTip text={tip} />}
         </div>
         {flag && flag !== "live" && (
           <span className={`chip ${flag}`} style={{ fontSize: 9 }}>

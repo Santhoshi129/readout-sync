@@ -137,7 +137,29 @@ export function ratioOrPct(n: number, d: number): string {
   if (d <= 0 || n <= 0) return "0%";
   const pct = (n / d) * 100;
   if (pct >= 0.1) return `${pct.toFixed(1)}%`;
-  return `about 1 in every ${Math.round(d / n).toLocaleString()}`;
+  // "1 in every N" can read like a fixed pattern (as if every 2,574th
+  // record specifically is the relevant one) rather than what it actually
+  // is - an average rate across the whole pull. "roughly X per N, on
+  // average" says the same math without implying a pattern that isn't there.
+  return `roughly 1 per ${Math.round(d / n).toLocaleString()}, on average`;
+}
+
+// Reddit can only auto-scroll-and-highlight a permalink when it points to
+// a specific comment - a link to a post only opens the post at the top,
+// with no way to jump to one sentence inside a long body. About half of
+// this dataset's findings are sourced from post bodies rather than
+// comments, so their permalinks alone always land you at the top with no
+// pointer to what to look for. Browser-native Text Fragments
+// (#:~:text=...) work on any page, post or comment, so appending one gets
+// a real scroll-to-and-highlight in Chrome/Edge regardless of which type
+// the source is. Falls back to a normal link (no highlight, but still the
+// right page) on browsers that don't support it - never breaks the link.
+export function withTextFragment(permalink: string, quote: string | null | undefined): string {
+  if (!quote) return permalink;
+  const firstSentence = quote.split(/[.!?](?:\s|$)/)[0].trim();
+  if (!firstSentence) return permalink;
+  const fragment = encodeURIComponent(firstSentence.slice(0, 200));
+  return `${permalink}#:~:text=${fragment}`;
 }
 
 // One-line "why this number" explanation for a community's relevant-findings
@@ -677,13 +699,8 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   if (pp.length === 0) {
     return [`Every relevant finding for ${ds.label} landed in the uncategorized "other" bucket. The classification taxonomy needs another pass before this can support a specific conclusion.`];
   }
-  const top = pp[0];
-  const second = pp[1];
-  const topPct = Math.round((top[1].total / n) * 100);
 
   const ct = confidenceTierBreakdown(f);
-  const strongPct = Math.round((ct.strong / n) * 100);
-  const weakPct = Math.round((ct.weak / n) * 100);
 
   const sentences: string[] = [];
 
@@ -695,15 +712,28 @@ export function executiveSummary(ds: CommunityDataset): string[] {
       : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 
+  // Deliberately doesn't restate the top pain point or the confidence split -
+  // both are already the sharpest line in the Key Takeaways bullets above.
+  // This paragraph's job is to add texture those bullets don't have room
+  // for: the full three-way app-relevance split (not just the core-fit
+  // slice), and what the confidence tiers actually mean for how to use the
+  // rest of the page - not the same two facts said twice in a row.
+  const ar = appRelevanceBreakdown(f);
+  const coreFit = ar.find((a) => a.key === "core_fit")?.count ?? 0;
+  const partialFit = ar.find((a) => a.key === "partial_fit")?.count ?? 0;
+  const notAddressable = ar.find((a) => a.key === "not_addressable")?.count ?? 0;
+  const coreFitPct = Math.round((coreFit / n) * 100);
+  const partialFitPct = Math.round((partialFit / n) * 100);
+  const notAddressablePct = Math.round((notAddressable / n) * 100);
+
   sentences.push(
-    `${painPointLabel(top[0])} comes up most often, ${top[1].total} findings (${topPct}% of the relevant set)` +
-      (second
-        ? `, ahead of ${painPointLabel(second[0])} at ${second[1].total}. That's just how often people mention it though, not what I'd build first, I get to that later once I've laid out the full picture.`
-        : ". That's mention frequency, not my build recommendation.")
+    `Of those ${n}, ${coreFitPct}% (${coreFit}) are problems TWU's product can move on its own, ${partialFitPct}% (${partialFit}) would need product work paired with something outside the app, and ${notAddressablePct}% (${notAddressable}) is staffing, facility, or pricing - outside what any software fixes. That last bucket is the real ceiling on how much of this an app can solve, worth keeping in view before reading the core-fit share as the whole opportunity.`
   );
 
   sentences.push(
-    `Confidence skews low: ${ct.strong} findings (${strongPct}%) are strong-tier, ${ct.weak} (${weakPct}%) are weak. I'm comfortable acting on the strong and moderate rows. The weak tier is more useful as a map of where I'd point the next classification pass than as something to quote.`
+    ct.weak > 0
+      ? `Strong and moderate-tier findings are what I'd act on here. The weak tier is real signal but thinner sourcing, I'm treating it as a pointer for where the next classification pass should look, not something to hand to Dave or Alex as settled.`
+      : `Everything in this set cleared at least moderate confidence - nothing weak-tier here to caveat.`
   );
 
   return sentences;

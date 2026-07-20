@@ -1,6 +1,6 @@
 "use client";
 import { CSSProperties } from "react";
-import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE } from "@/lib/retention-research";
+import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, withTextFragment } from "@/lib/retention-research";
 import { NumberTip } from "@/components/NumberTip";
 
 const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--ink-faint)" };
@@ -131,7 +131,7 @@ export function SectionInsight({
                 )}
                 {f.permalink && (
                   <a
-                    href={f.permalink}
+                    href={withTextFragment(f.permalink, f.evidence_snippet)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
@@ -154,6 +154,19 @@ export function SectionInsight({
                 >
                   “{f.evidence_snippet}”
                 </blockquote>
+              )}
+              {(f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance_reasoning) && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, fontSize: 11.5, color: "var(--ink-dim)" }}>
+                  {f.pain_severity_reasoning && (
+                    <div><span style={{ color: "var(--ink-faint)" }}>Why this severity: </span>{f.pain_severity_reasoning}</div>
+                  )}
+                  {f.difficulty_reasoning && (
+                    <div><span style={{ color: "var(--ink-faint)" }}>Why this difficulty: </span>{f.difficulty_reasoning}</div>
+                  )}
+                  {f.app_relevance_reasoning && (
+                    <div><span style={{ color: "var(--ink-faint)" }}>Why this app fit: </span>{f.app_relevance_reasoning}</div>
+                  )}
+                </div>
               )}
               {(f.solution || f.effectiveness_reasoning) && (
                 <div style={{ marginTop: 6, fontSize: 12, color: "var(--ink-faint)" }}>

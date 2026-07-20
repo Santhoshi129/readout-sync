@@ -66,9 +66,10 @@ import {
   analyzedNote,
   relevantNote,
   NO_SOLUTION_KEY,
+  PAIN_POINT_MEANING,
 } from "@/lib/retention-research";
 
-const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" };
+const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All" };
 
 export function RetentionResearchDashboard({
   communities,
@@ -136,6 +137,21 @@ export function RetentionResearchDashboard({
     const axis = radarAxesData.find((a) => a.label === label);
     if (axis) select("painPoint", axis.key);
   };
+  // Community pill click sets both filters explicitly (not a toggle like
+  // select()) - clicking r/f45 on the coaching-quality row should always
+  // land on "coaching quality, r/f45", not sometimes clear it depending on
+  // what was already selected.
+  const selectCommunityAndPainPoint = (subreddit: string, pp: string) => {
+    setFilters((prev) => ({ ...prev, painPoint: pp, community: `r/${subreddit}` }));
+  };
+  const allCombinedFindings = useMemo(() => communities.flatMap((c) => c.findings), [communities]);
+  const selectedCombinedRow = filters.painPoint !== "All" ? coverageRows.find((r) => r.pain_point === filters.painPoint) : null;
+  const selectedCombinedFindings = useMemo(
+    () => (filters.painPoint !== "All" ? allCombinedFindings.filter((f) => f.pain_point === filters.painPoint) : []),
+    [allCombinedFindings, filters.painPoint]
+  );
+  const selectedRelevanceBreakdown = useMemo(() => appRelevanceBreakdown(selectedCombinedFindings), [selectedCombinedFindings]);
+  const selectedTimeline = useMemo(() => timelineBreakdown(selectedCombinedFindings), [selectedCombinedFindings]);
   const memberCommunities = communities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
   const ownerCommunities = communities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const radarSeries: RadarSeries[] = [
@@ -145,6 +161,18 @@ export function RetentionResearchDashboard({
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
   const maxBuildable = Math.max(1, ...topBuildable.map((r) => r.buildableCount));
   const showCombinedExtras = ds.subreddit === "all" && communities.length > 1;
+  const priorityCommunityBreakdown = useMemo(() => {
+    if (!showCombinedExtras) return undefined;
+    const map: Record<string, { subreddit: string; label: string; count: number }[]> = {};
+    priority.forEach((p) => {
+      map[p.pain_point] = communities.map((c) => ({
+        subreddit: c.subreddit,
+        label: c.label,
+        count: c.findings.filter((f) => f.pain_point === p.pain_point && f.app_relevance === "core_fit").length,
+      }));
+    });
+    return map;
+  }, [priority, communities, showCombinedExtras]);
 
   const select = (key: keyof TableFilters, value: string | number) => {
     setFilters((prev) => (prev[key] === value ? { ...prev, [key]: "All" } : { ...prev, [key]: value }));
@@ -555,7 +583,7 @@ export function RetentionResearchDashboard({
               className="card"
               style={{ padding: 24, marginBottom: 24, border: "1px solid var(--amber-deep)", background: "rgba(201,168,76,0.05)" }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
                 <div className="eyebrow">Selected: {activePainPointLabel}</div>
                 <button
                   onClick={() => clear("painPoint")}
@@ -564,6 +592,68 @@ export function RetentionResearchDashboard({
                   CLEAR
                 </button>
               </div>
+              {PAIN_POINT_MEANING[filters.painPoint] && (
+                <div style={{ fontSize: 14, color: "var(--ink)", lineHeight: 1.55, marginBottom: 20, maxWidth: 760 }}>
+                  {PAIN_POINT_MEANING[filters.painPoint]}
+                </div>
+              )}
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 20 }}>
+                <div>
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>FROM WHERE</div>
+                  {selectedCombinedRow ? (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                      {selectedCombinedRow.communities.map((c) => (
+                        <span
+                          key={c.subreddit}
+                          onClick={() => c.count > 0 && selectCommunityAndPainPoint(c.subreddit, filters.painPoint as string)}
+                          style={{
+                            fontSize: 11.5,
+                            fontFamily: "var(--mono)",
+                            padding: "4px 10px",
+                            borderRadius: 999,
+                            border: `1px solid ${filters.community === `r/${c.subreddit}` ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
+                            color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
+                            background: filters.community === `r/${c.subreddit}` ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card-raised)" : "transparent",
+                            cursor: c.count > 0 ? "pointer" : "default",
+                          }}
+                        >
+                          {c.label}: {c.count}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <div>
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT (APP FIT)</div>
+                  <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+                    {selectedRelevanceBreakdown.map((a) => (
+                      <span key={a.key} style={{ fontSize: 12.5 }}>
+                        <span style={{ fontWeight: 700, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)" }}>{a.count}</span>{" "}
+                        <span style={{ color: "var(--ink-dim)" }}>{a.label.split(":")[0]}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>WHEN</div>
+                <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 40 }}>
+                  {selectedTimeline.map(([q, count]) => {
+                    const maxT = Math.max(1, ...selectedTimeline.map((t) => t[1]));
+                    return (
+                      <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
+                        <div style={{ width: "100%", maxWidth: 14, background: "var(--series-a)", borderRadius: 2, height: `${Math.max(3, (count / maxT) * 100)}%` }} />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div style={{ fontSize: 11, color: "var(--ink-faint)", marginTop: 4 }}>
+                  {selectedTimeline.length > 0 ? `${selectedTimeline[0][0]} through ${selectedTimeline[selectedTimeline.length - 1][0]}, ${selectedTimeline.reduce((s, t) => s + t[1], 0)} findings total` : "No dated findings"}
+                </div>
+              </div>
+
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
                 <div>
                   <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
@@ -595,7 +685,7 @@ export function RetentionResearchDashboard({
                 </div>
               </div>
               <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-                Scroll down to "The receipts" for every individual finding in this category, filtered automatically.
+                {filters.community !== "All" ? `Filtered to ${filters.community}. ` : ""}Scroll down to "The receipts" for every individual finding, filtered automatically.
               </div>
             </div>
           )}
@@ -677,7 +767,7 @@ export function RetentionResearchDashboard({
                     cursor: "pointer",
                   }}
                 >
-                  SORT: BUILDABLE
+                  MOST BUILDABLE FIRST
                 </button>
                 <button
                   onClick={() => setTableSort("coverage")}
@@ -693,7 +783,7 @@ export function RetentionResearchDashboard({
                     cursor: "pointer",
                   }}
                 >
-                  SORT: COVERAGE
+                  MOST COMMUNITIES FIRST
                 </button>
               </div>
             </div>
@@ -701,7 +791,7 @@ export function RetentionResearchDashboard({
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} examples={allCombinedExamples} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
               {tableSort === "coverage" ? coverageNarrative : featureNarrative}
@@ -715,39 +805,65 @@ export function RetentionResearchDashboard({
                 <InfoTip text="Buildable (core-fit + partial-fit) findings per pain point, ranked by volume - the same 'buildable' column from the table above, as bars so relative size is easier to read at a glance." />
               </div>
             </div>
+            <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
+              <strong>How this number is calculated:</strong> for each pain point, I count every finding across all {communities.length} communities where a classifier marked app_relevance as core_fit or partial_fit, then sum them. It is not weighted by severity or confidence tier - it's a raw count of "TWU could plausibly act on this." Click a row to see exactly which solutions people tried for it and how well they reportedly worked.
+            </div>
             <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 12 }}>
               {topBuildable.map((r) => {
                 const isActive = activePainPointLabel === r.label;
                 const barColor = r.avgSeverityBuildable >= 3.5 ? "var(--bad)" : r.avgSeverityBuildable >= 2.5 ? "var(--amber)" : "var(--hot)";
+                const matchingPriorityRow = priority.find((p) => p.pain_point === r.pain_point);
                 return (
-                  <div
-                    key={r.pain_point}
-                    onClick={() => selectCombinedPainPoint(r.pain_point)}
-                    title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "180px 1fr 50px",
-                      gap: 14,
-                      alignItems: "center",
-                      cursor: "pointer",
-                      padding: "6px 8px",
-                      margin: "-6px -8px",
-                      borderRadius: 8,
-                      border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
-                      background: isActive ? "rgba(201,168,76,0.06)" : "transparent",
-                    }}
-                  >
-                    <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
-                    <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
-                      <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
+                  <div key={r.pain_point}>
+                    <div
+                      onClick={() => selectCombinedPainPoint(r.pain_point)}
+                      title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "180px 1fr 50px",
+                        gap: 14,
+                        alignItems: "center",
+                        cursor: "pointer",
+                        padding: "6px 8px",
+                        margin: "-6px -8px",
+                        borderRadius: 8,
+                        border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
+                        background: isActive ? "rgba(201,168,76,0.06)" : "transparent",
+                      }}
+                    >
+                      <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
+                      <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                        <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
+                      </div>
+                      <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
                     </div>
-                    <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
+                    {isActive && matchingPriorityRow && matchingPriorityRow.solutions.length > 0 && (
+                      <div style={{ marginTop: 10, marginLeft: 8, paddingLeft: 12, borderLeft: "2px solid var(--border)" }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
+                          SOLUTIONS TRIED FOR THIS, RANKED BY MENTIONS
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                          {matchingPriorityRow.solutions.slice(0, 4).map((s) => (
+                            <div key={s.category} style={{ display: "flex", gap: 12, alignItems: "baseline", fontSize: 12.5, flexWrap: "wrap" }}>
+                              <span style={{ color: "var(--ink)", fontWeight: 600, minWidth: 150 }}>{solutionCategoryLabel(s.category)}</span>
+                              <span style={{ color: "var(--ink-dim)" }}>{s.count} mention{s.count === 1 ? "" : "s"}</span>
+                              {s.avgEffectiveness != null ? (
+                                <span style={{ color: "var(--hot)" }}>{s.avgEffectiveness.toFixed(1)}/5 effective</span>
+                              ) : (
+                                <span style={{ color: "var(--ink-faint)" }}>not yet scored</span>
+                              )}
+                              {s.avgDifficulty != null && <span style={{ color: "var(--cold)" }}>{s.avgDifficulty.toFixed(1)}/5 difficulty</span>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
             <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-              Bar color is average severity on that pain point's buildable findings: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Click any row to filter the receipts table and pull up evidence above.
+              Bar color is average severity on that pain point's buildable findings: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Click any row to expand its solutions and pull up full evidence above.
             </div>
           </div>
 
@@ -783,7 +899,7 @@ export function RetentionResearchDashboard({
                   </div>
                 )}
                 <div style={{ marginTop: 22 }}>
-                  <PriorityLeaderboard rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                  <PriorityLeaderboard rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} communityBreakdown={priorityCommunityBreakdown} />
                 </div>
                 <SectionInsight
                   totalInView={findings.length}

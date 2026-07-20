@@ -105,6 +105,8 @@ export type CrossCommunityRow = {
   label: string;
   totalCount: number;
   buildableCount: number;
+  coreFitCount: number;
+  partialFitCount: number;
   avgSeverityBuildable: number;
   communities: { subreddit: string; label: string; count: number }[];
   coverage: number;
@@ -125,7 +127,9 @@ export function crossCommunityPainPoints(communities: CommunityDataset[]): Cross
         count: c.findings.filter((f) => f.pain_point === pp).length,
       }));
       const allFindings = communities.flatMap((c) => c.findings).filter((f) => f.pain_point === pp);
-      const buildable = allFindings.filter((f) => f.app_relevance === "core_fit" || f.app_relevance === "partial_fit");
+      const coreFit = allFindings.filter((f) => f.app_relevance === "core_fit");
+      const partialFit = allFindings.filter((f) => f.app_relevance === "partial_fit");
+      const buildable = [...coreFit, ...partialFit];
       const severities = buildable.map((f) => f.pain_severity).filter((s): s is number => s != null);
       const coverage = perCommunity.filter((c) => c.count > 0).length;
       return {
@@ -133,6 +137,8 @@ export function crossCommunityPainPoints(communities: CommunityDataset[]): Cross
         label: painPointLabel(pp),
         totalCount: allFindings.length,
         buildableCount: buildable.length,
+        coreFitCount: coreFit.length,
+        partialFitCount: partialFit.length,
         avgSeverityBuildable: severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0,
         communities: perCommunity,
         coverage,

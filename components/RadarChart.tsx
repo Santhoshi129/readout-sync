@@ -5,12 +5,17 @@ export type RadarSeries = {
   key: "member" | "owner";
   label: string;
   color: string;
-  values: number[]; // one per axis, 0-100 scale (percent)
+  values: number[]; // one per axis, percent (0-100 domain, but rarely exceeds ~20 in this dataset)
 };
 
 // Hand-rolled SVG radar, no charting library - matches the rest of the
-// dashboard's charts (PriorityMatrix, etc.), which are all raw SVG driven
-// by CSS variables so they stay on-theme automatically.
+// dashboard's charts, which are all raw SVG driven by CSS variables.
+//
+// Scale is dynamic, not fixed to 0-100: this dataset's real values top out
+// around 18%, so a fixed 0-100 scale used to squash every point into an
+// unclickable 20px blob at the center. The axis max is now the actual max
+// value in the data, rounded up to a clean step, so the shape fills the
+// chart and points are actually far enough apart to click.
 export function RadarChart({
   axisLabels,
   series,
@@ -38,19 +43,21 @@ export function RadarChart({
     );
   }
 
+  const rawMax = Math.max(1, ...series.flatMap((s) => s.values));
+  // Round the axis max up to a clean step (2/5/10 depending on magnitude)
+  // so the scale labels read as round numbers, not "17.3%".
+  const step = rawMax <= 10 ? 2 : rawMax <= 25 ? 5 : rawMax <= 60 ? 10 : 20;
+  const axisMax = Math.ceil(rawMax / step) * step;
+
   const angleFor = (i: number) => -Math.PI / 2 + (2 * Math.PI * i) / N;
   const pointFor = (i: number, pct: number) => {
-    const r = (Math.min(100, Math.max(0, pct)) / 100) * RADIUS;
+    const r = (Math.min(axisMax, Math.max(0, pct)) / axisMax) * RADIUS;
     const a = angleFor(i);
     return { x: CENTER + r * Math.cos(a), y: CENTER + r * Math.sin(a) };
   };
 
   const polygonPoints = (values: number[]) =>
     values.map((v, i) => pointFor(i, v)).map((p) => `${p.x},${p.y}`).join(" ");
-
-  // Scale labels run up the first spoke (straight up from center) so the
-  // rings have an actual readable value attached, not just relative shape.
-  const scaleSpokeAngle = angleFor(0);
 
   return (
     <div>
@@ -60,7 +67,7 @@ export function RadarChart({
           <polygon
             key={r}
             points={Array.from({ length: N }, (_, i) => {
-              const p = pointFor(i, r * 100);
+              const p = pointFor(i, r * axisMax);
               return `${p.x},${p.y}`;
             }).join(" ")}
             fill="none"
@@ -68,49 +75,31 @@ export function RadarChart({
             strokeWidth={1}
           />
         ))}
-        {/* scale labels, offset slightly to the right of the up-spoke so they don't sit on top of the line */}
-        {RINGS.map((r) => {
-          const rad = r * RADIUS;
-          return (
-            <text
-              key={`scale-${r}`}
-              x={CENTER + 8}
-              y={CENTER - Math.sin(-scaleSpokeAngle) * 0 - rad}
-              fontSize={9.5}
-              fontFamily="var(--mono)"
-              fill="var(--ink-faint)"
-            >
-              {Math.round(r * 100)}%
-            </text>
-          );
-        })}
+        {/* scale labels along the up-spoke, real values not a fixed 0-100 */}
+        {RINGS.map((r) => (
+          <text
+            key={`scale-${r}`}
+            x={CENTER + 8}
+            y={CENTER - r * RADIUS}
+            fontSize={9.5}
+            fontFamily="var(--mono)"
+            fill="var(--ink-faint)"
+          >
+            {(r * axisMax).toFixed(axisMax <= 10 ? 1 : 0)}%
+          </text>
+        ))}
         {/* spokes */}
         {axisLabels.map((_, i) => {
-          const p = pointFor(i, 100);
+          const p = pointFor(i, axisMax);
           return (
-            <line
-              key={i}
-              x1={CENTER}
-              y1={CENTER}
-              x2={p.x}
-              y2={p.y}
-              stroke="var(--border-soft)"
-              strokeWidth={1}
-            />
+            <line key={i} x1={CENTER} y1={CENTER} x2={p.x} y2={p.y} stroke="var(--border-soft)" strokeWidth={1} />
           );
         })}
         {/* series polygons */}
         {series.map((s) => (
-          <polygon
-            key={s.key}
-            points={polygonPoints(s.values)}
-            fill={s.color}
-            fillOpacity={0.14}
-            stroke={s.color}
-            strokeWidth={2}
-          />
+          <polygon key={s.key} points={polygonPoints(s.values)} fill={s.color} fillOpacity={0.16} stroke={s.color} strokeWidth={2} />
         ))}
-        {/* vertices, clickable */}
+        {/* vertices - a larger invisible hit-circle sits behind the visible dot so hover/click actually lands */}
         {series.map((s) =>
           s.values.map((v, i) => {
             const p = pointFor(i, v);
@@ -121,29 +110,28 @@ export function RadarChart({
                 <circle
                   cx={p.x}
                   cy={p.y}
-                  r={isHover || isActiveAxis ? 6 : 3.5}
-                  fill={s.color}
-                  stroke="var(--bg)"
-                  strokeWidth={1.5}
+                  r={14}
+                  fill="transparent"
                   style={{ cursor: onSelectAxis ? "pointer" : "default" }}
                   onMouseEnter={() => setHover({ axis: i, seriesKey: s.key })}
                   onMouseLeave={() => setHover(null)}
                   onClick={() => onSelectAxis?.(axisLabels[i])}
+                />
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={isHover || isActiveAxis ? 7 : 4.5}
+                  fill={s.color}
+                  stroke="var(--bg)"
+                  strokeWidth={1.5}
+                  style={{ pointerEvents: "none" }}
                 >
                   <title>
                     {axisLabels[i]} - {s.label}: {v}%
                   </title>
                 </circle>
                 {(isHover || isActiveAxis) && (
-                  <text
-                    x={p.x}
-                    y={p.y - 12}
-                    textAnchor="middle"
-                    fontSize={11}
-                    fontFamily="var(--mono)"
-                    fill={s.color}
-                    fontWeight={700}
-                  >
+                  <text x={p.x} y={p.y - 14} textAnchor="middle" fontSize={12} fontFamily="var(--mono)" fill={s.color} fontWeight={700} style={{ pointerEvents: "none" }}>
                     {v}%
                   </text>
                 )}
@@ -151,9 +139,9 @@ export function RadarChart({
             );
           })
         )}
-        {/* axis labels, clickable */}
+        {/* axis labels, clickable with a padded hit area */}
         {axisLabels.map((label, i) => {
-          const p = pointFor(i, (LABEL_RADIUS / RADIUS) * 100);
+          const p = pointFor(i, axisMax * (LABEL_RADIUS / RADIUS));
           const isActiveAxis = activeAxis === label;
           const anchor = Math.abs(p.x - CENTER) < 8 ? "middle" : p.x > CENTER ? "start" : "end";
           return (
@@ -163,7 +151,7 @@ export function RadarChart({
               y={p.y}
               textAnchor={anchor}
               dominantBaseline="middle"
-              fontSize={11.5}
+              fontSize={12}
               fontFamily="var(--mono)"
               fill={isActiveAxis ? "var(--amber-bright)" : "var(--ink-dim)"}
               fontWeight={isActiveAxis ? 700 : 400}
@@ -184,7 +172,7 @@ export function RadarChart({
         ))}
       </div>
       <div style={{ marginTop: 4, textAlign: "center", fontSize: 11.5, color: "var(--ink-faint)" }}>
-        Click a point or label to filter the table below and pull up evidence.
+        Scale runs to {axisMax}%, not 100% - the real values here top out around {rawMax.toFixed(1)}%. Click a point or label for the full breakdown below.
       </div>
     </div>
   );

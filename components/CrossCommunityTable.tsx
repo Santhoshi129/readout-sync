@@ -11,6 +11,7 @@ export function CrossCommunityTable({
   sortBy,
   active,
   onSelect,
+  onSelectCommunity,
   examples,
 }: {
   rows: CrossCommunityRow[];
@@ -18,6 +19,7 @@ export function CrossCommunityTable({
   sortBy: "coverage" | "buildable";
   active?: string | null;
   onSelect?: (pp: string) => void;
+  onSelectCommunity?: (subreddit: string, pp: string) => void;
   examples?: Record<string, PainPointExample[]>;
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export function CrossCommunityTable({
           display: "grid",
           gridTemplateColumns: "1fr 100px 110px 110px 40px",
           gap: 12,
-          padding: "0 14px 10px",
+          padding: "0 14px 4px",
           fontFamily: "var(--mono)",
           fontSize: 10,
           color: "var(--ink-faint)",
@@ -46,6 +48,9 @@ export function CrossCommunityTable({
         <span>TOTAL FINDINGS</span>
         <span>BUILDABLE</span>
         <span />
+      </div>
+      <div style={{ padding: "0 14px 10px", fontSize: 11, color: "var(--ink-faint)" }}>
+        Coverage = how many of the {communityCount} communities mention it at all. Buildable = findings tagged core-fit or partial-fit (TWU could plausibly act on them), pooled across every community - click a row to see the exact core/partial split and click a community pill to filter to just that community's findings for this pain point.
       </div>
       {sorted.map((r) => {
         const isOpen = expanded === r.pain_point;
@@ -88,10 +93,17 @@ export function CrossCommunityTable({
             </div>
             {isOpen && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: r.buildableCount > 0 ? 10 : 0 }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
+                  FROM WHERE - click to filter to one community
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
                   {r.communities.map((c) => (
                     <span
                       key={c.subreddit}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (c.count > 0) onSelectCommunity?.(c.subreddit, r.pain_point);
+                      }}
                       style={{
                         fontSize: 11.5,
                         fontFamily: "var(--mono)",
@@ -100,11 +112,17 @@ export function CrossCommunityTable({
                         border: `1px solid ${c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
                         color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
                         background: c.count > 0 ? "var(--card-raised)" : "transparent",
+                        cursor: c.count > 0 && onSelectCommunity ? "pointer" : "default",
                       }}
                     >
                       {c.label}: {c.count}
                     </span>
                   ))}
+                </div>
+                <div style={{ display: "flex", gap: 16, marginBottom: 10, fontSize: 12.5 }}>
+                  <span><span style={{ color: "var(--hot)", fontWeight: 700 }}>{r.coreFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>core fit</span></span>
+                  <span><span style={{ color: "var(--amber)", fontWeight: 700 }}>{r.partialFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>partial fit</span></span>
+                  <span><span style={{ color: "var(--ink-faint)", fontWeight: 700 }}>{r.totalCount - r.buildableCount}</span> <span style={{ color: "var(--ink-dim)" }}>not addressable</span></span>
                 </div>
                 {r.buildableCount > 0 && (
                   <div style={{ fontSize: 12.5, color: SEVERITY_COLOR(r.avgSeverityBuildable), marginBottom: 10 }}>

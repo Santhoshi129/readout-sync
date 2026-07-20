@@ -13,9 +13,10 @@ output file back and it gets merged into the live dashboard as a real,
 always-visible badge.
 
 USAGE
-  pip install requests
   python3 check-reddit-status.py
   (run from the repo root, or pass --data-dir explicitly)
+
+Uses only Python's standard library - nothing to install first.
 
 Reads every data/retention-research/<community>.json file, checks each
 finding's permalink, and writes source_status.json:

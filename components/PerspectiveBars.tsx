@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/Counter";
-import { perspectiveLabel } from "@/lib/retention-research";
+import { perspectiveLabel, PERSPECTIVE_MEANING } from "@/lib/retention-research";
+import { NumberTip } from "@/components/NumberTip";
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -58,8 +59,12 @@ export function PerspectiveBars({
             <div className="bar-track thin" title={`${perspectiveLabel(p)}: ${c}`} style={{ opacity: active && !isActive ? 0.45 : 1, transition: "opacity 150ms ease" }}>
               <div className="bar-fill" style={{ width: mounted ? `${w}%` : 0, transitionDelay: `${i * 60}ms`, background: PERSPECTIVE_TONE[p] || "var(--amber)" }} />
             </div>
-            <div style={{ textAlign: "right", fontSize: 16, fontWeight: 700 }}>
-              <Counter value={c} />
+            <div style={{ textAlign: "right" }}>
+              <NumberTip text={PERSPECTIVE_MEANING[p] || "Who's actually behind this count."} align="right">
+                <span style={{ fontSize: 16, fontWeight: 700, borderBottom: "1px dotted var(--ink-faint)" }}>
+                  <Counter value={c} />
+                </span>
+              </NumberTip>
             </div>
           </div>
         );

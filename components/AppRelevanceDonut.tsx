@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Counter } from "@/components/Counter";
-import { AppRelevance } from "@/lib/retention-research";
+import { AppRelevance, APP_RELEVANCE_MEANING } from "@/lib/retention-research";
+import { NumberTip } from "@/components/NumberTip";
 
 const TONE: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--muted)" };
 
@@ -100,9 +101,11 @@ export function AppRelevanceDonut({
               <span style={{ fontSize: 13.5, color: isActive ? "var(--amber)" : "var(--ink-dim)", flex: 1, fontWeight: isActive ? 700 : 400 }}>
                 {a.label}
               </span>
-              <span style={{ fontSize: 14.5, fontWeight: 700 }}>
-                <Counter value={a.count} />
-              </span>
+              <NumberTip text={APP_RELEVANCE_MEANING[a.key]} align="right">
+                <span style={{ fontSize: 14.5, fontWeight: 700, borderBottom: "1px dotted var(--ink-faint)" }}>
+                  <Counter value={a.count} />
+                </span>
+              </NumberTip>
               <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink-faint)", width: 38, textAlign: "right" }}>{a.pct}%</span>
             </div>
           );

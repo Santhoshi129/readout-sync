@@ -47,6 +47,9 @@ import {
   solutionCategoryLabel,
   perspectiveLabel,
   APP_RELEVANCE_LABEL,
+  communityCountNote,
+  analyzedNote,
+  relevantNote,
 } from "@/lib/retention-research";
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All" };
@@ -59,8 +62,8 @@ export function RetentionResearchDashboard({
   combined: CommunityDataset;
 }) {
   const options = [
-    { id: "all", label: "All communities combined", count: combined.relevant_count },
-    ...communities.map((c) => ({ id: c.subreddit, label: c.label, count: c.relevant_count })),
+    { id: "all", label: "All communities combined", count: combined.relevant_count, note: communityCountNote(combined) },
+    ...communities.map((c) => ({ id: c.subreddit, label: c.label, count: c.relevant_count, note: communityCountNote(c) })),
   ];
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
@@ -172,8 +175,8 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
-            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted" },
-            { label: "Relevant findings", value: ds.relevant_count, tone: "amber" },
+            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
+            { label: "Relevant findings", value: ds.relevant_count, tone: "amber", note: relevantNote(ds) },
             { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak` },
           ]}
         />

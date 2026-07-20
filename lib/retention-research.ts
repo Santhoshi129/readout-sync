@@ -82,7 +82,12 @@ function sanitizeFinding(f: Finding): Finding {
     ...f,
     pain_point_reasoning: cleanText(f.pain_point_reasoning),
     pain_severity_reasoning: cleanText(f.pain_severity_reasoning),
-    evidence_snippet: cleanText(f.evidence_snippet),
+    // evidence_snippet deliberately NOT cleaned - it's a direct quote from
+    // the source post, not our own commentary. Rewriting its punctuation
+    // (even just em dashes) breaks the browser Text Fragment highlight on
+    // the source link below, since that highlight only fires on an exact
+    // substring match against the live page's actual text.
+    evidence_snippet: f.evidence_snippet,
     solution: cleanText(f.solution),
     effectiveness_reasoning: cleanText(f.effectiveness_reasoning),
     difficulty_reasoning: cleanText(f.difficulty_reasoning),

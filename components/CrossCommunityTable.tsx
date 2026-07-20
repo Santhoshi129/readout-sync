@@ -58,6 +58,7 @@ export function CrossCommunityTable({
       <div style={{ padding: "0 14px 10px", fontSize: 11, color: "var(--ink-faint)" }}>
         Coverage = how many of the {communityCount} communities mention it at all. Buildable = findings tagged core-fit or partial-fit (TWU could plausibly act on them), pooled across every community - click a row to see the exact core/partial split and click a community pill to filter to just that community's findings for this pain point.
       </div>
+      <div className="scroll-panel" style={{ maxHeight: 640, overflowY: "auto", paddingRight: 4 }}>
       {sorted.map((r) => {
         const isOpen = expanded === r.pain_point;
         const isActive = active === r.pain_point;
@@ -189,6 +190,7 @@ export function CrossCommunityTable({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

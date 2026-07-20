@@ -107,6 +107,43 @@ export function combinedDataset(): CommunityDataset {
   };
 }
 
+// One-line "why this number" explanation for a community's relevant-findings
+// count, shown on hover next to the tab/selector. Distinguishes communities
+// classified exhaustively (every cleaned record reviewed) from ones that
+// went through a prescreen funnel first (data_note set), since the two
+// produce very different relevant-rate percentages that aren't directly
+// comparable without that context.
+export function communityCountNote(ds: CommunityDataset): string {
+  if (ds.subreddit === "all") {
+    return `Union of every community below (${COMMUNITIES.length}) at once - each keeps its own pain-point categories rather than being forced into a shared list.`;
+  }
+  const pct = ds.total_analyzed > 0 ? Math.round((ds.relevant_count / ds.total_analyzed) * 1000) / 10 : 0;
+  const base = `${ds.relevant_count} of ${ds.total_analyzed.toLocaleString()} records classified came back relevant (${pct}%)`;
+  if (ds.data_note) {
+    return `${base} - this community was narrowed by a prescreen before classification, not reviewed exhaustively like the others. Open its tab for the full funnel.`;
+  }
+  return `${base} - every cleaned record in this community went through classification, nothing was prescreened out first.`;
+}
+
+// Matching one-liner for the top "Posts/comments analyzed" stat tile.
+export function analyzedNote(ds: CommunityDataset): string {
+  if (ds.subreddit === "all") {
+    const mixed = COMMUNITIES.some((c) => c.data_note);
+    return mixed
+      ? "Sum across all communities - most were reviewed exhaustively, at least one was narrowed by a prescreen first. See that community's tab for its funnel."
+      : "Sum of every cleaned record across all communities, each reviewed exhaustively by the classifier.";
+  }
+  return ds.data_note
+    ? "Records that survived this community's prescreen and were actually sent through classification, not the full raw pool."
+    : "Every cleaned record in this community, reviewed exhaustively by the classifier.";
+}
+
+// Matching one-liner for the top "Relevant findings" stat tile.
+export function relevantNote(ds: CommunityDataset): string {
+  const pct = ds.total_analyzed > 0 ? Math.round((ds.relevant_count / ds.total_analyzed) * 1000) / 10 : 0;
+  return `${pct}% of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter.`;
+}
+
 // ---------------------------------------------------------------------------
 // Labels
 // ---------------------------------------------------------------------------
@@ -174,6 +211,14 @@ export const APP_RELEVANCE_TONE: Record<AppRelevance, string> = {
   core_fit: "hot",
   partial_fit: "amber",
   not_addressable: "muted",
+};
+// One-line "why this bucket" explanation, shown on hover next to each
+// app-relevance count - what the label alone doesn't say is the reasoning
+// behind the split, not just the split itself.
+export const APP_RELEVANCE_MEANING: Record<AppRelevance, string> = {
+  core_fit: "Something a community/connection product like TWU's could plausibly fix directly - not a promise it's already built, just that it's in scope.",
+  partial_fit: "TWU could help around the edges (a nudge, a flag, a reminder) but doesn't solve the actual root cause on its own.",
+  not_addressable: "A coaching, staffing, facility, or pricing problem - no app changes what happened here, regardless of how it's built.",
 };
 
 export const CONFIDENCE_TONE: Record<ConfidenceTier, string> = {
@@ -323,6 +368,16 @@ export function perspectiveLabel(p: string | null): string {
   const key = p || "unclear";
   return PERSPECTIVE_LABEL[key] || key;
 }
+// One-line "why this voice matters" explanation, shown on hover next to
+// each perspective count.
+export const PERSPECTIVE_MEANING: Record<string, string> = {
+  owner: "An operator describing what they see in their own members - secondhand on the member's actual experience, firsthand on what an operator notices.",
+  member: "Someone describing their own experience directly - the strongest evidentiary base of the group, but only one side of the story.",
+  vendor: "A product or service seller talking about the space, not a member or operator's lived account - weighted lower for that reason.",
+  coach: "Staff or a coach describing what they see from the floor - close to the member experience, but still not the member's own words.",
+  employee: "A non-coaching staff member's account - workplace conditions and internal process, not member sentiment directly.",
+  unclear: "Couldn't confidently tell who's speaking from the text alone - included for completeness, weighted cautiously.",
+};
 
 export function perspectiveBreakdown(findings: Finding[]): [string, number][] {
   const map: Record<string, number> = {};

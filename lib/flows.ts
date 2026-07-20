@@ -60,7 +60,7 @@ export const FLOWS: Flow[] = [
     category: "acquisition",
     oneLine: "Turns pre-scraped cold gyms into scored, deduped, personally-drafted prospects - CrossFit at 7:00 AM, HYROX at 7:30 AM.",
     technical: [
-      "Two parallel pipelines read pre-scraped gyms (CrossFit from MongoDB cf_gym_details, HYROX from the Raw Leads sheet), fetch each gym's website, and run Claude Haiku enrichment for owner name, gym type, a location-specific Instagram handle (franchise HQ handles rejected) and an outreach angle.",
+      "Two parallel pipelines read pre-scraped gyms (CrossFit from MongoDB cf_gym_details, HYROX from the Raw Leads sheet), fetch each gym's website, and run an automated enrichment step for owner name, gym type, a location-specific Instagram handle (franchise HQ handles rejected) and an outreach angle.",
       "A prospect score gates the pipeline: direct email +35, generic +12, generic-domain −15, US/CA +20, independent +20, franchise −5, website +10, phone +5. Hot ≥65, warm 20–64, cold <20 (skipped and logged). This is read straight from the CF/HY Prospect Score nodes.",
       "Survivors are deduped against GHL by email before any contact is created, pushed to GHL (New Leads → Prospect stage, assigned to Dave) with a personalized Gmail draft in David's voice. Nothing sends automatically.",
     ],
@@ -180,7 +180,7 @@ export const FLOWS: Flow[] = [
     oneLine: "Every morning at 8:15, drafts the next due touch for active gyms and stops the sequence the instant one replies.",
     technical: [
       "Daily at 8:15 AM it loads GHL field definitions, fetches contacts, and filters to genuinely active outreach: has outreach-sent, not replied / complete / bounced / stopped / draft-pending (draft-pending = followup-draft-ready, the same tag the resume flow uses to avoid double-drafting).",
-      "For each active contact it checks days-since-last-send (≥2 = due) and current touch. Due contacts get a Claude draft in David's voice using the touch-specific angle; touch 5 with no reply closes out with no-response + sequence-complete + phone-ig-followup.",
+      "For each active contact it checks days-since-last-send (≥2 = due) and current touch. Due contacts get an automated draft in David's voice using the touch-specific angle; touch 5 with no reply closes out with no-response + sequence-complete + phone-ig-followup.",
       "A separate inbox branch stops a sequence the moment a gym replies and alerts Slack. Nothing sends automatically.",
     ],
     business: [
@@ -338,9 +338,9 @@ export const FLOWS: Flow[] = [
     order: 6,
     goLive: "2026-06-26",
     category: "signal",
-    oneLine: "Reads every inbound reply, classifies intent with Claude, and routes it - including auto-responder redirects to Alt Email.",
+    oneLine: "Reads every inbound reply, classifies intent automatically, and routes it - including auto-responder redirects to Alt Email.",
     technical: [
-      "Every-minute inbox trigger parses the sender, fetches the original thread, and asks Claude to classify: interested, not_interested, auto_responder, auto_ack, temporary_away, or other. Unknown labels fall back to 'other' so nothing slips past a human.",
+      "Every-minute inbox trigger parses the sender, fetches the original thread, and runs an automated classification step: interested, not_interested, auto_responder, auto_ack, temporary_away, or other. Unknown labels fall back to 'other' so nothing slips past a human.",
       "Interested → tag interested + sequence-stopped, move to Responded. Not-interested → unsubscribed + sequence-stopped, move to Dead. Auto-responder redirect → hands off to Alt Email Outreach. Temporary-away → writes temporarily-paused + paused-source-coldoutreach + paused-until-<date> (this is where Cold Outreach pausing actually happens).",
       "Auto-ack is intentionally passive - no stage change, sequence keeps running. In the current export the Handle Auto-Ack node writes no tag, so reply_breakdown.auto_ack reads 0 until the auto-ack-detected tag write is deployed.",
     ],
@@ -390,7 +390,7 @@ export const FLOWS: Flow[] = [
     category: "signal",
     oneLine: "Turns David's manual reply tags (IG or phone) into the right CRM moves - the two tags he adds trigger everything else.",
     technical: [
-      "Two webhooks. IG positive replies are routed through Claude first (genuine vs auto-reply, and it captures a redirect email if present) - if an email is found it's written and the stage is held so the IG Bridge Sequence can pick it up; genuine-no-email moves to Responded + sequence-stopped.",
+      "Two webhooks. IG positive replies are routed through an automated classification step first (genuine vs auto-reply, and it captures a redirect email if present) - if an email is found it's written and the stage is held so the IG Bridge Sequence can pick it up; genuine-no-email moves to Responded + sequence-stopped.",
       "Phone: phone-positive → Responded + sequence-stopped + phone-resolved; phone-negative → Dead + sequence-stopped + phone-resolved. Writing phone-resolved is what makes phone_still_due (open right now) distinct from the lifetime phone_followup_due total.",
       "Also writes paused-source-igmain, covering the fourth pause source in the unified temp-away system.",
     ],
@@ -419,7 +419,7 @@ export const FLOWS: Flow[] = [
       },
     ],
     changelog: [
-      { date: "2026-06-28", status: "done", text: "Live. IG positive routed through Claude (email capture → hand to Bridge), phone tags close with phone-resolved." },
+      { date: "2026-06-28", status: "done", text: "Live. IG positive routed through automated classification (email capture → hand to Bridge), phone tags close with phone-resolved." },
     ],
     tagNotes: [
       { tag: "ig-replied-positive / ig-replied-negative", why: "David's manual outcome tag on an IG reply - the two entry points this whole flow reacts to." },
@@ -438,7 +438,7 @@ export const FLOWS: Flow[] = [
     category: "acquisition",
     oneLine: "For email-exhausted gyms: finds a real Instagram handle to DM, then flags a phone call if the DM goes cold.",
     technical: [
-      "Daily 9:30 AM, two parallel branches. IG: for gyms tagged phone-ig-followup, searches Google via Apify and asks Claude to classify the handle as ig-direct (location-specific, passes), ig-generic (brand HQ, rejected) or ig-not-found. Direct → ig-outreach-ready + a Mary task; generic/not-found → ig-needs-review. Capped at 20/day for IG safety.",
+      "Daily 9:30 AM, two parallel branches. IG: for gyms tagged phone-ig-followup, searches Google via Apify and runs an automated classification step on the handle as ig-direct (location-specific, passes), ig-generic (brand HQ, rejected) or ig-not-found. Direct → ig-outreach-ready + a Mary task; generic/not-found → ig-needs-review. Capped at 20/day for IG safety.",
       "Phone: fully-paginated fetch of ig-outreach-sent contacts (the old limit=100 single request dropped contacts past 100). NEW = 10+ days since real IG send, gets a task + phone-followup-due; STALE = already due, no reply 7+ days - resurfaces in the daily Slack digest so a backlog can't vanish.",
     ],
     business: [
@@ -479,12 +479,12 @@ export const FLOWS: Flow[] = [
       },
     ],
     changelog: [
-      { date: "2026-06-28", status: "done", text: "IG branch live: Apify handle lookup + Claude classification, brand-HQ rejection, Mary tasks." },
+      { date: "2026-06-28", status: "done", text: "IG branch live: Apify handle lookup + automated classification, brand-HQ rejection, Mary tasks." },
       { date: "2026-07-05", status: "done", text: "Phone branch live with fully-paginated fetch (fixed the limit=100 drop) and NEW/STALE bucketing in one Slack digest." },
     ],
     tagNotes: [
       { tag: "ig-outreach-ready / ig-needs-review", why: "Splits confirmed location handles (ready to DM) from ones a human must find first." },
-      { tag: "ig-direct / ig-generic", why: "Claude's classification of the found handle - gym-specific and usable, versus a rejected brand-HQ account." },
+      { tag: "ig-direct / ig-generic", why: "Automated classification of the found handle - gym-specific and usable, versus a rejected brand-HQ account." },
       { tag: "ig-outreach-sent", why: "Mari has DM'd this gym on Instagram - written manually once the DM actually goes out." },
       { tag: "phone-followup-due", why: "Puts the gym on the call list; cleared only by a phone/IG outcome tag." },
       { tag: "phone-called", why: "A call was made but the outcome isn't recorded yet - written manually, then closed out by phone-positive/negative in the Tag Handler." },

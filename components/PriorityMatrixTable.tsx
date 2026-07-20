@@ -260,7 +260,7 @@ export function PriorityMatrixTable({
                           <div style={{ paddingTop: 4 }}>
                             <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", marginBottom: 10, letterSpacing: "0.05em" }}>
                               SOLUTIONS DISCUSSED FOR THIS PROBLEM
-                              <InfoTip text="Every distinct fix mentioned in a finding under this pain point, ranked by how often it came up. Effectiveness and difficulty are only averaged over the findings that reported both - a solution can be frequently mentioned but rarely scored, that's called out separately." />
+                              <InfoTip text="Every distinct fix mentioned in a finding under this pain point, ranked by how often it came up. Effectiveness and difficulty are only averaged over the findings that reported both; a solution can be frequently mentioned but rarely scored, and that's called out separately." />
                             </div>
                             {r.solutions.length === 0 ? (
                               <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No solution mentioned in any finding under this pain point yet.</div>

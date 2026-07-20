@@ -172,7 +172,7 @@ export function RetentionResearchDashboard({
           tiles={[
             { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
             { label: "Relevant findings", value: ds.relevant_count, tone: "amber", note: relevantNote(ds) },
-            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak - strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
+            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak. Strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
           ]}
         />
       </section>
@@ -362,7 +362,7 @@ export function RetentionResearchDashboard({
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">
             Can TWU actually fix it?
-            <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches. This judges fit against TWU's stated purpose, not against a verified list of what TWU has already built - a core fit finding may already be solved." />
+            <InfoTip text="I call it core fit when it's solvable by what TWU actually is, a community and connection layer (events, partner matching, chat, profiles), not booking or admin software. Partial fit means it can help around the edges. Not addressable means a staffing, coaching, pricing, or facility problem no connection layer touches. This judges fit against TWU's stated purpose, not against a verified list of what TWU has already built. A core fit finding may already be solved." />
           </div>
         </div>
         <div style={{ marginTop: 22 }}>

@@ -53,7 +53,7 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
               <span
                 title={
                   s.effectivenessWhy
-                    ? `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5 - why: ${s.effectivenessWhy}`
+                    ? `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5. Why: ${s.effectivenessWhy}`
                     : `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5, averaged across ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
                 }
                 style={{ color: "var(--hot)", cursor: "pointer", borderBottom: "1px dotted var(--hot)" }}
@@ -62,7 +62,7 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
               </span>
             ) : (
               <span
-                title="No finding for this specific fix reported both a difficulty and an effectiveness outcome, so there isn't enough to average yet - it's still a real mention, just not a scored one."
+                title="No finding for this specific fix reported both a difficulty and an effectiveness outcome, so there isn't enough to average yet. It's still a real mention, just not a scored one."
                 style={{ color: "var(--ink-faint)", cursor: "pointer", borderBottom: "1px dotted var(--ink-faint)" }}
               >
                 not yet scored
@@ -72,7 +72,7 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
               <span
                 title={
                   s.difficultyWhy
-                    ? `Difficulty ${s.avgDifficulty.toFixed(1)}/5 - why: ${s.difficultyWhy}`
+                    ? `Difficulty ${s.avgDifficulty.toFixed(1)}/5. Why: ${s.difficultyWhy}`
                     : `Difficulty ${s.avgDifficulty.toFixed(1)}/5, averaged across the same ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
                 }
                 style={{ color: "var(--cold)", cursor: "pointer", borderBottom: "1px dotted var(--cold)" }}

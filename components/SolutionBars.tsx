@@ -106,7 +106,7 @@ export function SolutionBars({
                     cursor: "default",
                   }}
                 >
-                  This isn&apos;t a solution - it&apos;s every finding where nobody described trying anything at all. People venting about the problem without saying what (if anything) they did about it. Treat this count as a floor on unaddressed problem space, not a real fix category.
+                  This isn&apos;t a solution. It&apos;s every finding where nobody described trying anything at all. People venting about the problem without saying what (if anything) they did about it. Treat this count as a floor on unaddressed problem space, not a real fix category.
                 </div>
               ) : hoverLabel === s && ex?.length ? (
                 <div

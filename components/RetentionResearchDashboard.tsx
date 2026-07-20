@@ -15,7 +15,6 @@ import { TimelineChart } from "@/components/TimelineChart";
 import { FindingsTable, TableFilters } from "@/components/FindingsTable";
 import { KeyTakeaways } from "@/components/KeyTakeaways";
 import { RetentionGlossary } from "@/components/RetentionGlossary";
-import { MethodologyPanel } from "@/components/MethodologyPanel";
 import { SectionInsight } from "@/components/SectionInsight";
 import { InfoTip } from "@/components/InfoTip";
 import { GapBarChart } from "@/components/GapBarChart";
@@ -88,6 +87,8 @@ export function RetentionResearchDashboard({
   const evidencePanelRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
   const [scrollTrigger, setScrollTrigger] = useState(0);
+  const [evidenceFromChart, setEvidenceFromChart] = useState(false);
+  const [expandedEvidenceQuote, setExpandedEvidenceQuote] = useState<string | null>(null);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -142,15 +143,19 @@ export function RetentionResearchDashboard({
       evidencePanelRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [scrollTrigger]);
-  const selectCombinedPainPoint = (pp: string) => select("painPoint", pp);
-  // Only GapBarChart selections page-jump to the shared evidence panel.
-  // Cross-community pain points and Feature development rows now render
-  // their own evidence inline (below the row you clicked), so bumping
-  // scrollTrigger there would yank the page away from what you're
-  // actually looking at.
+  const selectCombinedPainPoint = (pp: string) => {
+    setEvidenceFromChart(false);
+    select("painPoint", pp);
+  };
+  // Only GapBarChart selections open the shared evidence panel and
+  // page-jump to it. Cross-community pain points, Feature development,
+  // and the heatmap all render their own evidence inline now (below or
+  // near whatever you clicked), so opening the shared panel too would
+  // show the exact same quotes twice on screen at once.
   const selectCombinedAxis = (label: string) => {
     const axis = radarAxesData.find((a) => a.label === label);
     if (axis) {
+      setEvidenceFromChart(true);
       select("painPoint", axis.key);
       setScrollTrigger((t) => t + 1);
     }
@@ -160,6 +165,7 @@ export function RetentionResearchDashboard({
   // land on "coaching quality, r/f45", not sometimes clear it depending on
   // what was already selected.
   const selectCommunityAndPainPoint = (subreddit: string, pp: string) => {
+    setEvidenceFromChart(false);
     setFilters((prev) => ({ ...prev, painPoint: pp, community: `r/${subreddit}` }));
   };
   const allCombinedFindings = useMemo(() => communities.flatMap((c) => c.findings), [communities]);
@@ -264,8 +270,6 @@ export function RetentionResearchDashboard({
           </div>
         ))}
       </div>
-
-      <MethodologyPanel findings={findings} />
 
       <section style={{ marginBottom: 32 }}>
         <RetentionGlossary />
@@ -640,7 +644,7 @@ export function RetentionResearchDashboard({
                 </div>
                 <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
 
-                {activePainPointLabel && (
+                {activePainPointLabel && evidenceFromChart && (
                   <div ref={evidencePanelRef} style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid var(--border)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
                       <div className="eyebrow" style={{ color: "var(--amber)" }}>Evidence for: {activePainPointLabel}</div>
@@ -685,12 +689,16 @@ export function RetentionResearchDashboard({
                       </div>
                       <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>CAN TWU FIX THIS?</div>
-                        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                           {selectedRelevanceBreakdown.map((a) => (
-                            <span key={a.key} style={{ fontSize: 13 }}>
-                              <span style={{ fontWeight: 700, fontSize: 16, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)" }}>{a.count}</span>{" "}
-                              <span style={{ color: "var(--ink-dim)" }}>{a.label.split(":")[0]}</span>
-                            </span>
+                            <div key={a.key} style={{ fontSize: 12.5, display: "flex", alignItems: "baseline", gap: 8 }}>
+                              <span style={{ fontWeight: 700, fontSize: 16, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)", minWidth: 24 }}>{a.count}</span>
+                              <span style={{ color: "var(--ink-dim)" }}>
+                                {a.key === "core_fit" && `findings TWU's product could directly address`}
+                                {a.key === "partial_fit" && `findings TWU could help with around the edges, not solve outright`}
+                                {a.key === "not_addressable" && `findings outside what a connection layer can fix (staffing, pricing, facility, etc.)`}
+                              </span>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -717,12 +725,26 @@ export function RetentionResearchDashboard({
                       <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-a)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT MEMBERS SAY</div>
                         {memberExamples[filters.painPoint]?.length ? (
-                          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                            {memberExamples[filters.painPoint].map((ex, i) => (
-                              <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-a)" }}>
-                                {ex.short}
-                              </div>
-                            ))}
+                          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                            {memberExamples[filters.painPoint].map((ex, i) => {
+                              const qKey = `member::${i}`;
+                              const isQOpen = expandedEvidenceQuote === qKey;
+                              return (
+                                <div
+                                  key={i}
+                                  onClick={() => setExpandedEvidenceQuote((k) => (k === qKey ? null : qKey))}
+                                  style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, padding: "8px 10px", borderRadius: 6, borderLeft: "2px solid var(--series-a)", background: isQOpen ? "var(--card)" : "transparent", cursor: "pointer" }}
+                                >
+                                  {isQOpen ? ex.reasoning : ex.short}
+                                  {ex.evidence && (
+                                    <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
+                                      "{isQOpen || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
+                                    </div>
+                                  )}
+                                  <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{isQOpen ? "tap to collapse" : "tap to read full"}</div>
+                                </div>
+                              );
+                            })}
                           </div>
                         ) : (
                           <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No member findings in this category.</div>
@@ -731,12 +753,26 @@ export function RetentionResearchDashboard({
                       <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-b)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT OWNERS SAY</div>
                         {ownerExamples[filters.painPoint]?.length ? (
-                          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                            {ownerExamples[filters.painPoint].map((ex, i) => (
-                              <div key={i} style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, paddingLeft: 10, borderLeft: "2px solid var(--series-b)" }}>
-                                {ex.short}
-                              </div>
-                            ))}
+                          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                            {ownerExamples[filters.painPoint].map((ex, i) => {
+                              const qKey = `owner::${i}`;
+                              const isQOpen = expandedEvidenceQuote === qKey;
+                              return (
+                                <div
+                                  key={i}
+                                  onClick={() => setExpandedEvidenceQuote((k) => (k === qKey ? null : qKey))}
+                                  style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, padding: "8px 10px", borderRadius: 6, borderLeft: "2px solid var(--series-b)", background: isQOpen ? "var(--card)" : "transparent", cursor: "pointer" }}
+                                >
+                                  {isQOpen ? ex.reasoning : ex.short}
+                                  {ex.evidence && (
+                                    <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
+                                      "{isQOpen || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
+                                    </div>
+                                  )}
+                                  <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{isQOpen ? "tap to collapse" : "tap to read full"}</div>
+                                </div>
+                              );
+                            })}
                           </div>
                         ) : (
                           <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
@@ -782,7 +818,7 @@ export function RetentionResearchDashboard({
             <div style={{ marginTop: 22 }}>
               <PainPointHeatmap
                 rows={coverageRows}
-                communities={communities.map((c) => ({ subreddit: c.subreddit, label: c.label }))}
+                communities={communities}
                 onSelectCell={selectCommunityAndPainPoint}
                 activePainPoint={filters.painPoint === "All" ? null : (filters.painPoint as string)}
               />
@@ -793,11 +829,11 @@ export function RetentionResearchDashboard({
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
                 Feature development ranking
-                <InfoTip text="Buildable (core-fit + partial-fit) findings per pain point, ranked by volume - the same 'buildable' column from the table above, as bars so relative size is easier to read at a glance." />
+                <InfoTip text="Ranked purely by volume: how many buildable findings each pain point has, unweighted by severity or confidence. This answers 'what comes up the most.' Priority ranking further down answers a different question - 'what's worth building first' - by weighting the same buildable findings against how severe they are. The two lists can and do land in a different order; that's the point of having both." />
               </div>
             </div>
             <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-              <strong>How this number is calculated:</strong> for each pain point, I count every finding across all {communities.length} communities where a classifier marked app_relevance as core_fit or partial_fit, then sum them. It is not weighted by severity or confidence tier - it's a raw count of "TWU could plausibly act on this." Click a row to see exactly which solutions people tried for it and how well they reportedly worked.
+              <strong>How this number is calculated:</strong> for each pain point, I count every finding across all {communities.length} communities where a classifier marked app_relevance as core_fit or partial_fit, then sum them. It is not weighted by severity or confidence tier - it's a raw count of "TWU could plausibly act on this." That's the one thing this ranking does that <strong>Priority ranking</strong> further down deliberately doesn't: Priority ranking takes this same buildable pool and re-sorts it by severity-weighted score instead of raw volume, so a smaller but nastier pain point can outrank a bigger but milder one there. Read this one for "what's talked about most," read Priority ranking for "what's worth building first." Click a row here to see exactly which solutions people tried for it and how well they reportedly worked.
             </div>
             <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 10 }}>
               {topBuildable.map((r, idx) => {
@@ -890,8 +926,8 @@ export function RetentionResearchDashboard({
                             <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
                             {memberExamples[r.pain_point]?.length ? (
                               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                                {memberExamples[r.pain_point].slice(0, 2).map((ex, i) => (
-                                  <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, paddingLeft: 8, borderLeft: "2px solid var(--series-a)" }}>{ex.short}</div>
+                                {memberExamples[r.pain_point].slice(0, 3).map((ex, i) => (
+                                  <EvidenceQuote key={i} ex={ex} color="var(--series-a)" />
                                 ))}
                               </div>
                             ) : (
@@ -902,8 +938,8 @@ export function RetentionResearchDashboard({
                             <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
                             {ownerExamples[r.pain_point]?.length ? (
                               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                                {ownerExamples[r.pain_point].slice(0, 2).map((ex, i) => (
-                                  <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, paddingLeft: 8, borderLeft: "2px solid var(--series-b)" }}>{ex.short}</div>
+                                {ownerExamples[r.pain_point].slice(0, 3).map((ex, i) => (
+                                  <EvidenceQuote key={i} ex={ex} color="var(--series-b)" />
                                 ))}
                               </div>
                             ) : (
@@ -926,11 +962,11 @@ export function RetentionResearchDashboard({
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
                 Priority ranking
-                <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is, computed across every community's findings pooled together. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket and the long-tail non-canonical labels noted above." />
+                <InfoTip text="Ranked by how many findings TWU can directly fix, weighted by how severe the problem is, computed across every community's findings pooled together. High severity, directly buildable, mostly unsolved ranks at the top. Excludes the catch-all 'other' bucket and the long-tail non-canonical labels noted above. Different question from Feature development ranking above: that one sorts by raw buildable volume, this one sorts by volume × severity - a smaller but nastier problem can rank higher here than it did there." />
               </div>
             </div>
             <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
-              This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap.
+              This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap. If this ranking and Feature development ranking above disagree on the top pick, that's not an error - one's ranking by loudness, this one's ranking by loudness weighted by how much it hurts.
             </div>
             {priority.length > 0 ? (
               <>
@@ -983,7 +1019,7 @@ export function RetentionResearchDashboard({
         </>
       )}
 
-      <section className="section">
+      <section id="receipts" className="section">
         <div className="section-head">
           <div className="section-title">The receipts</div>
           <div className="eyebrow muted">every finding above, individually. pain point to solution tried to outcome, check my work</div>
@@ -997,6 +1033,27 @@ export function RetentionResearchDashboard({
       <div className="foot">
         Retention Research, I classified this from public Reddit discussions. Static build, not live-syncing, I'll refresh it when the next batch of communities is done.
       </div>
+    </div>
+  );
+}
+
+// Small self-contained click-to-expand quote row, reused wherever a
+// truncated "what X say" summary needs to reveal its full text without
+// needing parent-level state for every single quote on the page.
+function EvidenceQuote({ ex, color }: { ex: { reasoning: string; short: string; evidence: string | null }; color: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onClick={() => setOpen((o) => !o)}
+      style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, padding: "6px 8px", margin: "-6px -8px", borderRadius: 6, borderLeft: `2px solid ${color}`, background: open ? "var(--card)" : "transparent", cursor: "pointer" }}
+    >
+      {open ? ex.reasoning : ex.short}
+      {ex.evidence && (
+        <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>
+          "{open || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
+        </div>
+      )}
+      <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{open ? "tap to collapse" : "tap to read full"}</div>
     </div>
   );
 }

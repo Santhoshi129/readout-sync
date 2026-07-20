@@ -132,26 +132,6 @@ export function RetentionResearchDashboard({
             ? `"All communities combined" and "${communities[0].label}" are the same numbers right now, ${communities[0].label} is the only one I've classified so far. The selector's built to take more without a rebuild.`
             : "Switch between individual communities or the combined view above. Each community keeps its own native pain-point categories rather than being forced into another community's list, the combined view is a union of all of them, not a merge."}
         </div>
-        {ds.data_note && (
-          <div
-            style={{
-              marginTop: 16,
-              padding: "12px 16px",
-              borderRadius: 10,
-              background: "rgba(201,168,76,0.08)",
-              border: "1px solid var(--amber-deep)",
-              fontSize: 13,
-              color: "var(--ink-dim)",
-              maxWidth: 640,
-              lineHeight: 1.5,
-            }}
-          >
-            <span style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--amber)", marginRight: 8 }}>
-              DATA NOTE
-            </span>
-            {ds.data_note}
-          </div>
-        )}
       </section>
 
       <section style={{ marginBottom: 24 }}>

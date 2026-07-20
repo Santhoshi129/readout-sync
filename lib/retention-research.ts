@@ -168,7 +168,7 @@ export function analyzedNote(ds: CommunityDataset): string {
     const parts = COMMUNITIES.map(
       (c) => `${c.label} ${c.total_analyzed.toLocaleString()}${c.data_note ? " (raw pull)" : " (exhaustive)"}`
     ).join(" + ");
-    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified; "raw pull" means only a fraction reached classification - open that community's own tab for its funnel.`;
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified. "Raw pull" means only a fraction reached classification - open that community's own tab for its funnel.`;
   }
   return ds.data_note
     ? "The full raw pull for this community before any filtering - only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."
@@ -691,7 +691,7 @@ export function executiveSummary(ds: CommunityDataset): string[] {
 
   sentences.push(
     nonExhaustive
-      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}; after prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and at least one community here filtered harder than others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
+      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}. After prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and at least one community here filtered harder than others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
       : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 
@@ -794,9 +794,9 @@ export function soWhatSolutions(rows: [string, number][], mentioned: number, tot
     const topReal = realSolutions[0];
     const noSolvePct = Math.round((top[1] / total) * 100);
     if (!topReal) {
-      return `${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying a fix at all - that's the single biggest bucket here, bigger than any actual solution. Read it as unaddressed problem space until proven otherwise; posts skew toward venting over documenting fixes, so some of this gap is reporting bias, not a real vacuum. No solution category has enough volume yet to call a clear runner-up.`;
+      return `${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying a fix at all - that's the single biggest bucket here, bigger than any actual solution. Read it as unaddressed problem space until proven otherwise. Posts skew toward venting over documenting fixes, so some of this gap is reporting bias, not a real vacuum. No solution category has enough volume yet to call a clear runner-up.`;
     }
-    return `The single biggest bucket isn't a solution at all: ${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying anything. That's not a fix, it's the absence of one - people venting about the problem without describing what (if anything) they did about it. Once you set that aside, the actual most-tried fix is ${solutionCategoryLabel(topReal[0])} (${topReal[1]} mentions). Treat the no-solution share as a floor on unaddressed problem space, not a headline finding on its own; some of it is reporting bias (Reddit skews toward venting over documenting fixes), not proof nothing was ever tried.`;
+    return `The single biggest bucket isn't a solution at all: ${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying anything. That's not a fix, it's the absence of one - people venting about the problem without describing what (if anything) they did about it. Once you set that aside, the actual most-tried fix is ${solutionCategoryLabel(topReal[0])} (${topReal[1]} mentions). Treat the no-solution share as a floor on unaddressed problem space, not a headline finding on its own. Some of it is reporting bias (Reddit skews toward venting over documenting fixes), not proof nothing was ever tried.`;
   }
   return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, out of ${mentioned} of ${total} findings that name any solution at all.`;
 }

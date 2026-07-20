@@ -78,7 +78,7 @@ export function SolutionBars({
                   fontSize: 13.5,
                   color: isActive ? "var(--amber)" : "var(--ink-dim)",
                   fontWeight: isActive ? 700 : 400,
-                  cursor: ex?.length || s === NO_SOLUTION_KEY ? "help" : "default",
+                  cursor: ex?.length || s === NO_SOLUTION_KEY ? "pointer" : "default",
                   borderBottom: ex?.length || s === NO_SOLUTION_KEY ? "1px dotted var(--ink-faint)" : "none",
                   display: "inline-block",
                 }}

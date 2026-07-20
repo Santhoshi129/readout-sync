@@ -53,7 +53,7 @@ export function PainPointStackedBars({
     <div>
       <div className="compare-legend" style={{ marginBottom: 22 }}>
         {(["strong", "moderate", "weak"] as const).map((t) => (
-          <span key={t} title={TIER_DEF[t]} style={{ cursor: "help" }}>
+          <span key={t} title={TIER_DEF[t]} style={{ cursor: "pointer" }}>
             <i className="dot-legend" style={{ background: TIER_COLOR[t] }} /> {t[0].toUpperCase() + t.slice(1)}
           </span>
         ))}
@@ -98,7 +98,7 @@ export function PainPointStackedBars({
                     fontSize: 13.5,
                     color: isActive ? "var(--amber)" : "var(--ink-dim)",
                     fontWeight: isActive ? 700 : 400,
-                    cursor: PAIN_POINT_MEANING[pp] || examples?.[pp]?.length ? "help" : "default",
+                    cursor: PAIN_POINT_MEANING[pp] || examples?.[pp]?.length ? "pointer" : "default",
                     borderBottom: PAIN_POINT_MEANING[pp] || examples?.[pp]?.length ? "1px dotted var(--ink-faint)" : "none",
                     display: "inline-block",
                   }}
@@ -176,7 +176,7 @@ export function PainPointStackedBars({
                         style={{
                           width: `${w}%`,
                           flex: "none",
-                          cursor: "help",
+                          cursor: "pointer",
                           position: "relative",
                         }}
                       >

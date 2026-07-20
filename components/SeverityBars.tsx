@@ -62,7 +62,7 @@ export function SeverityBars({
             >
               <div
                 className="bar-track thin"
-                style={{ opacity: active != null && !isActive ? 0.45 : 1, transition: "opacity 150ms ease", cursor: "help" }}
+                style={{ opacity: active != null && !isActive ? 0.45 : 1, transition: "opacity 150ms ease", cursor: "pointer" }}
               >
                 <div
                   className="bar-fill"

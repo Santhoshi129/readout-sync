@@ -30,7 +30,7 @@ export function InfoTip({ text }: { text: string }) {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
-          cursor: "help",
+          cursor: "pointer",
           lineHeight: 1,
         }}
       >

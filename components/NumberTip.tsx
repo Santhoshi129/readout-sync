@@ -31,7 +31,7 @@ export function NumberTip({
 
   return (
     <span
-      style={{ position: "relative", display: "inline-flex", cursor: "help" }}
+      style={{ position: "relative", display: "inline-flex", cursor: "pointer" }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       // Touch devices never fire :hover/mouseenter at all, so tap support

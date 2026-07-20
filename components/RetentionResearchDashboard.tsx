@@ -175,8 +175,8 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
-            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
-            { label: "Relevant findings", value: ds.relevant_count, tone: "amber", note: relevantNote(ds) },
+            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", tip: analyzedNote(ds) },
+            { label: "Relevant findings", value: ds.relevant_count, tone: "amber", tip: relevantNote(ds) },
             { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak` },
           ]}
         />

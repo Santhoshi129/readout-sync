@@ -9,6 +9,8 @@ function useMounted() {
   return mounted;
 }
 
+const VISIBLE_CAP = 15;
+
 export function SolutionBars({
   rows,
   active,
@@ -23,10 +25,22 @@ export function SolutionBars({
   const mounted = useMounted();
   const max = Math.max(1, ...rows.map(([, c]) => c));
   const [hoverLabel, setHoverLabel] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState(false);
+
+  // rows arrives pre-sorted by count descending. Past a point every extra
+  // row is a one-off, low-signal category - showing all of them at once is
+  // what made this chart slow to actually read. Cap what renders by
+  // default and let the tail expand on demand instead.
+  const tail = rows.slice(VISIBLE_CAP);
+  const visible = expanded ? rows : rows.slice(0, VISIBLE_CAP);
+  const tailAllSame = tail.length > 0 && tail.every(([, c]) => c === tail[0][1]);
+  const tailLabel = tail.length === 0 ? "" : tailAllSame
+    ? `+${tail.length} more ${tail.length === 1 ? "category" : "categories"} (mentioned ${tail[0][1] === 1 ? "once" : `${tail[0][1]}x`} each)`
+    : `+${tail.length} more categories (${tail[tail.length - 1][1]}-${tail[0][1]} mentions each)`;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      {rows.map(([s, c], i) => {
+      {visible.map(([s, c], i) => {
         const isActive = active === s;
         const w = Math.max(1.5, (c / max) * 100);
         const ex = examples?.[s];
@@ -108,6 +122,27 @@ export function SolutionBars({
           </div>
         );
       })}
+      {tail.length > 0 && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            background: "none",
+            border: "none",
+            padding: "6px 8px",
+            margin: "2px -8px 0",
+            color: "var(--ink-faint)",
+            fontSize: 12.5,
+            cursor: "pointer",
+            textAlign: "left",
+          }}
+        >
+          <span style={{ transform: expanded ? "rotate(90deg)" : "none", transition: "transform 150ms ease", display: "inline-block" }}>▸</span>
+          {expanded ? "Show fewer" : tailLabel}
+        </button>
+      )}
     </div>
   );
 }

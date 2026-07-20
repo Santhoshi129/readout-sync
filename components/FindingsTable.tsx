@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState, useEffect, type CSSProperties } from "react";
+import { NumberTip } from "@/components/NumberTip";
 import {
   Finding,
   ConfidenceTier,
@@ -346,16 +347,32 @@ export function FindingsTable({
                       </span>
                     )}
                     {f.app_relevance && (
-                      <span
-                        style={{
-                          fontFamily: "var(--mono)",
-                          fontSize: 9.5,
-                          color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance]],
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
-                      </span>
+                      f.app_relevance_reasoning ? (
+                        <NumberTip text={f.app_relevance_reasoning} align="right">
+                          <span
+                            style={{
+                              fontFamily: "var(--mono)",
+                              fontSize: 9.5,
+                              color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance]],
+                              whiteSpace: "nowrap",
+                              borderBottom: "1px dotted currentColor",
+                            }}
+                          >
+                            {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
+                          </span>
+                        </NumberTip>
+                      ) : (
+                        <span
+                          style={{
+                            fontFamily: "var(--mono)",
+                            fontSize: 9.5,
+                            color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance]],
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
+                        </span>
+                      )
                     )}
                   </div>
                 </div>
@@ -384,13 +401,16 @@ export function FindingsTable({
                         "{f.evidence_snippet}"
                       </blockquote>
                     )}
-                    {(f.pain_severity_reasoning || f.difficulty_reasoning) && (
+                    {(f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance_reasoning) && (
                       <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10, fontSize: 12, color: "var(--ink-dim)" }}>
                         {f.pain_severity_reasoning && (
                           <div><span style={{ color: "var(--ink-faint)" }}>Why this severity: </span>{f.pain_severity_reasoning}</div>
                         )}
                         {f.difficulty_reasoning && (
                           <div><span style={{ color: "var(--ink-faint)" }}>Why this difficulty: </span>{f.difficulty_reasoning}</div>
+                        )}
+                        {f.app_relevance_reasoning && (
+                          <div><span style={{ color: "var(--ink-faint)" }}>Why this app fit: </span>{f.app_relevance_reasoning}</div>
                         )}
                       </div>
                     )}

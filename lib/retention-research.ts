@@ -32,6 +32,10 @@ export type Finding = {
   pain_severity: number | null;
   pain_severity_reasoning: string | null;
   app_relevance: AppRelevance | null;
+  // Optional - only present for communities classified with this field
+  // captured (orangetheory, crossfit). Older communities' source data
+  // didn't include it, so this is undefined there rather than null.
+  app_relevance_reasoning?: string | null;
   solution: string | null;
   solution_category: string | null;
   effectiveness: number | null;
@@ -75,6 +79,7 @@ function sanitizeFinding(f: Finding): Finding {
     solution: cleanText(f.solution),
     effectiveness_reasoning: cleanText(f.effectiveness_reasoning),
     difficulty_reasoning: cleanText(f.difficulty_reasoning),
+    app_relevance_reasoning: cleanText(f.app_relevance_reasoning),
   };
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StatTiles } from "@/components/Charts";
 import { CommunitySelector } from "@/components/CommunitySelector";
 import { PainPointStackedBars } from "@/components/PainPointStackedBars";
@@ -84,6 +84,8 @@ export function RetentionResearchDashboard({
   ];
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
+  const evidencePanelRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -130,6 +132,15 @@ export function RetentionResearchDashboard({
   const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 2), [memberFindingsForRadar]);
   const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 2), [ownerFindingsForRadar]);
   const activePainPointLabel = filters.painPoint !== "All" ? painPointLabel(filters.painPoint) : null;
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (activePainPointLabel && evidencePanelRef.current) {
+      evidencePanelRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [activePainPointLabel]);
   const selectCombinedPainPoint = (pp: string) => select("painPoint", pp);
   const selectCombinedAxis = (label: string) => {
     const axis = radarAxesData.find((a) => a.label === label);
@@ -621,7 +632,7 @@ export function RetentionResearchDashboard({
                 <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
 
                 {activePainPointLabel && (
-                  <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid var(--border)" }}>
+                  <div ref={evidencePanelRef} style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid var(--border)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
                       <div className="eyebrow" style={{ color: "var(--amber)" }}>Evidence for: {activePainPointLabel}</div>
                       <button
@@ -761,8 +772,8 @@ export function RetentionResearchDashboard({
             <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
               <strong>How this number is calculated:</strong> for each pain point, I count every finding across all {communities.length} communities where a classifier marked app_relevance as core_fit or partial_fit, then sum them. It is not weighted by severity or confidence tier - it's a raw count of "TWU could plausibly act on this." Click a row to see exactly which solutions people tried for it and how well they reportedly worked.
             </div>
-            <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 16 }}>
-              {topBuildable.map((r) => {
+            <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 10 }}>
+              {topBuildable.map((r, idx) => {
                 const isActive = activePainPointLabel === r.label;
                 const barColor = r.avgSeverityBuildable >= 3.5 ? "var(--bad)" : r.avgSeverityBuildable >= 2.5 ? "var(--amber)" : "var(--hot)";
                 const matchingPriorityRow = priority.find((p) => p.pain_point === r.pain_point);
@@ -772,45 +783,64 @@ export function RetentionResearchDashboard({
                 const avgEff = totalMentions > 0 ? scored.reduce((s, sol) => s + (sol.avgEffectiveness ?? 0) * sol.count, 0) / totalMentions : null;
                 const avgDiff = totalMentions > 0 ? scored.reduce((s, sol) => s + (sol.avgDifficulty ?? 0) * sol.count, 0) / totalMentions : null;
                 return (
-                  <div key={r.pain_point}>
-                    <div
-                      onClick={() => selectCombinedPainPoint(r.pain_point)}
-                      title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
-                      style={{
-                        cursor: "pointer",
-                        padding: "10px 12px",
-                        margin: "-10px -12px",
-                        borderRadius: 10,
-                        border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
-                        background: isActive ? "rgba(201,168,76,0.06)" : "transparent",
-                      }}
-                    >
-                      <div style={{ display: "grid", gridTemplateColumns: "180px 1fr 50px", gap: 14, alignItems: "center" }}>
-                        <span style={{ fontSize: 13, color: "var(--ink)" }}>{r.label}</span>
-                        <div style={{ height: 10, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                  <div
+                    key={r.pain_point}
+                    onClick={() => selectCombinedPainPoint(r.pain_point)}
+                    title={`${r.label}: ${r.buildableCount} buildable findings across ${r.communities.filter((c) => c.count > 0).length} communities, avg severity ${r.avgSeverityBuildable.toFixed(1)}/5`}
+                    style={{
+                      cursor: "pointer",
+                      padding: "16px 18px",
+                      borderRadius: 12,
+                      border: `1px solid ${isActive ? "var(--amber)" : "var(--border-soft)"}`,
+                      background: isActive ? "rgba(201,168,76,0.06)" : "var(--card-raised)",
+                    }}
+                  >
+                    <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+                      <span
+                        style={{
+                          flexShrink: 0,
+                          width: 26,
+                          height: 26,
+                          borderRadius: "50%",
+                          background: "var(--muted)",
+                          color: "var(--ink-dim)",
+                          fontFamily: "var(--mono)",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {idx + 1}
+                      </span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>{r.label}</span>
+                          <span style={{ fontSize: 18, fontWeight: 800, color: barColor, fontFamily: "var(--font-head)", flexShrink: 0 }}>{r.buildableCount}</span>
+                        </div>
+                        <div style={{ height: 8, borderRadius: 4, background: "var(--muted)", overflow: "hidden" }}>
                           <div style={{ width: `${(r.buildableCount / maxBuildable) * 100}%`, height: "100%", background: barColor }} />
                         </div>
-                        <span style={{ fontSize: 13, color: barColor, textAlign: "right" }}>{r.buildableCount}</span>
-                      </div>
-                      {avgEff != null && avgDiff != null && (
-                        <div style={{ display: "grid", gridTemplateColumns: "180px 1fr 50px", gap: 14, alignItems: "center", marginTop: 6 }}>
-                          <span style={{ fontSize: 9.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", letterSpacing: "0.04em" }}>EFF / DIFF</span>
-                          <div style={{ position: "relative", height: 6, background: "var(--muted)", borderRadius: 3 }}>
-                            <div
-                              title={`Effectiveness ${avgEff.toFixed(1)}/5`}
-                              style={{ position: "absolute", top: -3, left: `${(avgEff / 5) * 100}%`, width: 12, height: 12, borderRadius: "50%", background: "var(--hot)", border: "2px solid var(--bg)", transform: "translateX(-50%)" }}
-                            />
-                            <div
-                              title={`Difficulty ${avgDiff.toFixed(1)}/5`}
-                              style={{ position: "absolute", top: -3, left: `${(avgDiff / 5) * 100}%`, width: 12, height: 12, borderRadius: "50%", background: "var(--cold)", border: "2px solid var(--bg)", transform: "translateX(-50%)" }}
-                            />
-                          </div>
-                          <span />
+                        <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
+                          <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
+                            avg severity <span style={{ color: barColor, fontWeight: 700 }}>{r.avgSeverityBuildable.toFixed(1)}/5</span>
+                          </span>
+                          {avgEff != null && (
+                            <span style={{ fontSize: 11, fontFamily: "var(--mono)", padding: "2px 8px", borderRadius: 999, background: "rgba(127,201,138,0.12)", color: "var(--hot)" }}>
+                              effectiveness {avgEff.toFixed(1)}/5
+                            </span>
+                          )}
+                          {avgDiff != null && (
+                            <span style={{ fontSize: 11, fontFamily: "var(--mono)", padding: "2px 8px", borderRadius: 999, background: "rgba(79,122,166,0.14)", color: "var(--cold)" }}>
+                              difficulty {avgDiff.toFixed(1)}/5
+                            </span>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
                     {isActive && matchingPriorityRow && matchingPriorityRow.solutions.length > 0 && (
-                      <div style={{ marginTop: 10, marginLeft: 8, paddingLeft: 12, borderLeft: "2px solid var(--border)" }}>
+                      <div style={{ marginTop: 14, marginLeft: 40, paddingLeft: 14, borderLeft: "2px solid var(--border)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
                           SOLUTIONS TRIED FOR THIS, RANKED BY MENTIONS
                         </div>
@@ -835,7 +865,7 @@ export function RetentionResearchDashboard({
               })}
             </div>
             <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-              Bar color is average severity: <span style={{ color: "var(--hot)" }}>green under 2.5/5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>. Below each bar, <span style={{ color: "var(--hot)" }}>green dot</span> = weighted avg effectiveness of solutions tried, <span style={{ color: "var(--cold)" }}>blue dot</span> = weighted avg difficulty, both on a 1-5 scale positioned left-to-right - a solution row with the green dot right of the blue one worked well relative to how hard it was. Click any row to expand its solutions and pull up full evidence above.
+              Ranked by buildable volume, bar color is average severity (<span style={{ color: "var(--hot)" }}>green under 2.5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>). The effectiveness/difficulty badges are a weighted average across every solution people tried for that pain point, both on a 1-5 scale. Click any row to expand its solutions and pull up full evidence above.
             </div>
           </div>
 

@@ -283,3 +283,24 @@ a { color: inherit; text-decoration: none; }
   .grid-2 { grid-template-columns: 1fr; }
   .wrap, .topbar { padding-left: 20px; padding-right: 20px; }
 }
+
+/* Thin dark scrollbar for internal scrollable panels (e.g. the
+   cross-community pain point list, data coverage detail panel) so a long
+   list scrolls in place instead of growing the whole page. */
+.scroll-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.scroll-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+.scroll-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--amber-deep);
+}

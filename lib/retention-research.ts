@@ -727,7 +727,7 @@ export function executiveSummary(ds: CommunityDataset): string[] {
       ? isAll
         ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities and passed through each community's own prescreen before classification. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left. Prescreen intensity varies by community, so this figure is the confirmed set that cleared classification, not an estimate of total prevalence; relevant-rate percentages aren't directly comparable across tabs without checking each community's own funnel.`
         : `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label} and passed through this community's prescreen before classification. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left. This is the confirmed set that cleared classification, not an estimate of total prevalence: the prescreen was tuned for precision over recall, so ${n} is a floor on what's discussed here, not a ceiling.`
-      : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose. Most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
+      : `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were classified in full to isolate one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) met that bar. That rate is expected for a general-purpose subreddit, where most discussion isn't about retention at all; ${n} is the confirmed signal, not a claim about how much members discuss the topic overall.`
   );
 
   // Deliberately doesn't restate the top pain point or the confidence split -
@@ -745,12 +745,12 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const notAddressablePct = Math.round((notAddressable / n) * 100);
 
   sentences.push(
-    `Of those ${n}, ${coreFitPct}% (${coreFit}) are problems TWU's product can move on its own, ${partialFitPct}% (${partialFit}) would need product work paired with something outside the app, and ${notAddressablePct}% (${notAddressable}) is staffing, facility, or pricing, outside what any software fixes. That last bucket is the real ceiling on how much of this an app can solve, worth keeping in view before reading the core-fit share as the whole opportunity.`
+    `Of those ${n}, ${coreFitPct}% (${coreFit}) are problems TWU's product can move on its own, ${partialFitPct}% (${partialFit}) would need product work paired with something outside the app, and ${notAddressablePct}% (${notAddressable}) is staffing, facility, or pricing, outside what any software fixes. The core-fit and partial-fit shares define the addressable opportunity; the not-addressable share sets its outer limit.`
   );
 
   sentences.push(
     ct.weak > 0
-      ? `Strong and moderate-tier findings are what I'd act on here. The weak tier is real signal but thinner sourcing; I'm treating it as a pointer for where the next classification pass should look, not something to present as settled yet.`
+      ? `Strong and moderate-tier findings anchor the conclusions on this page. The weak tier is lower-confidence signal, useful for prioritizing the next classification pass rather than for supporting a specific recommendation on its own.`
       : `Everything in this set cleared at least moderate confidence, with nothing weak-tier here to caveat.`
   );
 
@@ -783,10 +783,10 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
   const solutionsPct = Math.round((solutionsMentioned / n) * 100);
 
   return [
-    `${painPointLabel(top[0])} comes up more than anything else, ${topPct}% of everything I found. That's just frequency, though, my actual build pick is further down.`,
-    `Over half of what I found (${coreFitPct}%, ${coreFit} of ${n}) is stuff TWU can actually fix. It's not all staffing or facility complaints, a good chunk of this is ours to solve.`,
-    `Confidence is still thin, only ${strongPct}% strong-tier. I'd treat this as a first pass, not gospel, and I want a bigger classification run before anyone repeats these percentages as final.`,
-    `Only ${solutionsPct}% of findings (${solutionsMentioned} of ${n}) mention someone actually trying a fix. That could mean a real gap, or it could just mean people vent about problems on Reddit more than they document what they tried. I can't tell the difference from this data alone, worth treating as a lead, not a conclusion.`,
+    `${painPointLabel(top[0])} comes up more than anything else, ${topPct}% of everything found. This reflects mention frequency; the build recommendation is ranked separately further down.`,
+    `Over half of what's here (${coreFitPct}%, ${coreFit} of ${n}) is addressable by TWU's product directly. Staffing and facility complaints account for only part of the remainder.`,
+    `${strongPct}% of findings are strong-tier. This is a first classification pass; a larger run would tighten these percentages before they're treated as final.`,
+    `${solutionsPct}% of findings (${solutionsMentioned} of ${n}) name an attempted fix. The remainder may reflect an unaddressed gap, or a reporting bias toward venting over documenting solutions; this data doesn't distinguish between the two, so treat it as a lead rather than a conclusion.`,
   ];
 }
 

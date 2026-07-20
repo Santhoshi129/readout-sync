@@ -97,18 +97,28 @@ export function combinedDataset(): CommunityDataset {
     (acc, c) => (c.generated_at > acc ? c.generated_at : acc),
     COMMUNITIES[0]?.generated_at ?? ""
   );
-  const mixedMethodology = COMMUNITIES.some((c) => c.data_note);
   return {
     subreddit: "all",
     label: "All communities combined",
     generated_at: latest,
     total_analyzed: COMMUNITIES.reduce((s, c) => s + c.total_analyzed, 0),
     relevant_count: COMMUNITIES.reduce((s, c) => s + c.relevant_count, 0),
-    data_note: mixedMethodology
-      ? "This total mixes communities classified exhaustively with at least one classified via a prescreen funnel (raw pull counted in full here) - open an individual community's tab for its own funnel detail before quoting this ratio."
-      : null,
+    // Deliberately no data_note here - that field drives a visible amber
+    // "DATA NOTE" banner right under the intro, and this is the default
+    // landing view. executiveSummary() below still detects mixed
+    // methodology on its own (via hasMixedMethodology) and adjusts its
+    // wording accordingly, without putting a banner on the first thing
+    // anyone sees when the page loads.
     findings: COMMUNITIES.flatMap((c) => c.findings),
   };
+}
+
+// True if any individual community was classified via a non-exhaustive
+// funnel (has its own data_note). Used to pick accurate phrasing in the
+// combined view's executive summary without needing the combined dataset
+// itself to carry a data_note (which would surface the visible banner).
+function hasMixedMethodology(): boolean {
+  return COMMUNITIES.some((c) => c.data_note);
 }
 
 // Formats a rate as a percentage, except when that percentage would round
@@ -158,7 +168,8 @@ export function analyzedNote(ds: CommunityDataset): string {
 // Matching one-liner for the top "Relevant findings" stat tile.
 export function relevantNote(ds: CommunityDataset): string {
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
-  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter${ds.data_note ? ", or never reached classification at all" : ""}.`;
+  const nonExhaustive = ds.subreddit === "all" ? hasMixedMethodology() : !!ds.data_note;
+  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter${nonExhaustive ? ", or never reached classification at all" : ""}.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -642,9 +653,11 @@ export function executiveSummary(ds: CommunityDataset): string[] {
 
   const sentences: string[] = [];
 
+  const nonExhaustive = ds.subreddit === "all" ? hasMixedMethodology() : !!ds.data_note;
+
   sentences.push(
-    ds.data_note
-      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}; after prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and this community's funnel filtered harder than the others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
+    nonExhaustive
+      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}; after prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and at least one community here filtered harder than others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
       : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 

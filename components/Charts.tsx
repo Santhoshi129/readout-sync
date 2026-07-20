@@ -618,14 +618,25 @@ function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: stri
         {suffix && value != null && <span className="stat-suffix">{suffix}</span>}
       </div>
       {note && (
+        // Grid-rows accordion instead of a fixed maxHeight - a hardcoded
+        // pixel cap (previously 60) clips any note longer than ~2 lines,
+        // which cuts sentences off mid-word for the longer combined-view
+        // and data-note explanations. Grid-template-rows animating between
+        // 0fr and 1fr grows to fit whatever the actual content height is,
+        // so nothing is ever truncated regardless of note length.
         <div
           style={{
-            color: "var(--ink-faint)", fontSize: 11.5, lineHeight: 1.5,
-            maxHeight: hover ? 60 : 0, opacity: hover ? 1 : 0, marginTop: hover ? 10 : 0,
-            overflow: "hidden", transition: "all 200ms ease",
+            display: "grid",
+            gridTemplateRows: hover ? "1fr" : "0fr",
+            opacity: hover ? 1 : 0,
+            transition: "grid-template-rows 200ms ease, opacity 200ms ease",
           }}
         >
-          {note}
+          <div style={{ overflow: "hidden" }}>
+            <div style={{ color: "var(--ink-faint)", fontSize: 11.5, lineHeight: 1.5, paddingTop: 10 }}>
+              {note}
+            </div>
+          </div>
         </div>
       )}
     </div>

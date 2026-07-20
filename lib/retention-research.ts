@@ -10,9 +10,9 @@
 // change — every chart and the findings table key off `subreddit` in the
 // data itself.
 import gymownerData from "@/data/retention-research/gymowner.json";
-// crossfit and hyrox imports paused - see note above COMMUNITIES below
+// hyrox import still paused - see note above COMMUNITIES below
 // import hyroxData from "@/data/retention-research/hyrox.json";
-// import crossfitData from "@/data/retention-research/crossfit.json";
+import crossfitData from "@/data/retention-research/crossfit.json";
 import f45Data from "@/data/retention-research/f45.json";
 import orangetheoryData from "@/data/retention-research/orangetheory.json";
 
@@ -90,6 +90,7 @@ export const COMMUNITIES: CommunityDataset[] = [
   gymownerData as CommunityDataset,
   f45Data as CommunityDataset,
   orangetheoryData as CommunityDataset,
+  crossfitData as CommunityDataset,
 ].map(sanitizeDataset);
 
 export function combinedDataset(): CommunityDataset {
@@ -155,10 +156,14 @@ export function communityCountNote(ds: CommunityDataset): string {
 // Matching one-liner for the top "Posts/comments analyzed" stat tile.
 export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
-    const mixed = COMMUNITIES.some((c) => c.data_note);
-    return mixed
-      ? "Sum across all communities - most were reviewed exhaustively, at least one includes its full raw pull rather than just what reached classification. See that community's tab for its funnel."
-      : "Sum of every cleaned record across all communities, each reviewed exhaustively by the classifier.";
+    // Real per-community breakdown, computed from the live COMMUNITIES
+    // registry - so a number in the millions doesn't just say "mixed
+    // methodology," it says exactly which community is responsible for
+    // the scale and how each one got counted.
+    const parts = COMMUNITIES.map(
+      (c) => `${c.label} ${c.total_analyzed.toLocaleString()}${c.data_note ? " (raw pull)" : " (exhaustive)"}`
+    ).join(" + ");
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified; "raw pull" means only a fraction reached classification - open that community's own tab for its funnel.`;
   }
   return ds.data_note
     ? "The full raw pull for this community before any filtering - only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."

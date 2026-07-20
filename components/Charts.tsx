@@ -606,7 +606,7 @@ function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: stri
       </div>
       <div style={{ fontFamily: "var(--font-head)", fontSize: 32, fontWeight: 800, marginTop: 8 }}>
         {tip ? (
-          <NumberTip text={tip} align="left">
+          <NumberTip text={tip} align="left" side="bottom">
             <span style={{ borderBottom: "1px dotted var(--ink-faint)", cursor: "help" }}>
               <Counter value={value} />
             </span>

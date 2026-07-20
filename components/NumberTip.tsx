@@ -9,10 +9,16 @@ export function NumberTip({
   text,
   children,
   align = "center",
+  side = "top",
 }: {
   text: string;
   children: ReactNode;
   align?: "center" | "left" | "right";
+  // "top" floats the tooltip above the trigger (fine when there's room
+  // above, e.g. mid-page rows). "bottom" floats it below - use this for
+  // anything near the top of the viewport (like the hero stat tiles),
+  // where floating upward gets clipped by the browser's top edge.
+  side?: "top" | "bottom";
 }) {
   const [open, setOpen] = useState(false);
   const pos =
@@ -21,6 +27,7 @@ export function NumberTip({
       : align === "right"
       ? { right: 0, transform: "none" }
       : { left: "50%", transform: "translateX(-50%)" };
+  const vertical = side === "bottom" ? { top: "135%" } : { bottom: "135%" };
 
   return (
     <span
@@ -36,7 +43,6 @@ export function NumberTip({
         <span
           style={{
             position: "absolute",
-            bottom: "135%",
             width: 230,
             background: "var(--card-raised)",
             border: "1px solid var(--border)",
@@ -52,6 +58,7 @@ export function NumberTip({
             letterSpacing: "normal",
             fontWeight: 400,
             pointerEvents: "none",
+            ...vertical,
             ...pos,
           }}
         >

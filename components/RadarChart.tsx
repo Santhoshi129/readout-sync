@@ -14,20 +14,20 @@ export type RadarSeries = {
 export function RadarChart({
   axisLabels,
   series,
-  onHoverAxis,
+  onSelectAxis,
   activeAxis,
 }: {
   axisLabels: string[];
   series: RadarSeries[];
-  onHoverAxis?: (key: string | null) => void;
+  onSelectAxis?: (label: string) => void;
   activeAxis?: string | null;
 }) {
   const [hover, setHover] = useState<{ axis: number; seriesKey: string } | null>(null);
   const N = axisLabels.length;
-  const SIZE = 520;
+  const SIZE = 560;
   const CENTER = SIZE / 2;
-  const RADIUS = SIZE * 0.34;
-  const LABEL_RADIUS = RADIUS + 46;
+  const RADIUS = SIZE * 0.32;
+  const LABEL_RADIUS = RADIUS + 52;
   const RINGS = [0.25, 0.5, 0.75, 1];
 
   if (N < 3) {
@@ -48,6 +48,10 @@ export function RadarChart({
   const polygonPoints = (values: number[]) =>
     values.map((v, i) => pointFor(i, v)).map((p) => `${p.x},${p.y}`).join(" ");
 
+  // Scale labels run up the first spoke (straight up from center) so the
+  // rings have an actual readable value attached, not just relative shape.
+  const scaleSpokeAngle = angleFor(0);
+
   return (
     <div>
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`} width="100%" height={SIZE} style={{ overflow: "visible" }}>
@@ -64,6 +68,22 @@ export function RadarChart({
             strokeWidth={1}
           />
         ))}
+        {/* scale labels, offset slightly to the right of the up-spoke so they don't sit on top of the line */}
+        {RINGS.map((r) => {
+          const rad = r * RADIUS;
+          return (
+            <text
+              key={`scale-${r}`}
+              x={CENTER + 8}
+              y={CENTER - Math.sin(-scaleSpokeAngle) * 0 - rad}
+              fontSize={9.5}
+              fontFamily="var(--mono)"
+              fill="var(--ink-faint)"
+            >
+              {Math.round(r * 100)}%
+            </text>
+          );
+        })}
         {/* spokes */}
         {axisLabels.map((_, i) => {
           const p = pointFor(i, 100);
@@ -79,7 +99,7 @@ export function RadarChart({
             />
           );
         })}
-        {/* series polygons, faintest first so the more-hovered one draws on top */}
+        {/* series polygons */}
         {series.map((s) => (
           <polygon
             key={s.key}
@@ -90,39 +110,48 @@ export function RadarChart({
             strokeWidth={2}
           />
         ))}
-        {/* vertices, hoverable */}
+        {/* vertices, clickable */}
         {series.map((s) =>
           s.values.map((v, i) => {
             const p = pointFor(i, v);
             const isHover = hover?.axis === i && hover.seriesKey === s.key;
             const isActiveAxis = activeAxis === axisLabels[i];
             return (
-              <circle
-                key={`${s.key}-${i}`}
-                cx={p.x}
-                cy={p.y}
-                r={isHover || isActiveAxis ? 5.5 : 3.5}
-                fill={s.color}
-                stroke="var(--bg)"
-                strokeWidth={1.5}
-                style={{ cursor: "pointer" }}
-                onMouseEnter={() => {
-                  setHover({ axis: i, seriesKey: s.key });
-                  onHoverAxis?.(axisLabels[i]);
-                }}
-                onMouseLeave={() => {
-                  setHover(null);
-                  onHoverAxis?.(null);
-                }}
-              >
-                <title>
-                  {axisLabels[i]} - {s.label}: {v}%
-                </title>
-              </circle>
+              <g key={`${s.key}-${i}`}>
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={isHover || isActiveAxis ? 6 : 3.5}
+                  fill={s.color}
+                  stroke="var(--bg)"
+                  strokeWidth={1.5}
+                  style={{ cursor: onSelectAxis ? "pointer" : "default" }}
+                  onMouseEnter={() => setHover({ axis: i, seriesKey: s.key })}
+                  onMouseLeave={() => setHover(null)}
+                  onClick={() => onSelectAxis?.(axisLabels[i])}
+                >
+                  <title>
+                    {axisLabels[i]} - {s.label}: {v}%
+                  </title>
+                </circle>
+                {(isHover || isActiveAxis) && (
+                  <text
+                    x={p.x}
+                    y={p.y - 12}
+                    textAnchor="middle"
+                    fontSize={11}
+                    fontFamily="var(--mono)"
+                    fill={s.color}
+                    fontWeight={700}
+                  >
+                    {v}%
+                  </text>
+                )}
+              </g>
             );
           })
         )}
-        {/* axis labels */}
+        {/* axis labels, clickable */}
         {axisLabels.map((label, i) => {
           const p = pointFor(i, (LABEL_RADIUS / RADIUS) * 100);
           const isActiveAxis = activeAxis === label;
@@ -137,7 +166,9 @@ export function RadarChart({
               fontSize={11.5}
               fontFamily="var(--mono)"
               fill={isActiveAxis ? "var(--amber-bright)" : "var(--ink-dim)"}
-              style={{ cursor: "default" }}
+              fontWeight={isActiveAxis ? 700 : 400}
+              style={{ cursor: onSelectAxis ? "pointer" : "default", textDecoration: isActiveAxis ? "underline" : "none" }}
+              onClick={() => onSelectAxis?.(label)}
             >
               {label}
             </text>
@@ -151,6 +182,9 @@ export function RadarChart({
             {s.label}
           </div>
         ))}
+      </div>
+      <div style={{ marginTop: 4, textAlign: "center", fontSize: 11.5, color: "var(--ink-faint)" }}>
+        Click a point or label to filter the table below and pull up evidence.
       </div>
     </div>
   );

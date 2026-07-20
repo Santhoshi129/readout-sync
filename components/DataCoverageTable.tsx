@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CommunityDataset, painPointBreakdown, painPointLabel, perspectiveBreakdown, perspectiveLabel, timelineBreakdown } from "@/lib/retention-research";
+import { CommunityDataset, painPointBreakdown, painPointExamples, painPointLabel, perspectiveBreakdown, perspectiveLabel, timelineBreakdown } from "@/lib/retention-research";
 
 export function DataCoverageTable({ communities }: { communities: CommunityDataset[] }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -148,9 +148,10 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
           if (scored.length === 0) return null;
           return scored.reduce((s, f) => s + (f.pain_severity ?? 0), 0) / scored.length;
         })();
+        const topQuotes = topPains.length > 0 ? painPointExamples(c.findings.filter((f) => f.pain_point === topPains[0][0]), 3)[topPains[0][0]] || [] : [];
 
         return (
-          <div style={{ marginTop: 16, padding: 22, borderRadius: 14, background: "var(--card)", border: "1px solid var(--amber)" }}>
+          <div className="scroll-panel" style={{ marginTop: 16, padding: 22, borderRadius: 14, background: "var(--card)", border: "1px solid var(--amber)", maxHeight: 560, overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18 }}>
               <div className="eyebrow" style={{ color: "var(--amber)" }}>{c.label} in detail{avgSeverity != null ? ` · avg severity ${avgSeverity.toFixed(1)}/5` : ""}</div>
               <button
@@ -202,13 +203,43 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
                 </div>
               </div>
             </div>
+            {topQuotes.length > 0 && (
+              <div style={{ marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--border-soft)" }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--amber)", letterSpacing: "0.05em", marginBottom: 10 }}>
+                  WHAT PEOPLE SAY ABOUT {painPointLabel(topPains[0][0]).toUpperCase()} HERE
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {topQuotes.map((ex, i) => (
+                    <Quote key={i} ex={ex} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         );
       })()}
 
       <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-        Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. Tap any card for its top pain points, who's actually talking, and its posting timeline.
+        Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.
       </div>
+    </div>
+  );
+}
+
+function Quote({ ex }: { ex: { reasoning: string; short: string; evidence: string | null } }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onClick={() => setOpen((o) => !o)}
+      style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, padding: "8px 10px", borderRadius: 6, borderLeft: "2px solid var(--amber)", background: open ? "var(--card-raised)" : "transparent", cursor: "pointer" }}
+    >
+      {open ? ex.reasoning : ex.short}
+      {ex.evidence && (
+        <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
+          "{open || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
+        </div>
+      )}
+      <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{open ? "tap to collapse" : "tap to read full"}</div>
     </div>
   );
 }

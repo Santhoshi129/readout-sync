@@ -99,7 +99,7 @@ export function CrossCommunityTable({
               <span style={{ color: "var(--ink-faint)", fontSize: 11, textAlign: "right" }}>{isOpen ? "\u2212" : "+"}</span>
             </div>
             {isOpen && (
-              <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
+              <div className="scroll-panel" style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)", maxHeight: 460, overflowY: "auto", paddingRight: 6 }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
                   FROM WHERE - scroll, tap a community to preview it here
                 </div>
@@ -138,8 +138,14 @@ export function CrossCommunityTable({
                   const subreddit = previewPill.split("::")[1];
                   const community = communities.find((c) => c.subreddit === subreddit);
                   const commFindings = community ? community.findings.filter((f) => f.pain_point === r.pain_point) : [];
-                  const commExamples = painPointExamples(commFindings, 2)[r.pain_point] || [];
-                  const openInReceipts = () => community && onSelectCommunity?.(community.subreddit, r.pain_point);
+                  const commExamples = painPointExamples(commFindings, 4)[r.pain_point] || [];
+                  const openInReceipts = () => {
+                    community && onSelectCommunity?.(community.subreddit, r.pain_point);
+                    // Actually jump there - setting the filter alone did
+                    // nothing visible since the receipts table sits far
+                    // down the page with no scroll of its own.
+                    requestAnimationFrame(() => document.getElementById("receipts")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+                  };
                   return (
                     <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
@@ -152,9 +158,23 @@ export function CrossCommunityTable({
                       </div>
                       {commExamples.length > 0 ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                          {commExamples.map((ex, i) => (
-                            <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5 }}>{ex.short}</div>
-                          ))}
+                          {commExamples.map((ex, i) => {
+                            const qKey = `${r.pain_point}::${subreddit}::${i}`;
+                            const isQOpen = expandedQuote === qKey;
+                            return (
+                              <div
+                                key={i}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setExpandedQuote((k) => (k === qKey ? null : qKey));
+                                }}
+                                style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, cursor: "pointer", padding: "4px 6px", margin: "-4px -6px", borderRadius: 4, background: isQOpen ? "var(--card)" : "transparent" }}
+                              >
+                                {isQOpen ? ex.reasoning : ex.short}
+                                {ex.evidence && isQOpen && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence}"</div>}
+                              </div>
+                            );
+                          })}
                         </div>
                       ) : (
                         <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>No reasoning text captured for this pairing yet.</div>

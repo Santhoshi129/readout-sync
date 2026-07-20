@@ -88,6 +88,10 @@ export function PainPointStackedBars({
                 style={{ position: "relative" }}
                 onMouseEnter={() => setHoverLabel(pp)}
                 onMouseLeave={() => setHoverLabel((h) => (h === pp ? null : h))}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHoverLabel((h) => (h === pp ? null : pp));
+                }}
               >
                 <div
                   style={{
@@ -165,6 +169,10 @@ export function PainPointStackedBars({
                           setHoverKey(key);
                         }}
                         onMouseLeave={() => setHoverKey((h) => (h === key ? null : h))}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHoverKey((h) => (h === key ? null : key));
+                        }}
                         style={{
                           width: `${w}%`,
                           flex: "none",

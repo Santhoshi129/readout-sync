@@ -34,6 +34,15 @@ export function NumberTip({
       style={{ position: "relative", display: "inline-flex", cursor: "help" }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      // Touch devices never fire :hover/mouseenter at all, so tap support
+      // is required, not optional - stopPropagation matters here because
+      // this wraps content that sometimes sits inside a clickable parent
+      // (e.g. a community-selector tab button), and tapping the number
+      // should only toggle the tooltip, not also trigger the parent.
+      onClick={(e) => {
+        e.stopPropagation();
+        setOpen((o) => !o);
+      }}
       tabIndex={0}
       onFocus={() => setOpen(true)}
       onBlur={() => setOpen(false)}

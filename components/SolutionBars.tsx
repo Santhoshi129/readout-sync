@@ -68,6 +68,10 @@ export function SolutionBars({
                 setHoverLabel(s);
               }}
               onMouseLeave={() => setHoverLabel((h) => (h === s ? null : h))}
+              onClick={(e) => {
+                e.stopPropagation();
+                setHoverLabel((h) => (h === s ? null : s));
+              }}
             >
               <div
                 style={{

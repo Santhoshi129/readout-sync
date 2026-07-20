@@ -13,6 +13,10 @@ export function InfoTip({ text }: { text: string }) {
         tabIndex={0}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
         role="button"
         aria-label="More info"
         style={{

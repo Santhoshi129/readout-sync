@@ -396,8 +396,19 @@ export function FindingsTable({
                       </a>
                     )}
                     {(f.author || "").toLowerCase() === "[deleted]" && (
-                      <span style={{ fontFamily: "var(--mono)", fontSize: 9, color: "var(--ink-faint)", fontStyle: "italic", whiteSpace: "nowrap" }}>
-                        poster's account deleted
+                      <span
+                        style={{
+                          fontFamily: "var(--mono)",
+                          fontSize: 9,
+                          letterSpacing: "0.05em",
+                          color: "var(--warm)",
+                          border: "1px solid var(--warm)",
+                          borderRadius: 999,
+                          padding: "2px 8px",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        ⚠ author deleted
                       </span>
                     )}
                   </div>

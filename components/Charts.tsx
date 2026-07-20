@@ -583,13 +583,14 @@ function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: stri
   return (
     <div
       className="card"
-      style={{ padding: 24, position: "relative", overflow: "hidden" }}
+      style={{ padding: 24, position: "relative" }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <div
         style={{
           position: "absolute", top: 0, left: 0, right: 0, height: 2,
+          borderRadius: "16px 16px 0 0",
           background: `linear-gradient(90deg, ${TONE[tone || "amber"]}, transparent)`,
           opacity: hover ? 1 : 0.5, transition: "opacity 200ms ease",
         }}

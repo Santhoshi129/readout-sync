@@ -20,6 +20,8 @@ function useMounted() {
   return mounted;
 }
 
+const VISIBLE_CAP = 15;
+
 export function PainPointStackedBars({
   rows,
   active,
@@ -35,6 +37,17 @@ export function PainPointStackedBars({
   const max = Math.max(1, ...rows.map(([, v]) => v.total));
   const [hoverKey, setHoverKey] = useState<string | null>(null);
   const [hoverLabel, setHoverLabel] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState(false);
+
+  // Same reasoning as SolutionBars: rows arrive sorted by total descending,
+  // and past a point every extra row is a one-off category. Cap the
+  // default render and let the tail expand on demand.
+  const tail = rows.slice(VISIBLE_CAP);
+  const visibleRows = expanded ? rows : rows.slice(0, VISIBLE_CAP);
+  const tailAllSame = tail.length > 0 && tail.every(([, v]) => v.total === tail[0][1].total);
+  const tailLabel = tail.length === 0 ? "" : tailAllSame
+    ? `+${tail.length} more ${tail.length === 1 ? "category" : "categories"} (mentioned ${tail[0][1].total === 1 ? "once" : `${tail[0][1].total}x`} each)`
+    : `+${tail.length} more categories (${tail[tail.length - 1][1].total}-${tail[0][1].total} mentions each)`;
 
   return (
     <div>
@@ -51,7 +64,7 @@ export function PainPointStackedBars({
         )}
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        {rows.map(([pp, v], i) => {
+        {visibleRows.map(([pp, v], i) => {
           const isActive = active === pp;
           return (
             <div
@@ -202,6 +215,27 @@ export function PainPointStackedBars({
             </div>
           );
         })}
+        {tail.length > 0 && (
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              background: "none",
+              border: "none",
+              padding: "6px 8px",
+              margin: "2px -8px 0",
+              color: "var(--ink-faint)",
+              fontSize: 12.5,
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
+            <span style={{ transform: expanded ? "rotate(90deg)" : "none", transition: "transform 150ms ease", display: "inline-block" }}>▸</span>
+            {expanded ? "Show fewer" : tailLabel}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@
   "generated_at": "2026-07-20T03:26:07.236313+00:00",
   "total_analyzed": 1776009,
   "relevant_count": 690,
-  "data_note": "The funnel behind this community differs from gymowner/f45, which were classified exhaustively: 1,776,009 raw records were deduplicated to 1,742,329 unique records, narrowed by a keyword+sentiment prescreen to 102,976 candidates, and only the top-scored 1,092 of those were actually sent through LLM classification. The 690 relevant findings here came from that 1,092, not the full 1.78M-record pool - the relevant-rate percentage reflects prescreen precision, not directly comparable to gymowner/f45.",
+  "data_note": "The funnel behind this community differs from gymowner/f45, which were classified exhaustively: 1,776,009 raw records were deduplicated to 1,742,329 unique records, narrowed by a keyword+sentiment prescreen to 102,976 candidates, and only the top-scored 1,092 of those were actually run through the n8n classification pipeline. The 690 relevant findings here came from that 1,092, not the full 1.78M-record pool - the relevant-rate percentage reflects prescreen precision, not directly comparable to gymowner/f45.",
   "findings": [
     {
       "id": "esiffee",

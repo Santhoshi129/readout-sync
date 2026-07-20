@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
-import { PainPointExample } from "@/lib/retention-research";
+import { CommunityDataset, PainPointExample, painPointExamples } from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
 
@@ -13,6 +13,7 @@ export function CrossCommunityTable({
   onSelect,
   onSelectCommunity,
   examples,
+  communities,
 }: {
   rows: CrossCommunityRow[];
   communityCount: number;
@@ -21,8 +22,13 @@ export function CrossCommunityTable({
   onSelect?: (pp: string) => void;
   onSelectCommunity?: (subreddit: string, pp: string) => void;
   examples?: Record<string, PainPointExample[]>;
+  // Optional - when passed, clicking a community pill previews that
+  // community's own quotes for this pain point right there inline,
+  // instead of only navigating away to the receipts table.
+  communities?: CommunityDataset[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
 
   const sorted = [...rows].sort((a, b) => {
     if (sortBy === "coverage") return b.coverage - a.coverage || b.totalCount - a.totalCount;
@@ -94,31 +100,61 @@ export function CrossCommunityTable({
             {isOpen && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
-                  FROM WHERE - click to filter to one community
+                  FROM WHERE - hover a pill to preview it here, click to jump to the full list
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
-                  {r.communities.map((c) => (
-                    <span
-                      key={c.subreddit}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (c.count > 0) onSelectCommunity?.(c.subreddit, r.pain_point);
-                      }}
-                      style={{
-                        fontSize: 11.5,
-                        fontFamily: "var(--mono)",
-                        padding: "4px 10px",
-                        borderRadius: 999,
-                        border: `1px solid ${c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
-                        color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
-                        background: c.count > 0 ? "var(--card-raised)" : "transparent",
-                        cursor: c.count > 0 && onSelectCommunity ? "pointer" : "default",
-                      }}
-                    >
-                      {c.label}: {c.count}
-                    </span>
-                  ))}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+                  {r.communities.map((c) => {
+                    const pillKey = `${r.pain_point}::${c.subreddit}`;
+                    const isPreviewing = previewPill === pillKey;
+                    return (
+                      <span
+                        key={c.subreddit}
+                        title={c.count > 0 ? `${c.count} finding${c.count === 1 ? "" : "s"} from ${c.label} on ${r.label.toLowerCase()}. Click to see them.` : `${c.label} has no findings in this category.`}
+                        onMouseEnter={() => c.count > 0 && setPreviewPill(pillKey)}
+                        onMouseLeave={() => setPreviewPill((p) => (p === pillKey ? null : p))}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (c.count > 0) onSelectCommunity?.(c.subreddit, r.pain_point);
+                        }}
+                        style={{
+                          fontSize: 11.5,
+                          fontFamily: "var(--mono)",
+                          padding: "4px 10px",
+                          borderRadius: 999,
+                          border: `1px solid ${isPreviewing ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
+                          color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
+                          background: isPreviewing ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card-raised)" : "transparent",
+                          cursor: c.count > 0 && onSelectCommunity ? "pointer" : "default",
+                          transition: "background 0.1s ease, border-color 0.1s ease",
+                        }}
+                      >
+                        {c.label}: {c.count}
+                      </span>
+                    );
+                  })}
                 </div>
+                {previewPill?.startsWith(`${r.pain_point}::`) && communities && (() => {
+                  const subreddit = previewPill.split("::")[1];
+                  const community = communities.find((c) => c.subreddit === subreddit);
+                  const commFindings = community ? community.findings.filter((f) => f.pain_point === r.pain_point) : [];
+                  const commExamples = painPointExamples(commFindings, 2)[r.pain_point] || [];
+                  return (
+                    <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em", marginBottom: 6 }}>
+                        {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
+                      </div>
+                      {commExamples.length > 0 ? (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                          {commExamples.map((ex, i) => (
+                            <div key={i} style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5 }}>{ex.short}</div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>No reasoning text captured for this pairing yet.</div>
+                      )}
+                    </div>
+                  );
+                })()}
                 <div style={{ display: "flex", gap: 16, marginBottom: 10, fontSize: 12.5 }}>
                   <span><span style={{ color: "var(--hot)", fontWeight: 700 }}>{r.coreFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>core fit</span></span>
                   <span><span style={{ color: "var(--amber)", fontWeight: 700 }}>{r.partialFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>partial fit</span></span>

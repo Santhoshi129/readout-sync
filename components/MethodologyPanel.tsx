@@ -53,7 +53,7 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
       {open && (
         <div style={{ padding: "0 22px 22px", display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-            I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. It's an automated pipeline, an LLM applying my rubric to each post, which is what makes it possible to cover 6,700+ posts instead of a hand-picked sample.
+            I built the classification system behind every number here: the pain-point taxonomy, the severity rubric, and the TWU-specific fit categories (core fit, partial fit, not addressable) are my design, built around what TWU's product actually does, not a generic prompt run against generic text. n8n orchestrates the pipeline end to end, pulling each thread, running it through my rubric, and writing the structured result out, which is what makes it possible to cover 6,700+ posts instead of a hand-picked sample.
           </div>
 
           {sample && entries.length > 0 && (
@@ -73,7 +73,7 @@ export function MethodologyPanel({ findings }: { findings: Finding[] }) {
                   cursor: "pointer",
                 }}
               >
-                {showJson ? "Hide raw record" : "See the raw record behind one finding"}
+                {showJson ? "Hide the data" : "See the full data behind one finding"}
               </button>
 
               {showJson && (

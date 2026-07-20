@@ -18,7 +18,7 @@ import { RetentionGlossary } from "@/components/RetentionGlossary";
 import { MethodologyPanel } from "@/components/MethodologyPanel";
 import { SectionInsight } from "@/components/SectionInsight";
 import { InfoTip } from "@/components/InfoTip";
-import { RadarChart, RadarSeries } from "@/components/RadarChart";
+import { GapBarChart } from "@/components/GapBarChart";
 import { CrossCommunityTable } from "@/components/CrossCommunityTable";
 import { DataCoverageTable } from "@/components/DataCoverageTable";
 import {
@@ -154,10 +154,6 @@ export function RetentionResearchDashboard({
   const selectedTimeline = useMemo(() => timelineBreakdown(selectedCombinedFindings), [selectedCombinedFindings]);
   const memberCommunities = communities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
   const ownerCommunities = communities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
-  const radarSeries: RadarSeries[] = [
-    { key: "member", label: `Members (${memberFindingsForRadar.length} findings)`, color: "var(--series-a)", values: radarAxesData.map((a) => a.memberPct) },
-    { key: "owner", label: `Owners (${ownerFindingsForRadar.length} findings)`, color: "var(--series-b)", values: radarAxesData.map((a) => a.ownerPct) },
-  ];
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
   const maxBuildable = Math.max(1, ...topBuildable.map((r) => r.buildableCount));
   const showCombinedExtras = ds.subreddit === "all" && communities.length > 1;
@@ -693,57 +689,21 @@ export function RetentionResearchDashboard({
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
-                Pain-point shape, member vs owner
-                <InfoTip text="Each axis is a pain-point category. The value is that category's share of the lens's own findings (not a raw count), so the two shapes are comparable even though members and owners have very different total finding counts." />
+                Who talks about what: members vs owners
+                <InfoTip text="Each row is a pain-point category. Bar length is that category's share of the lens's own findings (not a raw count), so a small group and a large group are still comparable side by side. Sorted by the size of the gap between the two, biggest gap first." />
               </div>
-              <div className="eyebrow muted">by share of findings</div>
+              <div className="eyebrow muted">click a row for the evidence</div>
             </div>
             <div style={{ marginTop: 22 }}>
-              <RadarChart axisLabels={radarAxesData.map((a) => a.label)} series={radarSeries} onSelectAxis={selectCombinedAxis} activeAxis={activePainPointLabel} />
+              <GapBarChart
+                axes={radarAxesData}
+                onSelect={selectCombinedAxis}
+                active={activePainPointLabel}
+                memberLabel={`Members (${memberFindingsForRadar.length} findings)`}
+                ownerLabel={`Owners (${ownerFindingsForRadar.length} findings)`}
+              />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
-            <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>
-                EXACT VALUES, SORTED BY GAP SIZE
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 90px 90px 90px", gap: 10, padding: "0 12px 8px", fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
-                  <span>PAIN POINT</span>
-                  <span>MEMBER</span>
-                  <span>OWNER</span>
-                  <span>GAP</span>
-                </div>
-                {[...radarAxesData]
-                  .sort((a, b) => Math.abs(b.memberPct - b.ownerPct) - Math.abs(a.memberPct - a.ownerPct))
-                  .map((a) => {
-                    const gap = a.memberPct - a.ownerPct;
-                    const isActive = activePainPointLabel === a.label;
-                    return (
-                      <div
-                        key={a.key}
-                        onClick={() => selectCombinedPainPoint(a.key)}
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 90px 90px 90px",
-                          gap: 10,
-                          padding: "8px 12px",
-                          borderRadius: 8,
-                          cursor: "pointer",
-                          border: `1px solid ${isActive ? "var(--amber)" : "transparent"}`,
-                          background: isActive ? "rgba(201,168,76,0.08)" : "transparent",
-                        }}
-                      >
-                        <span style={{ fontSize: 12.5, color: "var(--ink)" }}>{a.label}</span>
-                        <span style={{ fontSize: 12.5, color: "var(--series-a)" }}>{a.memberPct}%</span>
-                        <span style={{ fontSize: 12.5, color: "var(--series-b)" }}>{a.ownerPct}%</span>
-                        <span style={{ fontSize: 12.5, color: Math.abs(gap) >= 8 ? "var(--amber)" : "var(--ink-dim)", fontWeight: Math.abs(gap) >= 8 ? 700 : 400 }}>
-                          {gap > 0 ? "+" : ""}{gap.toFixed(1)}
-                        </span>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
           </div>
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -755,6 +715,7 @@ export function RetentionResearchDashboard({
               <div style={{ display: "flex", gap: 6 }}>
                 <button
                   onClick={() => setTableSort("buildable")}
+                  title="Sort so the pain points TWU could act on soonest (core-fit + partial-fit findings) show up first, regardless of how many communities mention them."
                   style={{
                     fontFamily: "var(--mono)",
                     fontSize: 10.5,
@@ -771,6 +732,7 @@ export function RetentionResearchDashboard({
                 </button>
                 <button
                   onClick={() => setTableSort("coverage")}
+                  title="Sort so pain points mentioned across the most communities show up first - the closest thing this data has to a universal, format-agnostic problem."
                   style={{
                     fontFamily: "var(--mono)",
                     fontSize: 10.5,
@@ -791,7 +753,7 @@ export function RetentionResearchDashboard({
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy={tableSort} active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} examples={allCombinedExamples} communities={communities} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
               {tableSort === "coverage" ? coverageNarrative : featureNarrative}

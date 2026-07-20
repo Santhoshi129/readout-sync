@@ -224,28 +224,20 @@ export function FindingsTable({
             </option>
           ))}
         </select>
-        {communityOptions.length > 2 && (
-          <select
-            value={community}
-            onChange={(e) => set({ community: e.target.value })}
-            style={{
-              background: "var(--card-raised)",
-              border: "1px solid var(--border)",
-              borderRadius: 8,
-              padding: "8px 12px",
-              color: "var(--ink)",
-              fontSize: 12.5,
-              fontFamily: "var(--font)",
-            }}
-          >
-            {communityOptions.map((c) => (
-              <option key={c} value={c}>
-                {c === "All" ? "All communities" : c}
-              </option>
-            ))}
-          </select>
-        )}
       </div>
+
+      {communityOptions.length > 2 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+          <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>
+            COMMUNITY:
+          </span>
+          {communityOptions.map((c) => (
+            <span key={c} style={chipStyle(community === c)} onClick={() => set({ community: c })}>
+              {c === "All" ? "All" : c}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
         <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>

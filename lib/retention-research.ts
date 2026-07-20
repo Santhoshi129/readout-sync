@@ -31,8 +31,8 @@ export type Finding = {
   pain_severity: number | null;
   pain_severity_reasoning: string | null;
   app_relevance: AppRelevance | null;
-  // Optional - only present for communities classified with this field
-  // captured (orangetheory, crossfit). Older communities' source data
+  // Optional. Only present for communities classified with this field
+  // captured (orangetheory, crossfit, hyrox). Older communities' source data
   // didn't include it, so this is undefined there rather than null.
   app_relevance_reasoning?: string | null;
   solution: string | null;
@@ -164,30 +164,30 @@ export function sourceLink(permalink: string): string {
 // comparable without that context.
 export function communityCountNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
-    return `Union of every community below (${COMMUNITIES.length}) at once - each keeps its own pain-point categories rather than being forced into a shared list.`;
+    return `Union of every community below (${COMMUNITIES.length}) at once. Each keeps its own pain-point categories rather than being forced into a shared list.`;
   }
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
   const base = `${ds.relevant_count} relevant out of ${ds.total_analyzed.toLocaleString()} records (${rate})`;
   if (ds.data_note) {
-    return `${base} - this is the raw pull before prescreening, not what actually reached the classifier. Open its tab for the full funnel.`;
+    return `${base}. This is the raw pull before prescreening, not what actually reached the classifier. Open its tab for the full funnel.`;
   }
-  return `${base} - every cleaned record in this community went through classification, nothing was prescreened out first.`;
+  return `${base}. Every cleaned record in this community went through classification; nothing was prescreened out first.`;
 }
 
 // Matching one-liner for the top "Posts/comments analyzed" stat tile.
 export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     // Real per-community breakdown, computed from the live COMMUNITIES
-    // registry - so a number in the millions doesn't just say "mixed
+    // registry, so a number in the millions doesn't just say "mixed
     // methodology," it says exactly which community is responsible for
     // the scale and how each one got counted.
     const parts = COMMUNITIES.map(
       (c) => `${c.label} ${c.total_analyzed.toLocaleString()}${c.data_note ? " (raw pull)" : " (exhaustive)"}`
     ).join(" + ");
-    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified. "Raw pull" means only a fraction reached classification - open that community's own tab for its funnel.`;
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified. "Raw pull" means only a fraction reached classification; open that community's own tab for its funnel.`;
   }
   return ds.data_note
-    ? "The full raw pull for this community before any filtering - only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."
+    ? "The full raw pull for this community before any filtering. Only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."
     : "Every cleaned record in this community, reviewed exhaustively by the classifier.";
 }
 
@@ -195,7 +195,7 @@ export function analyzedNote(ds: CommunityDataset): string {
 export function relevantNote(ds: CommunityDataset): string {
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
   const nonExhaustive = ds.subreddit === "all" ? hasMixedMethodology() : !!ds.data_note;
-  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried - the rest was off-topic chatter${nonExhaustive ? ", or never reached classification at all" : ""}.`;
+  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried. The rest was off-topic chatter${nonExhaustive ? ", or never reached classification at all" : ""}.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -230,30 +230,30 @@ export function painPointLabel(p: string): string {
 // three full quotes to figure it out themselves.
 export const PAIN_POINT_MEANING: Record<string, string> = {
   motivation_engagement_decline:
-    "Someone who was showing up regularly loses steam over time - hits a goal with nothing to chase next, gets bored of the routine, or just quietly stops without a single triggering complaint.",
+    "Someone who was showing up regularly loses steam over time: hits a goal with nothing to chase next, gets bored of the routine, or just quietly stops without a single triggering complaint.",
   lack_of_accountability_support:
-    "Nobody catches a member drifting until it's too late - no system flags declining attendance early enough for a real conversation to happen before they've already mentally checked out.",
+    "Nobody catches a member drifting until it's too late; no system flags declining attendance early enough for a real conversation to happen before they've already mentally checked out.",
   communication_gaps:
-    "A message that should have reached someone didn't - a renewal, a class change, a policy update - and the member finds out the hard way instead of being told directly.",
+    "A message that should have reached someone didn't (a renewal, a class change, a policy update), and the member finds out the hard way instead of being told directly.",
   onboarding_reentry_friction:
     "The first weeks (or the return after a break) are confusing or unwelcoming enough that someone leaves before ever getting comfortable, not because the core product failed them.",
   pricing_cost_value:
-    "The price itself is rarely the whole story - it's usually 'the price for what I'm actually getting' - a single-location membership, a format they've outgrown, a value they no longer feel.",
+    "The price itself is rarely the whole story. It's usually 'the price for what I'm actually getting': a single-location membership, a format they've outgrown, a value they no longer feel.",
   no_shows_late_cancellations:
-    "Booking and cancellation policy friction - fees, caps, or rules that frustrate loyal members while (in theory) targeting the people abusing the system.",
+    "Booking and cancellation policy friction: fees, caps, or rules that frustrate loyal members while, in theory, targeting the people abusing the system.",
   facility_experience_decline:
-    "The physical space itself got worse - equipment, cleanliness, crowding - and that decline is what's cited as the actual reason someone stopped coming.",
+    "The physical space itself got worse (equipment, cleanliness, crowding), and that decline is what's cited as the actual reason someone stopped coming.",
   coaching_quality_inconsistency:
-    "The coach or trainer experience varies too much class to class to trust - a great coach one day, a disengaged one the next, and that inconsistency is what erodes trust in the program.",
+    "The coach or trainer experience varies too much class to class to trust: a great coach one day, a disengaged one the next, and that inconsistency is what erodes trust in the program.",
   community_culture_negative:
-    "The social fabric of the group turned unwelcoming - cliquishness, unfriendliness, or a shift in who's in the room - and that, not the workout itself, is what pushed someone out.",
+    "The social fabric of the group turned unwelcoming (cliquishness, unfriendliness, or a shift in who's in the room), and that, not the workout itself, is what pushed someone out.",
   scheduling_access_issues:
-    "The class or facility isn't actually reachable when the member needs it - times that don't fit their life, locations too far, capacity that fills before they can book.",
+    "The class or facility isn't actually reachable when the member needs it: times that don't fit their life, locations too far, capacity that fills before they can book.",
   business_ownership_change:
-    "A change at the business level - ownership, affiliation, closure - not a member complaint at all, but it still directly caused people to leave.",
+    "A change at the business level (ownership, affiliation, closure), not a member complaint at all, but it still directly caused people to leave.",
   programming_dissatisfaction:
-    "The workouts themselves stopped delivering - same format on repeat, plateaued results despite consistent effort, or a training style that doesn't match what the member actually wants.",
-  other: "Doesn't cleanly fit one of the named categories above - real signal, just not common enough on its own to warrant a dedicated category yet.",
+    "The workouts themselves stopped delivering: same format on repeat, plateaued results despite consistent effort, or a training style that doesn't match what the member actually wants.",
+  other: "Doesn't cleanly fit one of the named categories above. Real signal, just not common enough on its own to warrant a dedicated category yet.",
 };
 
 export const APP_RELEVANCE_LABEL: Record<AppRelevance, string> = {
@@ -270,9 +270,9 @@ export const APP_RELEVANCE_TONE: Record<AppRelevance, string> = {
 // app-relevance count - what the label alone doesn't say is the reasoning
 // behind the split, not just the split itself.
 export const APP_RELEVANCE_MEANING: Record<AppRelevance, string> = {
-  core_fit: "Something a community/connection product like TWU's could plausibly fix directly - not a promise it's already built, just that it's in scope.",
+  core_fit: "Something a community/connection product like TWU's could plausibly fix directly. Not a promise it's already built, just that it's in scope.",
   partial_fit: "TWU could help around the edges (a nudge, a flag, a reminder) but doesn't solve the actual root cause on its own.",
-  not_addressable: "A coaching, staffing, facility, or pricing problem - no app changes what happened here, regardless of how it's built.",
+  not_addressable: "A coaching, staffing, facility, or pricing problem. No app changes what happened here, regardless of how it's built.",
 };
 
 export const CONFIDENCE_TONE: Record<ConfidenceTier, string> = {
@@ -436,12 +436,12 @@ export function perspectiveLabel(p: string | null): string {
 // One-line "why this voice matters" explanation, shown on hover next to
 // each perspective count.
 export const PERSPECTIVE_MEANING: Record<string, string> = {
-  owner: "An operator describing what they see in their own members - secondhand on the member's actual experience, firsthand on what an operator notices.",
-  member: "Someone describing their own experience directly - the strongest evidentiary base of the group, but only one side of the story.",
-  vendor: "A product or service seller talking about the space, not a member or operator's lived account - weighted lower for that reason.",
-  coach: "Staff or a coach describing what they see from the floor - close to the member experience, but still not the member's own words.",
-  employee: "A non-coaching staff member's account - workplace conditions and internal process, not member sentiment directly.",
-  unclear: "Couldn't confidently tell who's speaking from the text alone - included for completeness, weighted cautiously.",
+  owner: "An operator describing what they see in their own members: secondhand on the member's actual experience, firsthand on what an operator notices.",
+  member: "Someone describing their own experience directly. The strongest evidentiary base of the group, but only one side of the story.",
+  vendor: "A product or service seller talking about the space, not a member or operator's lived account. Weighted lower for that reason.",
+  coach: "Staff or a coach describing what they see from the floor. Close to the member experience, but still not the member's own words.",
+  employee: "A non-coaching staff member's account: workplace conditions and internal process, not member sentiment directly.",
+  unclear: "Couldn't confidently tell who's speaking from the text alone. Included for completeness, weighted cautiously.",
 };
 
 export function perspectiveBreakdown(findings: Finding[]): [string, number][] {
@@ -698,12 +698,15 @@ export function executiveSummary(ds: CommunityDataset): string[] {
 
   const sentences: string[] = [];
 
-  const nonExhaustive = ds.subreddit === "all" ? hasMixedMethodology() : !!ds.data_note;
+  const isAll = ds.subreddit === "all";
+  const nonExhaustive = isAll ? hasMixedMethodology() : !!ds.data_note;
 
   sentences.push(
     nonExhaustive
-      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}. After prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected here - most of what gets pulled in a raw scrape isn't about retention at all, and at least one community here filtered harder than others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
-      : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose, most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
+      ? isAll
+        ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities. After prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected: most of what gets pulled in a raw scrape isn't about retention at all, and at least one community here filtered harder than the others before classification ever saw it. Treat ${n} as a floor set by the prescreen, not a ceiling on what's actually in the data.`
+        : `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label}. After prescreening and classification, ${n} came back with a specific, identifiable reason a member left or almost left (${relRate}). That low a rate is expected: most of what gets pulled in a raw scrape isn't about retention at all, and this community's own prescreen filtered out most of it before classification ever saw it. Treat ${n} as a floor set by that prescreen, not a ceiling on what's actually in the data.`
+      : `I ran ${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} through classification looking for one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) had one. That's a small slice on purpose. Most of what gets posted in a gym-owner subreddit isn't about retention at all, so I'd treat that percentage as a floor, not a headline.`
   );
 
   // Deliberately doesn't restate the top pain point or the confidence split -
@@ -721,13 +724,13 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const notAddressablePct = Math.round((notAddressable / n) * 100);
 
   sentences.push(
-    `Of those ${n}, ${coreFitPct}% (${coreFit}) are problems TWU's product can move on its own, ${partialFitPct}% (${partialFit}) would need product work paired with something outside the app, and ${notAddressablePct}% (${notAddressable}) is staffing, facility, or pricing - outside what any software fixes. That last bucket is the real ceiling on how much of this an app can solve, worth keeping in view before reading the core-fit share as the whole opportunity.`
+    `Of those ${n}, ${coreFitPct}% (${coreFit}) are problems TWU's product can move on its own, ${partialFitPct}% (${partialFit}) would need product work paired with something outside the app, and ${notAddressablePct}% (${notAddressable}) is staffing, facility, or pricing, outside what any software fixes. That last bucket is the real ceiling on how much of this an app can solve, worth keeping in view before reading the core-fit share as the whole opportunity.`
   );
 
   sentences.push(
     ct.weak > 0
-      ? `Strong and moderate-tier findings are what I'd act on here. The weak tier is real signal but thinner sourcing, I'm treating it as a pointer for where the next classification pass should look, not something to hand to Dave or Alex as settled.`
-      : `Everything in this set cleared at least moderate confidence - nothing weak-tier here to caveat.`
+      ? `Strong and moderate-tier findings are what I'd act on here. The weak tier is real signal but thinner sourcing; I'm treating it as a pointer for where the next classification pass should look, not something to present as settled yet.`
+      : `Everything in this set cleared at least moderate confidence, with nothing weak-tier here to caveat.`
   );
 
   return sentences;
@@ -818,9 +821,9 @@ export function soWhatSolutions(rows: [string, number][], mentioned: number, tot
     const topReal = realSolutions[0];
     const noSolvePct = Math.round((top[1] / total) * 100);
     if (!topReal) {
-      return `${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying a fix at all - that's the single biggest bucket here, bigger than any actual solution. Read it as unaddressed problem space until proven otherwise. Posts skew toward venting over documenting fixes, so some of this gap is reporting bias, not a real vacuum. No solution category has enough volume yet to call a clear runner-up.`;
+      return `${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying a fix at all. That's the single biggest bucket here, bigger than any actual solution. Read it as unaddressed problem space until proven otherwise. Posts skew toward venting over documenting fixes, so some of this gap is reporting bias, not a real vacuum. No solution category has enough volume yet to call a clear runner-up.`;
     }
-    return `The single biggest bucket isn't a solution at all: ${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying anything. That's not a fix, it's the absence of one - people venting about the problem without describing what (if anything) they did about it. Once you set that aside, the actual most-tried fix is ${solutionCategoryLabel(topReal[0])} (${topReal[1]} mentions). Treat the no-solution share as a floor on unaddressed problem space, not a headline finding on its own. Some of it is reporting bias (Reddit skews toward venting over documenting fixes), not proof nothing was ever tried.`;
+    return `The single biggest bucket isn't a solution at all: ${top[1]} of ${total} findings (${noSolvePct}%) never mention anyone trying anything. That's not a fix; it's the absence of one, people venting about the problem without describing what (if anything) they did about it. Once you set that aside, the actual most-tried fix is ${solutionCategoryLabel(topReal[0])} (${topReal[1]} mentions). Treat the no-solution share as a floor on unaddressed problem space, not a headline finding on its own. Some of it is reporting bias (Reddit skews toward venting over documenting fixes), not proof nothing was ever tried.`;
   }
   return `${solutionCategoryLabel(top[0])} is the most commonly tried fix, ${top[1]} mentions, out of ${mentioned} of ${total} findings that name any solution at all.`;
 }

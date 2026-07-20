@@ -45,7 +45,7 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
         <span style={{ display: "flex", alignItems: "center" }}>
           A fix counts as a "quick win" when it scores <span style={{ color: "var(--ink)", fontWeight: 600, margin: "0 4px" }}>≤2.5/5 difficulty</span> AND{" "}
           <span style={{ color: "var(--ink)", fontWeight: 600, margin: "0 4px" }}>≥3.5/5 effectiveness</span>
-          <InfoTip text="Both thresholds have to hold at once - a fix that's easy but didn't work well doesn't qualify, and neither does one that worked well but was a real lift to pull off. This is a fixed rule applied the same way to every solution, not a judgment call made row by row." />
+          <InfoTip text="Both thresholds have to hold at once. A fix that's easy but didn't work well doesn't qualify, and neither does one that worked well but was a real lift to pull off. This is a fixed rule applied the same way to every solution, not a judgment call made row by row." />
         </span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 130px 130px 60px", gap: 12, fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-dim)", letterSpacing: "0.05em", padding: "0 4px" }}>

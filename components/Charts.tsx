@@ -396,7 +396,7 @@ export function Trend({
   if (points.length < 2) {
     return (
       <div style={{ color: "var(--ink-faint)", fontSize: 13.5, padding: "24px 0" }}>
-        Not enough history yet to plot a trend - the sync job appends one snapshot every run, so this fills in over the next few hours/days. No placeholder line shown in the meantime.
+        Not enough history yet to plot a trend. The sync job appends one snapshot every run, so this fills in over the next few hours/days. No placeholder line shown in the meantime.
       </div>
     );
   }

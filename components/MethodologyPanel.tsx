@@ -18,7 +18,7 @@ const FIELD_NOTES: Record<string, string> = {
   pain_severity: "how serious it was rated, 1 to 5",
   pain_severity_reasoning: "why it got that severity score",
   app_relevance: "can TWU's product address this: core_fit, partial_fit, or not_addressable",
-  app_relevance_reasoning: "why it got that app-fit call - only present for communities where this was captured (orangetheory, crossfit)",
+  app_relevance_reasoning: "why it got that app-fit call (only present for communities where this was captured: orangetheory, crossfit, hyrox)",
   solution: "what fix, if any, was mentioned in the post",
   solution_category: "which type of fix that falls into",
   effectiveness: "how well the fix reportedly worked, 1 to 5, only set when an outcome was mentioned",

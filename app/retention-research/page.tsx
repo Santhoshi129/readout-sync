@@ -10,7 +10,7 @@ export default function RetentionResearch() {
 
   return (
     <>
-      <Topbar version="Community Research v2" fetchedAt={fetchedAt} crossLinkHref="/retention-research/combined-analysis" crossLinkLabel="Combined analysis" />
+      <Topbar version="Community Research v2" fetchedAt={fetchedAt} crossLinkHref="/" crossLinkLabel="All systems" />
       <RetentionResearchDashboard communities={COMMUNITIES} combined={combined} />
     </>
   );

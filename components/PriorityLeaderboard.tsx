@@ -56,14 +56,14 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
                     ? `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5 - why: ${s.effectivenessWhy}`
                     : `Effectiveness ${s.avgEffectiveness.toFixed(1)}/5, averaged across ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
                 }
-                style={{ color: "var(--hot)", cursor: "help", borderBottom: "1px dotted var(--hot)" }}
+                style={{ color: "var(--hot)", cursor: "pointer", borderBottom: "1px dotted var(--hot)" }}
               >
                 {s.avgEffectiveness.toFixed(1)}/5 effectiveness
               </span>
             ) : (
               <span
                 title="No finding for this specific fix reported both a difficulty and an effectiveness outcome, so there isn't enough to average yet - it's still a real mention, just not a scored one."
-                style={{ color: "var(--ink-faint)", cursor: "help", borderBottom: "1px dotted var(--ink-faint)" }}
+                style={{ color: "var(--ink-faint)", cursor: "pointer", borderBottom: "1px dotted var(--ink-faint)" }}
               >
                 not yet scored
               </span>
@@ -75,7 +75,7 @@ function SolutionsBreakdown({ solutions }: { solutions: PriorityRow["solutions"]
                     ? `Difficulty ${s.avgDifficulty.toFixed(1)}/5 - why: ${s.difficultyWhy}`
                     : `Difficulty ${s.avgDifficulty.toFixed(1)}/5, averaged across the same ${s.scoredCount} scored finding${s.scoredCount === 1 ? "" : "s"}.`
                 }
-                style={{ color: "var(--cold)", cursor: "help", borderBottom: "1px dotted var(--cold)" }}
+                style={{ color: "var(--cold)", cursor: "pointer", borderBottom: "1px dotted var(--cold)" }}
               >
                 {s.avgDifficulty.toFixed(1)}/5 difficulty
               </span>

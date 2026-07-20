@@ -75,7 +75,7 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
                 borderRadius: 10,
                 border: `1px solid ${isQuickWin ? "var(--cold)" : "var(--border)"}`,
                 background: isQuickWin ? "rgba(122,168,201,0.06)" : "var(--card)",
-                cursor: "help",
+                cursor: "pointer",
               }}
             >
               <div>

@@ -13,6 +13,7 @@ import {
   solutionCategoryLabel,
   perspectiveLabel,
   sourceLink,
+  sourceStatusLabel,
   NO_SOLUTION_KEY,
 } from "@/lib/retention-research";
 
@@ -395,7 +396,7 @@ export function FindingsTable({
                         reddit thread ↗
                       </a>
                     )}
-                    {(f.author || "").toLowerCase() === "[deleted]" && (
+                    {sourceStatusLabel(f) && (
                       <span
                         style={{
                           fontFamily: "var(--mono)",
@@ -408,7 +409,7 @@ export function FindingsTable({
                           whiteSpace: "nowrap",
                         }}
                       >
-                        ⚠ author deleted
+                        ⚠ {sourceStatusLabel(f)}
                       </span>
                     )}
                   </div>

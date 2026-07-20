@@ -1,6 +1,6 @@
 "use client";
 import { CSSProperties } from "react";
-import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, sourceLink } from "@/lib/retention-research";
+import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, sourceLink, sourceStatusLabel } from "@/lib/retention-research";
 import { NumberTip } from "@/components/NumberTip";
 
 const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--ink-faint)" };
@@ -147,7 +147,7 @@ export function SectionInsight({
                     view reddit thread ↗
                   </a>
                 )}
-                {(f.author || "").toLowerCase() === "[deleted]" && (
+                {sourceStatusLabel(f) && (
                   <span
                     style={{
                       fontFamily: "var(--mono)",
@@ -160,7 +160,7 @@ export function SectionInsight({
                       whiteSpace: "nowrap",
                     }}
                   >
-                    ⚠ author deleted
+                    ⚠ {sourceStatusLabel(f)}
                   </span>
                 )}
               </div>

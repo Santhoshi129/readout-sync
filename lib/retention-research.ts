@@ -21,6 +21,8 @@ import orangetheoryData from "@/data/retention-research/orangetheory.json";
 export type AppRelevance = "core_fit" | "partial_fit" | "not_addressable";
 export type ConfidenceTier = "weak" | "moderate" | "strong";
 
+export type SourceStatus = "live" | "deleted" | "removed" | "unknown";
+
 export type Finding = {
   id: string;
   author: string | null;
@@ -46,6 +48,12 @@ export type Finding = {
   difficulty_reasoning: string | null;
   evidence_snippet: string | null;
   confidence_tier: ConfidenceTier;
+  // Optional. Result of a live check against Reddit's own API (run via
+  // scripts/check-reddit-status.py), not scrape-time data - reflects
+  // whatever the source's status was as of whenever that script last ran,
+  // not necessarily right now. Undefined until that script has been run
+  // and its output merged in.
+  source_status?: SourceStatus;
   source_trust?: string | null;
 };
 
@@ -156,6 +164,20 @@ export function ratioOrPct(n: number, d: number): string {
 // quote is already shown directly in the card itself.
 export function sourceLink(permalink: string): string {
   return permalink.replace(/^https?:\/\/(www\.)?reddit\.com/, "https://old.reddit.com");
+}
+
+// Falls back to the scrape-time author check (a real but partial signal -
+// only catches accounts already deleted when we scraped, not deletions
+// since) when source_status hasn't been filled in by
+// scripts/check-reddit-status.py yet. Once that script has run for a
+// finding, its live result takes over instead.
+export function sourceStatusLabel(f: Pick<Finding, "author" | "source_status">): string | null {
+  if (f.source_status === "deleted") return "poster's account deleted (checked live)";
+  if (f.source_status === "removed") return "post removed (checked live)";
+  if (f.source_status === "live") return null;
+  if (f.source_status === "unknown") return null;
+  if ((f.author || "").toLowerCase() === "[deleted]") return "poster's account deleted (as of when this was scraped)";
+  return null;
 }
 
 // One-line "why this number" explanation for a community's relevant-findings

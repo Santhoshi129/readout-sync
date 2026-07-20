@@ -1,6 +1,7 @@
 "use client";
 import { CSSProperties } from "react";
-import { Finding, CONFIDENCE_TONE } from "@/lib/retention-research";
+import { Finding, CONFIDENCE_TONE, APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE } from "@/lib/retention-research";
+import { NumberTip } from "@/components/NumberTip";
 
 const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--ink-faint)" };
 
@@ -94,6 +95,32 @@ export function SectionInsight({
                 >
                   {f.confidence_tier}
                 </span>
+                {f.app_relevance && (
+                  f.app_relevance_reasoning ? (
+                    <NumberTip text={f.app_relevance_reasoning} align="left">
+                      <span
+                        style={{
+                          fontFamily: "var(--mono)",
+                          fontSize: 9.5,
+                          color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance] as keyof typeof TONE_COLOR] || "var(--ink-faint)",
+                          borderBottom: "1px dotted currentColor",
+                        }}
+                      >
+                        {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
+                      </span>
+                    </NumberTip>
+                  ) : (
+                    <span
+                      style={{
+                        fontFamily: "var(--mono)",
+                        fontSize: 9.5,
+                        color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance] as keyof typeof TONE_COLOR] || "var(--ink-faint)",
+                      }}
+                    >
+                      {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
+                    </span>
+                  )
+                )}
                 {f.pain_severity != null && (
                   <span style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)" }}>
                     severity {f.pain_severity}/5

@@ -244,7 +244,7 @@ export function FindingCard({ finding, rank }: { finding: RetentionFinding; rank
             )}
 
             <div style={{ display: "flex", marginTop: 18 }}>
-              {["Reddit", "Claude", "Scored", "Benchmark"].map((label, i) => (
+              {["Reddit", "Classify", "Scored", "Benchmark"].map((label, i) => (
                 <div key={label} style={{ flex: 1, textAlign: "center", position: "relative", paddingTop: 18 }}>
                   <div style={{ position: "absolute", top: 5, left: "50%", transform: "translateX(-50%)", width: 9, height: 9, borderRadius: "50%", background: "var(--amber)", border: "2px solid var(--bg)", zIndex: 2 }} />
                   {i < 3 && <div style={{ position: "absolute", top: 9, left: "50%", width: "100%", height: 1, background: "var(--border)" }} />}

@@ -117,7 +117,7 @@ export default async function RetentionSignal() {
           <div className="eyebrow" style={{ marginBottom: 14 }}>Gym Owner Retention Research</div>
           <div className="hero-sub">What gym owners actually say before they lose a member.</div>
           <p className="hero-copy">
-            Every finding below traces back to a real Reddit thread — scraped, classified, and scored by Claude, then checked against published fitness-industry data.
+            Every finding below traces back to a real Reddit thread — scraped, classified, and scored by the pipeline, then checked against published fitness-industry data.
           </p>
         </section>
 
@@ -274,7 +274,7 @@ export default async function RetentionSignal() {
                 <div className="stat-label" style={{ marginBottom: 12 }}>Scoring</div>
                 <div style={{ fontSize: 13, color: "var(--ink-dim)", lineHeight: 1.8 }}>
                   Each finding's confidence score = <span style={{ fontFamily: "var(--mono)", color: "var(--amber)" }}>mentions × owner-credibility × recency × specificity</span>.
-                  Vendor pitches (including advice that pivots into a sales pitch) are detected by Claude and excluded before any counting.
+                  Vendor pitches (including advice that pivots into a sales pitch) are detected automatically and excluded before any counting.
                   Mentions older than ~6 months are down-weighted; anything past ~18 months counts half.
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default async function RetentionSignal() {
         </div>
 
         <div className="foot">
-          Retention Signal · Apify Reddit scrape → Claude classification → confidence scoring → industry benchmark → MongoDB. Every finding traceable to its original source.
+          Retention Signal · Apify Reddit scrape → n8n classification → confidence scoring → industry benchmark → MongoDB. Every finding traceable to its original source.
         </div>
       </div>
     </>

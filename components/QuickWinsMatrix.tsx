@@ -3,6 +3,8 @@ import { useState } from "react";
 import { SolutionQuadrantRow, solutionCategoryLabel, painPointLabel } from "@/lib/retention-research";
 import { InfoTip } from "@/components/InfoTip";
 
+const VISIBLE_CAP = 15;
+
 function Dots({ value, max = 5, color }: { value: number; max?: number; color: string }) {
   return (
     <span style={{ display: "inline-flex", gap: 3 }}>
@@ -24,12 +26,18 @@ function Dots({ value, max = 5, color }: { value: number; max?: number; color: s
 
 export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
   const [hover, setHover] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState(false);
 
   if (rows.length === 0) {
     return <div style={{ color: "var(--ink-faint)" }}>Not enough scored solutions yet.</div>;
   }
 
   const ranked = [...rows].sort((a, b) => (b.avgEffectiveness - b.avgDifficulty) - (a.avgEffectiveness - a.avgDifficulty));
+  // Already sorted best-first, so capping to the top N keeps exactly the
+  // rows that matter most - the long tail past this point is low-volume,
+  // marginal-scoring fixes that would otherwise bury the real standouts.
+  const visible = expanded ? ranked : ranked.slice(0, VISIBLE_CAP);
+  const hiddenCount = ranked.length - visible.length;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -46,7 +54,7 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
         <div>WORKED WELL</div>
         <div style={{ textAlign: "right" }}>N</div>
       </div>
-      {ranked.map((r) => {
+      {visible.map((r) => {
         const isQuickWin = r.avgDifficulty <= 2.5 && r.avgEffectiveness >= 3.5;
         const isHovered = hover === r.category;
         return (
@@ -128,6 +136,27 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
           </div>
         );
       })}
+      {hiddenCount > 0 && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            background: "none",
+            border: "none",
+            padding: "6px 8px",
+            margin: "2px 0 0",
+            color: "var(--ink-faint)",
+            fontSize: 12.5,
+            cursor: "pointer",
+            textAlign: "left",
+          }}
+        >
+          <span style={{ transform: expanded ? "rotate(90deg)" : "none", transition: "transform 150ms ease", display: "inline-block" }}>▸</span>
+          {expanded ? "Show fewer" : `+${hiddenCount} more solutions, ranked lower on effectiveness vs. difficulty`}
+        </button>
+      )}
     </div>
   );
 }

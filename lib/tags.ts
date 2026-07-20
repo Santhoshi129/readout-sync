@@ -45,7 +45,7 @@ export const GYM_OWNER_TAG_GROUPS: TagGroup[] = [
     blurb: "What came back. A contact in the Responded stage replied at whatever touch its outreach step shows; Dead stage means unsubscribed at that touch.",
     tags: [
       { tag: "replied / replied-at-touch-N", meaning: "A real reply arrived, recorded against the exact touch that earned it.", writtenBy: "Reply Detector" },
-      { tag: "interested", meaning: "Claude classified the reply as positive interest. Opportunity moves to Responded.", writtenBy: "Reply Detector" },
+      { tag: "interested", meaning: "Classified automatically as positive interest. Opportunity moves to Responded.", writtenBy: "Reply Detector" },
       { tag: "unsubscribed", meaning: "Not interested or asked to stop. Opportunity moves to Dead Lead.", writtenBy: "Reply Detector" },
       { tag: "auto-responder-detected", meaning: "An auto-responder redirected us to another address. Feeds the Alt Email pipeline.", writtenBy: "Reply Detector" },
       { tag: "auto-ack-detected", meaning: "Automatic acknowledgement only. Does not stop the sequence.", writtenBy: "Reply Detector" },

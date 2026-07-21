@@ -779,6 +779,40 @@ export function solutionQuadrant(findings: Finding[]): SolutionQuadrantRow[] {
     .sort((a, b) => b.count - a.count);
 }
 
+export type SolutionByCommunityRow = { subreddit: string; label: string; count: number; avgEffectiveness: number; avgDifficulty: number };
+export type SolutionByCommunityGroup = { category: string; totalCount: number; communities: SolutionByCommunityRow[] };
+
+// A solution that scores well pooled across every community could still be
+// working great in one and doing nothing in another - pooling can hide
+// that the same "fix" behaves differently depending on the format. Built
+// per-community by re-running solutionQuadrant on each community's own
+// findings rather than post-filtering the pooled result, so a category's
+// per-community effectiveness/difficulty is computed the same way the
+// pooled Quick Wins numbers are, just scoped smaller.
+export function solutionEffectivenessByCommunity(communities: { subreddit: string; label: string; findings: Finding[] }[]): SolutionByCommunityGroup[] {
+  const byCategory: Record<string, SolutionByCommunityRow[]> = {};
+  communities.forEach((c) => {
+    solutionQuadrant(c.findings).forEach((row) => {
+      if (!byCategory[row.category]) byCategory[row.category] = [];
+      byCategory[row.category].push({
+        subreddit: c.subreddit,
+        label: c.label,
+        count: row.count,
+        avgEffectiveness: row.avgEffectiveness,
+        avgDifficulty: row.avgDifficulty,
+      });
+    });
+  });
+  return Object.entries(byCategory)
+    .map(([category, rows]) => ({
+      category,
+      totalCount: rows.reduce((s, r) => s + r.count, 0),
+      communities: rows.sort((a, b) => b.count - a.count),
+    }))
+    .sort((a, b) => b.totalCount - a.totalCount);
+}
+
+
 export function soWhatQuickWins(rows: SolutionQuadrantRow[], scoredCount: number, total: number): string {
   if (rows.length === 0) return "Not enough findings score both difficulty and effectiveness yet to compare solutions this way.";
   const quickWins = rows.filter((r) => r.avgDifficulty <= 2.5 && r.avgEffectiveness >= 3.5);

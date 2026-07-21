@@ -568,7 +568,7 @@ export function ReplyBreakdown({
 // explains itself when someone actually wants to know. This is the same
 // visual language as the flow detail pages' "Report: live impact" tiles,
 // reused here so the main dashboards get it too.
-export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; tip?: string; tone?: string; suffix?: string; flag?: string }[] }) {
+export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; preview?: string; tip?: string; tone?: string; suffix?: string; flag?: string }[] }) {
   return (
     <div className="grid grid-3" style={{ gap: 16 }}>
       {tiles.map((t, i) => (
@@ -578,7 +578,7 @@ export function StatTiles({ tiles }: { tiles: { label: string; value: number | n
   );
 }
 
-function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: string; value: number | null; note?: string; tip?: string; tone?: string; suffix?: string; flag?: string }) {
+function StatTile({ label, value, note, preview, tip, tone, suffix, flag }: { label: string; value: number | null; note?: string; preview?: string; tip?: string; tone?: string; suffix?: string; flag?: string }) {
   const [hover, setHover] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const open = hover || expanded;
@@ -627,6 +627,9 @@ function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: stri
         )}
         {suffix && value != null && <span className="stat-suffix">{suffix}</span>}
       </div>
+      {preview && (
+        <div style={{ fontSize: 11, color: "var(--ink-faint)", marginTop: 4 }}>{preview}</div>
+      )}
       {note && (
         // Grid-rows accordion instead of a fixed maxHeight - a hardcoded
         // pixel cap (previously 60) clips any note longer than ~2 lines,

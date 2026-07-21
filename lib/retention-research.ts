@@ -206,6 +206,30 @@ export function analyzedNote(ds: CommunityDataset): string {
   return `${raw.toLocaleString()} records were scraped for this community; every one of them went through classification, nothing was filtered out first.`;
 }
 
+// Compact "1.8M" / "298.5K" style formatting for the short always-visible
+// preview line under the analyzed stat tile - the full note above already
+// spells out every digit, this is just for a glanceable summary that
+// doesn't need a tap to see.
+function compactNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
+  return n.toLocaleString();
+}
+
+// Short, always-visible line under the "Posts/comments analyzed" tile -
+// shows the raw-scraped-vs-classified split at a glance without requiring
+// a tap, since that was the whole point of asking for it to "appear here."
+// analyzedNote() above still carries the full explanatory sentence, shown
+// on tap/hover.
+export function analyzedPreview(ds: CommunityDataset): string | undefined {
+  if (ds.subreddit === "all") {
+    const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
+    return rawTotal > ds.total_analyzed ? `${compactNumber(rawTotal)} scraped \u2192 ${compactNumber(ds.total_analyzed)} classified` : undefined;
+  }
+  const raw = ds.raw_scraped ?? ds.total_analyzed;
+  return raw > ds.total_analyzed ? `${compactNumber(raw)} scraped \u2192 ${compactNumber(ds.total_analyzed)} classified` : undefined;
+}
+
 // Matching one-liner for the top "Relevant findings" stat tile.
 export function relevantNote(ds: CommunityDataset): string {
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
@@ -415,7 +439,7 @@ function shorten(text: string, maxLen = 62): string {
 // "124" doesn't mean anything on its own, "people getting bored of the same
 // format" does. Picks the clearest, highest-confidence findings, not a
 // random sample, so the example shown is representative, not a fluke.
-export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string };
+export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string; app_relevance: AppRelevance | null };
 export function painPointExamples(findings: Finding[], perPoint = 3): Record<string, PainPointExample[]> {
   const byPoint: Record<string, Finding[]> = {};
   findings.forEach((f) => {
@@ -436,6 +460,7 @@ export function painPointExamples(findings: Finding[], perPoint = 3): Record<str
       evidence: f.evidence_snippet,
       permalink: f.permalink,
       link: sourceLink(f.permalink, f.evidence_snippet),
+      app_relevance: f.app_relevance,
     }));
   });
   return out;

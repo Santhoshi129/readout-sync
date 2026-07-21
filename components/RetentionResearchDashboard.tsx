@@ -43,6 +43,8 @@ import {
   solutionCategoryBreakdown,
   solutionExamples,
   timelineBreakdown,
+  severityTimelineBreakdown,
+  soWhatSeverityTrend,
   confidenceTierBreakdown,
   perspectiveBreakdown,
   priorityMatrix,
@@ -132,6 +134,7 @@ export function RetentionResearchDashboard({
   const solutions = useMemo(() => solutionCategoryBreakdown(scopedFindings), [scopedFindings]);
   const solutionRefs = useMemo(() => solutionExamples(scopedFindings), [scopedFindings]);
   const timeline = useMemo(() => timelineBreakdown(scopedFindings), [scopedFindings]);
+  const severityTimeline = useMemo(() => severityTimelineBreakdown(scopedFindings), [scopedFindings]);
   const tiers = useMemo(() => confidenceTierBreakdown(scopedFindings), [scopedFindings]);
   const perspective = useMemo(() => perspectiveBreakdown(scopedFindings), [scopedFindings]);
   const priority = useMemo(() => priorityMatrix(scopedFindings), [scopedFindings]);
@@ -652,6 +655,39 @@ export function RetentionResearchDashboard({
             <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
               {soWhatTimeline(timeline)}
             </div>
+
+            {severityTimeline.length >= 4 && (
+              <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>
+                  AVERAGE SEVERITY OVER TIME
+                  <InfoTip text="Volume alone can't tell you whether the underlying problem is getting worse - a flat mention count could still hide rising severity. This plots average pain_severity (1-5) per quarter across the same pooled findings, quarters with fewer than 3 findings are excluded from the trend read below (too noisy to mean anything on their own) but still plotted." />
+                </div>
+                {(() => {
+                  const W = 700, H = 90, PAD = 8;
+                  const vals = severityTimeline.map((r) => r[1]);
+                  const min = Math.min(...vals) - 0.15;
+                  const max = Math.max(...vals) + 0.15;
+                  const span = Math.max(0.3, max - min);
+                  const n = severityTimeline.length;
+                  const x = (i: number) => PAD + (i / Math.max(1, n - 1)) * (W - PAD * 2);
+                  const y = (v: number) => H - PAD - ((v - min) / span) * (H - PAD * 2);
+                  const points = severityTimeline.map(([, v], i) => `${x(i)},${y(v)}`).join(" ");
+                  return (
+                    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="none">
+                      <polyline points={points} fill="none" stroke="var(--amber)" strokeWidth="1.5" />
+                      {severityTimeline.map(([q, v, count], i) => (
+                        <circle key={q} cx={x(i)} cy={y(v)} r={count >= 3 ? 2.5 : 1.5} fill={count >= 3 ? "var(--amber)" : "var(--ink-faint)"}>
+                          <title>{`${q}: ${v.toFixed(1)}/5 avg severity, ${count} finding${count === 1 ? "" : "s"}`}</title>
+                        </circle>
+                      ))}
+                    </svg>
+                  );
+                })()}
+                <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
+                  {soWhatSeverityTrend(severityTimeline)}
+                </div>
+              </div>
+            )}
           </div>
 
           <section style={{ marginBottom: 24 }}>

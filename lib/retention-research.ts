@@ -833,11 +833,20 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   const isAll = ds.subreddit === "all";
+  const raw = ds.raw_scraped ?? ds.total_analyzed;
+  const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
+  const rawClause = isAll
+    ? rawTotal > ds.total_analyzed
+      ? ` (${rawTotal.toLocaleString()} records were scraped in total before prescreening; this is the number that actually reached classification)`
+      : ""
+    : raw > ds.total_analyzed
+      ? ` (${raw.toLocaleString()} were scraped before a prescreen narrowed that down to this classified pool)`
+      : "";
 
   sentences.push(
     isAll
-      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left.`
-      : `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were reviewed to isolate one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) met that bar. That rate is expected for a general-purpose subreddit, where most discussion isn't about retention at all; ${n} is the confirmed signal, not a claim about how much members discuss the topic overall.`
+      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities${rawClause}. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left.`
+      : `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were reviewed${rawClause} to isolate one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) met that bar. That rate is expected for a general-purpose subreddit, where most discussion isn't about retention at all; ${n} is the confirmed signal, not a claim about how much members discuss the topic overall.`
   );
 
   // Deliberately doesn't restate the top pain point or the confidence split -

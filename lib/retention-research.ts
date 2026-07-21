@@ -224,6 +224,56 @@ export function relevantNote(ds: CommunityDataset): string {
   return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried. The rest was off-topic chatter.`;
 }
 
+export type MethodologyRow = {
+  label: string;
+  raw: number;
+  analyzed: number;
+  relevant: number;
+  prescreened: boolean;
+  detail: string;
+};
+
+export function methodologyRows(): MethodologyRow[] {
+  return COMMUNITIES.map((c) => {
+    const raw = c.raw_scraped ?? c.total_analyzed;
+    const prescreened = raw > c.total_analyzed;
+    return {
+      label: c.label,
+      raw,
+      analyzed: c.total_analyzed,
+      relevant: c.relevant_count,
+      prescreened,
+      detail:
+        c.data_note ??
+        (prescreened
+          ? `${raw.toLocaleString()} raw records were narrowed by a prescreen to the ${c.total_analyzed.toLocaleString()} shown here.`
+          : `No prescreen ran - all ${raw.toLocaleString()} cleaned raw records went directly into classification.`),
+    };
+  });
+}
+
+export function methodologyExplainer(ds: CommunityDataset): { intro: string; rows: MethodologyRow[]; caveat: string | null } {
+  const rows = methodologyRows();
+  if (ds.subreddit === "all") {
+    return {
+      intro:
+        "Two of the five communities (gymowner, hyrox) had every scraped record go straight into classification - raw and analyzed are the same number there, by design, not by omission. The other three (crossfit, orangetheory, f45) ran a prescreen first, so only a subset of what was scraped was actually classified. The combined totals above are a straight sum of both kinds, which is why the gap between the two combined numbers exists at the aggregate level even though it's zero for two of the five sources.",
+      rows,
+      caveat:
+        "orangetheory is the one row worth reading carefully: only the top-scored 1,092 of 102,976 prescreen survivors were classified, not the full survivor pool. That's a much narrower and more biased sample than the other four communities, which is why its relevant rate is far higher than everywhere else and isn't directly comparable to them.",
+    };
+  }
+  const row = rows.find((r) => r.label === ds.label);
+  return {
+    intro: row?.detail ?? "",
+    rows: row ? [row] : [],
+    caveat:
+      ds.subreddit === "orangetheory"
+        ? "Read the relevant rate for this community with that in mind: it reflects the top-scored slice of the prescreen, not the full candidate pool, so it isn't directly comparable to the other communities' rates."
+        : null,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Labels
 // ---------------------------------------------------------------------------

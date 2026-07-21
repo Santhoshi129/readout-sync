@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
-import { CommunityDataset, PainPointExample, painPointExamples, timelineBreakdown } from "@/lib/retention-research";
+import { CommunityDataset, Finding, PainPointExample, painPointExamples, severityHistogram, sourceLink, timelineBreakdown } from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
 
@@ -27,6 +27,7 @@ export function CrossCommunityTable({
   communities?: CommunityDataset[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [severityOpen, setSeverityOpen] = useState<string | null>(null); // pain_point whose severity breakdown is showing
   const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
   const [expandedQuote, setExpandedQuote] = useState<string | null>(null); // "<pain_point>::<side>::<index>"
   // Column headers double as sort controls - starts from whatever the
@@ -124,11 +125,75 @@ export function CrossCommunityTable({
                 </div>
                 <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{r.totalCount} total, {r.buildableCount} buildable</div>
               </div>
-              <span style={{ fontFamily: "var(--mono)", fontSize: 13, color: SEVERITY_COLOR(r.avgSeverityBuildable) }}>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (r.buildableCount === 0) return;
+                  setSeverityOpen((k) => (k === r.pain_point ? null : r.pain_point));
+                }}
+                title={r.buildableCount > 0 ? "Tap to see why it scores this" : undefined}
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 13,
+                  color: SEVERITY_COLOR(r.avgSeverityBuildable),
+                  cursor: r.buildableCount > 0 ? "pointer" : "default",
+                  borderBottom: r.buildableCount > 0 ? `1px dashed ${severityOpen === r.pain_point ? SEVERITY_COLOR(r.avgSeverityBuildable) : "transparent"}` : "none",
+                }}
+              >
                 {r.buildableCount > 0 ? `${r.avgSeverityBuildable.toFixed(1)}/5` : "\u2013"}
               </span>
               <span style={{ color: "var(--ink-faint)", fontSize: 11, textAlign: "right" }}>{isOpen ? "\u2212" : "+"}</span>
             </div>
+            {severityOpen === r.pain_point && communities && (() => {
+              const buildable = communities
+                .flatMap((c) => c.findings)
+                .filter((f) => f.pain_point === r.pain_point && (f.app_relevance === "core_fit" || f.app_relevance === "partial_fit"));
+              const hist = severityHistogram(buildable);
+              const maxH = Math.max(1, ...hist.map((h) => h.count));
+              const topReasons = [...buildable]
+                .filter((f) => f.pain_severity_reasoning)
+                .sort((a, b) => (b.pain_severity ?? 0) - (a.pain_severity ?? 0))
+                .slice(0, 3);
+              return (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}
+                >
+                  <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>
+                    WHY {r.avgSeverityBuildable.toFixed(1)}/5 &mdash; {buildable.length} BUILDABLE FINDING{buildable.length === 1 ? "" : "S"}, RATED INDIVIDUALLY
+                  </div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 64, marginBottom: 6, maxWidth: 320 }}>
+                    {hist.map((h) => (
+                      <div key={h.severity} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                        <div style={{ fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{h.count > 0 ? h.count : ""}</div>
+                        <div
+                          title={`${h.count} finding${h.count === 1 ? "" : "s"} rated ${h.severity}/5`}
+                          style={{
+                            width: "100%",
+                            height: Math.max(3, (h.count / maxH) * 42),
+                            borderRadius: "3px 3px 1px 1px",
+                            background: SEVERITY_COLOR(h.severity),
+                            opacity: h.count === 0 ? 0.25 : 1,
+                          }}
+                        />
+                        <div style={{ fontSize: 9.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{h.severity}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 12, maxWidth: 420 }}>
+                    Each finding gets its own 1-5 severity rating - 1 is a minor annoyance, 5 is named as an actual reason someone left or considered leaving. The {r.avgSeverityBuildable.toFixed(1)}/5 up top is just the average of this distribution, not a single judgment call.
+                  </div>
+                  {topReasons.length > 0 && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>HIGHEST-RATED EXAMPLES</div>
+                      {topReasons.map((f, i) => (
+                        <SeverityReasonQuote key={i} finding={f} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
             {isOpen && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
@@ -321,6 +386,50 @@ export function CrossCommunityTable({
           </div>
         );
       })}
+      </div>
+    </div>
+  );
+}
+
+// One finding's severity rating with the classifier's own stated reason for
+// it - this is the actual "why" behind the average score above, not a
+// restatement of the number. Reuses the evidence-quote pattern already used
+// elsewhere on this table (tap to read the full reasoning + jump to source).
+function SeverityReasonQuote({ finding }: { finding: Finding }) {
+  const [open, setOpen] = useState(false);
+  const color = (finding.pain_severity ?? 0) >= 3.5 ? "var(--bad)" : (finding.pain_severity ?? 0) >= 2.5 ? "var(--amber)" : "var(--ink-dim)";
+  const reasoning = finding.pain_severity_reasoning || "";
+  const short = reasoning.length <= 110 ? reasoning : reasoning.slice(0, 110) + "…";
+  return (
+    <div
+      onClick={() => setOpen((o) => !o)}
+      style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, padding: "8px 10px", borderRadius: 6, borderLeft: `2px solid ${color}`, background: open ? "var(--card-raised)" : "transparent", cursor: "pointer" }}
+    >
+      <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color, fontWeight: 700, marginRight: 6 }}>
+        {finding.pain_severity}/5
+      </span>
+      {open ? reasoning : short}
+      {finding.evidence_snippet && (
+        <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
+          "{open || finding.evidence_snippet.length <= 140 ? finding.evidence_snippet : finding.evidence_snippet.slice(0, 140) + "…"}"
+        </div>
+      )}
+      <div style={{ marginTop: 4, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
+        {open ? "tap to collapse" : "tap to read full reasoning"}
+        {open && (
+          <>
+            {" · "}
+            <a
+              href={sourceLink(finding.permalink, finding.evidence_snippet)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{ color: "var(--amber)", textDecoration: "underline" }}
+            >
+              view original thread &#8599;
+            </a>
+          </>
+        )}
       </div>
     </div>
   );

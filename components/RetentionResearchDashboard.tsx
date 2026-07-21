@@ -211,6 +211,7 @@ export function RetentionResearchDashboard({
   const ownerCommunities = scopedCommunities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const ownerAlignment = useMemo(() => ownerAlignmentByCommunity(ownerFindingsForRadar, memberCommunities), [ownerFindingsForRadar, memberCommunities]);
   const [ownerAlignmentOpen, setOwnerAlignmentOpen] = useState<string | null>(null);
+  const [alignmentAxisOpen, setAlignmentAxisOpen] = useState<string | null>(null); // "<subreddit>::<pain_point key>"
   const solutionEffData = useMemo(() => solutionEffectivenessByCommunity(scopedCommunities), [scopedCommunities]);
   const [solutionEffOpen, setSolutionEffOpen] = useState<string | null>(null);
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
@@ -934,7 +935,7 @@ export function RetentionResearchDashboard({
                     Owner alignment, by community
                     <InfoTip text="The gap chart above pools all four member communities into one comparison against gymowner. This breaks that same comparison out per community instead - a format where owners and members are especially in or out of sync could otherwise get averaged away. Caveat: r/gymowner isn't segmented by training format, so this is 'gym owners in general' vs. 'members of format X specifically', a proxy comparison, not a controlled one." />
                   </div>
-                  <div className="eyebrow muted">shorter, greener bar = more aligned with gymowner · tap a bar to break it down</div>
+                  <div className="eyebrow muted">shorter, greener bar = more aligned with gymowner · tap a bar to break it down · tap a category to see the actual threads</div>
                 </div>
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
                   Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right. Color is relative to these four communities specifically (greenest = most aligned of the four, warmest/most orange = least), not a fixed grade.
@@ -1006,26 +1007,88 @@ export function RetentionResearchDashboard({
                                     const gap = a.memberPct - a.ownerPct;
                                     const memberLeans = gap > 0;
                                     const localMax = Math.max(1, ...row.axes.flatMap((x) => [x.memberPct, x.ownerPct]));
+                                    const axisKey = `${row.subreddit}::${a.key}`;
+                                    const isAxisOpen = alignmentAxisOpen === axisKey;
                                     return (
-                                      <div key={a.key} style={{ display: "grid", gridTemplateColumns: "150px 1fr 50px", gap: 10, alignItems: "center", fontSize: 11.5 }}>
-                                        <span style={{ color: "var(--ink-dim)" }}>{a.label}</span>
-                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 2px 1fr", alignItems: "center", height: 16 }}>
-                                          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                                            <div style={{ width: `${Math.max(2, (a.ownerPct / localMax) * 100)}%`, height: 10, borderRadius: "6px 2px 2px 6px", background: "var(--series-b)" }} />
+                                      <div key={a.key}>
+                                        <div
+                                          onClick={() => setAlignmentAxisOpen((k) => (k === axisKey ? null : axisKey))}
+                                          style={{
+                                            display: "grid",
+                                            gridTemplateColumns: "150px 1fr 50px",
+                                            gap: 10,
+                                            alignItems: "center",
+                                            fontSize: 11.5,
+                                            cursor: "pointer",
+                                            padding: "3px 4px",
+                                            margin: "-3px -4px",
+                                            borderRadius: 5,
+                                            background: isAxisOpen ? "var(--card)" : "transparent",
+                                          }}
+                                        >
+                                          <span style={{ color: "var(--ink-dim)", textDecoration: isAxisOpen ? "underline" : "none" }}>{a.label}</span>
+                                          <div style={{ display: "grid", gridTemplateColumns: "1fr 2px 1fr", alignItems: "center", height: 16 }}>
+                                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                              <div style={{ width: `${Math.max(2, (a.ownerPct / localMax) * 100)}%`, height: 10, borderRadius: "6px 2px 2px 6px", background: "var(--series-b)" }} />
+                                            </div>
+                                            <div style={{ width: 2, height: 16, background: "var(--border)" }} />
+                                            <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                                              <div style={{ width: `${Math.max(2, (a.memberPct / localMax) * 100)}%`, height: 10, borderRadius: "2px 6px 6px 2px", background: "var(--series-a)" }} />
+                                            </div>
                                           </div>
-                                          <div style={{ width: 2, height: 16, background: "var(--border)" }} />
-                                          <div style={{ display: "flex", justifyContent: "flex-start" }}>
-                                            <div style={{ width: `${Math.max(2, (a.memberPct / localMax) * 100)}%`, height: 10, borderRadius: "2px 6px 6px 2px", background: "var(--series-a)" }} />
-                                          </div>
+                                          <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, textAlign: "right", color: Math.abs(gap) >= 8 ? (memberLeans ? "var(--series-a)" : "var(--series-b)") : "var(--ink-faint)" }}>
+                                            {a.ownerPct}/{a.memberPct}
+                                          </span>
                                         </div>
-                                        <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, textAlign: "right", color: Math.abs(gap) >= 8 ? (memberLeans ? "var(--series-a)" : "var(--series-b)") : "var(--ink-faint)" }}>
-                                          {a.ownerPct}/{a.memberPct}
-                                        </span>
+                                        {isAxisOpen && (() => {
+                                          const memberCommunity = memberCommunities.find((c) => c.subreddit === row.subreddit);
+                                          const communityMemberFindings = memberCommunity ? memberCommunity.findings.filter((f) => f.pain_point === a.key) : [];
+                                          const ownerFindingsForAxis = ownerFindingsForRadar.filter((f) => f.pain_point === a.key);
+                                          const memberQuotes = (painPointExamples(communityMemberFindings, 3)[a.key]) || [];
+                                          const ownerQuotes = (painPointExamples(ownerFindingsForAxis, 3)[a.key]) || [];
+                                          return (
+                                            <div style={{ margin: "6px 0 4px", padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
+                                              <div style={{ fontSize: 10.5, color: "var(--ink-faint)", marginBottom: 10 }}>
+                                                {a.ownerPct}% is {a.ownerCount} of {row.label === "r/gymowner" ? "" : ""}gymowner's {ownerFindingsForRadar.length} findings; {a.memberPct}% is {a.memberCount} of {row.label}'s {memberCommunity?.findings.length ?? 0} findings. Below is the actual reasoning behind those counts, straight from the classified threads.
+                                              </div>
+                                              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                                                <div>
+                                                  <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 6 }}>
+                                                    {row.label.toUpperCase()} MEMBERS SAY ({a.memberCount})
+                                                  </div>
+                                                  {memberQuotes.length > 0 ? (
+                                                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                                                      {memberQuotes.map((ex, i) => (
+                                                        <EvidenceQuote key={i} ex={ex} color="var(--series-a)" />
+                                                      ))}
+                                                    </div>
+                                                  ) : (
+                                                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>No findings in this category for {row.label}.</div>
+                                                  )}
+                                                </div>
+                                                <div>
+                                                  <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 6 }}>
+                                                    GYMOWNER SAYS ({a.ownerCount})
+                                                  </div>
+                                                  {ownerQuotes.length > 0 ? (
+                                                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                                                      {ownerQuotes.map((ex, i) => (
+                                                        <EvidenceQuote key={i} ex={ex} color="var(--series-b)" />
+                                                      ))}
+                                                    </div>
+                                                  ) : (
+                                                    <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>No gymowner findings in this category.</div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        })()}
                                       </div>
                                     );
                                   })}
                                 <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--ink-faint)", textAlign: "center" }}>
-                                  Blue = gymowner %, gold = {row.label} members %, for that pain point specifically. Same 8pt highlight rule as the chart above.
+                                  Blue = gymowner %, gold = {row.label} members %, for that pain point specifically. Tap any row to pull up the real threads behind those two numbers.
                                 </div>
                               </div>
                             ) : (
@@ -1263,37 +1326,96 @@ export function RetentionResearchDashboard({
                       reliableRows.length >= 2
                         ? Math.max(...reliableRows.map((r) => r.avgEffectiveness)) - Math.min(...reliableRows.map((r) => r.avgEffectiveness))
                         : null;
+                    const pooledColor = pooledEff >= 3.5 ? "var(--hot)" : pooledEff >= 2.5 ? "var(--amber)" : "var(--warm)";
+                    const spreadColor = spread == null ? "var(--ink-faint)" : spread >= 1.5 ? "var(--warm)" : "var(--hot)";
+                    // Sanitized id for this group's SVG gradient/filter defs -
+                    // there's one <svg> per solution on the page, so ids need
+                    // to be unique per-category, not just per-svg-element.
+                    const gid = group.category.replace(/[^a-zA-Z0-9]/g, "");
+                    // Compact 1-5 effectiveness spectrum, visible even
+                    // collapsed - every community plotted as a dot on the
+                    // same gradient track so the "does this vary by
+                    // community" question is answerable before you even
+                    // click to expand.
+                    const SPEC_W = 168, SPEC_L = 6, SPEC_R = 6;
+                    const specX = (v: number) => SPEC_L + ((v - 1) / 4) * (SPEC_W - SPEC_L - SPEC_R);
                     return (
                       <div key={group.category}>
                         <div
                           onClick={() => setSolutionEffOpen((k) => (k === group.category ? null : group.category))}
                           style={{
                             display: "grid",
-                            gridTemplateColumns: "1fr 90px 90px 100px 70px",
-                            gap: 14,
+                            gridTemplateColumns: "1fr 168px 62px 88px 20px",
+                            gap: 16,
                             alignItems: "center",
-                            padding: "12px 14px",
-                            borderRadius: isOpen ? "10px 10px 0 0" : 10,
+                            padding: "13px 16px",
+                            borderRadius: isOpen ? "12px 12px 0 0" : 12,
                             cursor: "pointer",
                             border: `1px solid ${isOpen ? "var(--amber)" : "var(--border)"}`,
                             borderBottom: isOpen ? "1px solid transparent" : undefined,
-                            background: isOpen ? "rgba(201,168,76,0.08)" : "var(--card-raised)",
+                            background: isOpen
+                              ? "linear-gradient(135deg, rgba(201,168,76,0.10), rgba(201,168,76,0.02))"
+                              : "var(--card-raised)",
+                            boxShadow: isOpen ? "0 4px 18px -6px rgba(201,168,76,0.35)" : "none",
+                            transition: "box-shadow 0.15s ease, background 0.15s ease",
                           }}
                         >
-                          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{solutionCategoryLabel(group.category)}</span>
-                          <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)" }}>{group.totalCount} mentions</span>
-                          <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: pooledEff >= 3.5 ? "var(--hot)" : pooledEff >= 2.5 ? "var(--amber)" : "var(--warm)" }}>
-                            {pooledEff.toFixed(1)}/5 pooled
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 13.5, fontWeight: 700, color: "var(--ink)" }}>{solutionCategoryLabel(group.category)}</div>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", marginTop: 2 }}>{group.totalCount} mentions · {group.communities.length} communities</div>
+                          </div>
+                          <svg width={SPEC_W} height={26} style={{ overflow: "visible" }}>
+                            <defs>
+                              <linearGradient id={`spec-${gid}`} x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="var(--warm)" stopOpacity="0.55" />
+                                <stop offset="50%" stopColor="var(--amber)" stopOpacity="0.55" />
+                                <stop offset="100%" stopColor="var(--hot)" stopOpacity="0.55" />
+                              </linearGradient>
+                            </defs>
+                            <rect x={SPEC_L} y={11} width={SPEC_W - SPEC_L - SPEC_R} height={4} rx={2} fill={`url(#spec-${gid})`} />
+                            {/* pooled-average marker, drawn first so per-community dots sit on top */}
+                            <line x1={specX(pooledEff)} x2={specX(pooledEff)} y1={4} y2={22} stroke="var(--ink)" strokeWidth="1.5" opacity="0.55" />
+                            {group.communities.map((row) => {
+                              const lowSample = row.count < 5;
+                              return (
+                                <circle
+                                  key={row.subreddit}
+                                  cx={specX(row.avgEffectiveness)}
+                                  cy={13}
+                                  r={lowSample ? 2.6 : 4}
+                                  fill={COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)"}
+                                  stroke="var(--card-raised)"
+                                  strokeWidth="1"
+                                  opacity={lowSample ? 0.55 : 1}
+                                >
+                                  <title>{`${row.label}: ${row.avgEffectiveness.toFixed(1)}/5 effective (${row.count} finding${row.count === 1 ? "" : "s"})`}</title>
+                                </circle>
+                              );
+                            })}
+                          </svg>
+                          <div style={{ textAlign: "right" }}>
+                            <span style={{ fontFamily: "var(--font-head)", fontSize: 19, fontWeight: 800, color: pooledColor }}>{pooledEff.toFixed(1)}</span>
+                            <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)" }}>/5</span>
+                          </div>
+                          <span
+                            style={{
+                              justifySelf: "end",
+                              fontFamily: "var(--mono)",
+                              fontSize: 10.5,
+                              padding: "3px 9px",
+                              borderRadius: 999,
+                              whiteSpace: "nowrap",
+                              color: spreadColor,
+                              background: spread == null ? "transparent" : spread >= 1.5 ? "rgba(201,131,76,0.12)" : "rgba(127,201,138,0.12)",
+                              border: spread == null ? "1px solid var(--border-soft)" : "none",
+                            }}
+                          >
+                            {spread == null ? "n/a" : spread >= 1.5 ? `\u2194 ±${spread.toFixed(1)}` : `\u2248 ±${spread.toFixed(1)}`}
                           </span>
-                          <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: spread == null ? "var(--ink-faint)" : spread >= 1.5 ? "var(--warm)" : "var(--ink-faint)" }}>
-                            {spread == null ? "n/a spread" : spread >= 1.5 ? `±${spread.toFixed(1)} varies` : `±${spread.toFixed(1)} consistent`}
-                          </span>
-                          <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>
-                            {isOpen ? "\u2212 hide" : `+ ${group.communities.length} comm.`}
-                          </span>
+                          <span style={{ fontSize: 13, color: "var(--ink-faint)", textAlign: "right" }}>{isOpen ? "\u2212" : "+"}</span>
                         </div>
                         {isOpen && (() => {
-                          const W = 560, H = 200, PAD_L = 30, PAD_B = 24, PAD_T = 14, PAD_R = 16;
+                          const W = 560, H = 210, PAD_L = 32, PAD_B = 26, PAD_T = 16, PAD_R = 18;
                           const plotW = W - PAD_L - PAD_R;
                           const plotH = H - PAD_T - PAD_B;
                           const x = (diff: number) => PAD_L + ((diff - 1) / 4) * plotW; // 1=easy (left), 5=hard (right)
@@ -1302,40 +1424,67 @@ export function RetentionResearchDashboard({
                           const midY = y(3);
                           const lowSampleRows = group.communities.filter((r) => r.count < 5);
                           return (
-                            <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "16px", background: "rgba(201,168,76,0.03)" }}>
-                              <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H}>
+                            <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "18px 18px 14px", background: "rgba(201,168,76,0.035)" }}>
+                              {/* color legend up front - a first-time viewer shouldn't have to hover a dot to decode who's who */}
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px", marginBottom: 12 }}>
+                                {group.communities.map((row) => (
+                                  <div key={row.subreddit} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-dim)" }}>
+                                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)", display: "inline-block", boxShadow: `0 0 5px ${COMMUNITY_COLOR[row.subreddit] || "transparent"}` }} />
+                                    {row.label} <span style={{ color: "var(--ink-faint)" }}>({row.count})</span>
+                                  </div>
+                                ))}
+                              </div>
+                              <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ overflow: "visible" }}>
+                                <defs>
+                                  <linearGradient id={`quad-good-${gid}`} x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stopColor="var(--hot)" stopOpacity="0.14" />
+                                    <stop offset="100%" stopColor="var(--hot)" stopOpacity="0.02" />
+                                  </linearGradient>
+                                  <linearGradient id={`quad-bad-${gid}`} x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stopColor="var(--warm)" stopOpacity="0.02" />
+                                    <stop offset="100%" stopColor="var(--warm)" stopOpacity="0.14" />
+                                  </linearGradient>
+                                  <filter id={`glow-${gid}`} x="-60%" y="-60%" width="220%" height="220%">
+                                    <feGaussianBlur stdDeviation="3" result="blur" />
+                                    <feMerge>
+                                      <feMergeNode in="blur" />
+                                      <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                  </filter>
+                                </defs>
                                 {/* symmetric quadrant tint - read at a glance, no label parsing needed */}
-                                <rect x={PAD_L} y={PAD_T} width={midX - PAD_L} height={midY - PAD_T} fill="var(--hot)" opacity="0.05" />
-                                <rect x={midX} y={midY} width={W - PAD_R - midX} height={H - PAD_B - midY} fill="var(--warm)" opacity="0.05" />
+                                <rect x={PAD_L} y={PAD_T} width={midX - PAD_L} height={midY - PAD_T} fill={`url(#quad-good-${gid})`} rx={4} />
+                                <rect x={midX} y={midY} width={W - PAD_R - midX} height={H - PAD_B - midY} fill={`url(#quad-bad-${gid})`} rx={4} />
                                 <line x1={PAD_L} y1={midY} x2={W - PAD_R} y2={midY} stroke="var(--border-soft)" strokeDasharray="2 3" />
                                 <line x1={midX} y1={PAD_T} x2={midX} y2={H - PAD_B} stroke="var(--border-soft)" strokeDasharray="2 3" />
                                 <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={H - PAD_B} stroke="var(--border)" />
                                 <line x1={PAD_L} y1={H - PAD_B} x2={W - PAD_R} y2={H - PAD_B} stroke="var(--border)" />
                                 {[1, 3, 5].map((v) => (
-                                  <text key={"x" + v} x={x(v)} y={H - PAD_B + 14} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">{v}</text>
+                                  <text key={"x" + v} x={x(v)} y={H - PAD_B + 15} fontSize="9.5" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">{v}</text>
                                 ))}
                                 {[1, 3, 5].map((v) => (
-                                  <text key={"y" + v} x={PAD_L - 6} y={y(v) + 3} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{v}</text>
+                                  <text key={"y" + v} x={PAD_L - 7} y={y(v) + 3} fontSize="9.5" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{v}</text>
                                 ))}
-                                <text x={PAD_L + 4} y={PAD_T + 12} fontSize="9" fill="var(--hot)" fontFamily="var(--mono)">quick win</text>
-                                <text x={W - PAD_R - 4} y={H - PAD_B - 6} fontSize="9" fill="var(--warm)" fontFamily="var(--mono)" textAnchor="end">hard slog</text>
-                                <text x={W / 2} y={H - 2} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">difficulty \u2192</text>
+                                <text x={PAD_L + 6} y={PAD_T + 14} fontSize="10" fontWeight={700} fill="var(--hot)" fontFamily="var(--mono)">quick win</text>
+                                <text x={W - PAD_R - 6} y={H - PAD_B - 7} fontSize="10" fontWeight={700} fill="var(--warm)" fontFamily="var(--mono)" textAnchor="end">hard slog</text>
+                                <text x={W / 2} y={H - 3} fontSize="9.5" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">difficulty \u2192</text>
                                 {group.communities.map((row) => {
                                   const lowSample = row.count < 5;
                                   const color = COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)";
-                                  const r = lowSample ? 4 : 6 + Math.min(4, Math.sqrt(row.count) / 2);
+                                  const r = lowSample ? 4.5 : 7 + Math.min(4.5, Math.sqrt(row.count) / 2);
                                   const cx = x(row.avgDifficulty);
                                   const cy = y(row.avgEffectiveness);
                                   const labelRight = cx < W * 0.72; // flip label to the left near the right edge so it doesn't run off-chart
                                   return (
-                                    <g key={row.subreddit} opacity={lowSample ? 0.55 : 1}>
-                                      <circle cx={cx} cy={cy} r={r} fill={color} stroke="var(--card)" strokeWidth="1.5">
+                                    <g key={row.subreddit} opacity={lowSample ? 0.6 : 1}>
+                                      <circle cx={cx} cy={cy} r={r} fill={color} stroke="var(--card)" strokeWidth="2" filter={lowSample ? undefined : `url(#glow-${gid})`}>
                                         <title>{`${row.label}: ${row.avgEffectiveness.toFixed(1)}/5 effective, ${row.avgDifficulty.toFixed(1)}/5 difficult (${row.count} finding${row.count === 1 ? "" : "s"})`}</title>
                                       </circle>
                                       <text
-                                        x={cx + (labelRight ? r + 5 : -(r + 5))}
-                                        y={cy + 3}
-                                        fontSize="10"
+                                        x={cx + (labelRight ? r + 6 : -(r + 6))}
+                                        y={cy + 3.5}
+                                        fontSize="10.5"
+                                        fontWeight={lowSample ? 400 : 600}
                                         fontFamily="var(--mono)"
                                         fill={lowSample ? "var(--ink-faint)" : "var(--ink)"}
                                         textAnchor={labelRight ? "start" : "end"}
@@ -1346,9 +1495,9 @@ export function RetentionResearchDashboard({
                                   );
                                 })}
                               </svg>
-                              <div style={{ marginTop: 4, fontSize: 10.5, color: "var(--ink-faint)", textAlign: "center" }}>
-                                effectiveness \u2191 · dot size = how many findings back it up
-                                {lowSampleRows.length > 0 && <> · faded label = under 5 findings, a lead not a conclusion</>}
+                              <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--ink-faint)", textAlign: "center" }}>
+                                effectiveness \u2191 · dot size and glow = how many findings back it up
+                                {lowSampleRows.length > 0 && <> · faded, unglowed = under 5 findings, a lead not a conclusion</>}
                               </div>
                             </div>
                           );

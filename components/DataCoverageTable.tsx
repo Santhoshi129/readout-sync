@@ -230,7 +230,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
   );
 }
 
-function Quote({ ex }: { ex: { reasoning: string; short: string; evidence: string | null } }) {
+function Quote({ ex }: { ex: { reasoning: string; short: string; evidence: string | null; link: string } }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -244,6 +244,17 @@ function Quote({ ex }: { ex: { reasoning: string; short: string; evidence: strin
         </div>
       )}
       <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{open ? "tap to collapse" : "tap to read full"}</div>
+      {open && (
+        <a
+          href={ex.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          style={{ marginTop: 4, display: "inline-block", fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--amber)", textDecoration: "underline" }}
+        >
+          view original thread &#8599;
+        </a>
+      )}
     </div>
   );
 }

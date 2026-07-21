@@ -99,7 +99,7 @@ export function CrossCommunityTable({
               <span style={{ color: "var(--ink-faint)", fontSize: 11, textAlign: "right" }}>{isOpen ? "\u2212" : "+"}</span>
             </div>
             {isOpen && (
-              <div className="scroll-panel" style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)", maxHeight: 460, overflowY: "auto", paddingRight: 6 }}>
+              <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)" }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>
                   FROM WHERE - scroll, tap a community to preview it here
                 </div>
@@ -154,7 +154,7 @@ export function CrossCommunityTable({
                         </div>
                       </div>
                       {commExamples.length > 0 ? (
-                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 340, overflowY: "auto", paddingRight: 4 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                           {commExamples.map((ex, i) => {
                             const qKey = `${r.pain_point}::${subreddit}::${i}`;
                             const isQOpen = expandedQuote === qKey;
@@ -169,6 +169,23 @@ export function CrossCommunityTable({
                               >
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && isQOpen && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence}"</div>}
+                                <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
+                                  {isQOpen ? "tap to collapse" : "tap to read full"}
+                                  {isQOpen && (
+                                    <>
+                                      {" · "}
+                                      <a
+                                        href={ex.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        style={{ color: "var(--amber)", textDecoration: "underline" }}
+                                      >
+                                        view original thread &#8599;
+                                      </a>
+                                    </>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
@@ -203,7 +220,7 @@ export function CrossCommunityTable({
                         {side === "member" ? "WHAT MEMBERS SAY" : "WHAT OWNERS SAY"} ({quotes.length < count ? `showing ${quotes.length} of ${count}` : count})
                       </div>
                       {quotes.length > 0 ? (
-                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 320, overflowY: "auto", paddingRight: 4 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {quotes.map((ex, i) => {
                             const qKey = `${r.pain_point}::${side}::${i}`;
                             const isQOpen = expandedQuote === qKey;
@@ -234,6 +251,17 @@ export function CrossCommunityTable({
                                 <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
                                   {isQOpen ? "tap to collapse" : "tap to read full"}
                                 </div>
+                                {isQOpen && (
+                                  <a
+                                    href={ex.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    style={{ marginTop: 4, display: "inline-block", fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--amber)", textDecoration: "underline" }}
+                                  >
+                                    view original thread &#8599;
+                                  </a>
+                                )}
                               </div>
                             );
                           })}

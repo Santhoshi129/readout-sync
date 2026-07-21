@@ -436,7 +436,7 @@ function shorten(text: string, maxLen = 62): string {
 // "124" doesn't mean anything on its own, "people getting bored of the same
 // format" does. Picks the clearest, highest-confidence findings, not a
 // random sample, so the example shown is representative, not a fluke.
-export type PainPointExample = { reasoning: string; short: string; evidence: string | null };
+export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string };
 export function painPointExamples(findings: Finding[], perPoint = 3): Record<string, PainPointExample[]> {
   const byPoint: Record<string, Finding[]> = {};
   findings.forEach((f) => {
@@ -455,6 +455,8 @@ export function painPointExamples(findings: Finding[], perPoint = 3): Record<str
       reasoning: f.pain_point_reasoning as string,
       short: shorten(f.pain_point_reasoning as string),
       evidence: f.evidence_snippet,
+      permalink: f.permalink,
+      link: sourceLink(f.permalink, f.evidence_snippet),
     }));
   });
   return out;

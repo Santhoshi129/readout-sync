@@ -147,6 +147,11 @@ export function RetentionResearchDashboard({
     [scopedFindings, severityTrendPainPoint]
   );
   const severityTimeline = useMemo(() => severityTimelineBreakdown(severityTimelineSource), [severityTimelineSource]);
+  const overallAvgSeverity = useMemo(() => {
+    const withSeverity = severityTimelineSource.filter((f) => f.pain_severity != null);
+    if (withSeverity.length === 0) return null;
+    return withSeverity.reduce((s, f) => s + (f.pain_severity as number), 0) / withSeverity.length;
+  }, [severityTimelineSource]);
   const [severityHoverQuarter, setSeverityHoverQuarter] = useState<string | null>(null);
   const tiers = useMemo(() => confidenceTierBreakdown(scopedFindings), [scopedFindings]);
   const perspective = useMemo(() => perspectiveBreakdown(scopedFindings), [scopedFindings]);
@@ -203,6 +208,7 @@ export function RetentionResearchDashboard({
   const memberCommunities = scopedCommunities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
   const ownerCommunities = scopedCommunities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const ownerAlignment = useMemo(() => ownerAlignmentByCommunity(ownerFindingsForRadar, memberCommunities), [ownerFindingsForRadar, memberCommunities]);
+  const [ownerAlignmentOpen, setOwnerAlignmentOpen] = useState<string | null>(null);
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
   const maxBuildable = Math.max(1, ...topBuildable.map((r) => r.buildableCount));
   const showCombinedExtras = ds.subreddit === "all" && communities.length > 1;
@@ -715,6 +721,9 @@ export function RetentionResearchDashboard({
                     const activeIdx = severityTimeline.findIndex(([q]) => q === severityHoverQuarter);
                     return (
                       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="none">
+                        {overallAvgSeverity != null && (
+                          <line x1={0} x2={W} y1={y(overallAvgSeverity)} y2={y(overallAvgSeverity)} stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="2 3" opacity="0.5" />
+                        )}
                         <polyline points={points} fill="none" stroke="var(--amber)" strokeWidth="1.5" />
                         {activeIdx >= 0 && (
                           <line x1={x(activeIdx)} x2={x(activeIdx)} y1={0} y2={H} stroke="var(--amber)" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
@@ -751,9 +760,16 @@ export function RetentionResearchDashboard({
                           const row = severityTimeline.find(([q]) => q === severityHoverQuarter);
                           if (!row) return null;
                           const [q, v, count] = row;
-                          return `${q}: ${v.toFixed(1)}/5 avg severity · ${count} finding${count === 1 ? "" : "s"}${count < 3 ? " (too few to trust on its own)" : ""}`;
+                          const diff = overallAvgSeverity != null ? Math.round((v - overallAvgSeverity) * 10) / 10 : null;
+                          const vsAvg =
+                            diff == null || Math.abs(diff) < 0.15
+                              ? `about the same as the ${overallAvgSeverity?.toFixed(1)}/5 overall average`
+                              : diff > 0
+                              ? `${diff.toFixed(1)} above the ${overallAvgSeverity?.toFixed(1)}/5 overall average`
+                              : `${Math.abs(diff).toFixed(1)} below the ${overallAvgSeverity?.toFixed(1)}/5 overall average`;
+                          return `${q}: ${v.toFixed(1)}/5 avg severity (${vsAvg}) · ${count} finding${count === 1 ? "" : "s"}${count < 3 ? " (too few to trust on its own)" : ""}`;
                         })()
-                      : "Tap or hover a point for that quarter's exact numbers."}
+                      : "Tap or hover a point for that quarter's exact numbers, and how it compares to the overall average."}
                   </div>
                   <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
                     {soWhatSeverityTrend(severityTimeline)}
@@ -825,47 +841,103 @@ export function RetentionResearchDashboard({
             );
           })()}
 
-          {ownerAlignment.length > 0 && (
-            <div className="card" style={{ padding: 28, marginBottom: 24 }}>
-              <div className="section-head" style={{ marginBottom: 0 }}>
-                <div className="section-title">
-                  Owner alignment, by community
-                  <InfoTip text="The gap chart above pools all four member communities into one comparison against gymowner. This breaks that same comparison out per community instead - a format where owners and members are especially in or out of sync could otherwise get averaged away. Caveat: r/gymowner isn't segmented by training format, so this is 'gym owners in general' vs. 'members of format X specifically', a proxy comparison, not a controlled one." />
-                </div>
-                <div className="eyebrow muted">lower avg gap = more aligned with gymowner</div>
-              </div>
-              <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
-                Avg gap is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right.
-              </div>
-              <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
-                {ownerAlignment.map((row) => (
-                  <div
-                    key={row.subreddit}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "160px 90px 1fr",
-                      gap: 14,
-                      alignItems: "center",
-                      padding: "12px 14px",
-                      borderRadius: 10,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-raised)",
-                    }}
-                  >
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{row.label}</span>
-                    <span style={{ fontFamily: "var(--mono)", fontSize: 13, color: row.avgGap <= 5 ? "var(--hot)" : row.avgGap <= 10 ? "var(--amber)" : "var(--warm)" }}>
-                      {row.avgGap.toFixed(1)}pt gap
-                    </span>
-                    <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
-                      {row.biggestGapAxis
-                        ? `Biggest single divergence: ${row.biggestGapAxis.label} (${row.biggestGapAxis.memberPct}% of ${row.label} members vs ${row.biggestGapAxis.ownerPct}% of gymowner)`
-                        : "Not enough shared categories yet to compare."}
-                    </span>
+          {ownerAlignment.length > 0 && (() => {
+            const maxGap = Math.max(1, ...ownerAlignment.map((r) => r.avgGap));
+            return (
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div className="section-head" style={{ marginBottom: 0 }}>
+                  <div className="section-title">
+                    Owner alignment, by community
+                    <InfoTip text="The gap chart above pools all four member communities into one comparison against gymowner. This breaks that same comparison out per community instead - a format where owners and members are especially in or out of sync could otherwise get averaged away. Caveat: r/gymowner isn't segmented by training format, so this is 'gym owners in general' vs. 'members of format X specifically', a proxy comparison, not a controlled one." />
                   </div>
-                ))}
+                  <div className="eyebrow muted">shorter bar = more aligned with gymowner · tap a bar to break it down</div>
+                </div>
+                <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
+                  Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right.
+                </div>
+                <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+                  {ownerAlignment.map((row) => {
+                    const isOpen = ownerAlignmentOpen === row.subreddit;
+                    const barColor = row.avgGap <= 5 ? "var(--hot)" : row.avgGap <= 10 ? "var(--amber)" : "var(--warm)";
+                    return (
+                      <div key={row.subreddit}>
+                        <div
+                          onClick={() => setOwnerAlignmentOpen((k) => (k === row.subreddit ? null : row.subreddit))}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "130px 1fr 70px",
+                            gap: 14,
+                            alignItems: "center",
+                            padding: "12px 14px",
+                            borderRadius: isOpen ? "10px 10px 0 0" : 10,
+                            cursor: "pointer",
+                            border: `1px solid ${isOpen ? "var(--amber)" : "var(--border)"}`,
+                            borderBottom: isOpen ? "1px solid transparent" : undefined,
+                            background: isOpen ? "rgba(201,168,76,0.08)" : "var(--card-raised)",
+                          }}
+                        >
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{row.label}</span>
+                          <div style={{ height: 18, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                            <div
+                              style={{
+                                width: `${Math.max(3, (row.avgGap / maxGap) * 100)}%`,
+                                height: "100%",
+                                background: `linear-gradient(90deg, ${barColor}, ${barColor}99)`,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-end",
+                                paddingRight: 6,
+                              }}
+                            >
+                              <span style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "#0a0a0a", fontWeight: 700 }}>{row.avgGap.toFixed(1)}</span>
+                            </div>
+                          </div>
+                          <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>{isOpen ? "\u2212 hide" : "+ break down"}</span>
+                        </div>
+                        {isOpen && (
+                          <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "14px", background: "rgba(201,168,76,0.03)" }}>
+                            {row.axes.length > 0 ? (
+                              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                                {[...row.axes]
+                                  .sort((a, b) => Math.abs(b.memberPct - b.ownerPct) - Math.abs(a.memberPct - a.ownerPct))
+                                  .map((a) => {
+                                    const gap = a.memberPct - a.ownerPct;
+                                    const memberLeans = gap > 0;
+                                    const localMax = Math.max(1, ...row.axes.flatMap((x) => [x.memberPct, x.ownerPct]));
+                                    return (
+                                      <div key={a.key} style={{ display: "grid", gridTemplateColumns: "150px 1fr 50px", gap: 10, alignItems: "center", fontSize: 11.5 }}>
+                                        <span style={{ color: "var(--ink-dim)" }}>{a.label}</span>
+                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 2px 1fr", alignItems: "center", height: 16 }}>
+                                          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                            <div style={{ width: `${Math.max(2, (a.ownerPct / localMax) * 100)}%`, height: 10, borderRadius: "6px 2px 2px 6px", background: "var(--series-b)" }} />
+                                          </div>
+                                          <div style={{ width: 2, height: 16, background: "var(--border)" }} />
+                                          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                                            <div style={{ width: `${Math.max(2, (a.memberPct / localMax) * 100)}%`, height: 10, borderRadius: "2px 6px 6px 2px", background: "var(--series-a)" }} />
+                                          </div>
+                                        </div>
+                                        <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, textAlign: "right", color: Math.abs(gap) >= 8 ? (memberLeans ? "var(--series-a)" : "var(--series-b)") : "var(--ink-faint)" }}>
+                                          {a.ownerPct}/{a.memberPct}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                <div style={{ marginTop: 6, fontSize: 10.5, color: "var(--ink-faint)", textAlign: "center" }}>
+                                  Blue = gymowner %, gold = {row.label} members %, for that pain point specifically. Same 8pt highlight rule as the chart above.
+                                </div>
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>Not enough shared categories yet to break this down.</div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>
@@ -1155,7 +1227,7 @@ export function RetentionResearchDashboard({
 // Small self-contained click-to-expand quote row, reused wherever a
 // truncated "what X say" summary needs to reveal its full text without
 // needing parent-level state for every single quote on the page.
-function EvidenceQuote({ ex, color }: { ex: { reasoning: string; short: string; evidence: string | null }; color: string }) {
+function EvidenceQuote({ ex, color }: { ex: { reasoning: string; short: string; evidence: string | null; link: string }; color: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -1169,6 +1241,17 @@ function EvidenceQuote({ ex, color }: { ex: { reasoning: string; short: string; 
         </div>
       )}
       <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{open ? "tap to collapse" : "tap to read full"}</div>
+      {open && (
+        <a
+          href={ex.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          style={{ marginTop: 3, display: "inline-block", fontSize: 10, fontFamily: "var(--mono)", color: "var(--amber)", textDecoration: "underline" }}
+        >
+          view original thread &#8599;
+        </a>
+      )}
     </div>
   );
 }

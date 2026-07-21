@@ -60,6 +60,17 @@ function QuoteList({
                   </div>
                 )}
                 <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{isOpen ? "tap to collapse" : "tap to read full"}</div>
+                {isOpen && (
+                  <a
+                    href={ex.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ marginTop: 6, display: "inline-block", fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--amber)", textDecoration: "underline" }}
+                  >
+                    view original thread &#8599;
+                  </a>
+                )}
               </div>
             );
           })}
@@ -268,11 +279,20 @@ export function GapBarChart({
           );
         })}
       </div>
-      <div style={{ marginTop: 16, fontSize: 11.5, color: "var(--ink-faint)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-        <span>
-          Blue bars (left) = share of what owners say. Gold bars (right) = share of what members say. The <strong style={{ color: "var(--ink-dim)" }}>black percentage text</strong> sits on the bar itself, dark for contrast against the colored fill. The number with an arrow on the right is the gap between the two sides, in percentage points - it's <strong style={{ color: "var(--amber)" }}>bold and colored</strong> (gold or blue, whichever side leads) when the gap is 8 points or more, and <strong style={{ color: "var(--ink-faint)" }}>dim gray</strong> for anything smaller - color there marks "worth noticing," not a different measurement. Sorted by gap size, biggest first. Click any row to expand its evidence right here.
+      <div style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5, color: "var(--ink-faint)" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: "var(--series-b)", display: "inline-block" }} />
+          Owners
         </span>
-        <InfoTip text="Three colors, three different jobs: bar fill (blue/gold) says which side owns this row's story. Percentage text is always black regardless of side, purely for legibility against the colored fill. Gap-arrow color/weight is a threshold flag, not a new data series - it's the same gap number every row has, just visually promoted past 8 points so the reader's eye lands on the divergences that are actually large enough to act on." />
+        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: "var(--series-a)", display: "inline-block" }} />
+          Members
+        </span>
+        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <strong style={{ color: "var(--amber)" }}>Bold arrow</strong> = 8+pt gap
+        </span>
+        <span>Sorted by gap size, biggest first · click a row for evidence</span>
+        <InfoTip text="Three colors, three different jobs: bar fill (blue/gold) says which side owns this row's story. Percentage text printed on the bars is always black regardless of side, purely for legibility against the colored fill, not a data signal. The gap-arrow number's color/weight is a threshold flag, not a new measurement - it's the same gap every row has, just visually promoted past 8 points so the eye lands on the divergences large enough to act on." />
       </div>
     </div>
   );

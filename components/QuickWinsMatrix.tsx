@@ -5,6 +5,13 @@ import { InfoTip } from "@/components/InfoTip";
 
 const VISIBLE_CAP = 15;
 
+// A "quick win" resting on 1-2 mentions is one Redditor's experience, not a
+// validated pattern - the label shouldn't carry the same visual confidence
+// as one backed by a real sample. Below this, dim the row and swap the
+// badge copy to say so explicitly rather than let the label alone imply
+// more certainty than the data supports.
+const LOW_SAMPLE_THRESHOLD = 3;
+
 function Dots({ value, max = 5, color }: { value: number; max?: number; color: string }) {
   return (
     <span style={{ display: "inline-flex", gap: 3 }}>
@@ -32,7 +39,18 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
     return <div style={{ color: "var(--ink-faint)" }}>Not enough scored solutions yet.</div>;
   }
 
-  const ranked = [...rows].sort((a, b) => (b.avgEffectiveness - b.avgDifficulty) - (a.avgEffectiveness - a.avgDifficulty));
+  // Raw (effectiveness - difficulty) alone lets a single glowing anecdote
+  // (n=1, 5.0 effectiveness) outrank a fix that's actually been tried and
+  // worked 25 times at a slightly lower average score. Shrinking each score
+  // toward zero by count/(count+2) - a simple Laplace-style discount - keeps
+  // the same ranking among well-sampled rows while pushing thin-sample rows
+  // down the default view without hiding them outright (they're still one
+  // click away via "show more").
+  const ranked = [...rows].sort((a, b) => {
+    const scoreA = (a.avgEffectiveness - a.avgDifficulty) * (a.count / (a.count + 2));
+    const scoreB = (b.avgEffectiveness - b.avgDifficulty) * (b.count / (b.count + 2));
+    return scoreB - scoreA;
+  });
   // Already sorted best-first, so capping to the top N keeps exactly the
   // rows that matter most - the long tail past this point is low-volume,
   // marginal-scoring fixes that would otherwise bury the real standouts.
@@ -56,6 +74,7 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
       </div>
       {visible.map((r) => {
         const isQuickWin = r.avgDifficulty <= 2.5 && r.avgEffectiveness >= 3.5;
+        const lowSample = r.count < LOW_SAMPLE_THRESHOLD;
         const isHovered = hover === r.category;
         return (
           <div
@@ -73,22 +92,31 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
                 alignItems: "center",
                 padding: "12px 14px",
                 borderRadius: 10,
-                border: `1px solid ${isQuickWin ? "var(--cold)" : "var(--border)"}`,
-                background: isQuickWin ? "rgba(122,168,201,0.06)" : "var(--card)",
+                border: `1px solid ${isQuickWin ? (lowSample ? "var(--border)" : "var(--cold)") : "var(--border)"}`,
+                background: isQuickWin ? (lowSample ? "var(--card)" : "rgba(122,168,201,0.06)") : "var(--card)",
+                opacity: lowSample ? 0.72 : 1,
                 cursor: "pointer",
               }}
             >
               <div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>{solutionCategoryLabel(r.category)}</div>
                 {isQuickWin && (
-                  <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--cold)", letterSpacing: "0.05em", marginTop: 3 }}>
-                    QUICK WIN
+                  <div
+                    style={{
+                      fontFamily: "var(--mono)",
+                      fontSize: 9.5,
+                      color: lowSample ? "var(--ink-faint)" : "var(--cold)",
+                      letterSpacing: "0.05em",
+                      marginTop: 3,
+                    }}
+                  >
+                    {lowSample ? `QUICK WIN · LOW SAMPLE (n=${r.count})` : "QUICK WIN"}
                   </div>
                 )}
               </div>
               <Dots value={6 - r.avgDifficulty} color="var(--cold)" />
               <Dots value={r.avgEffectiveness} color="var(--hot)" />
-              <div style={{ textAlign: "right", fontSize: 13, color: "var(--ink-dim)" }}>{r.count}</div>
+              <div style={{ textAlign: "right", fontSize: 13, color: lowSample ? "var(--warm)" : "var(--ink-dim)", fontWeight: lowSample ? 700 : 400 }}>{r.count}</div>
             </div>
             {isHovered && (
               <div
@@ -116,6 +144,11 @@ export function QuickWinsMatrix({ rows }: { rows: SolutionQuadrantRow[] }) {
                         1
                       )}/5 effectiveness ${r.avgEffectiveness >= 3.5 ? "is over 3.5" : "is under the 3.5 threshold"}.`}
                 </div>
+                {lowSample && (
+                  <div style={{ marginBottom: 8, color: "var(--warm)" }}>
+                    Based on {r.count} {r.count === 1 ? "mention" : "mentions"} only - both scores come from one or two reports, not a validated pattern. Treat as a lead worth a second look, not a fix to prioritize on this data alone.
+                  </div>
+                )}
                 {r.effectivenessWhy && (
                   <div style={{ marginBottom: 6 }}>
                     <span style={{ color: "var(--hot)", fontWeight: 600 }}>Why this effectiveness score: </span>

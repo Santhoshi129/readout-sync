@@ -16,6 +16,8 @@ import {
   sourceStatusLabel,
   communityFromPermalink,
   NO_SOLUTION_KEY,
+  latestQuarterIndex,
+  isRecentFinding,
 } from "@/lib/retention-research";
 
 type SortKey = "default" | "severity" | "confidence" | "newest" | "community";
@@ -28,6 +30,11 @@ export type TableFilters = {
   severity: number | "All";
   perspective: string | "All";
   community: string | "All";
+  // "recent" = trailing 12 months from the latest dated finding in the
+  // whole dataset, not from today's date - the underlying Reddit posts
+  // stop wherever the last scrape landed, so "today" would make everything
+  // look stale even on a fresh pull.
+  recency: "All" | "recent";
 };
 
 const TONE_COLOR: Record<string, string> = {
@@ -59,8 +66,13 @@ export function FindingsTable({
   const PAGE_SIZE = 25;
   const [shown, setShown] = useState(PAGE_SIZE);
 
-  const { painPoint, tier, relevance, solutionCategory, severity, perspective, community } = filters;
+  const { painPoint, tier, relevance, solutionCategory, severity, perspective, community, recency } = filters;
   const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
+
+  // Computed from whatever findings this table instance was given (a single
+  // community tab or the combined set), so "last 12 months" always means
+  // relative to that view's own most recent data, not a global constant.
+  const latestQuarter = useMemo(() => latestQuarterIndex(findings), [findings]);
 
   // Resets pagination back to the first page whenever the active filter
   // set changes - covers both this table's own filter chips AND filters
@@ -100,8 +112,9 @@ export function FindingsTable({
     if (severity !== "All") chips.push({ key: "severity", label: `Severity: ${severity}/5` });
     if (perspective !== "All") chips.push({ key: "perspective", label: `Voice: ${perspectiveLabel(perspective)}` });
     if (community !== "All") chips.push({ key: "community", label: `Community: ${community}` });
+    if (recency === "recent") chips.push({ key: "recency", label: "Last 12 months only" });
     return chips;
-  }, [painPoint, tier, relevance, solutionCategory, severity, perspective, community]);
+  }, [painPoint, tier, relevance, solutionCategory, severity, perspective, community, recency]);
 
   const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -118,6 +131,7 @@ export function FindingsTable({
       if (severity !== "All" && f.pain_severity !== severity) return false;
       if (perspective !== "All" && (f.perspective || "unclear") !== perspective) return false;
       if (community !== "All" && communityFromPermalink(f.permalink) !== community) return false;
+      if (recency === "recent" && !isRecentFinding(f, latestQuarter)) return false;
       if (needle) {
         const hay = [f.pain_point_reasoning, f.solution, f.evidence_snippet].filter(Boolean).join(" ").toLowerCase();
         if (!hay.includes(needle)) return false;
@@ -134,7 +148,7 @@ export function FindingsTable({
       community: (a, b) => communityFromPermalink(a.permalink).localeCompare(communityFromPermalink(b.permalink)) || (b.pain_severity ?? 0) - (a.pain_severity ?? 0),
     };
     return [...filtered].sort(by[sort]);
-  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, perspective, community, sort]);
+  }, [findings, q, painPoint, tier, relevance, solutionCategory, severity, perspective, community, recency, latestQuarter, sort]);
 
   const chipStyle = (on: boolean): CSSProperties => ({
     background: on ? "rgba(201,168,76,0.12)" : "transparent",
@@ -179,7 +193,7 @@ export function FindingsTable({
           ))}
           <span
             style={{ ...chipStyle(false), marginLeft: "auto" }}
-            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All" })}
+            onClick={() => onFiltersChange({ painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All", recency: "All" })}
           >
             Clear all
           </span>
@@ -238,6 +252,25 @@ export function FindingsTable({
           ))}
         </div>
       )}
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10, alignItems: "center" }}>
+        <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>
+          RECENCY:
+        </span>
+        {([
+          { key: "All" as const, label: "All time" },
+          { key: "recent" as const, label: "Last 12 months" },
+        ]).map((opt) => (
+          <span key={opt.key} style={chipStyle(recency === opt.key)} onClick={() => set({ recency: opt.key })}>
+            {opt.label}
+          </span>
+        ))}
+        {latestQuarter == null && (
+          <span style={{ fontSize: 11.5, color: "var(--ink-faint)", fontStyle: "italic" }}>
+            No dated findings in this view to compute a window from.
+          </span>
+        )}
+      </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
         <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--ink-faint)", padding: "6px 4px" }}>

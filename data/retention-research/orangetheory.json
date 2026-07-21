@@ -3,6 +3,7 @@
   "label": "r/orangetheory",
   "generated_at": "2026-07-20T03:26:07.236313+00:00",
   "total_analyzed": 1092,
+  "raw_scraped": 1776009,
   "relevant_count": 690,
   "data_note": "1,776,009 raw records were deduplicated to 1,742,329 unique records, then narrowed by a keyword+sentiment prescreen to 102,976 candidates, and the top-scored 1,092 of those were run through the n8n classification pipeline (total_analyzed reflects that classified pool of 1,092, same convention as every other community here, not the raw pull).",
   "findings": [

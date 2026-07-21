@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { PainPointExample } from "@/lib/retention-research";
+import { InfoTip } from "@/components/InfoTip";
 
 export type GapAxis = {
   key: string;
@@ -267,8 +268,11 @@ export function GapBarChart({
           );
         })}
       </div>
-      <div style={{ marginTop: 16, fontSize: 11.5, color: "var(--ink-faint)", textAlign: "center" }}>
-        Blue bars (left) = share of what owners say. Gold bars (right) = share of what members say. Sorted by the size of the gap between them, biggest first. Arrow on the right shows which side talks about it more. Click any row to expand its evidence right here.
+      <div style={{ marginTop: 16, fontSize: 11.5, color: "var(--ink-faint)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+        <span>
+          Blue bars (left) = share of what owners say. Gold bars (right) = share of what members say. The <strong style={{ color: "var(--ink-dim)" }}>black percentage text</strong> sits on the bar itself, dark for contrast against the colored fill. The number with an arrow on the right is the gap between the two sides, in percentage points - it's <strong style={{ color: "var(--amber)" }}>bold and colored</strong> (gold or blue, whichever side leads) when the gap is 8 points or more, and <strong style={{ color: "var(--ink-faint)" }}>dim gray</strong> for anything smaller - color there marks "worth noticing," not a different measurement. Sorted by gap size, biggest first. Click any row to expand its evidence right here.
+        </span>
+        <InfoTip text="Three colors, three different jobs: bar fill (blue/gold) says which side owns this row's story. Percentage text is always black regardless of side, purely for legibility against the colored fill. Gap-arrow color/weight is a threshold flag, not a new data series - it's the same gap number every row has, just visually promoted past 8 points so the reader's eye lands on the divergences that are actually large enough to act on." />
       </div>
     </div>
   );

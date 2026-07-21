@@ -138,26 +138,23 @@ export function CrossCommunityTable({
                   const subreddit = previewPill.split("::")[1];
                   const community = communities.find((c) => c.subreddit === subreddit);
                   const commFindings = community ? community.findings.filter((f) => f.pain_point === r.pain_point) : [];
-                  const commExamples = painPointExamples(commFindings, 4)[r.pain_point] || [];
-                  const openInReceipts = () => {
-                    community && onSelectCommunity?.(community.subreddit, r.pain_point);
-                    // Actually jump there - setting the filter alone did
-                    // nothing visible since the receipts table sits far
-                    // down the page with no scroll of its own.
-                    requestAnimationFrame(() => document.getElementById("receipts")?.scrollIntoView({ behavior: "smooth", block: "start" }));
-                  };
+                  // Enough examples that the panel's own scroll has real
+                  // content to scroll through, instead of a count in the
+                  // header that implies far more than the 4 rows actually
+                  // shown - jumping to the receipts table for "the rest"
+                  // was the workaround for that gap; showing enough right
+                  // here removes the need for it.
+                  const commExamples = painPointExamples(commFindings, 25)[r.pain_point] || [];
                   return (
                     <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                      <div style={{ marginBottom: 6 }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
                           {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
+                          {commExamples.length < commFindings.length && ` · showing ${commExamples.length}`}
                         </div>
-                        <span onClick={(e) => { e.stopPropagation(); openInReceipts(); }} style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", cursor: "pointer", textDecoration: "underline" }}>
-                          see all in receipts &rarr;
-                        </span>
                       </div>
                       {commExamples.length > 0 ? (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 340, overflowY: "auto", paddingRight: 4 }}>
                           {commExamples.map((ex, i) => {
                             const qKey = `${r.pain_point}::${subreddit}::${i}`;
                             const isQOpen = expandedQuote === qKey;
@@ -197,16 +194,16 @@ export function CrossCommunityTable({
                   const maxT = Math.max(1, ...timeline.map(([, v]) => v));
                   const memberFindings = pooled.filter((f) => f.perspective === "member");
                   const ownerFindings = pooled.filter((f) => f.perspective === "owner");
-                  const memberQuotes = painPointExamples(memberFindings, 3)[r.pain_point] || [];
-                  const ownerQuotes = painPointExamples(ownerFindings, 3)[r.pain_point] || [];
+                  const memberQuotes = painPointExamples(memberFindings, 25)[r.pain_point] || [];
+                  const ownerQuotes = painPointExamples(ownerFindings, 25)[r.pain_point] || [];
 
                   const quoteBlock = (quotes: PainPointExample[], side: "member" | "owner", count: number) => (
                     <div>
                       <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: side === "member" ? "var(--series-a)" : "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>
-                        {side === "member" ? "WHAT MEMBERS SAY" : "WHAT OWNERS SAY"} ({count})
+                        {side === "member" ? "WHAT MEMBERS SAY" : "WHAT OWNERS SAY"} ({quotes.length < count ? `showing ${quotes.length} of ${count}` : count})
                       </div>
                       {quotes.length > 0 ? (
-                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 260, overflowY: "auto", paddingRight: 4 }}>
+                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 320, overflowY: "auto", paddingRight: 4 }}>
                           {quotes.map((ex, i) => {
                             const qKey = `${r.pain_point}::${side}::${i}`;
                             const isQOpen = expandedQuote === qKey;

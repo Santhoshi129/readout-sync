@@ -147,6 +147,7 @@ export function RetentionResearchDashboard({
     [scopedFindings, severityTrendPainPoint]
   );
   const severityTimeline = useMemo(() => severityTimelineBreakdown(severityTimelineSource), [severityTimelineSource]);
+  const [severityHoverQuarter, setSeverityHoverQuarter] = useState<string | null>(null);
   const tiers = useMemo(() => confidenceTierBreakdown(scopedFindings), [scopedFindings]);
   const perspective = useMemo(() => perspectiveBreakdown(scopedFindings), [scopedFindings]);
   const priority = useMemo(() => priorityMatrix(scopedFindings), [scopedFindings]);
@@ -677,7 +678,10 @@ export function RetentionResearchDashboard({
                 </div>
                 <select
                   value={severityTrendPainPoint}
-                  onChange={(e) => setSeverityTrendPainPoint(e.target.value)}
+                  onChange={(e) => {
+                    setSeverityTrendPainPoint(e.target.value);
+                    setSeverityHoverQuarter(null);
+                  }}
                   style={{
                     background: "var(--card-raised)",
                     border: "1px solid var(--border)",
@@ -699,7 +703,7 @@ export function RetentionResearchDashboard({
               {severityTimeline.length >= 3 ? (
                 <>
                   {(() => {
-                    const W = 700, H = 90, PAD = 8;
+                    const W = 700, H = 100, PAD = 8;
                     const vals = severityTimeline.map((r) => r[1]);
                     const min = Math.min(...vals) - 0.15;
                     const max = Math.max(...vals) + 0.15;
@@ -708,17 +712,49 @@ export function RetentionResearchDashboard({
                     const x = (i: number) => PAD + (i / Math.max(1, n - 1)) * (W - PAD * 2);
                     const y = (v: number) => H - PAD - ((v - min) / span) * (H - PAD * 2);
                     const points = severityTimeline.map(([, v], i) => `${x(i)},${y(v)}`).join(" ");
+                    const activeIdx = severityTimeline.findIndex(([q]) => q === severityHoverQuarter);
                     return (
                       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="none">
                         <polyline points={points} fill="none" stroke="var(--amber)" strokeWidth="1.5" />
-                        {severityTimeline.map(([q, v, count], i) => (
-                          <circle key={q} cx={x(i)} cy={y(v)} r={count >= 3 ? 2.5 : 1.5} fill={count >= 3 ? "var(--amber)" : "var(--ink-faint)"}>
-                            <title>{`${q}: ${v.toFixed(1)}/5 avg severity, ${count} finding${count === 1 ? "" : "s"}`}</title>
-                          </circle>
-                        ))}
+                        {activeIdx >= 0 && (
+                          <line x1={x(activeIdx)} x2={x(activeIdx)} y1={0} y2={H} stroke="var(--amber)" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+                        )}
+                        {severityTimeline.map(([q, v, count], i) => {
+                          const isActive = q === severityHoverQuarter;
+                          return (
+                            <g
+                              key={q}
+                              onMouseEnter={() => setSeverityHoverQuarter(q)}
+                              onMouseLeave={() => setSeverityHoverQuarter((cur) => (cur === q ? null : cur))}
+                              onClick={() => setSeverityHoverQuarter((cur) => (cur === q ? null : q))}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {/* invisible, larger hit target - the visible dot is too small to tap reliably on its own */}
+                              <circle cx={x(i)} cy={y(v)} r={10} fill="transparent" />
+                              <circle
+                                cx={x(i)}
+                                cy={y(v)}
+                                r={isActive ? 4.5 : count >= 3 ? 2.5 : 1.5}
+                                fill={isActive ? "var(--ink)" : count >= 3 ? "var(--amber)" : "var(--ink-faint)"}
+                                stroke={isActive ? "var(--amber)" : "none"}
+                                strokeWidth={isActive ? 2 : 0}
+                              />
+                            </g>
+                          );
+                        })}
                       </svg>
                     );
                   })()}
+                  <div style={{ marginTop: 8, minHeight: 18, fontSize: 12.5, color: severityHoverQuarter ? "var(--amber)" : "var(--ink-faint)", fontFamily: "var(--mono)" }}>
+                    {severityHoverQuarter
+                      ? (() => {
+                          const row = severityTimeline.find(([q]) => q === severityHoverQuarter);
+                          if (!row) return null;
+                          const [q, v, count] = row;
+                          return `${q}: ${v.toFixed(1)}/5 avg severity · ${count} finding${count === 1 ? "" : "s"}${count < 3 ? " (too few to trust on its own)" : ""}`;
+                        })()
+                      : "Tap or hover a point for that quarter's exact numbers."}
+                  </div>
                   <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
                     {soWhatSeverityTrend(severityTimeline)}
                   </div>

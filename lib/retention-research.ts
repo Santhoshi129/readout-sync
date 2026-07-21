@@ -477,7 +477,7 @@ function shorten(text: string, maxLen = 62): string {
 // "124" doesn't mean anything on its own, "people getting bored of the same
 // format" does. Picks the clearest, highest-confidence findings, not a
 // random sample, so the example shown is representative, not a fluke.
-export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string; app_relevance: AppRelevance | null };
+export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string; app_relevance: AppRelevance | null; app_relevance_reasoning: string | null };
 // app_relevance sort precedence when sortByRelevance is on: core_fit first
 // (most actionable), then partial_fit, then not_addressable, with findings
 // missing an app_relevance value pushed to the very end.
@@ -508,6 +508,7 @@ export function painPointExamples(findings: Finding[], perPoint = 3, sortByRelev
       permalink: f.permalink,
       link: sourceLink(f.permalink, f.evidence_snippet),
       app_relevance: f.app_relevance,
+      app_relevance_reasoning: f.app_relevance_reasoning ?? null,
     }));
   });
   return out;
@@ -972,7 +973,7 @@ export function keyTakeaways(ds: CommunityDataset): string[] {
 
   return [
     `${painPointLabel(top[0])} comes up more than anything else, ${topPct}% of everything found. This reflects mention frequency; the build recommendation is ranked separately further down.`,
-    `Over half of what's here (${coreFitPct}%, ${coreFit} of ${n}) is addressable by TWU's product directly. Staffing and facility complaints account for only part of the remainder.`,
+    `${coreFitPct}% of what's here (${coreFit} of ${n}) is addressable by TWU's product directly. The rest is either partially in reach or belongs to staffing, facility, or pricing decisions no connection-layer app touches.`,
     `${strongPct}% of findings are strong-tier. This is a first classification pass; a larger run would tighten these percentages before they're treated as final.`,
     `${solutionsPct}% of findings (${solutionsMentioned} of ${n}) name an attempted fix. The remainder may reflect an unaddressed gap, or a reporting bias toward venting over documenting solutions; this data doesn't distinguish between the two, so treat it as a lead rather than a conclusion.`,
   ];

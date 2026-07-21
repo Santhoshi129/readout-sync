@@ -27,6 +27,7 @@ export function CrossCommunityTable({
   communities?: CommunityDataset[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [buildableOnly, setBuildableOnly] = useState(false);
   const [severityOpen, setSeverityOpen] = useState<string | null>(null); // pain_point whose severity breakdown is showing
   const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
   const [expandedQuote, setExpandedQuote] = useState<string | null>(null); // "<pain_point>::<side>::<index>"
@@ -237,23 +238,53 @@ export function CrossCommunityTable({
                   const subreddit = previewPill.split("::")[1];
                   const community = communities.find((c) => c.subreddit === subreddit);
                   const commFindings = community ? community.findings.filter((f) => f.pain_point === r.pain_point) : [];
+                  const commBuildableCount = commFindings.filter((f) => f.app_relevance === "core_fit" || f.app_relevance === "partial_fit").length;
+                  // Filtering BEFORE the 25-slice (not after) matters here -
+                  // a pain point that's mostly not-addressable (e.g.
+                  // crossfit pricing: 5 of 114 buildable) would otherwise
+                  // crowd every buildable example out of the first 25 shown,
+                  // since painPointExamples sorts by confidence/severity,
+                  // not by app_relevance.
+                  const sourceFindings = buildableOnly
+                    ? commFindings.filter((f) => f.app_relevance === "core_fit" || f.app_relevance === "partial_fit")
+                    : commFindings;
                   // Enough examples that the panel's own scroll has real
                   // content to scroll through, instead of a count in the
                   // header that implies far more than the 4 rows actually
                   // shown - jumping to the receipts table for "the rest"
                   // was the workaround for that gap; showing enough right
                   // here removes the need for it.
-                  const commExamples = painPointExamples(commFindings, 25)[r.pain_point] || [];
+                  const commExamples = painPointExamples(sourceFindings, 25)[r.pain_point] || [];
                   return (
                     <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                      <div style={{ marginBottom: 6 }}>
-                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
-                          {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
-                          {commExamples.length < commFindings.length && ` · showing ${commExamples.length}`}
+                      <div style={{ marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
+                        <div>
+                          <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
+                            {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}, {commBuildableCount} BUILDABLE
+                            {commExamples.length < sourceFindings.length && ` · showing ${commExamples.length}`}
+                          </div>
+                          <div style={{ fontSize: 10, color: "var(--ink-faint)", marginTop: 4 }}>
+                            Each quote's badge shows whether it's <span style={{ color: "var(--hot)" }}>core fit</span>, <span style={{ color: "var(--amber)" }}>partial fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - only core + partial fit count toward "buildable" above.
+                          </div>
                         </div>
-                        <div style={{ fontSize: 10, color: "var(--ink-faint)", marginTop: 4 }}>
-                          Each quote's badge shows whether it's <span style={{ color: "var(--hot)" }}>core fit</span>, <span style={{ color: "var(--amber)" }}>partial fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - only core + partial fit count toward "buildable" above.
-                        </div>
+                        {commBuildableCount > 0 && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setBuildableOnly((b) => !b); }}
+                            style={{
+                              flexShrink: 0,
+                              fontFamily: "var(--mono)",
+                              fontSize: 10,
+                              padding: "4px 10px",
+                              borderRadius: 999,
+                              border: `1px solid ${buildableOnly ? "var(--hot)" : "var(--border)"}`,
+                              color: buildableOnly ? "var(--hot)" : "var(--ink-faint)",
+                              background: buildableOnly ? "rgba(212,110,90,0.1)" : "transparent",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {buildableOnly ? `\u2713 buildable only` : `show buildable only`}
+                          </button>
+                        )}
                       </div>
                       {commExamples.length > 0 ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>

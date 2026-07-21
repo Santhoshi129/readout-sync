@@ -29,9 +29,14 @@ export function CrossCommunityTable({
   const [expanded, setExpanded] = useState<string | null>(null);
   const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
   const [expandedQuote, setExpandedQuote] = useState<string | null>(null); // "<pain_point>::<side>::<index>"
+  // Column headers double as sort controls - starts from whatever the
+  // parent asked for, but stays interactive rather than fixed for the
+  // life of the component.
+  const [sortMode, setSortMode] = useState<"coverage" | "buildable" | "severity">(sortBy);
 
   const sorted = [...rows].sort((a, b) => {
-    if (sortBy === "coverage") return b.coverage - a.coverage || b.totalCount - a.totalCount;
+    if (sortMode === "coverage") return b.coverage - a.coverage || b.totalCount - a.totalCount;
+    if (sortMode === "severity") return b.avgSeverityBuildable - a.avgSeverityBuildable || b.buildableCount - a.buildableCount;
     return b.buildableCount - a.buildableCount || b.totalCount - a.totalCount;
   });
 
@@ -40,7 +45,7 @@ export function CrossCommunityTable({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 100px 110px 110px 40px",
+          gridTemplateColumns: "1fr 100px 160px 90px 40px",
           gap: 12,
           padding: "0 14px 4px",
           fontFamily: "var(--mono)",
@@ -50,13 +55,28 @@ export function CrossCommunityTable({
         }}
       >
         <span>PAIN POINT</span>
-        <span>COVERAGE</span>
-        <span>TOTAL FINDINGS</span>
-        <span>BUILDABLE</span>
+        <span
+          onClick={() => setSortMode("coverage")}
+          style={{ cursor: "pointer", color: sortMode === "coverage" ? "var(--amber)" : "var(--ink-faint)", textDecoration: sortMode === "coverage" ? "underline" : "none" }}
+        >
+          COVERAGE {sortMode === "coverage" && "\u2193"}
+        </span>
+        <span
+          onClick={() => setSortMode("buildable")}
+          style={{ cursor: "pointer", color: sortMode === "buildable" ? "var(--amber)" : "var(--ink-faint)", textDecoration: sortMode === "buildable" ? "underline" : "none" }}
+        >
+          COMPOSITION {sortMode === "buildable" && "\u2193"}
+        </span>
+        <span
+          onClick={() => setSortMode("severity")}
+          style={{ cursor: "pointer", color: sortMode === "severity" ? "var(--amber)" : "var(--ink-faint)", textDecoration: sortMode === "severity" ? "underline" : "none" }}
+        >
+          SEVERITY {sortMode === "severity" && "\u2193"}
+        </span>
         <span />
       </div>
       <div style={{ padding: "0 14px 10px", fontSize: 11, color: "var(--ink-faint)" }}>
-        Coverage = how many of the {communityCount} communities mention it at all. Buildable = findings tagged core-fit or partial-fit (TWU could plausibly act on them), pooled across every community - click a row to see the exact core/partial split and click a community pill to filter to just that community's findings for this pain point.
+        Coverage = how many of the {communityCount} communities mention it at all. The composition bar is every finding for this pain point split by whether TWU could plausibly act on it - <span style={{ color: "var(--hot)" }}>core-fit</span>, <span style={{ color: "var(--amber)" }}>partial-fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - so volume and buildability read from the same bar instead of two separate numbers you have to compare yourself. Severity is the average across the buildable (core+partial) subset only. Click a row to see the exact split and click a community pill to filter to just that community's findings for this pain point.
       </div>
       <div className="scroll-panel" style={{ maxHeight: 640, overflowY: "auto", paddingRight: 4 }}>
       {sorted.map((r) => {
@@ -72,7 +92,7 @@ export function CrossCommunityTable({
             }}
             style={{ padding: "14px 14px", borderRadius: 10, border: `1px solid ${isActive ? "var(--amber)" : "var(--border)"}`, background: isActive ? "rgba(201,168,76,0.06)" : undefined }}
           >
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 100px 110px 110px 40px", gap: 12, alignItems: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 100px 160px 90px 40px", gap: 12, alignItems: "center" }}>
               <span style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
                 {r.label}
                 {r.universal && (
@@ -94,8 +114,19 @@ export function CrossCommunityTable({
               <span style={{ color: "var(--ink-dim)", fontSize: 13 }}>
                 {r.coverage}/{communityCount} communities
               </span>
-              <span style={{ color: "var(--ink)", fontSize: 13 }}>{r.totalCount}</span>
-              <span style={{ color: "var(--amber)", fontSize: 13, fontWeight: 600 }}>{r.buildableCount}</span>
+              <div>
+                <div style={{ display: "flex", height: 12, borderRadius: 4, overflow: "hidden", background: "var(--muted)" }}>
+                  {r.coreFitCount > 0 && <div style={{ width: `${(r.coreFitCount / r.totalCount) * 100}%`, background: "var(--hot)" }} title={`${r.coreFitCount} core-fit`} />}
+                  {r.partialFitCount > 0 && <div style={{ width: `${(r.partialFitCount / r.totalCount) * 100}%`, background: "var(--amber)" }} title={`${r.partialFitCount} partial-fit`} />}
+                  {r.totalCount - r.buildableCount > 0 && (
+                    <div style={{ width: `${((r.totalCount - r.buildableCount) / r.totalCount) * 100}%`, background: "var(--border)" }} title={`${r.totalCount - r.buildableCount} not addressable`} />
+                  )}
+                </div>
+                <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{r.totalCount} total, {r.buildableCount} buildable</div>
+              </div>
+              <span style={{ fontFamily: "var(--mono)", fontSize: 13, color: SEVERITY_COLOR(r.avgSeverityBuildable) }}>
+                {r.buildableCount > 0 ? `${r.avgSeverityBuildable.toFixed(1)}/5` : "\u2013"}
+              </span>
               <span style={{ color: "var(--ink-faint)", fontSize: 11, textAlign: "right" }}>{isOpen ? "\u2212" : "+"}</span>
             </div>
             {isOpen && (

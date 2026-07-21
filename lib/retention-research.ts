@@ -531,11 +531,11 @@ export function soWhatSeverityTrend(rows: [string, number, number][]): string {
   const recentAvg = recent.reduce((s, r) => s + r[1], 0) / recent.length;
   const diff = Math.round((recentAvg - earlyAvg) * 10) / 10;
   if (Math.abs(diff) < 0.15) {
-    return `Average severity has stayed roughly flat across the timeframe (${earlyAvg.toFixed(1)}/5 in the earlier half vs ${recentAvg.toFixed(1)}/5 in the more recent half) - more mentions over time, if any, isn't the same as worse ones.`;
+    return `Average severity has stayed roughly flat across the timeframe (${earlyAvg.toFixed(1)}/5 average-of-quarters in the earlier half vs ${recentAvg.toFixed(1)}/5 in the more recent half) - more mentions over time, if any, isn't the same as worse ones.`;
   }
   return diff > 0
-    ? `Average severity has crept up over the timeframe, from ${earlyAvg.toFixed(1)}/5 in the earlier half to ${recentAvg.toFixed(1)}/5 more recently - not just more mentions, somewhat worse ones too.`
-    : `Average severity has eased over the timeframe, from ${earlyAvg.toFixed(1)}/5 in the earlier half to ${recentAvg.toFixed(1)}/5 more recently, even where mention volume hasn't dropped.`;
+    ? `Average severity has crept up over the timeframe, from ${earlyAvg.toFixed(1)}/5 average-of-quarters in the earlier half to ${recentAvg.toFixed(1)}/5 more recently - not just more mentions, somewhat worse ones too.`
+    : `Average severity has eased over the timeframe, from ${earlyAvg.toFixed(1)}/5 average-of-quarters in the earlier half to ${recentAvg.toFixed(1)}/5 more recently, even where mention volume hasn't dropped.`;
 }
 
 // ---------------------------------------------------------------------------

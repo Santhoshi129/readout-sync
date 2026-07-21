@@ -352,6 +352,43 @@ export function solutionExamples(findings: Finding[], perCategory = 3): Record<s
 // Aggregations — every one takes a findings array so it works identically
 // for a single community or the combined view.
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Recency. period_quarter is "YYYY-QN", which sorts correctly as a plain
+// string, but for a rolling "last 12 months" window we need it as a
+// comparable integer (year * 4 + zero-based quarter) so "trailing 4
+// quarters from whatever the latest one in the data is" is a simple
+// subtraction, not a date-library dependency.
+// ---------------------------------------------------------------------------
+function quarterIndex(pq: string | null): number | null {
+  if (!pq) return null;
+  const m = /^(\d{4})-Q([1-4])$/.exec(pq);
+  if (!m) return null;
+  return parseInt(m[1], 10) * 4 + (parseInt(m[2], 10) - 1);
+}
+
+// Latest quarter present in a given finding set - computed from whatever's
+// passed in (a single community or the combined set) rather than hardcoded,
+// so this keeps working as new scrapes land without a code change.
+export function latestQuarterIndex(findings: Finding[]): number | null {
+  let max: number | null = null;
+  findings.forEach((f) => {
+    const idx = quarterIndex(f.period_quarter);
+    if (idx != null && (max == null || idx > max)) max = idx;
+  });
+  return max;
+}
+
+// Trailing 12 months = the latest quarter plus the 3 before it. Findings
+// with no parseable period_quarter are excluded rather than assumed recent -
+// silently counting an undated finding as current would be a bigger
+// distortion than leaving it out of a "recent" filter that's opt-in anyway.
+export function isRecentFinding(f: Finding, latestIdx: number | null): boolean {
+  if (latestIdx == null) return false;
+  const idx = quarterIndex(f.period_quarter);
+  if (idx == null) return false;
+  return idx > latestIdx - 4;
+}
+
 export function confidenceTierBreakdown(findings: Finding[]) {
   return {
     strong: findings.filter((f) => f.confidence_tier === "strong").length,

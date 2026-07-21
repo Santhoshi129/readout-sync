@@ -69,7 +69,7 @@ import {
   PAIN_POINT_MEANING,
 } from "@/lib/retention-research";
 
-const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All" };
+const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All", recency: "All" };
 
 export function RetentionResearchDashboard({
   communities,

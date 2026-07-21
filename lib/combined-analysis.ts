@@ -20,7 +20,7 @@ import { CommunityDataset, Finding, painPointBreakdown, painPointLabel, PAIN_POI
 // vs "cancellation_policy_frustration" vs "inflexible_cancellation_policy",
 // three near-duplicate labels each appearing once). Cross-community
 // comparison only makes sense on categories that were actually applied
-// consistently, so every function below restricts to the 11 canonical
+// consistently, so every function below restricts to the 12 canonical
 // categories already defined in PAIN_POINT_LABEL (excluding "other") -
 // everything else stays visible on each community's own tab, where the
 // long tail doesn't drown out the signal, it's just excluded from the

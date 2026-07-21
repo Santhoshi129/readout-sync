@@ -490,6 +490,40 @@ export function timelineBreakdown(findings: Finding[]) {
   return Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
 }
 
+// Volume over time answers "are people talking about this more." It says
+// nothing about whether what they're describing is getting worse - a flat
+// mention count could still hide rising severity. Paired with the volume
+// timeline so both questions get answered from the same underlying quarters.
+export function severityTimelineBreakdown(findings: Finding[]): [string, number, number][] {
+  const map: Record<string, { sum: number; count: number }> = {};
+  findings.forEach((f) => {
+    if (!f.period_quarter || f.pain_severity == null) return;
+    if (!map[f.period_quarter]) map[f.period_quarter] = { sum: 0, count: 0 };
+    map[f.period_quarter].sum += f.pain_severity;
+    map[f.period_quarter].count += 1;
+  });
+  return Object.entries(map)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([q, v]) => [q, Math.round((v.sum / v.count) * 10) / 10, v.count]);
+}
+
+export function soWhatSeverityTrend(rows: [string, number, number][]): string {
+  const withData = rows.filter((r) => r[2] >= 3); // ignore near-empty quarters, too noisy to read as a trend point
+  if (withData.length < 4) return "Not enough quarters with a meaningful sample yet to read a severity trend.";
+  const half = Math.floor(withData.length / 2);
+  const early = withData.slice(0, half);
+  const recent = withData.slice(-half);
+  const earlyAvg = early.reduce((s, r) => s + r[1], 0) / early.length;
+  const recentAvg = recent.reduce((s, r) => s + r[1], 0) / recent.length;
+  const diff = Math.round((recentAvg - earlyAvg) * 10) / 10;
+  if (Math.abs(diff) < 0.15) {
+    return `Average severity has stayed roughly flat across the timeframe (${earlyAvg.toFixed(1)}/5 in the earlier half vs ${recentAvg.toFixed(1)}/5 in the more recent half) - more mentions over time, if any, isn't the same as worse ones.`;
+  }
+  return diff > 0
+    ? `Average severity has crept up over the timeframe, from ${earlyAvg.toFixed(1)}/5 in the earlier half to ${recentAvg.toFixed(1)}/5 more recently - not just more mentions, somewhat worse ones too.`
+    : `Average severity has eased over the timeframe, from ${earlyAvg.toFixed(1)}/5 in the earlier half to ${recentAvg.toFixed(1)}/5 more recently, even where mention volume hasn't dropped.`;
+}
+
 // ---------------------------------------------------------------------------
 // Perspective, who is actually talking
 // ---------------------------------------------------------------------------

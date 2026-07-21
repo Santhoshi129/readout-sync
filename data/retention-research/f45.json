@@ -3,8 +3,9 @@
   "label": "r/f45",
   "generated_at": "2026-07-17T06:52:15.000Z",
   "total_analyzed": 32852,
+  "raw_scraped": 59300,
   "relevant_count": 669,
-  "data_note": null,
+  "data_note": "59,300 raw records were pulled and deduplicated down to the 32,852 total_analyzed here, which is the pool that actually went through classification (same convention as every other community).",
   "findings": [
     {
       "id": "dw3jvs4",

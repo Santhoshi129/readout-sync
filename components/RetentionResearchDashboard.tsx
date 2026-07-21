@@ -67,7 +67,7 @@ import {
   APP_RELEVANCE_LABEL,
   communityCountNote,
   analyzedNote,
-  analyzedPreview,
+  rawScrapedFor,
   relevantNote,
   NO_SOLUTION_KEY,
   PAIN_POINT_MEANING,
@@ -337,7 +337,16 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
-            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", preview: analyzedPreview(ds), note: analyzedNote(ds) },
+            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
+            {
+              label: "Records scraped (raw)",
+              value: rawScrapedFor(ds),
+              tone: "muted",
+              note:
+                rawScrapedFor(ds) > ds.total_analyzed
+                  ? `Raw pull before any prescreen or filtering. A prescreen narrowed this down to the ${ds.total_analyzed.toLocaleString()} that actually reached classification, shown in Posts/comments analyzed.`
+                  : `Same as Posts/comments analyzed - every scraped record here went through classification, nothing was prescreened out first.`,
+            },
             {
               label: isRecencyScoped ? "Relevant findings (last 12mo)" : "Relevant findings",
               value: isRecencyScoped ? scopedFindings.length : ds.relevant_count,

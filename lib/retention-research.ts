@@ -206,29 +206,17 @@ export function analyzedNote(ds: CommunityDataset): string {
   return `${raw.toLocaleString()} records were scraped for this community; every one of them went through classification, nothing was filtered out first.`;
 }
 
-// Compact "1.8M" / "298.5K" style formatting for the short always-visible
-// preview line under the analyzed stat tile - the full note above already
-// spells out every digit, this is just for a glanceable summary that
-// doesn't need a tap to see.
-function compactNumber(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
-  return n.toLocaleString();
+// Numeric raw-scraped total for a dataset, used by the "Records scraped
+// (raw)" stat tile - the combined view sums every community's raw pull;
+// an individual community returns its own (or total_analyzed when nothing
+// was filtered out, since scraped and classified are the same number then).
+export function rawScrapedFor(ds: CommunityDataset): number {
+  if (ds.subreddit === "all") {
+    return COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
+  }
+  return ds.raw_scraped ?? ds.total_analyzed;
 }
 
-// Short, always-visible line under the "Posts/comments analyzed" tile -
-// shows the raw-scraped-vs-classified split at a glance without requiring
-// a tap, since that was the whole point of asking for it to "appear here."
-// analyzedNote() above still carries the full explanatory sentence, shown
-// on tap/hover.
-export function analyzedPreview(ds: CommunityDataset): string | undefined {
-  if (ds.subreddit === "all") {
-    const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
-    return rawTotal > ds.total_analyzed ? `${compactNumber(rawTotal)} scraped \u2192 ${compactNumber(ds.total_analyzed)} classified` : undefined;
-  }
-  const raw = ds.raw_scraped ?? ds.total_analyzed;
-  return raw > ds.total_analyzed ? `${compactNumber(raw)} scraped \u2192 ${compactNumber(ds.total_analyzed)} classified` : undefined;
-}
 
 // Matching one-liner for the top "Relevant findings" stat tile.
 export function relevantNote(ds: CommunityDataset): string {

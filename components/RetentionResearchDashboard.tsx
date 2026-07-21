@@ -593,7 +593,7 @@ export function RetentionResearchDashboard({
           </div>
 
           <section style={{ marginBottom: 24 }}>
-            <KeyTakeaways points={combinedNotes} />
+            <KeyTakeaways points={combinedNotes} title="Member vs. owner, before the radar" />
           </section>
 
           {(() => {

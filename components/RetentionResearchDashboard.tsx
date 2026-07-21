@@ -210,6 +210,28 @@ export function RetentionResearchDashboard({
   const ownerAlignment = useMemo(() => ownerAlignmentByCommunity(ownerFindingsForRadar, memberCommunities), [ownerFindingsForRadar, memberCommunities]);
   const [ownerAlignmentOpen, setOwnerAlignmentOpen] = useState<string | null>(null);
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
+  // A concrete example beats an abstract "these can disagree" disclaimer -
+  // computed live so it stays accurate as the underlying data changes,
+  // rather than a sentence that quietly goes stale. Finds the pain point
+  // with the single biggest rank gap between "how much volume" (Feature
+  // development ranking) and "how severity-weighted" (Priority ranking),
+  // restricted to ones that actually crack the volume top 5 - a huge rank
+  // swing on a barely-mentioned pain point isn't a useful example.
+  const rankingDivergenceExample = useMemo<{ label: string; volumeRank: number; scoreRank: number } | null>(() => {
+    const byVolume = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount);
+    const byScore = [...priority].sort((a, b) => b.score - a.score);
+    if (byVolume.length < 2 || byScore.length < 2) return null;
+    let best: { label: string; volumeRank: number; scoreRank: number } | null = null;
+    byVolume.slice(0, 5).forEach((row, i) => {
+      const scoreIdx = byScore.findIndex((p) => p.pain_point === row.pain_point);
+      if (scoreIdx < 0) return;
+      const gap = scoreIdx - i;
+      if (gap > 0 && (!best || gap > best.scoreRank - best.volumeRank)) {
+        best = { label: row.label, volumeRank: i + 1, scoreRank: scoreIdx + 1 };
+      }
+    });
+    return best;
+  }, [coverageRows, priority]);
   const maxBuildable = Math.max(1, ...topBuildable.map((r) => r.buildableCount));
   const showCombinedExtras = ds.subreddit === "all" && communities.length > 1;
   const priorityCommunityBreakdown = useMemo(() => {
@@ -842,7 +864,22 @@ export function RetentionResearchDashboard({
           })()}
 
           {ownerAlignment.length > 0 && (() => {
-            const maxGap = Math.max(1, ...ownerAlignment.map((r) => r.avgGap));
+            const rawMax = Math.max(1, ...ownerAlignment.map((r) => r.avgGap));
+            const scaleMax = Math.ceil((rawMax + 1) / 5) * 5; // round up to a clean axis (5, 10, 15...) instead of an arbitrary decimal ceiling
+            const ticks = Array.from({ length: scaleMax / 5 + 1 }, (_, i) => i * 5);
+            const gapValues = ownerAlignment.map((r) => r.avgGap);
+            const lo = Math.min(...gapValues);
+            const hi = Math.max(...gapValues);
+            // Every row gets a distinct point on a green-to-red gradient
+            // scaled to THIS chart's own best/worst, not fixed buckets -
+            // four values in a 6.3-10.0 range all landing in the same
+            // "amber" bucket is exactly what made every bar look identical
+            // last round.
+            const colorFor = (gap: number) => {
+              const t = hi === lo ? 0.5 : (gap - lo) / (hi - lo); // 0 = most aligned, 1 = least
+              const hue = 150 - t * 130; // 150=green -> 20=red-orange
+              return `hsl(${hue}, 62%, 52%)`;
+            };
             return (
               <div className="card" style={{ padding: 28, marginBottom: 24 }}>
                 <div className="section-head" style={{ marginBottom: 0 }}>
@@ -850,25 +887,39 @@ export function RetentionResearchDashboard({
                     Owner alignment, by community
                     <InfoTip text="The gap chart above pools all four member communities into one comparison against gymowner. This breaks that same comparison out per community instead - a format where owners and members are especially in or out of sync could otherwise get averaged away. Caveat: r/gymowner isn't segmented by training format, so this is 'gym owners in general' vs. 'members of format X specifically', a proxy comparison, not a controlled one." />
                   </div>
-                  <div className="eyebrow muted">shorter bar = more aligned with gymowner · tap a bar to break it down</div>
+                  <div className="eyebrow muted">shorter, greener bar = more aligned with gymowner · tap a bar to break it down</div>
                 </div>
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
-                  Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right.
+                  Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right. Color is relative to these four communities specifically (greenest = most aligned of the four, reddest = least), not a fixed grade.
                 </div>
-                <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+
+                <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "130px 1fr 44px", gap: 14 }}>
+                  <div />
+                  <div style={{ position: "relative", height: 16 }}>
+                    {ticks.map((t) => (
+                      <div key={t} style={{ position: "absolute", left: `${(t / scaleMax) * 100}%`, top: 0, height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <div style={{ width: 1, height: 6, background: "var(--border)" }} />
+                        <div style={{ fontSize: 9.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", marginTop: 1 }}>{t}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div />
+                </div>
+
+                <div style={{ marginTop: 6, display: "flex", flexDirection: "column", gap: 8 }}>
                   {ownerAlignment.map((row) => {
                     const isOpen = ownerAlignmentOpen === row.subreddit;
-                    const barColor = row.avgGap <= 5 ? "var(--hot)" : row.avgGap <= 10 ? "var(--amber)" : "var(--warm)";
+                    const barColor = colorFor(row.avgGap);
                     return (
                       <div key={row.subreddit}>
                         <div
                           onClick={() => setOwnerAlignmentOpen((k) => (k === row.subreddit ? null : row.subreddit))}
                           style={{
                             display: "grid",
-                            gridTemplateColumns: "130px 1fr 70px",
+                            gridTemplateColumns: "130px 1fr 44px",
                             gap: 14,
                             alignItems: "center",
-                            padding: "12px 14px",
+                            padding: "10px 14px",
                             borderRadius: isOpen ? "10px 10px 0 0" : 10,
                             cursor: "pointer",
                             border: `1px solid ${isOpen ? "var(--amber)" : "var(--border)"}`,
@@ -877,22 +928,26 @@ export function RetentionResearchDashboard({
                           }}
                         >
                           <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{row.label}</span>
-                          <div style={{ height: 18, borderRadius: 5, background: "var(--muted)", overflow: "hidden" }}>
+                          <div style={{ position: "relative", height: 20 }}>
+                            {ticks.slice(1).map((t) => (
+                              <div key={t} style={{ position: "absolute", left: `${(t / scaleMax) * 100}%`, top: 0, bottom: 0, width: 1, background: "var(--border-soft)" }} />
+                            ))}
+                            <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, background: "var(--muted)", borderRadius: 5 }} />
                             <div
                               style={{
-                                width: `${Math.max(3, (row.avgGap / maxGap) * 100)}%`,
-                                height: "100%",
-                                background: `linear-gradient(90deg, ${barColor}, ${barColor}99)`,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-end",
-                                paddingRight: 6,
+                                position: "absolute",
+                                top: 2,
+                                bottom: 2,
+                                left: 0,
+                                width: `${Math.max(2, (row.avgGap / scaleMax) * 100)}%`,
+                                background: barColor,
+                                borderRadius: "4px 2px 2px 4px",
+                                boxShadow: isOpen ? `0 0 10px ${barColor}` : "none",
+                                transition: "box-shadow 0.15s ease",
                               }}
-                            >
-                              <span style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "#0a0a0a", fontWeight: 700 }}>{row.avgGap.toFixed(1)}</span>
-                            </div>
+                            />
                           </div>
-                          <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>{isOpen ? "\u2212 hide" : "+ break down"}</span>
+                          <span style={{ fontFamily: "var(--mono)", fontSize: 13, fontWeight: 700, color: barColor, textAlign: "right" }}>{row.avgGap.toFixed(1)}</span>
                         </div>
                         {isOpen && (
                           <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "14px", background: "rgba(201,168,76,0.03)" }}>
@@ -1129,7 +1184,10 @@ export function RetentionResearchDashboard({
               </div>
             </div>
             <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
-              This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap. If this ranking and Feature development ranking above disagree on the top pick, that's not an error - one's ranking by loudness, this one's ranking by loudness weighted by how much it hurts.
+              This judges fit against TWU's stated purpose (community and connection), not against TWU's actual current feature set, which this research hasn't been checked against. A "core fit" finding may already be built. Read this as "worth checking against what TWU has today," not as a confirmed gap.
+              {rankingDivergenceExample && (
+                <> {" "}This is a genuinely different ranking from Feature development above, not a re-sort with the same order: <strong style={{ color: "var(--ink)" }}>{rankingDivergenceExample.label}</strong> is #{rankingDivergenceExample.volumeRank} by raw volume up there, but #{rankingDivergenceExample.scoreRank} here once severity is weighted in - talked about a lot, but not urgently.</>
+              )}
             </div>
             {priority.length > 0 ? (
               <>

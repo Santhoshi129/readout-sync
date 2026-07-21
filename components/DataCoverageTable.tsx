@@ -4,7 +4,6 @@ import { CommunityDataset, painPointBreakdown, painPointExamples, painPointLabel
 
 export function DataCoverageTable({ communities }: { communities: CommunityDataset[] }) {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const expandedCommunity = communities.find((c) => c.subreddit === expanded) || null;
 
   const graded = communities.map((c) => {
     const n = c.findings.length || 1;
@@ -44,9 +43,22 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
           const topPain = painPointBreakdown(c.findings).filter(([p]) => p !== "other")[0];
           const diversity = authorDiversity(c.findings);
 
+          const topPains = painPointBreakdown(c.findings).filter(([p]) => p !== "other").slice(0, 5);
+          const maxPain = Math.max(1, ...topPains.map(([, v]) => v.total));
+          const detailTimeline = timelineBreakdown(c.findings);
+          const maxT = Math.max(1, ...detailTimeline.map(([, v]) => v));
+          const voices = perspectiveBreakdown(c.findings).slice(0, 4);
+          const maxVoice = Math.max(1, ...voices.map(([, v]) => v));
+          const avgSeverity = (() => {
+            const scored = c.findings.filter((f) => f.pain_severity != null);
+            if (scored.length === 0) return null;
+            return scored.reduce((s, f) => s + (f.pain_severity ?? 0), 0) / scored.length;
+          })();
+          const topQuotes = topPains.length > 0 ? painPointExamples(c.findings.filter((f) => f.pain_point === topPains[0][0]), 3)[topPains[0][0]] || [] : [];
+
           return (
+            <div key={c.subreddit} style={{ display: "contents" }}>
             <div
-              key={c.subreddit}
               className="card"
               onClick={() => setExpanded(isOpen ? null : c.subreddit)}
               style={{
@@ -135,93 +147,78 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
                 </div>
               )}
             </div>
+
+            {isOpen && (
+              <div className="scroll-panel" style={{ gridColumn: "1 / -1", padding: 22, borderRadius: 14, background: "var(--card)", border: "1px solid var(--amber)", maxHeight: 560, overflowY: "auto" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18 }}>
+                  <div className="eyebrow" style={{ color: "var(--amber)" }}>{c.label} in detail{avgSeverity != null ? ` · avg severity ${avgSeverity.toFixed(1)}/5` : ""}</div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setExpanded(null); }}
+                    style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
+                  >
+                    CLOSE
+                  </button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
+                  <div>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>TOP PAIN POINTS HERE</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {topPains.map(([p, v]) => (
+                        <div key={p} style={{ display: "grid", gridTemplateColumns: "160px 1fr 32px", gap: 8, alignItems: "center" }}>
+                          <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>{painPointLabel(p)}</span>
+                          <div style={{ height: 9, borderRadius: 4, background: "var(--muted)", overflow: "hidden" }}>
+                            <div style={{ width: `${(v.total / maxPain) * 100}%`, height: "100%", background: "var(--amber)" }} />
+                          </div>
+                          <span style={{ fontSize: 12.5, color: "var(--ink)", textAlign: "right" }}>{v.total}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", margin: "20px 0 10px" }}>WHO'S TALKING</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {voices.map(([p, count]) => (
+                        <div key={p} style={{ display: "grid", gridTemplateColumns: "160px 1fr 32px", gap: 8, alignItems: "center" }}>
+                          <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>{perspectiveLabel(p)}</span>
+                          <div style={{ height: 9, borderRadius: 4, background: "var(--muted)", overflow: "hidden" }}>
+                            <div style={{ width: `${(count / maxVoice) * 100}%`, height: "100%", background: "var(--series-b)" }} />
+                          </div>
+                          <span style={{ fontSize: 12.5, color: "var(--ink)", textAlign: "right" }}>{count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>WHEN THESE WERE POSTED</div>
+                    <div style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 60 }}>
+                      {detailTimeline.map(([q, count]) => (
+                        <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", alignItems: "flex-end", height: "100%" }}>
+                          <div style={{ width: "100%", background: "var(--series-a)", borderRadius: 1, height: `${Math.max(4, (count / maxT) * 100)}%` }} />
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ fontSize: 10.5, color: "var(--ink-faint)", marginTop: 6 }}>
+                      {detailTimeline.length > 0 ? `${detailTimeline[0][0]} through ${detailTimeline[detailTimeline.length - 1][0]}` : "No dated findings"}
+                    </div>
+                  </div>
+                </div>
+                {topQuotes.length > 0 && (
+                  <div style={{ marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--border-soft)" }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--amber)", letterSpacing: "0.05em", marginBottom: 10 }}>
+                      WHAT PEOPLE SAY ABOUT {painPointLabel(topPains[0][0]).toUpperCase()} HERE
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {topQuotes.map((ex, i) => (
+                        <Quote key={i} ex={ex} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            </div>
           );
         })}
       </div>
-
-      {expandedCommunity && (() => {
-        const c = expandedCommunity;
-        const topPains = painPointBreakdown(c.findings).filter(([p]) => p !== "other").slice(0, 5);
-        const maxPain = Math.max(1, ...topPains.map(([, v]) => v.total));
-        const timeline = timelineBreakdown(c.findings);
-        const maxT = Math.max(1, ...timeline.map(([, v]) => v));
-        const voices = perspectiveBreakdown(c.findings).slice(0, 4);
-        const maxVoice = Math.max(1, ...voices.map(([, v]) => v));
-        const avgSeverity = (() => {
-          const scored = c.findings.filter((f) => f.pain_severity != null);
-          if (scored.length === 0) return null;
-          return scored.reduce((s, f) => s + (f.pain_severity ?? 0), 0) / scored.length;
-        })();
-        const topQuotes = topPains.length > 0 ? painPointExamples(c.findings.filter((f) => f.pain_point === topPains[0][0]), 3)[topPains[0][0]] || [] : [];
-
-        return (
-          <div className="scroll-panel" style={{ marginTop: 16, padding: 22, borderRadius: 14, background: "var(--card)", border: "1px solid var(--amber)", maxHeight: 560, overflowY: "auto" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18 }}>
-              <div className="eyebrow" style={{ color: "var(--amber)" }}>{c.label} in detail{avgSeverity != null ? ` · avg severity ${avgSeverity.toFixed(1)}/5` : ""}</div>
-              <button
-                onClick={() => setExpanded(null)}
-                style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
-              >
-                CLOSE
-              </button>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
-              <div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>TOP PAIN POINTS HERE</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {topPains.map(([p, v]) => (
-                    <div key={p} style={{ display: "grid", gridTemplateColumns: "160px 1fr 32px", gap: 8, alignItems: "center" }}>
-                      <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>{painPointLabel(p)}</span>
-                      <div style={{ height: 9, borderRadius: 4, background: "var(--muted)", overflow: "hidden" }}>
-                        <div style={{ width: `${(v.total / maxPain) * 100}%`, height: "100%", background: "var(--amber)" }} />
-                      </div>
-                      <span style={{ fontSize: 12.5, color: "var(--ink)", textAlign: "right" }}>{v.total}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", margin: "20px 0 10px" }}>WHO'S TALKING</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {voices.map(([p, count]) => (
-                    <div key={p} style={{ display: "grid", gridTemplateColumns: "160px 1fr 32px", gap: 8, alignItems: "center" }}>
-                      <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>{perspectiveLabel(p)}</span>
-                      <div style={{ height: 9, borderRadius: 4, background: "var(--muted)", overflow: "hidden" }}>
-                        <div style={{ width: `${(count / maxVoice) * 100}%`, height: "100%", background: "var(--series-b)" }} />
-                      </div>
-                      <span style={{ fontSize: 12.5, color: "var(--ink)", textAlign: "right" }}>{count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>WHEN THESE WERE POSTED</div>
-                <div style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 60 }}>
-                  {timeline.map(([q, count]) => (
-                    <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", alignItems: "flex-end", height: "100%" }}>
-                      <div style={{ width: "100%", background: "var(--series-a)", borderRadius: 1, height: `${Math.max(4, (count / maxT) * 100)}%` }} />
-                    </div>
-                  ))}
-                </div>
-                <div style={{ fontSize: 10.5, color: "var(--ink-faint)", marginTop: 6 }}>
-                  {timeline.length > 0 ? `${timeline[0][0]} through ${timeline[timeline.length - 1][0]}` : "No dated findings"}
-                </div>
-              </div>
-            </div>
-            {topQuotes.length > 0 && (
-              <div style={{ marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--border-soft)" }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--amber)", letterSpacing: "0.05em", marginBottom: 10 }}>
-                  WHAT PEOPLE SAY ABOUT {painPointLabel(topPains[0][0]).toUpperCase()} HERE
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {topQuotes.map((ex, i) => (
-                    <Quote key={i} ex={ex} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })()}
 
       <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
         Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. "Distinct voices" is a third, separate axis: how many different accounts the findings actually came from, so a community's numbers don't get mistaken for a few repeat posters padding the count. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.

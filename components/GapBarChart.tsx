@@ -137,7 +137,7 @@ export function GapBarChart({
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "center", gap: 28, marginBottom: 24, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 28, marginBottom: 10, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--ink-dim)" }}>
           <span style={{ width: 12, height: 12, borderRadius: 4, background: "var(--series-b)", display: "inline-block" }} />
           {ownerLabel}
@@ -146,6 +146,12 @@ export function GapBarChart({
           <span style={{ width: 12, height: 12, borderRadius: 4, background: "var(--series-a)", display: "inline-block" }} />
           {memberLabel}
         </div>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", fontSize: 11, color: "var(--ink-faint)", marginBottom: 24 }}>
+        <span><strong style={{ color: "var(--amber)" }}>Bold arrow</strong> = 8+pt gap</span>
+        <span>Sorted by gap size, biggest first</span>
+        <span>Click a row for evidence</span>
+        <InfoTip text="Three colors, three different jobs: bar fill (blue/gold) says which side owns this row's story. Percentage text printed on the bars is always black regardless of side, purely for legibility against the colored fill, not a data signal. The gap-arrow number's color/weight is a threshold flag, not a new measurement - it's the same gap every row has, just visually promoted past 8 points so the eye lands on the divergences large enough to act on." />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -278,21 +284,6 @@ export function GapBarChart({
             </div>
           );
         })}
-      </div>
-      <div style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap", fontSize: 11.5, color: "var(--ink-faint)" }}>
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ width: 10, height: 10, borderRadius: 3, background: "var(--series-b)", display: "inline-block" }} />
-          Owners
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ width: 10, height: 10, borderRadius: 3, background: "var(--series-a)", display: "inline-block" }} />
-          Members
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <strong style={{ color: "var(--amber)" }}>Bold arrow</strong> = 8+pt gap
-        </span>
-        <span>Sorted by gap size, biggest first · click a row for evidence</span>
-        <InfoTip text="Three colors, three different jobs: bar fill (blue/gold) says which side owns this row's story. Percentage text printed on the bars is always black regardless of side, purely for legibility against the colored fill, not a data signal. The gap-arrow number's color/weight is a threshold flag, not a new measurement - it's the same gap every row has, just visually promoted past 8 points so the eye lands on the divergences large enough to act on." />
       </div>
     </div>
   );

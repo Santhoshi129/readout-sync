@@ -67,6 +67,8 @@ import {
   relevantNote,
   NO_SOLUTION_KEY,
   PAIN_POINT_MEANING,
+  latestQuarterIndex,
+  isRecentFinding,
 } from "@/lib/retention-research";
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All", recency: "All" };
@@ -98,38 +100,67 @@ export function RetentionResearchDashboard({
   }, [active, communities, combined]);
 
   const findings = ds.findings;
-  const takeaways = useMemo(() => keyTakeaways(ds), [ds]);
-  const summary = useMemo(() => executiveSummary(ds), [ds]);
-  const painPoints = useMemo(() => painPointBreakdown(findings), [findings]);
-  const painPointRefs = useMemo(() => painPointExamples(findings), [findings]);
-  const severity = useMemo(() => severityHistogram(findings), [findings]);
-  const appRel = useMemo(() => appRelevanceBreakdown(findings), [findings]);
-  const solutions = useMemo(() => solutionCategoryBreakdown(findings), [findings]);
-  const solutionRefs = useMemo(() => solutionExamples(findings), [findings]);
-  const timeline = useMemo(() => timelineBreakdown(findings), [findings]);
-  const tiers = useMemo(() => confidenceTierBreakdown(findings), [findings]);
-  const perspective = useMemo(() => perspectiveBreakdown(findings), [findings]);
-  const priority = useMemo(() => priorityMatrix(findings), [findings]);
+
+  // "Last 12 months" scoping. filters.recency already exists to drive the
+  // FindingsTable toggle; the cutoff itself needs to be one fixed point in
+  // time shared by every tab and every chart, not recomputed per-view -
+  // otherwise switching tabs could silently shift what "recent" means. The
+  // full combined dataset (every community, not just whichever tab is
+  // active) is the one thing guaranteed to contain the true latest quarter,
+  // so it's the anchor regardless of which tab you're looking at.
+  const globalLatestQuarter = useMemo(() => latestQuarterIndex(combined.findings), [combined]);
+  const isRecencyScoped = filters.recency === "recent";
+  const scopedFindings = useMemo(
+    () => (isRecencyScoped ? findings.filter((f) => isRecentFinding(f, globalLatestQuarter)) : findings),
+    [findings, isRecencyScoped, globalLatestQuarter]
+  );
+  // Same scoping applied per-community, for everything downstream that
+  // reads communities[].findings directly (the cross-community table, the
+  // gap chart, the community × pain-point map) rather than the single
+  // active dataset - a chart built from communities has to see the same
+  // trailing window as one built from scopedFindings, or "last 12 months"
+  // would mean two different things on the same page.
+  const scopedCommunities = useMemo(
+    () =>
+      isRecencyScoped
+        ? communities.map((c) => ({ ...c, findings: c.findings.filter((f) => isRecentFinding(f, globalLatestQuarter)) }))
+        : communities,
+    [communities, isRecencyScoped, globalLatestQuarter]
+  );
+
+  const takeaways = useMemo(() => keyTakeaways({ ...ds, findings: scopedFindings }), [ds, scopedFindings]);
+  const summary = useMemo(() => executiveSummary({ ...ds, findings: scopedFindings }), [ds, scopedFindings]);
+  const painPoints = useMemo(() => painPointBreakdown(scopedFindings), [scopedFindings]);
+  const painPointRefs = useMemo(() => painPointExamples(scopedFindings), [scopedFindings]);
+  const severity = useMemo(() => severityHistogram(scopedFindings), [scopedFindings]);
+  const appRel = useMemo(() => appRelevanceBreakdown(scopedFindings), [scopedFindings]);
+  const solutions = useMemo(() => solutionCategoryBreakdown(scopedFindings), [scopedFindings]);
+  const solutionRefs = useMemo(() => solutionExamples(scopedFindings), [scopedFindings]);
+  const timeline = useMemo(() => timelineBreakdown(scopedFindings), [scopedFindings]);
+  const tiers = useMemo(() => confidenceTierBreakdown(scopedFindings), [scopedFindings]);
+  const perspective = useMemo(() => perspectiveBreakdown(scopedFindings), [scopedFindings]);
+  const priority = useMemo(() => priorityMatrix(scopedFindings), [scopedFindings]);
   const headline = useMemo(() => priorityHeadline(priority), [priority]);
-  const solutionsMentioned = findings.filter((f) => f.solution).length;
-  const quickWins = useMemo(() => solutionQuadrant(findings), [findings]);
-  const scoredSolutionsCount = findings.filter((f) => f.solution_category && f.solution_category !== "other" && f.difficulty != null && f.effectiveness != null).length;
+  const solutionsMentioned = scopedFindings.filter((f) => f.solution).length;
+  const quickWins = useMemo(() => solutionQuadrant(scopedFindings), [scopedFindings]);
+  const scoredSolutionsCount = scopedFindings.filter((f) => f.solution_category && f.solution_category !== "other" && f.difficulty != null && f.effectiveness != null).length;
+
 
   // Combined-tab-only comparison data. Computed unconditionally (hooks
   // can't be conditional) but only rendered when active === "all" - cheap
   // enough on this dataset size that gating the computation itself isn't
   // worth the complexity.
-  const memberFindingsForRadar = useMemo(() => lensFindings(communities, MEMBER_SUBREDDITS), [communities]);
-  const ownerFindingsForRadar = useMemo(() => lensFindings(communities, OWNER_SUBREDDITS), [communities]);
+  const memberFindingsForRadar = useMemo(() => lensFindings(scopedCommunities, MEMBER_SUBREDDITS), [scopedCommunities]);
+  const ownerFindingsForRadar = useMemo(() => lensFindings(scopedCommunities, OWNER_SUBREDDITS), [scopedCommunities]);
   const radarAxesData = useMemo(() => radarAxes(memberFindingsForRadar, ownerFindingsForRadar), [memberFindingsForRadar, ownerFindingsForRadar]);
   const radarNarrative = useMemo(
     () => radarSoWhat(radarAxesData, memberFindingsForRadar.length, ownerFindingsForRadar.length),
     [radarAxesData, memberFindingsForRadar.length, ownerFindingsForRadar.length]
   );
-  const coverageRows = useMemo(() => crossCommunityPainPoints(communities), [communities]);
+  const coverageRows = useMemo(() => crossCommunityPainPoints(scopedCommunities), [scopedCommunities]);
   const universalCount = coverageRows.filter((r) => r.universal).length;
   const coverageNarrative = useMemo(() => soWhatCoverage(coverageRows, communities.length), [coverageRows, communities.length]);
-  const longTail = useMemo(() => longTailStats(communities), [communities]);
+  const longTail = useMemo(() => longTailStats(scopedCommunities), [scopedCommunities]);
   const combinedNotes = useMemo(() => combinedTakeaways(radarAxesData, coverageRows, communities.length), [radarAxesData, coverageRows, communities.length]);
   const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 2), [memberFindingsForRadar]);
   const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 2), [ownerFindingsForRadar]);
@@ -168,7 +199,7 @@ export function RetentionResearchDashboard({
     setEvidenceFromChart(false);
     setFilters((prev) => ({ ...prev, painPoint: pp, community: `r/${subreddit}` }));
   };
-  const allCombinedFindings = useMemo(() => communities.flatMap((c) => c.findings), [communities]);
+  const allCombinedFindings = useMemo(() => scopedCommunities.flatMap((c) => c.findings), [scopedCommunities]);
   const selectedCombinedRow = filters.painPoint !== "All" ? coverageRows.find((r) => r.pain_point === filters.painPoint) : null;
   const selectedCombinedFindings = useMemo(
     () => (filters.painPoint !== "All" ? allCombinedFindings.filter((f) => f.pain_point === filters.painPoint) : []),
@@ -185,23 +216,23 @@ export function RetentionResearchDashboard({
     if (!showCombinedExtras) return undefined;
     const map: Record<string, { subreddit: string; label: string; count: number }[]> = {};
     priority.forEach((p) => {
-      map[p.pain_point] = communities.map((c) => ({
+      map[p.pain_point] = scopedCommunities.map((c) => ({
         subreddit: c.subreddit,
         label: c.label,
         count: c.findings.filter((f) => f.pain_point === p.pain_point && f.app_relevance === "core_fit").length,
       }));
     });
     return map;
-  }, [priority, communities, showCombinedExtras]);
+  }, [priority, scopedCommunities, showCombinedExtras]);
 
   const select = (key: keyof TableFilters, value: string | number) => {
     setFilters((prev) => (prev[key] === value ? { ...prev, [key]: "All" } : { ...prev, [key]: value }));
   };
   const clear = (key: keyof TableFilters) => setFilters((prev) => ({ ...prev, [key]: "All" }));
 
-  const painPointMatches = filters.painPoint === "All" ? null : findings.filter((f) => f.pain_point === filters.painPoint);
-  const severityMatches = filters.severity === "All" ? null : findings.filter((f) => f.pain_severity === filters.severity);
-  const relevanceMatches = filters.relevance === "All" ? null : findings.filter((f) => f.app_relevance === filters.relevance);
+  const painPointMatches = filters.painPoint === "All" ? null : scopedFindings.filter((f) => f.pain_point === filters.painPoint);
+  const severityMatches = filters.severity === "All" ? null : scopedFindings.filter((f) => f.pain_severity === filters.severity);
+  const relevanceMatches = filters.relevance === "All" ? null : scopedFindings.filter((f) => f.app_relevance === filters.relevance);
   const solutionMatches =
     filters.solutionCategory === "All"
       ? null
@@ -210,13 +241,13 @@ export function RetentionResearchDashboard({
       // solution field being empty, not a real solution_category value in
       // the data - filtering by plain equality against it never matched
       // anything, which is why clicking that bar always came back empty.
-      ? findings.filter((f) => !f.solution)
-      : findings.filter((f) => f.solution_category === filters.solutionCategory);
-  const perspectiveMatches = filters.perspective === "All" ? null : findings.filter((f) => (f.perspective || "unclear") === filters.perspective);
+      ? scopedFindings.filter((f) => !f.solution)
+      : scopedFindings.filter((f) => f.solution_category === filters.solutionCategory);
+  const perspectiveMatches = filters.perspective === "All" ? null : scopedFindings.filter((f) => (f.perspective || "unclear") === filters.perspective);
 
   const priorityActivePainPoint = filters.painPoint !== "All" && filters.relevance === "core_fit" ? filters.painPoint : null;
   const priorityMatches = priorityActivePainPoint
-    ? findings.filter((f) => f.pain_point === priorityActivePainPoint && f.app_relevance === "core_fit")
+    ? scopedFindings.filter((f) => f.pain_point === priorityActivePainPoint && f.app_relevance === "core_fit")
     : null;
   const selectPriority = (pp: string) => {
     const isDeselecting = filters.painPoint === pp && filters.relevance === "core_fit";
@@ -279,8 +310,15 @@ export function RetentionResearchDashboard({
         <StatTiles
           tiles={[
             { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
-            { label: "Relevant findings", value: ds.relevant_count, tone: "amber", note: relevantNote(ds) },
-            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak. Strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
+            {
+              label: isRecencyScoped ? "Relevant findings (last 12mo)" : "Relevant findings",
+              value: isRecencyScoped ? scopedFindings.length : ds.relevant_count,
+              tone: "amber",
+              note: isRecencyScoped
+                ? `${scopedFindings.length} of ${ds.relevant_count} total relevant findings fall in the trailing 12 months. Every chart, ranking, and stat below reflects this scoped count, not the full-history total.`
+                : relevantNote(ds),
+            },
+            { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak${isRecencyScoped ? ", within the scoped last-12-months set" : ""}. Strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
           ]}
         />
       </section>
@@ -290,6 +328,21 @@ export function RetentionResearchDashboard({
           <div style={{ marginBottom: 16, fontSize: 14, color: "var(--ink-dim)", fontStyle: "italic" }}>
             Here's the retention picture on its own, no product angle yet, just what's actually driving people out.
           </div>
+          {isRecencyScoped && (
+            <div
+              style={{
+                marginBottom: 24,
+                padding: "10px 14px",
+                borderRadius: 8,
+                border: "1px solid var(--amber-deep)",
+                background: "rgba(201,168,76,0.06)",
+                fontSize: 12.5,
+                color: "var(--amber)",
+              }}
+            >
+              Scoped to the last 12 months: every chart below is computed from {scopedFindings.length} of {findings.length} total findings for {ds.label}. Clear "Last 12 months" in the findings table further down to see the full-history picture again.
+            </div>
+          )}
 
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
@@ -313,10 +366,10 @@ export function RetentionResearchDashboard({
               />
             </div>
             <SectionInsight
-              totalInView={findings.length}
+              totalInView={scopedFindings.length}
               matches={painPointMatches}
               selectionLabel={filters.painPoint === "All" ? null : painPointLabel(filters.painPoint)}
-              generalText={soWhatPainPoints(painPoints, findings.length)}
+              generalText={soWhatPainPoints(painPoints, scopedFindings.length)}
               onClear={() => clear("painPoint")}
             />
           </>
@@ -340,10 +393,10 @@ export function RetentionResearchDashboard({
           />
         </div>
         <SectionInsight
-          totalInView={findings.length}
+          totalInView={scopedFindings.length}
           matches={severityMatches}
           selectionLabel={filters.severity === "All" ? null : `Severity ${filters.severity}/5`}
-          generalText={soWhatSeverity(severity, findings.length)}
+          generalText={soWhatSeverity(severity, scopedFindings.length)}
           onClear={() => clear("severity")}
         />
       </div>
@@ -368,10 +421,10 @@ export function RetentionResearchDashboard({
           />
         </div>
         <SectionInsight
-          totalInView={findings.length}
+          totalInView={scopedFindings.length}
           matches={perspectiveMatches}
           selectionLabel={filters.perspective === "All" ? null : perspectiveLabel(filters.perspective)}
-          generalText={soWhatPerspective(perspective, findings.length)}
+          generalText={soWhatPerspective(perspective, scopedFindings.length)}
           onClear={() => clear("perspective")}
         />
       </div>
@@ -383,7 +436,7 @@ export function RetentionResearchDashboard({
       <div className="card" style={{ padding: 28, marginBottom: 24 }}>
         <div className="section-head" style={{ marginBottom: 0 }}>
           <div className="section-title">Solutions mentioned</div>
-          <div className="eyebrow muted">{solutionsMentioned} of {findings.length} findings name one</div>
+          <div className="eyebrow muted">{solutionsMentioned} of {scopedFindings.length} findings name one</div>
         </div>
         {solutions.length > 0 ? (
           <>
@@ -396,10 +449,10 @@ export function RetentionResearchDashboard({
               />
             </div>
             <SectionInsight
-              totalInView={findings.length}
+              totalInView={scopedFindings.length}
               matches={solutionMatches}
               selectionLabel={filters.solutionCategory === "All" ? null : solutionCategoryLabel(filters.solutionCategory)}
-              generalText={soWhatSolutions(solutions, solutionsMentioned, findings.length)}
+              generalText={soWhatSolutions(solutions, solutionsMentioned, scopedFindings.length)}
               onClear={() => clear("solutionCategory")}
             />
           </>
@@ -414,7 +467,7 @@ export function RetentionResearchDashboard({
             Quick wins
             <InfoTip text="Difficulty and effectiveness as reported in the source post, for solutions where both were mentioned. A different question than the priority matrix further down: not which pain point to target, but which specific fixes are cheap and actually worked." />
           </div>
-          <div className="eyebrow muted">{scoredSolutionsCount} of {findings.length} findings score both</div>
+          <div className="eyebrow muted">{scoredSolutionsCount} of {scopedFindings.length} findings score both</div>
         </div>
         <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-dim)" }}>
           Different question than the priority ranking further down: that one ranks which pain point to target, this one ranks which specific fixes are cheap to build and reportedly worked.
@@ -426,7 +479,7 @@ export function RetentionResearchDashboard({
           <span style={{ color: "var(--ink-faint)", fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.06em", marginRight: 8 }}>
             MY READ:
           </span>
-          {soWhatQuickWins(quickWins, scoredSolutionsCount, findings.length)}
+          {soWhatQuickWins(quickWins, scoredSolutionsCount, scopedFindings.length)}
         </div>
       </div>
 
@@ -439,7 +492,7 @@ export function RetentionResearchDashboard({
           <TimelineChart rows={timeline} />
         </div>
         <SectionInsight
-          totalInView={findings.length}
+          totalInView={scopedFindings.length}
           matches={null}
           selectionLabel={null}
           generalText={soWhatTimeline(timeline)}
@@ -483,10 +536,10 @@ export function RetentionResearchDashboard({
           />
         </div>
         <SectionInsight
-          totalInView={findings.length}
+          totalInView={scopedFindings.length}
           matches={relevanceMatches}
           selectionLabel={filters.relevance === "All" ? null : APP_RELEVANCE_LABEL[filters.relevance as AppRelevance]}
-          generalText={soWhatAppRelevance(appRel, findings.length)}
+          generalText={soWhatAppRelevance(appRel, scopedFindings.length)}
           onClear={() => clear("relevance")}
           showReasoning
         />
@@ -533,7 +586,7 @@ export function RetentionResearchDashboard({
             </div>
 
             <SectionInsight
-              totalInView={findings.length}
+              totalInView={scopedFindings.length}
               matches={priorityMatches}
               selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
               generalText={soWhatPriority(priority)}
@@ -589,6 +642,38 @@ export function RetentionResearchDashboard({
             </div>
             <div style={{ marginTop: 14, maxWidth: 700, color: "var(--ink-faint)", fontSize: 12.5, lineHeight: 1.6 }}>
               Restricted to the 11 pain-point categories used consistently across communities. The raw data carries {longTail.totalLabels} distinct pain_point labels; {longTail.excludedLabels} of them ({longTail.excludedFindings} findings, {Math.round((longTail.excludedFindings / longTail.totalFindings) * 100)}% of the total) are one-off labels a single community's classification pass invented instead of reusing the shared taxonomy - mostly used once or twice each. Real findings, just not comparable across communities, so they're left out of this comparison specifically; each community's own tab above still shows them.
+            </div>
+            {isRecencyScoped && (
+              <div
+                style={{
+                  marginTop: 16,
+                  padding: "10px 14px",
+                  borderRadius: 8,
+                  border: "1px solid var(--amber-deep)",
+                  background: "rgba(201,168,76,0.06)",
+                  fontSize: 12.5,
+                  color: "var(--amber)",
+                  maxWidth: 700,
+                }}
+              >
+                Scoped to the last 12 months: every chart, ranking, and table below this point is computed from {scopedFindings.length} of {findings.length} total findings. Clear "Last 12 months" in the findings table below to see the full-history picture again.
+              </div>
+            )}
+          </div>
+
+          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="section-title">
+                Retention mentions over time
+                <InfoTip text="Combined-tab timeline, pooled across every community - same underlying data as each community's own Timeline chart, just summed together. Toggle 'Last 12 months' in the findings table below to scope this (and every chart above the receipts) to the trailing year instead of the full history." />
+              </div>
+              <div className="eyebrow muted">findings by quarter, all communities pooled{isRecencyScoped ? " · scoped to last 12 months" : ""}</div>
+            </div>
+            <div style={{ marginTop: 22 }}>
+              <TimelineChart rows={timeline} />
+            </div>
+            <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
+              {soWhatTimeline(timeline)}
             </div>
           </div>
 
@@ -800,7 +885,7 @@ export function RetentionResearchDashboard({
               {universalCount} of {coverageRows.length} categories show up in every one of the {communities.length} communities.
             </div>
             <div style={{ marginTop: 22 }}>
-              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy="coverage" active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} communities={communities} />
+              <CrossCommunityTable rows={coverageRows} communityCount={communities.length} sortBy="coverage" active={filters.painPoint === "All" ? null : (filters.painPoint as string)} onSelect={selectCombinedPainPoint} onSelectCommunity={selectCommunityAndPainPoint} communities={scopedCommunities} />
             </div>
             <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>
               {coverageNarrative}
@@ -818,7 +903,7 @@ export function RetentionResearchDashboard({
             <div style={{ marginTop: 22 }}>
               <PainPointHeatmap
                 rows={coverageRows}
-                communities={communities}
+                communities={scopedCommunities}
                 onSelectCell={selectCommunityAndPainPoint}
                 activePainPoint={filters.painPoint === "All" ? null : (filters.painPoint as string)}
               />
@@ -993,7 +1078,7 @@ export function RetentionResearchDashboard({
                   <PriorityLeaderboard rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} communityBreakdown={priorityCommunityBreakdown} />
                 </div>
                 <SectionInsight
-                  totalInView={findings.length}
+                  totalInView={scopedFindings.length}
                   matches={priorityMatches}
                   selectionLabel={priorityActivePainPoint ? `${painPointLabel(priorityActivePainPoint)}, core-fit only` : null}
                   generalText={soWhatPriority(priority)}
@@ -1027,7 +1112,7 @@ export function RetentionResearchDashboard({
         <div style={{ marginTop: -10, marginBottom: 18, fontSize: 13.5, color: "var(--ink-dim)" }}>
           Every finding I used above, in raw form: searchable, filterable, and linked back to the original Reddit post so you can check any of it yourself.
         </div>
-        <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} />
+        <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} latestQuarterOverride={globalLatestQuarter} />
       </section>
 
       <div className="foot">

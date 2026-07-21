@@ -56,10 +56,19 @@ export function FindingsTable({
   findings,
   filters,
   onFiltersChange,
+  latestQuarterOverride,
 }: {
   findings: Finding[];
   filters: TableFilters;
   onFiltersChange: (f: TableFilters) => void;
+  // The dashboard now uses this same "last 12 months" toggle to scope every
+  // chart above the table too, not just this table's own rows - those
+  // charts anchor to the latest quarter across ALL communities, even on a
+  // single-community tab. Without this override, this table would compute
+  // its own anchor from just the active tab's findings, which could be an
+  // earlier quarter than the global one and silently disagree with what's
+  // shown above it about what "recent" means.
+  latestQuarterOverride?: number | null;
 }) {
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("default");
@@ -70,9 +79,11 @@ export function FindingsTable({
   const set = (patch: Partial<TableFilters>) => onFiltersChange({ ...filters, ...patch });
 
   // Computed from whatever findings this table instance was given (a single
-  // community tab or the combined set), so "last 12 months" always means
-  // relative to that view's own most recent data, not a global constant.
-  const latestQuarter = useMemo(() => latestQuarterIndex(findings), [findings]);
+  // community tab or the combined set), unless the dashboard passes an
+  // explicit global anchor to keep every section of the page agreeing on
+  // the same cutoff.
+  const ownLatestQuarter = useMemo(() => latestQuarterIndex(findings), [findings]);
+  const latestQuarter = latestQuarterOverride !== undefined ? latestQuarterOverride : ownLatestQuarter;
 
   // Resets pagination back to the first page whenever the active filter
   // set changes - covers both this table's own filter chips AND filters

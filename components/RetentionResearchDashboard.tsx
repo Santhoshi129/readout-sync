@@ -706,7 +706,7 @@ export function RetentionResearchDashboard({
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
                   AVERAGE SEVERITY OVER TIME
-                  <InfoTip text="Volume alone can't tell you whether the underlying problem is getting worse - a flat mention count could still hide rising severity. This plots average pain_severity (1-5) per quarter for whichever pain point is selected, quarters with fewer than 3 findings are excluded from the trend read below (too noisy to mean anything on their own) but still plotted, shown as a smaller, dimmer point. 'All pain points, blended' can hide one category getting worse behind another improving - pick a specific one to check that." />
+                  <InfoTip text="Volume alone can't tell you whether the underlying problem is getting worse - a flat mention count could still hide rising severity. This plots average pain_severity (1-5) per quarter for whichever pain point is selected, quarters with fewer than 3 findings are excluded from the trend read below (too noisy to mean anything on their own) but still plotted, shown as a smaller, dimmer point. The 'earlier half vs recent half' sentence below is the average OF each qualifying quarter's own average, not a single average across every finding pooled together - that's deliberate, so one unusually large quarter (2020-Q1 has 241 findings here, most quarters have 20-80) doesn't single-handedly drag the whole half's number toward it. Tap any point on the line for that exact quarter's severity breakdown. 'All pain points, blended' can hide one category getting worse behind another improving - pick a specific one to check that." />
                 </div>
                 <select
                   value={severityTrendPainPoint}
@@ -795,8 +795,40 @@ export function RetentionResearchDashboard({
                               : `${Math.abs(diff).toFixed(1)} below the ${overallAvgSeverity?.toFixed(1)}/5 overall average`;
                           return `${q}: ${v.toFixed(1)}/5 avg severity (${vsAvg}) · ${count} finding${count === 1 ? "" : "s"}${count < 3 ? " (too few to trust on its own)" : ""}`;
                         })()
-                      : "Tap or hover a point for that quarter's exact numbers, and how it compares to the overall average."}
+                      : "Tap or hover a point for that quarter's exact numbers, why it's that number, and how it compares to the overall average."}
                   </div>
+                  {severityHoverQuarter && (() => {
+                    // The literal "why is this number 3.4" answer: which
+                    // severity scores actually made it up, for this exact
+                    // quarter. Recomputed from the same source findings the
+                    // chart itself uses (not the pre-aggregated row), so
+                    // it's guaranteed to match rather than being a second,
+                    // separately-computed number that could quietly drift.
+                    const quarterFindings = severityTimelineSource.filter((f) => f.period_quarter === severityHoverQuarter && f.pain_severity != null);
+                    if (quarterFindings.length === 0) return null;
+                    const counts = [1, 2, 3, 4, 5].map((s) => quarterFindings.filter((f) => f.pain_severity === s).length);
+                    const maxCount = Math.max(1, ...counts);
+                    const sum = quarterFindings.reduce((s, f) => s + (f.pain_severity as number), 0);
+                    return (
+                      <div style={{ marginTop: 6, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
+                        <div style={{ fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", marginBottom: 8 }}>
+                          WHY {(sum / quarterFindings.length).toFixed(1)}: SEVERITY SCORES BEHIND {severityHoverQuarter}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "flex-end", gap: 10, height: 60 }}>
+                          {counts.map((c, i) => (
+                            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                              <div style={{ fontSize: 10, color: "var(--ink-faint)", fontFamily: "var(--mono)" }}>{c || ""}</div>
+                              <div style={{ width: "100%", height: Math.max(2, (c / maxCount) * 40), background: "var(--amber)", borderRadius: "2px 2px 0 0", opacity: c === 0 ? 0.15 : 1 }} />
+                              <div style={{ fontSize: 9.5, color: "var(--ink-faint)", fontFamily: "var(--mono)" }}>{i + 1}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div style={{ marginTop: 8, fontSize: 10.5, color: "var(--ink-faint)" }}>
+                          Sum of severity scores ({sum}) ÷ findings with a scored severity ({quarterFindings.length}) = {(sum / quarterFindings.length).toFixed(2)}, rounded to {(sum / quarterFindings.length).toFixed(1)} on the chart.
+                        </div>
+                      </div>
+                    );
+                  })()}
                   <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
                     {soWhatSeverityTrend(severityTimeline)}
                   </div>
@@ -874,15 +906,26 @@ export function RetentionResearchDashboard({
             const gapValues = ownerAlignment.map((r) => r.avgGap);
             const lo = Math.min(...gapValues);
             const hi = Math.max(...gapValues);
-            // Every row gets a distinct point on a green-to-red gradient
-            // scaled to THIS chart's own best/worst, not fixed buckets -
-            // four values in a 6.3-10.0 range all landing in the same
-            // "amber" bucket is exactly what made every bar look identical
-            // last round.
+            // Every row gets a distinct point on a gradient scaled to THIS
+            // chart's own best/worst - four values in a 6.3-10.0 range all
+            // landing in the same "amber" bucket is what made every bar
+            // look identical last round. Interpolated between the
+            // dashboard's own theme colors (--hot -> --amber -> --warm),
+            // not raw HSL, so it reads as part of this page instead of a
+            // bright green/orange pair that doesn't appear anywhere else
+            // on it.
+            const hexToRgb = (hex: string) => {
+              const n = parseInt(hex.slice(1), 16);
+              return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+            };
+            const lerp = (a: number[], b: number[], t: number) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+            const HOT = hexToRgb("#7fc98a"); // --hot, most aligned
+            const AMBER = hexToRgb("#c9a84c"); // --amber, mid
+            const WARM = hexToRgb("#c9834c"); // --warm, least aligned
             const colorFor = (gap: number) => {
               const t = hi === lo ? 0.5 : (gap - lo) / (hi - lo); // 0 = most aligned, 1 = least
-              const hue = 150 - t * 130; // 150=green -> 20=red-orange
-              return `hsl(${hue}, 62%, 52%)`;
+              const rgb = t <= 0.5 ? lerp(HOT, AMBER, t / 0.5) : lerp(AMBER, WARM, (t - 0.5) / 0.5);
+              return `rgb(${rgb.join(",")})`;
             };
             return (
               <div className="card" style={{ padding: 28, marginBottom: 24 }}>
@@ -894,7 +937,7 @@ export function RetentionResearchDashboard({
                   <div className="eyebrow muted">shorter, greener bar = more aligned with gymowner · tap a bar to break it down</div>
                 </div>
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
-                  Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right. Color is relative to these four communities specifically (greenest = most aligned of the four, reddest = least), not a fixed grade.
+                  Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right. Color is relative to these four communities specifically (greenest = most aligned of the four, warmest/most orange = least), not a fixed grade.
                 </div>
 
                 <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "130px 1fr 44px", gap: 14 }}>
@@ -1182,14 +1225,24 @@ export function RetentionResearchDashboard({
 
           {solutionEffData.length > 0 && (() => {
             const topSolutions = solutionEffData.slice(0, 8);
+            // Reuses existing theme variables rather than introducing new
+            // colors, so a community's dot color here means the same thing
+            // it does anywhere else on the page it appears in that role.
+            const COMMUNITY_COLOR: Record<string, string> = {
+              gymowner: "var(--series-b)",
+              f45: "var(--series-a)",
+              orangetheory: "var(--hot)",
+              crossfit: "var(--warm)",
+              hyrox: "var(--bad)",
+            };
             return (
               <div className="card" style={{ padding: 28, marginBottom: 24 }}>
                 <div className="section-head" style={{ marginBottom: 0 }}>
                   <div className="section-title">
                     Solution effectiveness, by community
-                    <InfoTip text="A solution that scores well pooled across every community (the Quick Wins matrix above) could be working great in one format and doing nothing in another - pooling hides that. This breaks the same effectiveness/difficulty scoring out per community for the top solution categories by volume. Most community x solution cells are thin (well under 10 findings), so cells below 5 are dimmed and marked LOW SAMPLE rather than shown with the same visual confidence as a well-evidenced one." />
+                    <InfoTip text="A solution that scores well pooled across every community (the Quick Wins matrix above) could be working great in one format and doing nothing in another - pooling hides that. This plots each community as a point on a difficulty-vs-effectiveness grid per solution, so a spread-out cluster (works differently everywhere) looks visually different from a tight one (works about the same everywhere) at a glance, instead of only being readable by comparing numbers row by row. Most community x solution cells are thin (well under 10 findings) - dots below 5 findings are drawn smaller and dimmer rather than shown with the same visual confidence as a well-evidenced one." />
                   </div>
-                  <div className="eyebrow muted">tap a solution to see it broken out by community</div>
+                  <div className="eyebrow muted">tap a solution to see it plotted by community</div>
                 </div>
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
                   Top {topSolutions.length} solution categories by total scored mentions, pooled across communities. Effectiveness and difficulty are both 1-5 scales, scored the same way as the Quick Wins matrix above - this just adds the community dimension.
@@ -1199,13 +1252,24 @@ export function RetentionResearchDashboard({
                   {topSolutions.map((group: SolutionByCommunityGroup) => {
                     const isOpen = solutionEffOpen === group.category;
                     const pooledEff = group.communities.reduce((s, r) => s + r.avgEffectiveness * r.count, 0) / group.totalCount;
+                    // How much this solution's effectiveness actually varies
+                    // by community, restricted to communities with a real
+                    // sample - the whole point of this section. A solution
+                    // that's 4.5/5 in one place and 2.0/5 in another isn't
+                    // the same finding as one that's ~3.5/5 everywhere, even
+                    // if they'd pool to the same number.
+                    const reliableRows = group.communities.filter((r) => r.count >= 5);
+                    const spread =
+                      reliableRows.length >= 2
+                        ? Math.max(...reliableRows.map((r) => r.avgEffectiveness)) - Math.min(...reliableRows.map((r) => r.avgEffectiveness))
+                        : null;
                     return (
                       <div key={group.category}>
                         <div
                           onClick={() => setSolutionEffOpen((k) => (k === group.category ? null : group.category))}
                           style={{
                             display: "grid",
-                            gridTemplateColumns: "1fr 90px 90px 70px",
+                            gridTemplateColumns: "1fr 90px 90px 100px 70px",
                             gap: 14,
                             alignItems: "center",
                             padding: "12px 14px",
@@ -1221,56 +1285,75 @@ export function RetentionResearchDashboard({
                           <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: pooledEff >= 3.5 ? "var(--hot)" : pooledEff >= 2.5 ? "var(--amber)" : "var(--warm)" }}>
                             {pooledEff.toFixed(1)}/5 pooled
                           </span>
+                          <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: spread == null ? "var(--ink-faint)" : spread >= 1.5 ? "var(--warm)" : "var(--ink-faint)" }}>
+                            {spread == null ? "n/a spread" : spread >= 1.5 ? `±${spread.toFixed(1)} varies` : `±${spread.toFixed(1)} consistent`}
+                          </span>
                           <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>
                             {isOpen ? "\u2212 hide" : `+ ${group.communities.length} comm.`}
                           </span>
                         </div>
-                        {isOpen && (
-                          <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "14px", background: "rgba(201,168,76,0.03)" }}>
-                            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                              {group.communities.map((row) => {
-                                const lowSample = row.count < 5;
-                                return (
-                                  <div
-                                    key={row.subreddit}
-                                    style={{
-                                      display: "grid",
-                                      gridTemplateColumns: "110px 1fr 60px 60px",
-                                      gap: 10,
-                                      alignItems: "center",
-                                      fontSize: 12,
-                                      opacity: lowSample ? 0.65 : 1,
-                                    }}
-                                  >
-                                    <span style={{ color: "var(--ink-dim)" }}>{row.label}</span>
-                                    <div style={{ display: "flex", gap: 4 }}>
-                                      {[1, 2, 3, 4, 5].map((i) => (
-                                        <span
-                                          key={i}
-                                          style={{
-                                            width: 14,
-                                            height: 8,
-                                            borderRadius: 2,
-                                            background: i <= Math.round(row.avgEffectiveness) ? (row.avgEffectiveness >= 3.5 ? "var(--hot)" : row.avgEffectiveness >= 2.5 ? "var(--amber)" : "var(--warm)") : "var(--muted)",
-                                          }}
-                                        />
-                                      ))}
+                        {isOpen && (() => {
+                          const W = 280, H = 220, PAD_L = 34, PAD_B = 26, PAD_T = 10, PAD_R = 10;
+                          const plotW = W - PAD_L - PAD_R;
+                          const plotH = H - PAD_T - PAD_B;
+                          const x = (diff: number) => PAD_L + ((diff - 1) / 4) * plotW; // 1=easy (left), 5=hard (right)
+                          const y = (eff: number) => PAD_T + ((5 - eff) / 4) * plotH; // 5=effective (top), 1=not (bottom)
+                          return (
+                            <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "16px", background: "rgba(201,168,76,0.03)" }}>
+                              <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "start" }}>
+                                <div>
+                                  <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
+                                    <line x1={PAD_L} y1={y(3)} x2={W - PAD_R} y2={y(3)} stroke="var(--border-soft)" strokeDasharray="2 3" />
+                                    <line x1={x(3)} y1={PAD_T} x2={x(3)} y2={H - PAD_B} stroke="var(--border-soft)" strokeDasharray="2 3" />
+                                    <text x={PAD_L + 2} y={PAD_T + 10} fontSize="8" fill="var(--hot)" fontFamily="var(--mono)">easy & effective</text>
+                                    <text x={W - PAD_R - 2} y={H - PAD_B - 4} fontSize="8" fill="var(--warm)" fontFamily="var(--mono)" textAnchor="end">hard & weak</text>
+                                    <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={H - PAD_B} stroke="var(--border)" />
+                                    <line x1={PAD_L} y1={H - PAD_B} x2={W - PAD_R} y2={H - PAD_B} stroke="var(--border)" />
+                                    {[1, 3, 5].map((v) => (
+                                      <text key={"x" + v} x={x(v)} y={H - PAD_B + 14} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">{v}</text>
+                                    ))}
+                                    {[1, 3, 5].map((v) => (
+                                      <text key={"y" + v} x={PAD_L - 8} y={y(v) + 3} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{v}</text>
+                                    ))}
+                                    <text x={W / 2} y={H - 4} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">difficulty \u2192</text>
+                                    <text x={10} y={H / 2} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle" transform={`rotate(-90, 10, ${H / 2})`}>effectiveness \u2192</text>
+                                    {group.communities.map((row) => {
+                                      const lowSample = row.count < 5;
+                                      const color = COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)";
+                                      const r = lowSample ? 4 : 6 + Math.min(4, Math.sqrt(row.count) / 2);
+                                      return (
+                                        <g key={row.subreddit}>
+                                          <circle cx={x(row.avgDifficulty)} cy={y(row.avgEffectiveness)} r={r} fill={color} opacity={lowSample ? 0.4 : 0.85} stroke={lowSample ? "none" : "var(--card)"} strokeWidth="1.5">
+                                            <title>{`${row.label}: ${row.avgEffectiveness.toFixed(1)}/5 effective, ${row.avgDifficulty.toFixed(1)}/5 difficult (${row.count} finding${row.count === 1 ? "" : "s"})`}</title>
+                                          </circle>
+                                        </g>
+                                      );
+                                    })}
+                                  </svg>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                                  {group.communities.map((row) => {
+                                    const lowSample = row.count < 5;
+                                    return (
+                                      <div key={row.subreddit} style={{ display: "grid", gridTemplateColumns: "14px 1fr auto", gap: 8, alignItems: "center", fontSize: 12, opacity: lowSample ? 0.65 : 1 }}>
+                                        <span style={{ width: 10, height: 10, borderRadius: "50%", background: COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)", display: "inline-block" }} />
+                                        <span style={{ color: "var(--ink-dim)" }}>{row.label}</span>
+                                        <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: lowSample ? "var(--warm)" : "var(--ink-faint)", fontWeight: lowSample ? 700 : 400 }}>
+                                          {row.avgEffectiveness.toFixed(1)}/{row.avgDifficulty.toFixed(1)} · {lowSample ? `n=${row.count}` : `${row.count}x`}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                  {group.communities.some((r) => r.count < 5) && (
+                                    <div style={{ marginTop: 4, fontSize: 10.5, color: "var(--ink-faint)" }}>
+                                      Small, dim dots and <span style={{ color: "var(--warm)" }}>n=X</span> rows are under 5 findings - a lead worth a second look, not something to prioritize on this data alone.
                                     </div>
-                                    <span style={{ fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>{row.avgDifficulty.toFixed(1)} diff.</span>
-                                    <span style={{ fontFamily: "var(--mono)", color: lowSample ? "var(--warm)" : "var(--ink-faint)", textAlign: "right", fontWeight: lowSample ? 700 : 400 }}>
-                                      {lowSample ? `n=${row.count}` : `${row.count}x`}
-                                    </span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                            {group.communities.some((r) => r.count < 5) && (
-                              <div style={{ marginTop: 10, fontSize: 10.5, color: "var(--ink-faint)" }}>
-                                Rows marked <span style={{ color: "var(--warm)" }}>n=X</span> in place of a mention count are under 5 findings - the effectiveness score for that community is a lead worth a second look, not something to prioritize on this data alone.
+                                  )}
+                                </div>
                               </div>
-                            )}
-                          </div>
-                        )}
+                            </div>
+                          );
+                        })()}
                       </div>
                     );
                   })}

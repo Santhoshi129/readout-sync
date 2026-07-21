@@ -481,7 +481,7 @@ export type PainPointExample = { reasoning: string; short: string; evidence: str
 // app_relevance sort precedence when sortByRelevance is on: core_fit first
 // (most actionable), then partial_fit, then not_addressable, with findings
 // missing an app_relevance value pushed to the very end.
-const RELEVANCE_RANK: Record<AppRelevance, number> = { core_fit: 0, partial_fit: 1, not_addressable: 2 };
+export const RELEVANCE_RANK: Record<AppRelevance, number> = { core_fit: 0, partial_fit: 1, not_addressable: 2 };
 export function painPointExamples(findings: Finding[], perPoint = 3, sortByRelevance = false): Record<string, PainPointExample[]> {
   const byPoint: Record<string, Finding[]> = {};
   findings.forEach((f) => {

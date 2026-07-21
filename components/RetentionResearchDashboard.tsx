@@ -339,16 +339,16 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
-            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
             {
               label: "Records scraped (raw)",
               value: rawScrapedFor(ds),
-              tone: "muted",
+              tone: "cold",
               note:
                 rawScrapedFor(ds) > ds.total_analyzed
                   ? `Raw pull before any prescreen or filtering. A prescreen narrowed this down to the ${ds.total_analyzed.toLocaleString()} that actually reached classification, shown in Posts/comments analyzed.`
                   : `Same as Posts/comments analyzed - every scraped record here went through classification, nothing was prescreened out first.`,
             },
+            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "warm", note: analyzedNote(ds) },
             {
               label: isRecencyScoped ? "Relevant findings (last 12mo)" : "Relevant findings",
               value: isRecencyScoped ? scopedFindings.length : ds.relevant_count,

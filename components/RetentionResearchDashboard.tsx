@@ -72,6 +72,8 @@ import {
   PAIN_POINT_MEANING,
   latestQuarterIndex,
   isRecentFinding,
+  solutionEffectivenessByCommunity,
+  SolutionByCommunityGroup,
 } from "@/lib/retention-research";
 
 const EMPTY_FILTERS: TableFilters = { painPoint: "All", tier: "All", relevance: "All", solutionCategory: "All", severity: "All", perspective: "All", community: "All", recency: "All" };
@@ -209,6 +211,8 @@ export function RetentionResearchDashboard({
   const ownerCommunities = scopedCommunities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const ownerAlignment = useMemo(() => ownerAlignmentByCommunity(ownerFindingsForRadar, memberCommunities), [ownerFindingsForRadar, memberCommunities]);
   const [ownerAlignmentOpen, setOwnerAlignmentOpen] = useState<string | null>(null);
+  const solutionEffData = useMemo(() => solutionEffectivenessByCommunity(scopedCommunities), [scopedCommunities]);
+  const [solutionEffOpen, setSolutionEffOpen] = useState<string | null>(null);
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
   // A concrete example beats an abstract "these can disagree" disclaimer -
   // computed live so it stays accurate as the underlying data changes,
@@ -1175,6 +1179,105 @@ export function RetentionResearchDashboard({
               Ranked by buildable volume, bar color is average severity (<span style={{ color: "var(--hot)" }}>green under 2.5</span>, <span style={{ color: "var(--amber)" }}>amber 2.5-3.5</span>, <span style={{ color: "var(--bad)" }}>red 3.5+</span>). The effectiveness/difficulty badges are a weighted average across every solution people tried for that pain point, both on a 1-5 scale. Click any row to expand its solutions and pull up full evidence above.
             </div>
           </div>
+
+          {solutionEffData.length > 0 && (() => {
+            const topSolutions = solutionEffData.slice(0, 8);
+            return (
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div className="section-head" style={{ marginBottom: 0 }}>
+                  <div className="section-title">
+                    Solution effectiveness, by community
+                    <InfoTip text="A solution that scores well pooled across every community (the Quick Wins matrix above) could be working great in one format and doing nothing in another - pooling hides that. This breaks the same effectiveness/difficulty scoring out per community for the top solution categories by volume. Most community x solution cells are thin (well under 10 findings), so cells below 5 are dimmed and marked LOW SAMPLE rather than shown with the same visual confidence as a well-evidenced one." />
+                  </div>
+                  <div className="eyebrow muted">tap a solution to see it broken out by community</div>
+                </div>
+                <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
+                  Top {topSolutions.length} solution categories by total scored mentions, pooled across communities. Effectiveness and difficulty are both 1-5 scales, scored the same way as the Quick Wins matrix above - this just adds the community dimension.
+                </div>
+
+                <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 8 }}>
+                  {topSolutions.map((group: SolutionByCommunityGroup) => {
+                    const isOpen = solutionEffOpen === group.category;
+                    const pooledEff = group.communities.reduce((s, r) => s + r.avgEffectiveness * r.count, 0) / group.totalCount;
+                    return (
+                      <div key={group.category}>
+                        <div
+                          onClick={() => setSolutionEffOpen((k) => (k === group.category ? null : group.category))}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 90px 90px 70px",
+                            gap: 14,
+                            alignItems: "center",
+                            padding: "12px 14px",
+                            borderRadius: isOpen ? "10px 10px 0 0" : 10,
+                            cursor: "pointer",
+                            border: `1px solid ${isOpen ? "var(--amber)" : "var(--border)"}`,
+                            borderBottom: isOpen ? "1px solid transparent" : undefined,
+                            background: isOpen ? "rgba(201,168,76,0.08)" : "var(--card-raised)",
+                          }}
+                        >
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{solutionCategoryLabel(group.category)}</span>
+                          <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)" }}>{group.totalCount} mentions</span>
+                          <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: pooledEff >= 3.5 ? "var(--hot)" : pooledEff >= 2.5 ? "var(--amber)" : "var(--warm)" }}>
+                            {pooledEff.toFixed(1)}/5 pooled
+                          </span>
+                          <span style={{ fontSize: 11, fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>
+                            {isOpen ? "\u2212 hide" : `+ ${group.communities.length} comm.`}
+                          </span>
+                        </div>
+                        {isOpen && (
+                          <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "14px", background: "rgba(201,168,76,0.03)" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                              {group.communities.map((row) => {
+                                const lowSample = row.count < 5;
+                                return (
+                                  <div
+                                    key={row.subreddit}
+                                    style={{
+                                      display: "grid",
+                                      gridTemplateColumns: "110px 1fr 60px 60px",
+                                      gap: 10,
+                                      alignItems: "center",
+                                      fontSize: 12,
+                                      opacity: lowSample ? 0.65 : 1,
+                                    }}
+                                  >
+                                    <span style={{ color: "var(--ink-dim)" }}>{row.label}</span>
+                                    <div style={{ display: "flex", gap: 4 }}>
+                                      {[1, 2, 3, 4, 5].map((i) => (
+                                        <span
+                                          key={i}
+                                          style={{
+                                            width: 14,
+                                            height: 8,
+                                            borderRadius: 2,
+                                            background: i <= Math.round(row.avgEffectiveness) ? (row.avgEffectiveness >= 3.5 ? "var(--hot)" : row.avgEffectiveness >= 2.5 ? "var(--amber)" : "var(--warm)") : "var(--muted)",
+                                          }}
+                                        />
+                                      ))}
+                                    </div>
+                                    <span style={{ fontFamily: "var(--mono)", color: "var(--ink-faint)", textAlign: "right" }}>{row.avgDifficulty.toFixed(1)} diff.</span>
+                                    <span style={{ fontFamily: "var(--mono)", color: lowSample ? "var(--warm)" : "var(--ink-faint)", textAlign: "right", fontWeight: lowSample ? 700 : 400 }}>
+                                      {lowSample ? `n=${row.count}` : `${row.count}x`}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            {group.communities.some((r) => r.count < 5) && (
+                              <div style={{ marginTop: 10, fontSize: 10.5, color: "var(--ink-faint)" }}>
+                                Rows marked <span style={{ color: "var(--warm)" }}>n=X</span> in place of a mention count are under 5 findings - the effectiveness score for that community is a lead worth a second look, not something to prioritize on this data alone.
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>

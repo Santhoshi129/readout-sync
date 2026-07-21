@@ -389,6 +389,18 @@ export function isRecentFinding(f: Finding, latestIdx: number | null): boolean {
   return idx > latestIdx - 4;
 }
 
+// How many distinct Reddit accounts are actually behind a community's
+// findings, versus how many findings there are total - a real evidentiary-
+// strength signal separate from confidence tier. A community where 90% of
+// findings come from under 20% of the accounts posting them would be a
+// handful of loud repeat voices, not a broad pattern; this is here so that
+// distinction doesn't have to be taken on faith.
+export function authorDiversity(findings: Finding[]): { total: number; uniqueAuthors: number; pct: number } {
+  const authors = new Set(findings.map((f) => f.author).filter((a): a is string => !!a));
+  const total = findings.length;
+  return { total, uniqueAuthors: authors.size, pct: total > 0 ? Math.round((authors.size / total) * 100) : 0 };
+}
+
 export function confidenceTierBreakdown(findings: Finding[]) {
   return {
     strong: findings.filter((f) => f.confidence_tier === "strong").length,

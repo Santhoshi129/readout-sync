@@ -41,9 +41,10 @@ export function InfoTip({ text }: { text: string }) {
           style={{
             position: "absolute",
             bottom: "140%",
-            left: "50%",
-            transform: "translateX(-50%)",
+            left: 0,
             width: 240,
+            maxWidth: "min(240px, calc(100vw - 48px))",
+            boxSizing: "border-box",
             background: "var(--card-raised)",
             border: "1px solid var(--border)",
             borderRadius: 10,

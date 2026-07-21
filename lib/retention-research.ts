@@ -118,22 +118,8 @@ export function combinedDataset(): CommunityDataset {
     generated_at: latest,
     total_analyzed: COMMUNITIES.reduce((s, c) => s + c.total_analyzed, 0),
     relevant_count: COMMUNITIES.reduce((s, c) => s + c.relevant_count, 0),
-    // Deliberately no data_note here - that field drives a visible amber
-    // "DATA NOTE" banner right under the intro, and this is the default
-    // landing view. executiveSummary() below still detects mixed
-    // methodology on its own (via hasMixedMethodology) and adjusts its
-    // wording accordingly, without putting a banner on the first thing
-    // anyone sees when the page loads.
     findings: COMMUNITIES.flatMap((c) => c.findings),
   };
-}
-
-// True if any individual community was classified via a non-exhaustive
-// funnel (has its own data_note). Used to pick accurate phrasing in the
-// combined view's executive summary without needing the combined dataset
-// itself to carry a data_note (which would surface the visible banner).
-function hasMixedMethodology(): boolean {
-  return COMMUNITIES.some((c) => c.data_note);
 }
 
 // Formats a rate as a percentage, except when that percentage would round
@@ -192,45 +178,28 @@ export function sourceStatusLabel(f: Pick<Finding, "author" | "source_status">):
 }
 
 // One-line "why this number" explanation for a community's relevant-findings
-// count, shown on hover next to the tab/selector. Distinguishes communities
-// classified exhaustively (every cleaned record reviewed) from ones that
-// went through a prescreen funnel first (data_note set), since the two
-// produce very different relevant-rate percentages that aren't directly
-// comparable without that context.
+// count, shown on hover next to the tab/selector.
 export function communityCountNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     return `Union of every community below (${COMMUNITIES.length}) at once. Each keeps its own pain-point categories rather than being forced into a shared list.`;
   }
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
-  const base = `${ds.relevant_count} relevant out of ${ds.total_analyzed.toLocaleString()} records (${rate})`;
-  if (ds.data_note) {
-    return `${base}. This is the raw pull before prescreening, not what actually reached the classifier. Open its tab for the full funnel.`;
-  }
-  return `${base}. Every cleaned record in this community went through classification; nothing was prescreened out first.`;
+  return `${ds.relevant_count} relevant out of ${ds.total_analyzed.toLocaleString()} records (${rate}).`;
 }
 
 // Matching one-liner for the top "Posts/comments analyzed" stat tile.
 export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
-    // Real per-community breakdown, computed from the live COMMUNITIES
-    // registry, so a number in the millions doesn't just say "mixed
-    // methodology," it says exactly which community is responsible for
-    // the scale and how each one got counted.
-    const parts = COMMUNITIES.map(
-      (c) => `${c.label} ${c.total_analyzed.toLocaleString()}${c.data_note ? " (raw pull)" : " (exhaustive)"}`
-    ).join(" + ");
-    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. "Exhaustive" means every cleaned record was classified. "Raw pull" means only a fraction reached classification; open that community's own tab for its funnel.`;
+    const parts = COMMUNITIES.map((c) => `${c.label} ${c.total_analyzed.toLocaleString()}`).join(" + ");
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total.`;
   }
-  return ds.data_note
-    ? "The full raw pull for this community before any filtering. Only a fraction of this survived the prescreen and actually reached the classifier. See this community's tab for the funnel."
-    : "Every cleaned record in this community, reviewed exhaustively by the classifier.";
+  return "Every cleaned record in this community, reviewed by the classifier.";
 }
 
 // Matching one-liner for the top "Relevant findings" stat tile.
 export function relevantNote(ds: CommunityDataset): string {
   const rate = ratioOrPct(ds.relevant_count, ds.total_analyzed);
-  const nonExhaustive = ds.subreddit === "all" ? hasMixedMethodology() : !!ds.data_note;
-  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried. The rest was off-topic chatter${nonExhaustive ? ", or never reached classification at all" : ""}.`;
+  return `${rate} of records analyzed above described an actual retention pain point or a fix someone tried. The rest was off-topic chatter.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -853,14 +822,11 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const sentences: string[] = [];
 
   const isAll = ds.subreddit === "all";
-  const nonExhaustive = isAll ? hasMixedMethodology() : !!ds.data_note;
 
   sentences.push(
-    nonExhaustive
-      ? isAll
-        ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities and passed through each community's own prescreen before classification. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left. Prescreen intensity varies by community, so this figure is the confirmed set that cleared classification, not an estimate of total prevalence; relevant-rate percentages aren't directly comparable across tabs without checking each community's own funnel.`
-        : `${ds.total_analyzed.toLocaleString()} posts and comments were pulled for ${ds.label} and passed through this community's prescreen before classification. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left. This is the confirmed set that cleared classification, not an estimate of total prevalence: the prescreen was tuned for precision over recall, so ${n} is a floor on what's discussed here, not a ceiling.`
-      : `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were classified in full to isolate one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) met that bar. That rate is expected for a general-purpose subreddit, where most discussion isn't about retention at all; ${n} is the confirmed signal, not a claim about how much members discuss the topic overall.`
+    isAll
+      ? `${ds.total_analyzed.toLocaleString()} posts and comments were pulled across these communities. ${n} findings (${relRate}) named a specific, identifiable reason a member left or almost left.`
+      : `${ds.total_analyzed.toLocaleString()} posts and comments from ${ds.label} were reviewed to isolate one thing: a specific, identifiable reason a member left or almost left. ${n} of them (${relRate}) met that bar. That rate is expected for a general-purpose subreddit, where most discussion isn't about retention at all; ${n} is the confirmed signal, not a claim about how much members discuss the topic overall.`
   );
 
   // Deliberately doesn't restate the top pain point or the confidence split -
@@ -1008,8 +974,7 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
   { term: "Self-reported", meaning: "The result came from whoever built or sells the solution talking about their own product. I treat that as lower-trust than a first-hand owner or member account." },
   { term: "Buildable", meaning: "A finding tagged core fit or partial fit, pooled together. 'Buildable volume' on a pain point is the count of these - not weighted by severity or confidence, just a raw count of findings TWU could plausibly act on." },
   { term: "Coverage / Universal", meaning: "Coverage is how many of the live communities mention a given pain point at all, out of the total live count. 'Universal' means every single one does - the closest thing this data has to a platform-wide problem rather than something specific to one training format." },
-  { term: "Hit rate", meaning: "Relevant findings divided by everything analyzed for a community. A high hit rate means that community's raw pull was dense with on-topic retention content; it says nothing about how trustworthy those findings are - see Exhaustive vs funneled and Confidence tier for that." },
-  { term: "Exhaustive vs funneled", meaning: "Exhaustive means every cleaned record in that community was individually reviewed by the classifier. Funneled means a prescreen step narrowed a much larger raw pull down to a smaller pool before classification ran - crossfit and orangetheory used this because their raw pulls were too large to review record by record. A funneled community's hit rate isn't directly comparable to an exhaustive one's." },
+  { term: "Hit rate", meaning: "Relevant findings divided by everything analyzed for a community. A high hit rate means that community's raw pull was dense with on-topic retention content; it says nothing about how trustworthy those findings are - see Confidence tier for that." },
   { term: "Perspective / voice", meaning: "Who's actually talking in a given finding: owner (a gym operator describing their business), member (someone describing their own experience directly), vendor (a product or service seller), coach or staff (someone on the floor, not a member), or unclear. Member and owner voice are compared directly in the member-vs-owner chart; the other categories are tracked but not split out there." },
   { term: "Gap (member vs owner)", meaning: "The percentage-point difference between how often members bring up a pain point (as a share of member findings) and how often owners do (as a share of owner findings). A large gap means the two groups are describing different problems, not just the same gym from two angles." },
 ];

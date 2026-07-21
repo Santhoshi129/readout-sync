@@ -5,23 +5,10 @@ import { CommunityDataset, painPointBreakdown, painPointExamples, painPointLabel
 export function DataCoverageTable({ communities }: { communities: CommunityDataset[] }) {
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const graded = communities.map((c) => {
-    const n = c.findings.length || 1;
-    const strongPct = (c.findings.filter((f) => f.confidence_tier === "strong").length / n) * 100;
-    // Simple, stated-plainly reliability score: exhaustive coverage counts
-    // for more than raw strong-tier percentage alone, since a funneled
-    // community's relevant pool was pre-filtered before classification
-    // ever saw it - the two aren't measuring the same thing.
-    const score = (c.data_note ? 0 : 45) + strongPct * 0.55;
-    const grade = score >= 60 ? "A" : score >= 35 ? "B" : "C";
-    return { c, score, grade };
-  }).sort((a, b) => b.score - a.score);
+  const graded = communities.map((c) => ({ c })).sort((a, b) => b.c.relevant_count - a.c.relevant_count);
 
   return (
     <div>
-      <div style={{ marginBottom: 14, fontSize: 12, color: "var(--ink-dim)" }}>
-        Sorted by reliability, not order of addition: <span style={{ fontFamily: "var(--mono)" }}>A</span> = exhaustively classified with a healthy strong-tier share, <span style={{ fontFamily: "var(--mono)" }}>C</span> = funneled and/or thin on strong-tier findings. This is a rough, stated-plainly score, not a precision instrument - read the confidence bar underneath for the real breakdown.
-      </div>
       <div
         style={{
           display: "grid",
@@ -29,7 +16,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
           gap: 14,
         }}
       >
-        {graded.map(({ c, grade }) => {
+        {graded.map(({ c }) => {
           const hitRate = c.total_analyzed > 0 ? (c.relevant_count / c.total_analyzed) * 100 : 0;
           const strong = c.findings.filter((f) => f.confidence_tier === "strong").length;
           const moderate = c.findings.filter((f) => f.confidence_tier === "moderate").length;
@@ -74,40 +61,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <span style={{ fontWeight: 700, fontSize: 15 }}>{c.label}</span>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <span
-                    title={`Reliability grade ${grade}: ${c.data_note ? "funneled" : "exhaustive"} classification, ${strongPct.toFixed(0)}% strong-tier findings`}
-                    style={{
-                      fontFamily: "var(--font-head)",
-                      fontSize: 13,
-                      fontWeight: 800,
-                      width: 22,
-                      height: 22,
-                      borderRadius: 6,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: grade === "A" ? "var(--hot)" : grade === "B" ? "var(--amber)" : "var(--warm)",
-                      border: `1px solid ${grade === "A" ? "var(--hot)" : grade === "B" ? "var(--amber)" : "var(--warm)"}`,
-                    }}
-                  >
-                    {grade}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--mono)",
-                      fontSize: 9,
-                      letterSpacing: "0.05em",
-                      padding: "3px 8px",
-                      borderRadius: 999,
-                      color: c.data_note ? "var(--warm)" : "var(--hot)",
-                      border: `1px solid ${c.data_note ? "var(--warm)" : "var(--hot)"}`,
-                    }}
-                  >
-                    {c.data_note ? "FUNNELED" : "EXHAUSTIVE"}
-                  </span>
-                  <span style={{ fontSize: 13, color: isOpen ? "var(--amber)" : "var(--ink-faint)" }}>{isOpen ? "\u2212" : "+"}</span>
-                </div>
+                <span style={{ fontSize: 13, color: isOpen ? "var(--amber)" : "var(--ink-faint)" }}>{isOpen ? "\u2212" : "+"}</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
@@ -139,11 +93,6 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
               {noStrong && (
                 <div style={{ fontSize: 11.5, color: "var(--warm)", paddingTop: 8, borderTop: "1px solid var(--border-soft)" }}>
                   No strong-tier findings here ({strongPct.toFixed(0)}% strong). Directional, not settled.
-                </div>
-              )}
-              {c.data_note && (
-                <div style={{ fontSize: 11, color: "var(--ink-faint)", paddingTop: noStrong ? 0 : 8, borderTop: noStrong ? "none" : "1px solid var(--border-soft)" }}>
-                  {c.data_note}
                 </div>
               )}
             </div>
@@ -221,7 +170,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
       </div>
 
       <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-        Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. "Distinct voices" is a third, separate axis: how many different accounts the findings actually came from, so a community's numbers don't get mistaken for a few repeat posters padding the count. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.
+        The confidence bar is the axis that tells you how much to trust a community's numbers. "Distinct voices" is a second axis: how many different accounts the findings actually came from, so a community's numbers don't get mistaken for a few repeat posters padding the count. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.
       </div>
     </div>
   );

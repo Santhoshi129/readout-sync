@@ -53,8 +53,9 @@ export function PainPointHeatmap({
         <div style={{ display: "grid", gridTemplateColumns: `220px repeat(${communities.length}, 1fr)`, gap: 3, minWidth: 620 }}>
           <div />
           {communities.map((c) => (
-            <div key={c.subreddit} style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", textAlign: "center", paddingBottom: 8, letterSpacing: "0.03em" }}>
+            <div key={c.subreddit} style={{ fontFamily: "var(--mono)", fontSize: 10, color: noStrongTierCommunities.has(c.subreddit) ? "var(--warm)" : "var(--ink-faint)", textAlign: "center", paddingBottom: 8, letterSpacing: "0.03em" }}>
               {c.label}
+              {noStrongTierCommunities.has(c.subreddit) && <div style={{ fontSize: 8.5, marginTop: 2 }}>no strong-tier data</div>}
             </div>
           ))}
 
@@ -105,7 +106,7 @@ export function PainPointHeatmap({
                       }}
                     >
                       <span style={{ fontSize: 11.5, fontFamily: "var(--mono)", color: c.count === 0 ? "var(--ink-faint)" : intensity > 0.5 ? "#1a1400" : "var(--ink)", fontWeight: intensity > 0.6 ? 700 : 400 }}>
-                        {c.count || "\u00b7"}{isUnreliable ? "\u00b9" : ""}
+                        {c.count || "\u00b7"}
                       </span>
                     </div>
                   );
@@ -153,13 +154,13 @@ export function PainPointHeatmap({
       })()}
 
       <div style={{ marginTop: 14, fontSize: 11.5, color: "var(--ink-faint)", lineHeight: 1.6 }}>
-        Color is normalized per row, not globally - each pain point's own darkest cell is its own peak, so a smaller community's real signal on that specific issue is still visible next to a bigger one. A low count from a low-volume community will correctly look dim here, that's the row's own scale, not a bug. Cells marked with a dashed border and ¹ are from a community with zero strong-tier findings overall (currently r/hyrox) - the color reflects raw volume only, not confidence, so treat those specific numbers as directional. Hover a cell for the exact reading, click a lit cell for the evidence right here below.
+        Color is normalized per row, not globally - each pain point's own darkest cell is its own peak, so a smaller community's real signal on that specific issue is still visible next to a bigger one. A low count from a low-volume community will correctly look dim here, that's the row's own scale, not a bug. Columns labeled "no strong-tier data" (currently r/hyrox) have zero strong-confidence findings overall - their cells are still colored by raw count, dashed-bordered as a reminder, but those specific numbers are directional, not settled. Hover a cell for the exact reading, click a lit cell for the evidence right here below.
       </div>
     </div>
   );
 }
 
-function QuoteRow({ ex }: { ex: { reasoning: string; short: string; evidence: string | null } }) {
+function QuoteRow({ ex }: { ex: { reasoning: string; short: string; evidence: string | null; link: string } }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -173,6 +174,17 @@ function QuoteRow({ ex }: { ex: { reasoning: string; short: string; evidence: st
         </div>
       )}
       <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{open ? "tap to collapse" : "tap to read full"}</div>
+      {open && (
+        <a
+          href={ex.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          style={{ marginTop: 4, display: "inline-block", fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--amber)", textDecoration: "underline" }}
+        >
+          view original thread &#8599;
+        </a>
+      )}
     </div>
   );
 }

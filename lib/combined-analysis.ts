@@ -98,6 +98,7 @@ export type OwnerAlignmentRow = {
   memberCount: number;
   avgGap: number; // mean absolute percentage-point gap across shared canonical pain points - lower = more aligned with gymowner
   biggestGapAxis: RadarAxis | null;
+  axes: RadarAxis[]; // full per-community comparison, for a real breakdown beyond just the single biggest divergence
 };
 
 // gymowner isn't segmented by training format, so this is "gym owners in
@@ -111,11 +112,11 @@ export function ownerAlignmentByCommunity(ownerFindings: Finding[], memberCommun
   return memberCommunities
     .map((c) => {
       const axes = radarAxes(c.findings, ownerFindings);
-      if (axes.length === 0 || c.findings.length === 0) return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap: 0, biggestGapAxis: null };
+      if (axes.length === 0 || c.findings.length === 0) return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap: 0, biggestGapAxis: null, axes: [] };
       const withGap = axes.map((a) => ({ ...a, absGap: Math.abs(a.memberPct - a.ownerPct) }));
       const avgGap = Math.round((withGap.reduce((s, a) => s + a.absGap, 0) / withGap.length) * 10) / 10;
       const biggest = [...withGap].sort((a, b) => b.absGap - a.absGap)[0];
-      return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap, biggestGapAxis: biggest };
+      return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap, biggestGapAxis: biggest, axes };
     })
     .sort((a, b) => a.avgGap - b.avgGap);
 }

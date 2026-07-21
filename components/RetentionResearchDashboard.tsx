@@ -1612,9 +1612,6 @@ export function RetentionResearchDashboard({
         <FindingsTable findings={findings} filters={filters} onFiltersChange={setFilters} latestQuarterOverride={globalLatestQuarter} />
       </section>
 
-      <div className="foot">
-        Retention Research, I classified this from public Reddit discussions. Static build, not live-syncing, I'll refresh it when the next batch of communities is done.
-      </div>
     </div>
   );
 }

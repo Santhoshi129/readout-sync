@@ -570,7 +570,7 @@ export function ReplyBreakdown({
 // reused here so the main dashboards get it too.
 export function StatTiles({ tiles }: { tiles: { label: string; value: number | null; note?: string; preview?: string; tip?: string; tone?: string; suffix?: string; flag?: string }[] }) {
   return (
-    <div className="grid grid-3" style={{ gap: 16 }}>
+    <div className={`grid grid-${tiles.length === 4 ? 4 : 3}`} style={{ gap: 16 }}>
       {tiles.map((t, i) => (
         <StatTile key={i} {...t} />
       ))}

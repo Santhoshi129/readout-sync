@@ -76,7 +76,7 @@ export function CrossCommunityTable({
         <span />
       </div>
       <div style={{ padding: "0 14px 10px", fontSize: 11, color: "var(--ink-faint)" }}>
-        Coverage = how many of the {communityCount} communities mention it at all. The composition bar is every finding for this pain point split by whether TWU could plausibly act on it - <span style={{ color: "var(--hot)" }}>core-fit</span>, <span style={{ color: "var(--amber)" }}>partial-fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - so volume and buildability read from the same bar instead of two separate numbers you have to compare yourself. Severity is the average across the buildable (core+partial) subset only. Click a row to see the exact split and click a community pill to filter to just that community's findings for this pain point.
+        Composition bar: <span style={{ color: "var(--hot)" }}>core-fit</span> · <span style={{ color: "var(--amber)" }}>partial-fit</span> · <span style={{ color: "var(--ink-faint)" }}>not addressable</span>. Tap a row for the community split, tap a pill to preview.
       </div>
       <div className="scroll-panel" style={{ maxHeight: 640, overflowY: "auto", paddingRight: 4 }}>
       {sorted.map((r) => {
@@ -227,14 +227,6 @@ export function CrossCommunityTable({
                     </div>
                   );
                 })()}
-                <div style={{ display: "flex", gap: 16, marginBottom: 16, fontSize: 12.5 }}>
-                  <span><span style={{ color: "var(--hot)", fontWeight: 700 }}>{r.coreFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>core fit</span></span>
-                  <span><span style={{ color: "var(--amber)", fontWeight: 700 }}>{r.partialFitCount}</span> <span style={{ color: "var(--ink-dim)" }}>partial fit</span></span>
-                  <span><span style={{ color: "var(--ink-faint)", fontWeight: 700 }}>{r.totalCount - r.buildableCount}</span> <span style={{ color: "var(--ink-dim)" }}>not addressable</span></span>
-                  {r.buildableCount > 0 && (
-                    <span style={{ color: SEVERITY_COLOR(r.avgSeverityBuildable) }}>avg severity {r.avgSeverityBuildable.toFixed(1)}/5 on buildable</span>
-                  )}
-                </div>
 
                 {communities && (() => {
                   const pooled = communities.flatMap((c) => c.findings).filter((f) => f.pain_point === r.pain_point);
@@ -307,7 +299,7 @@ export function CrossCommunityTable({
                     <>
                       {timeline.length > 1 && (
                         <div style={{ marginBottom: 16 }}>
-                          <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>OVER TIME, ALL COMMUNITIES POOLED</div>
+                          <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 8 }}>OVER TIME</div>
                           <div style={{ display: "flex", gap: 3, alignItems: "flex-end", height: 32 }}>
                             {timeline.map(([q, count]) => (
                               <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", alignItems: "flex-end", height: "100%" }}>

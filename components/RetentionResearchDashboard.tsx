@@ -1045,7 +1045,7 @@ export function RetentionResearchDashboard({
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div className="section-title">
                 Cross-community pain points
-                <InfoTip text="Every canonical pain-point category, and which of the live communities actually surface it. 'Universal' means it shows up in every single community, not just the biggest ones. For the buildable-volume ranking of the same categories, see Feature development ranking below - a distinct chart, not a re-sort of this one." />
+                <InfoTip text="Every canonical pain-point category, and which of the live communities actually surface it. 'Universal' means it shows up in every single community, not just the biggest ones. The composition bar per row splits every finding by whether TWU could plausibly act on it - green (core-fit), amber (partial-fit), gray (not addressable) - so volume and buildability read from one bar instead of two numbers you'd compare yourself. Severity is the average across the buildable subset only. For the buildable-volume ranking of the same categories, see Feature development ranking below - a distinct chart, not a re-sort of this one." />
               </div>
               <div className="eyebrow muted">tap a community pill to preview</div>
             </div>
@@ -1245,7 +1245,7 @@ export function RetentionResearchDashboard({
                   <div className="eyebrow muted">tap a solution to see it plotted by community</div>
                 </div>
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
-                  Top {topSolutions.length} solution categories by total scored mentions, pooled across communities. Effectiveness and difficulty are both 1-5 scales, scored the same way as the Quick Wins matrix above - this just adds the community dimension.
+                  Top {topSolutions.length} solutions by mentions. Tight dot cluster = works about the same everywhere, spread out = depends heavily on community.
                 </div>
 
                 <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1293,63 +1293,62 @@ export function RetentionResearchDashboard({
                           </span>
                         </div>
                         {isOpen && (() => {
-                          const W = 280, H = 220, PAD_L = 34, PAD_B = 26, PAD_T = 10, PAD_R = 10;
+                          const W = 560, H = 200, PAD_L = 30, PAD_B = 24, PAD_T = 14, PAD_R = 16;
                           const plotW = W - PAD_L - PAD_R;
                           const plotH = H - PAD_T - PAD_B;
                           const x = (diff: number) => PAD_L + ((diff - 1) / 4) * plotW; // 1=easy (left), 5=hard (right)
                           const y = (eff: number) => PAD_T + ((5 - eff) / 4) * plotH; // 5=effective (top), 1=not (bottom)
+                          const midX = x(3);
+                          const midY = y(3);
+                          const lowSampleRows = group.communities.filter((r) => r.count < 5);
                           return (
                             <div style={{ border: "1px solid var(--amber)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "16px", background: "rgba(201,168,76,0.03)" }}>
-                              <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "start" }}>
-                                <div>
-                                  <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
-                                    <line x1={PAD_L} y1={y(3)} x2={W - PAD_R} y2={y(3)} stroke="var(--border-soft)" strokeDasharray="2 3" />
-                                    <line x1={x(3)} y1={PAD_T} x2={x(3)} y2={H - PAD_B} stroke="var(--border-soft)" strokeDasharray="2 3" />
-                                    <text x={PAD_L + 2} y={PAD_T + 10} fontSize="8" fill="var(--hot)" fontFamily="var(--mono)">easy & effective</text>
-                                    <text x={W - PAD_R - 2} y={H - PAD_B - 4} fontSize="8" fill="var(--warm)" fontFamily="var(--mono)" textAnchor="end">hard & weak</text>
-                                    <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={H - PAD_B} stroke="var(--border)" />
-                                    <line x1={PAD_L} y1={H - PAD_B} x2={W - PAD_R} y2={H - PAD_B} stroke="var(--border)" />
-                                    {[1, 3, 5].map((v) => (
-                                      <text key={"x" + v} x={x(v)} y={H - PAD_B + 14} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">{v}</text>
-                                    ))}
-                                    {[1, 3, 5].map((v) => (
-                                      <text key={"y" + v} x={PAD_L - 8} y={y(v) + 3} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{v}</text>
-                                    ))}
-                                    <text x={W / 2} y={H - 4} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">difficulty \u2192</text>
-                                    <text x={10} y={H / 2} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle" transform={`rotate(-90, 10, ${H / 2})`}>effectiveness \u2192</text>
-                                    {group.communities.map((row) => {
-                                      const lowSample = row.count < 5;
-                                      const color = COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)";
-                                      const r = lowSample ? 4 : 6 + Math.min(4, Math.sqrt(row.count) / 2);
-                                      return (
-                                        <g key={row.subreddit}>
-                                          <circle cx={x(row.avgDifficulty)} cy={y(row.avgEffectiveness)} r={r} fill={color} opacity={lowSample ? 0.4 : 0.85} stroke={lowSample ? "none" : "var(--card)"} strokeWidth="1.5">
-                                            <title>{`${row.label}: ${row.avgEffectiveness.toFixed(1)}/5 effective, ${row.avgDifficulty.toFixed(1)}/5 difficult (${row.count} finding${row.count === 1 ? "" : "s"})`}</title>
-                                          </circle>
-                                        </g>
-                                      );
-                                    })}
-                                  </svg>
-                                </div>
-                                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                                  {group.communities.map((row) => {
-                                    const lowSample = row.count < 5;
-                                    return (
-                                      <div key={row.subreddit} style={{ display: "grid", gridTemplateColumns: "14px 1fr auto", gap: 8, alignItems: "center", fontSize: 12, opacity: lowSample ? 0.65 : 1 }}>
-                                        <span style={{ width: 10, height: 10, borderRadius: "50%", background: COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)", display: "inline-block" }} />
-                                        <span style={{ color: "var(--ink-dim)" }}>{row.label}</span>
-                                        <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: lowSample ? "var(--warm)" : "var(--ink-faint)", fontWeight: lowSample ? 700 : 400 }}>
-                                          {row.avgEffectiveness.toFixed(1)}/{row.avgDifficulty.toFixed(1)} · {lowSample ? `n=${row.count}` : `${row.count}x`}
-                                        </span>
-                                      </div>
-                                    );
-                                  })}
-                                  {group.communities.some((r) => r.count < 5) && (
-                                    <div style={{ marginTop: 4, fontSize: 10.5, color: "var(--ink-faint)" }}>
-                                      Small, dim dots and <span style={{ color: "var(--warm)" }}>n=X</span> rows are under 5 findings - a lead worth a second look, not something to prioritize on this data alone.
-                                    </div>
-                                  )}
-                                </div>
+                              <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H}>
+                                {/* symmetric quadrant tint - read at a glance, no label parsing needed */}
+                                <rect x={PAD_L} y={PAD_T} width={midX - PAD_L} height={midY - PAD_T} fill="var(--hot)" opacity="0.05" />
+                                <rect x={midX} y={midY} width={W - PAD_R - midX} height={H - PAD_B - midY} fill="var(--warm)" opacity="0.05" />
+                                <line x1={PAD_L} y1={midY} x2={W - PAD_R} y2={midY} stroke="var(--border-soft)" strokeDasharray="2 3" />
+                                <line x1={midX} y1={PAD_T} x2={midX} y2={H - PAD_B} stroke="var(--border-soft)" strokeDasharray="2 3" />
+                                <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={H - PAD_B} stroke="var(--border)" />
+                                <line x1={PAD_L} y1={H - PAD_B} x2={W - PAD_R} y2={H - PAD_B} stroke="var(--border)" />
+                                {[1, 3, 5].map((v) => (
+                                  <text key={"x" + v} x={x(v)} y={H - PAD_B + 14} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">{v}</text>
+                                ))}
+                                {[1, 3, 5].map((v) => (
+                                  <text key={"y" + v} x={PAD_L - 6} y={y(v) + 3} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="end">{v}</text>
+                                ))}
+                                <text x={PAD_L + 4} y={PAD_T + 12} fontSize="9" fill="var(--hot)" fontFamily="var(--mono)">quick win</text>
+                                <text x={W - PAD_R - 4} y={H - PAD_B - 6} fontSize="9" fill="var(--warm)" fontFamily="var(--mono)" textAnchor="end">hard slog</text>
+                                <text x={W / 2} y={H - 2} fontSize="9" fill="var(--ink-faint)" fontFamily="var(--mono)" textAnchor="middle">difficulty \u2192</text>
+                                {group.communities.map((row) => {
+                                  const lowSample = row.count < 5;
+                                  const color = COMMUNITY_COLOR[row.subreddit] || "var(--ink-faint)";
+                                  const r = lowSample ? 4 : 6 + Math.min(4, Math.sqrt(row.count) / 2);
+                                  const cx = x(row.avgDifficulty);
+                                  const cy = y(row.avgEffectiveness);
+                                  const labelRight = cx < W * 0.72; // flip label to the left near the right edge so it doesn't run off-chart
+                                  return (
+                                    <g key={row.subreddit} opacity={lowSample ? 0.55 : 1}>
+                                      <circle cx={cx} cy={cy} r={r} fill={color} stroke="var(--card)" strokeWidth="1.5">
+                                        <title>{`${row.label}: ${row.avgEffectiveness.toFixed(1)}/5 effective, ${row.avgDifficulty.toFixed(1)}/5 difficult (${row.count} finding${row.count === 1 ? "" : "s"})`}</title>
+                                      </circle>
+                                      <text
+                                        x={cx + (labelRight ? r + 5 : -(r + 5))}
+                                        y={cy + 3}
+                                        fontSize="10"
+                                        fontFamily="var(--mono)"
+                                        fill={lowSample ? "var(--ink-faint)" : "var(--ink)"}
+                                        textAnchor={labelRight ? "start" : "end"}
+                                      >
+                                        {row.label.replace("r/", "")}{lowSample ? ` (n=${row.count})` : ""}
+                                      </text>
+                                    </g>
+                                  );
+                                })}
+                              </svg>
+                              <div style={{ marginTop: 4, fontSize: 10.5, color: "var(--ink-faint)", textAlign: "center" }}>
+                                effectiveness \u2191 · dot size = how many findings back it up
+                                {lowSampleRows.length > 0 && <> · faded label = under 5 findings, a lead not a conclusion</>}
                               </div>
                             </div>
                           );

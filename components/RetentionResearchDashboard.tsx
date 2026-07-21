@@ -360,16 +360,6 @@ export function RetentionResearchDashboard({
             { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak${isRecencyScoped ? ", within the scoped last-12-months set" : ""}. Strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
           ]}
         />
-        <button
-          onClick={() => setShowMethodology((v) => !v)}
-          className="diagnostics-toggle"
-          data-open={showMethodology}
-          style={{ marginTop: 14 }}
-        >
-          <span>{showMethodology ? "Hide the methodology" : "Why raw and analyzed differ"}</span>
-          <span className="chev">&#9656;</span>
-        </button>
-        {showMethodology && <MethodologyPanel ds={ds} />}
       </section>
 
       {!showCombinedExtras && (

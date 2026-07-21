@@ -197,14 +197,13 @@ export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     const parts = COMMUNITIES.map((c) => `${c.label} ${c.total_analyzed.toLocaleString()}`).join(" + ");
     const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
-    const rawSuffix = rawTotal > ds.total_analyzed ? ` ${rawTotal.toLocaleString()} records were scraped in total before any prescreening; this is the number that actually went through classification.` : "";
-    return `${parts} = ${ds.total_analyzed.toLocaleString()} total.${rawSuffix}`;
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total. ${rawTotal.toLocaleString()} records were scraped in total before any prescreening; this is the number that actually went through classification.`;
   }
   const raw = ds.raw_scraped ?? ds.total_analyzed;
   if (raw > ds.total_analyzed) {
     return `${raw.toLocaleString()} records were scraped for this community; a prescreen narrowed that down to the ${ds.total_analyzed.toLocaleString()} shown here, which is what actually went through classification.`;
   }
-  return "Every cleaned record in this community, reviewed by the classifier.";
+  return `${raw.toLocaleString()} records were scraped for this community; every one of them went through classification, nothing was filtered out first.`;
 }
 
 // Matching one-liner for the top "Relevant findings" stat tile.
@@ -836,12 +835,10 @@ export function executiveSummary(ds: CommunityDataset): string[] {
   const raw = ds.raw_scraped ?? ds.total_analyzed;
   const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
   const rawClause = isAll
-    ? rawTotal > ds.total_analyzed
-      ? ` (${rawTotal.toLocaleString()} records were scraped in total before prescreening; this is the number that actually reached classification)`
-      : ""
+    ? ` (${rawTotal.toLocaleString()} records were scraped in total before prescreening; this is the number that actually reached classification)`
     : raw > ds.total_analyzed
       ? ` (${raw.toLocaleString()} were scraped before a prescreen narrowed that down to this classified pool)`
-      : "";
+      : ` (${raw.toLocaleString()} were scraped for this community; every one of them reached classification)`;
 
   sentences.push(
     isAll

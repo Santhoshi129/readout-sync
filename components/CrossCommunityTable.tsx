@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
-import { CommunityDataset, Finding, PainPointExample, painPointExamples, severityHistogram, sourceLink, timelineBreakdown } from "@/lib/retention-research";
+import { APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, CommunityDataset, Finding, PainPointExample, painPointExamples, severityHistogram, sourceLink, timelineBreakdown } from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
 
@@ -251,6 +251,9 @@ export function CrossCommunityTable({
                           {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}
                           {commExamples.length < commFindings.length && ` · showing ${commExamples.length}`}
                         </div>
+                        <div style={{ fontSize: 10, color: "var(--ink-faint)", marginTop: 4 }}>
+                          Each quote's badge shows whether it's <span style={{ color: "var(--hot)" }}>core fit</span>, <span style={{ color: "var(--amber)" }}>partial fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - only core + partial fit count toward "buildable" above.
+                        </div>
                       </div>
                       {commExamples.length > 0 ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -266,6 +269,24 @@ export function CrossCommunityTable({
                                 }}
                                 style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, cursor: "pointer", padding: "4px 6px", margin: "-4px -6px", borderRadius: 4, background: isQOpen ? "var(--card)" : "transparent" }}
                               >
+                                {ex.app_relevance && (
+                                  <span
+                                    style={{
+                                      display: "inline-block",
+                                      fontFamily: "var(--mono)",
+                                      fontSize: 9,
+                                      letterSpacing: "0.03em",
+                                      padding: "1px 6px",
+                                      borderRadius: 999,
+                                      marginRight: 6,
+                                      marginBottom: 2,
+                                      color: `var(--${APP_RELEVANCE_TONE[ex.app_relevance]})`,
+                                      border: `1px solid var(--${APP_RELEVANCE_TONE[ex.app_relevance]})`,
+                                    }}
+                                  >
+                                    {ex.app_relevance === "not_addressable" ? "not addressable" : ex.app_relevance === "core_fit" ? "core fit" : "partial fit"}
+                                  </span>
+                                )}
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && isQOpen && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence}"</div>}
                                 <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>

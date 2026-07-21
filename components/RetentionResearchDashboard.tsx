@@ -67,6 +67,7 @@ import {
   APP_RELEVANCE_LABEL,
   communityCountNote,
   analyzedNote,
+  analyzedPreview,
   relevantNote,
   NO_SOLUTION_KEY,
   PAIN_POINT_MEANING,
@@ -336,7 +337,7 @@ export function RetentionResearchDashboard({
       <section style={{ marginBottom: 24 }}>
         <StatTiles
           tiles={[
-            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", note: analyzedNote(ds) },
+            { label: "Posts/comments analyzed", value: ds.total_analyzed, tone: "muted", preview: analyzedPreview(ds), note: analyzedNote(ds) },
             {
               label: isRecencyScoped ? "Relevant findings (last 12mo)" : "Relevant findings",
               value: isRecencyScoped ? scopedFindings.length : ds.relevant_count,

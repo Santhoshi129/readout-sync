@@ -37,11 +37,13 @@ const TIER_OPTIONS: { value: ConfidenceTier | "All"; label: string }[] = [
 
 // Fit-tier badge, shared by the pill-preview panel and the member/owner
 // quote blocks - same visual, same TONE_COLOR fix, in both places.
-function FitBadge({ rel }: { rel: AppRelevance | null }) {
+function FitBadge({ rel, reasoning }: { rel: AppRelevance | null; reasoning?: string | null }) {
   if (!rel) return null;
   const color = TONE_COLOR[APP_RELEVANCE_TONE[rel]];
+  const label = rel === "not_addressable" ? "not addressable" : rel === "core_fit" ? "core fit" : "partial fit";
   return (
     <span
+      title={reasoning || "No reasoning captured for this label - it was assigned without a documented rationale."}
       style={{
         display: "inline-block",
         fontFamily: "var(--mono)",
@@ -53,9 +55,12 @@ function FitBadge({ rel }: { rel: AppRelevance | null }) {
         marginBottom: 2,
         color,
         border: `1px solid ${color}`,
+        borderStyle: reasoning ? "solid" : "dashed",
+        opacity: reasoning ? 1 : 0.7,
+        cursor: "help",
       }}
     >
-      {rel === "not_addressable" ? "not addressable" : rel === "core_fit" ? "core fit" : "partial fit"}
+      {label}{!reasoning && " *"}
     </span>
   );
 }
@@ -419,7 +424,7 @@ export function CrossCommunityTable({
                                 }}
                                 style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, cursor: "pointer", padding: "4px 6px", margin: "-4px -6px", borderRadius: 4, background: isQOpen ? "var(--card)" : "transparent" }}
                               >
-                                <FitBadge rel={ex.app_relevance} />
+                                <FitBadge rel={ex.app_relevance} reasoning={ex.app_relevance_reasoning} />
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && isQOpen && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence}"</div>}
                                 <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
@@ -487,7 +492,7 @@ export function CrossCommunityTable({
                                   cursor: "pointer",
                                 }}
                               >
-                                <FitBadge rel={ex.app_relevance} />
+                                <FitBadge rel={ex.app_relevance} reasoning={ex.app_relevance_reasoning} />
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && (
                                   <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>

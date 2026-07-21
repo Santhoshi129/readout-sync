@@ -448,32 +448,21 @@ export function FindingsTable({
                       </span>
                     )}
                     {f.app_relevance && (
-                      f.app_relevance_reasoning ? (
-                        <NumberTip text={f.app_relevance_reasoning} align="right">
-                          <span
-                            style={{
-                              fontFamily: "var(--mono)",
-                              fontSize: 9.5,
-                              color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance]],
-                              whiteSpace: "nowrap",
-                              borderBottom: "1px dotted currentColor",
-                            }}
-                          >
-                            {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
-                          </span>
-                        </NumberTip>
-                      ) : (
+                      <NumberTip text={f.app_relevance_reasoning || "No reasoning captured for this label - it was assigned without a documented rationale."} align="right">
                         <span
                           style={{
                             fontFamily: "var(--mono)",
                             fontSize: 9.5,
                             color: TONE_COLOR[APP_RELEVANCE_TONE[f.app_relevance]],
                             whiteSpace: "nowrap",
+                            borderBottom: f.app_relevance_reasoning ? "1px dotted currentColor" : "1px dotted var(--ink-faint)",
+                            opacity: f.app_relevance_reasoning ? 1 : 0.65,
                           }}
                         >
                           {APP_RELEVANCE_LABEL[f.app_relevance].split(": ")[0]}
+                          {!f.app_relevance_reasoning && " *"}
                         </span>
-                      )
+                      </NumberTip>
                     )}
                     {f.permalink && (
                       <a
@@ -533,7 +522,7 @@ export function FindingsTable({
                         "{f.evidence_snippet}"
                       </blockquote>
                     )}
-                    {(f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance_reasoning) && (
+                    {(f.pain_severity_reasoning || f.difficulty_reasoning || f.app_relevance) && (
                       <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10, fontSize: 12, color: "var(--ink-dim)" }}>
                         {f.pain_severity_reasoning && (
                           <div><span style={{ color: "var(--ink-faint)" }}>Why this severity: </span>{f.pain_severity_reasoning}</div>
@@ -541,8 +530,11 @@ export function FindingsTable({
                         {f.difficulty_reasoning && (
                           <div><span style={{ color: "var(--ink-faint)" }}>Why this difficulty: </span>{f.difficulty_reasoning}</div>
                         )}
-                        {f.app_relevance_reasoning && (
-                          <div><span style={{ color: "var(--ink-faint)" }}>Why this app fit: </span>{f.app_relevance_reasoning}</div>
+                        {f.app_relevance && (
+                          <div>
+                            <span style={{ color: "var(--ink-faint)" }}>Why this app fit: </span>
+                            {f.app_relevance_reasoning || <span style={{ fontStyle: "italic", color: "var(--ink-faint)" }}>No reasoning captured for this label - it was assigned without a documented rationale.</span>}
+                          </div>
                         )}
                       </div>
                     )}

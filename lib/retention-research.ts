@@ -60,9 +60,13 @@ export type CommunityDataset = {
   generated_at: string;
   total_analyzed: number;
   relevant_count: number;
-  // Optional, community-specific data-quality caveat (e.g. a partial pull).
-  // Rendered directly under the intro on that community's tab. Null/absent
-  // means the dataset is complete, same standard as gymowner.
+  // Raw records pulled/scraped before any prescreen or filtering, for
+  // communities where a prescreen ran (crossfit, orangetheory). Defaults to
+  // total_analyzed (via sanitizeDataset) for communities that were
+  // classified in full, where scraped and classified are the same number.
+  raw_scraped?: number;
+  // Optional, community-specific data-quality caveat. Currently kept for
+  // internal record-keeping only - not rendered anywhere in the UI.
   data_note?: string | null;
   findings: Finding[];
 };
@@ -96,7 +100,7 @@ function sanitizeFinding(f: Finding): Finding {
 }
 
 function sanitizeDataset(ds: CommunityDataset): CommunityDataset {
-  return { ...ds, findings: ds.findings.map(sanitizeFinding) };
+  return { ...ds, raw_scraped: ds.raw_scraped ?? ds.total_analyzed, findings: ds.findings.map(sanitizeFinding) };
 }
 
 export const COMMUNITIES: CommunityDataset[] = [
@@ -117,6 +121,7 @@ export function combinedDataset(): CommunityDataset {
     label: "All communities combined",
     generated_at: latest,
     total_analyzed: COMMUNITIES.reduce((s, c) => s + c.total_analyzed, 0),
+    raw_scraped: COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0),
     relevant_count: COMMUNITIES.reduce((s, c) => s + c.relevant_count, 0),
     findings: COMMUNITIES.flatMap((c) => c.findings),
   };
@@ -191,7 +196,13 @@ export function communityCountNote(ds: CommunityDataset): string {
 export function analyzedNote(ds: CommunityDataset): string {
   if (ds.subreddit === "all") {
     const parts = COMMUNITIES.map((c) => `${c.label} ${c.total_analyzed.toLocaleString()}`).join(" + ");
-    return `${parts} = ${ds.total_analyzed.toLocaleString()} total.`;
+    const rawTotal = COMMUNITIES.reduce((s, c) => s + (c.raw_scraped ?? c.total_analyzed), 0);
+    const rawSuffix = rawTotal > ds.total_analyzed ? ` ${rawTotal.toLocaleString()} records were scraped in total before any prescreening; this is the number that actually went through classification.` : "";
+    return `${parts} = ${ds.total_analyzed.toLocaleString()} total.${rawSuffix}`;
+  }
+  const raw = ds.raw_scraped ?? ds.total_analyzed;
+  if (raw > ds.total_analyzed) {
+    return `${raw.toLocaleString()} records were scraped for this community; a prescreen narrowed that down to the ${ds.total_analyzed.toLocaleString()} shown here, which is what actually went through classification.`;
   }
   return "Every cleaned record in this community, reviewed by the classifier.";
 }

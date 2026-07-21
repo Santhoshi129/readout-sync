@@ -3,6 +3,7 @@
   "label": "r/crossfit",
   "generated_at": "2026-07-20T06:03:25.495545+00:00",
   "total_analyzed": 175014,
+  "raw_scraped": 1590689,
   "relevant_count": 609,
   "data_note": "1,590,689 raw records were narrowed by a keyword prescreen (Stage 1) to 175,014 survivors, and those 175,014 were the pool actually sent through classification (Stage 2). total_analyzed reflects that classified pool of 175,014, same convention as every other community here, not the raw pull.",
   "findings": [

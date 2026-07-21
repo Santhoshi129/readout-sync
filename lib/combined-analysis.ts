@@ -92,6 +92,34 @@ export function radarSoWhat(axes: RadarAxis[], memberTotal: number, ownerTotal: 
   return `Members talk about ${topMember.label.toLowerCase()} disproportionately more than owners do (${topMember.memberPct}% of member findings vs ${topMember.ownerPct}% of owner findings). Owners, in turn, weight ${topOwner.label.toLowerCase()} far more heavily than members ever bring it up (${topOwner.ownerPct}% vs ${topOwner.memberPct}%) - the two groups aren't describing the same gym from the same angle.`;
 }
 
+export type OwnerAlignmentRow = {
+  subreddit: string;
+  label: string;
+  memberCount: number;
+  avgGap: number; // mean absolute percentage-point gap across shared canonical pain points - lower = more aligned with gymowner
+  biggestGapAxis: RadarAxis | null;
+};
+
+// gymowner isn't segmented by training format, so this is "gym owners in
+// general" vs. "members of format X specifically" - a proxy comparison, not
+// a controlled one (an f45 owner and an orangetheory owner could both be
+// posting in the same gymowner thread). Still useful: pooling every member
+// community into one comparison (the gap chart above) can hide a format
+// where owners and members are especially out of sync, or especially
+// aligned, behind the average of all four.
+export function ownerAlignmentByCommunity(ownerFindings: Finding[], memberCommunities: CommunityDataset[]): OwnerAlignmentRow[] {
+  return memberCommunities
+    .map((c) => {
+      const axes = radarAxes(c.findings, ownerFindings);
+      if (axes.length === 0 || c.findings.length === 0) return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap: 0, biggestGapAxis: null };
+      const withGap = axes.map((a) => ({ ...a, absGap: Math.abs(a.memberPct - a.ownerPct) }));
+      const avgGap = Math.round((withGap.reduce((s, a) => s + a.absGap, 0) / withGap.length) * 10) / 10;
+      const biggest = [...withGap].sort((a, b) => b.absGap - a.absGap)[0];
+      return { subreddit: c.subreddit, label: c.label, memberCount: c.findings.length, avgGap, biggestGapAxis: biggest };
+    })
+    .sort((a, b) => a.avgGap - b.avgGap);
+}
+
 // ---------------------------------------------------------------------------
 // Cross-community pain-point coverage: for each pain point, how many of the
 // live communities actually surface it, and how many of those mentions are

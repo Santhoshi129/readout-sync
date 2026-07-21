@@ -32,6 +32,7 @@ import {
   soWhatFeatureRanking,
   longTailStats,
   combinedTakeaways,
+  ownerAlignmentByCommunity,
 } from "@/lib/combined-analysis";
 import {
   CommunityDataset,
@@ -134,7 +135,18 @@ export function RetentionResearchDashboard({
   const solutions = useMemo(() => solutionCategoryBreakdown(scopedFindings), [scopedFindings]);
   const solutionRefs = useMemo(() => solutionExamples(scopedFindings), [scopedFindings]);
   const timeline = useMemo(() => timelineBreakdown(scopedFindings), [scopedFindings]);
-  const severityTimeline = useMemo(() => severityTimelineBreakdown(scopedFindings), [scopedFindings]);
+  // "All" blends every pain point into one average per quarter, which can
+  // mask a specific category getting worse behind another one improving -
+  // this lets the trend be read for one canonical pain point at a time
+  // instead. Local to this section rather than tied to the global
+  // painPoint filter, so picking a trend to look at doesn't also re-filter
+  // every other chart and the receipts table.
+  const [severityTrendPainPoint, setSeverityTrendPainPoint] = useState<string>("All");
+  const severityTimelineSource = useMemo(
+    () => (severityTrendPainPoint === "All" ? scopedFindings : scopedFindings.filter((f) => f.pain_point === severityTrendPainPoint)),
+    [scopedFindings, severityTrendPainPoint]
+  );
+  const severityTimeline = useMemo(() => severityTimelineBreakdown(severityTimelineSource), [severityTimelineSource]);
   const tiers = useMemo(() => confidenceTierBreakdown(scopedFindings), [scopedFindings]);
   const perspective = useMemo(() => perspectiveBreakdown(scopedFindings), [scopedFindings]);
   const priority = useMemo(() => priorityMatrix(scopedFindings), [scopedFindings]);
@@ -187,8 +199,9 @@ export function RetentionResearchDashboard({
   const selectCommunityAndPainPoint = (subreddit: string, pp: string) => {
     setFilters((prev) => ({ ...prev, painPoint: pp, community: `r/${subreddit}` }));
   };
-  const memberCommunities = communities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
-  const ownerCommunities = communities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
+  const memberCommunities = scopedCommunities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
+  const ownerCommunities = scopedCommunities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
+  const ownerAlignment = useMemo(() => ownerAlignmentByCommunity(ownerFindingsForRadar, memberCommunities), [ownerFindingsForRadar, memberCommunities]);
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
   const maxBuildable = Math.max(1, ...topBuildable.map((r) => r.buildableCount));
   const showCombinedExtras = ds.subreddit === "all" && communities.length > 1;
@@ -656,38 +669,66 @@ export function RetentionResearchDashboard({
               {soWhatTimeline(timeline)}
             </div>
 
-            {severityTimeline.length >= 4 && (
-              <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>
+            <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em" }}>
                   AVERAGE SEVERITY OVER TIME
-                  <InfoTip text="Volume alone can't tell you whether the underlying problem is getting worse - a flat mention count could still hide rising severity. This plots average pain_severity (1-5) per quarter across the same pooled findings, quarters with fewer than 3 findings are excluded from the trend read below (too noisy to mean anything on their own) but still plotted." />
+                  <InfoTip text="Volume alone can't tell you whether the underlying problem is getting worse - a flat mention count could still hide rising severity. This plots average pain_severity (1-5) per quarter for whichever pain point is selected, quarters with fewer than 3 findings are excluded from the trend read below (too noisy to mean anything on their own) but still plotted, shown as a smaller, dimmer point. 'All pain points, blended' can hide one category getting worse behind another improving - pick a specific one to check that." />
                 </div>
-                {(() => {
-                  const W = 700, H = 90, PAD = 8;
-                  const vals = severityTimeline.map((r) => r[1]);
-                  const min = Math.min(...vals) - 0.15;
-                  const max = Math.max(...vals) + 0.15;
-                  const span = Math.max(0.3, max - min);
-                  const n = severityTimeline.length;
-                  const x = (i: number) => PAD + (i / Math.max(1, n - 1)) * (W - PAD * 2);
-                  const y = (v: number) => H - PAD - ((v - min) / span) * (H - PAD * 2);
-                  const points = severityTimeline.map(([, v], i) => `${x(i)},${y(v)}`).join(" ");
-                  return (
-                    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="none">
-                      <polyline points={points} fill="none" stroke="var(--amber)" strokeWidth="1.5" />
-                      {severityTimeline.map(([q, v, count], i) => (
-                        <circle key={q} cx={x(i)} cy={y(v)} r={count >= 3 ? 2.5 : 1.5} fill={count >= 3 ? "var(--amber)" : "var(--ink-faint)"}>
-                          <title>{`${q}: ${v.toFixed(1)}/5 avg severity, ${count} finding${count === 1 ? "" : "s"}`}</title>
-                        </circle>
-                      ))}
-                    </svg>
-                  );
-                })()}
-                <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
-                  {soWhatSeverityTrend(severityTimeline)}
-                </div>
+                <select
+                  value={severityTrendPainPoint}
+                  onChange={(e) => setSeverityTrendPainPoint(e.target.value)}
+                  style={{
+                    background: "var(--card-raised)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 8,
+                    padding: "6px 10px",
+                    color: "var(--ink)",
+                    fontSize: 12,
+                    fontFamily: "var(--font)",
+                  }}
+                >
+                  <option value="All">All pain points, blended</option>
+                  {coverageRows.map((r) => (
+                    <option key={r.pain_point} value={r.pain_point}>
+                      {r.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            )}
+              {severityTimeline.length >= 3 ? (
+                <>
+                  {(() => {
+                    const W = 700, H = 90, PAD = 8;
+                    const vals = severityTimeline.map((r) => r[1]);
+                    const min = Math.min(...vals) - 0.15;
+                    const max = Math.max(...vals) + 0.15;
+                    const span = Math.max(0.3, max - min);
+                    const n = severityTimeline.length;
+                    const x = (i: number) => PAD + (i / Math.max(1, n - 1)) * (W - PAD * 2);
+                    const y = (v: number) => H - PAD - ((v - min) / span) * (H - PAD * 2);
+                    const points = severityTimeline.map(([, v], i) => `${x(i)},${y(v)}`).join(" ");
+                    return (
+                      <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} preserveAspectRatio="none">
+                        <polyline points={points} fill="none" stroke="var(--amber)" strokeWidth="1.5" />
+                        {severityTimeline.map(([q, v, count], i) => (
+                          <circle key={q} cx={x(i)} cy={y(v)} r={count >= 3 ? 2.5 : 1.5} fill={count >= 3 ? "var(--amber)" : "var(--ink-faint)"}>
+                            <title>{`${q}: ${v.toFixed(1)}/5 avg severity, ${count} finding${count === 1 ? "" : "s"}`}</title>
+                          </circle>
+                        ))}
+                      </svg>
+                    );
+                  })()}
+                  <div style={{ marginTop: 10, fontSize: 12, color: "var(--ink-faint)" }}>
+                    {soWhatSeverityTrend(severityTimeline)}
+                  </div>
+                </>
+              ) : (
+                <div style={{ fontSize: 12, color: "var(--ink-faint)", padding: "20px 0" }}>
+                  Not enough dated quarters for {severityTrendPainPoint === "All" ? "this view" : painPointLabel(severityTrendPainPoint)} to plot a trend - try "All pain points, blended" or a higher-volume category.
+                </div>
+              )}
+            </div>
           </div>
 
           <section style={{ marginBottom: 24 }}>
@@ -747,6 +788,48 @@ export function RetentionResearchDashboard({
               </div>
             );
           })()}
+
+          {ownerAlignment.length > 0 && (
+            <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+              <div className="section-head" style={{ marginBottom: 0 }}>
+                <div className="section-title">
+                  Owner alignment, by community
+                  <InfoTip text="The gap chart above pools all four member communities into one comparison against gymowner. This breaks that same comparison out per community instead - a format where owners and members are especially in or out of sync could otherwise get averaged away. Caveat: r/gymowner isn't segmented by training format, so this is 'gym owners in general' vs. 'members of format X specifically', a proxy comparison, not a controlled one." />
+                </div>
+                <div className="eyebrow muted">lower avg gap = more aligned with gymowner</div>
+              </div>
+              <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
+                Avg gap is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right.
+              </div>
+              <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
+                {ownerAlignment.map((row) => (
+                  <div
+                    key={row.subreddit}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "160px 90px 1fr",
+                      gap: 14,
+                      alignItems: "center",
+                      padding: "12px 14px",
+                      borderRadius: 10,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-raised)",
+                    }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{row.label}</span>
+                    <span style={{ fontFamily: "var(--mono)", fontSize: 13, color: row.avgGap <= 5 ? "var(--hot)" : row.avgGap <= 10 ? "var(--amber)" : "var(--warm)" }}>
+                      {row.avgGap.toFixed(1)}pt gap
+                    </span>
+                    <span style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
+                      {row.biggestGapAxis
+                        ? `Biggest single divergence: ${row.biggestGapAxis.label} (${row.biggestGapAxis.memberPct}% of ${row.label} members vs ${row.biggestGapAxis.ownerPct}% of gymowner)`
+                        : "Not enough shared categories yet to compare."}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div className="section-head" style={{ marginBottom: 0 }}>

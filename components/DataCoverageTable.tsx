@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CommunityDataset, painPointBreakdown, painPointExamples, painPointLabel, perspectiveBreakdown, perspectiveLabel, timelineBreakdown } from "@/lib/retention-research";
+import { CommunityDataset, painPointBreakdown, painPointExamples, painPointLabel, perspectiveBreakdown, perspectiveLabel, timelineBreakdown, authorDiversity } from "@/lib/retention-research";
 
 export function DataCoverageTable({ communities }: { communities: CommunityDataset[] }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -42,6 +42,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
           const noStrong = c.findings.length > 0 && strong === 0;
           const isOpen = expanded === c.subreddit;
           const topPain = painPointBreakdown(c.findings).filter(([p]) => p !== "other")[0];
+          const diversity = authorDiversity(c.findings);
 
           return (
             <div
@@ -118,6 +119,9 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
               <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>
                 Hit rate {hitRate < 0.01 ? "<0.01" : hitRate.toFixed(2)}%
                 {topPain && <> · top issue <span style={{ color: "var(--ink-dim)" }}>{painPointLabel(topPain[0])}</span></>}
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }} title="Distinct Reddit accounts behind these findings, versus total findings. Lower means a smaller group of repeat posters is doing more of the talking.">
+                {diversity.uniqueAuthors} distinct voice{diversity.uniqueAuthors === 1 ? "" : "s"} behind {diversity.total} finding{diversity.total === 1 ? "" : "s"} ({diversity.pct}% unique)
               </div>
 
               {noStrong && (
@@ -220,7 +224,7 @@ export function DataCoverageTable({ communities }: { communities: CommunityDatas
       })()}
 
       <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.6 }}>
-        Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.
+        Relevant count and hit rate aren't a quality signal on their own - orangetheory analyzed 1.8M posts/comments for 690 relevant findings, gymowner analyzed 6,688 for 276. The confidence bar is the separate axis that actually tells you how much to trust a community's numbers. "Distinct voices" is a third, separate axis: how many different accounts the findings actually came from, so a community's numbers don't get mistaken for a few repeat posters padding the count. Tap any card for its top pain points, who's actually talking, its posting timeline, and real quotes.
       </div>
     </div>
   );

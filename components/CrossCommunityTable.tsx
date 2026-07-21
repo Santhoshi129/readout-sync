@@ -206,7 +206,7 @@ export function CrossCommunityTable({
                         {side === "member" ? "WHAT MEMBERS SAY" : "WHAT OWNERS SAY"} ({count})
                       </div>
                       {quotes.length > 0 ? (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 260, overflowY: "auto", paddingRight: 4 }}>
                           {quotes.map((ex, i) => {
                             const qKey = `${r.pain_point}::${side}::${i}`;
                             const isQOpen = expandedQuote === qKey;

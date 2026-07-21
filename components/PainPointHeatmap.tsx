@@ -25,13 +25,26 @@ export function PainPointHeatmap({
   const [hoverCell, setHoverCell] = useState<string | null>(null);
   const [selectedCell, setSelectedCell] = useState<{ pain_point: string; subreddit: string } | null>(null);
 
+  // Cell color is intensity of raw count only - it says nothing about
+  // whether that count is backed by strong-tier findings or almost
+  // entirely weak-tier ones. A community with zero strong-tier findings
+  // (hyrox, at least as of this classification pass) can still show a
+  // mid-intensity cell purely on volume, which reads as "meaningful
+  // signal" when the Data coverage table below already flags that
+  // community's numbers as directional, not settled. Flagging it here too,
+  // right where the count is shown, means a reader doesn't have to
+  // cross-reference a different section to catch the caveat.
+  const noStrongTierCommunities = new Set(
+    communities.filter((c) => c.findings.length > 0 && !c.findings.some((f) => f.confidence_tier === "strong")).map((c) => c.subreddit)
+  );
+
   const hoverInfo = (() => {
     if (!hoverCell) return null;
     const [pp, subreddit] = hoverCell.split("::");
     const row = rows.find((r) => r.pain_point === pp);
     const cell = row?.communities.find((c) => c.subreddit === subreddit);
     if (!row || !cell) return null;
-    return { label: row.label, community: cell.label, count: cell.count };
+    return { label: row.label, community: cell.label, count: cell.count, subreddit };
   })();
 
   return (
@@ -67,6 +80,7 @@ export function PainPointHeatmap({
                   const cellKey = `${r.pain_point}::${c.subreddit}`;
                   const isHover = hoverCell === cellKey;
                   const isSelected = selectedCell && selectedCell.pain_point === r.pain_point && selectedCell.subreddit === c.subreddit;
+                  const isUnreliable = c.count > 0 && noStrongTierCommunities.has(c.subreddit);
                   const bg = c.count === 0 ? "var(--muted)" : `rgba(201,168,76,${0.08 + intensity * 0.75})`;
                   return (
                     <div
@@ -82,7 +96,7 @@ export function PainPointHeatmap({
                         height: 34,
                         borderRadius: 6,
                         background: bg,
-                        border: isSelected ? "2px solid var(--amber)" : isHover ? "1px solid var(--amber)" : "1px solid transparent",
+                        border: isSelected ? "2px solid var(--amber)" : isHover ? "1px solid var(--amber)" : isUnreliable ? "1px dashed var(--ink-faint)" : "1px solid transparent",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -91,7 +105,7 @@ export function PainPointHeatmap({
                       }}
                     >
                       <span style={{ fontSize: 11.5, fontFamily: "var(--mono)", color: c.count === 0 ? "var(--ink-faint)" : intensity > 0.5 ? "#1a1400" : "var(--ink)", fontWeight: intensity > 0.6 ? 700 : 400 }}>
-                        {c.count || "\u00b7"}
+                        {c.count || "\u00b7"}{isUnreliable ? "\u00b9" : ""}
                       </span>
                     </div>
                   );
@@ -103,19 +117,20 @@ export function PainPointHeatmap({
       </div>
 
       <div style={{ marginTop: 10, minHeight: 20, fontSize: 12.5, color: "var(--amber)", fontFamily: "var(--mono)" }}>
-        {hoverInfo ? `${hoverInfo.community} × ${hoverInfo.label}: ${hoverInfo.count} finding${hoverInfo.count === 1 ? "" : "s"}` : "\u00a0"}
+        {hoverInfo ? `${hoverInfo.community} × ${hoverInfo.label}: ${hoverInfo.count} finding${hoverInfo.count === 1 ? "" : "s"}${noStrongTierCommunities.has(hoverInfo.subreddit) ? " · this community has no strong-tier findings, read as directional" : ""}` : "\u00a0"}
       </div>
 
       {selectedCell && (() => {
         const community = communities.find((c) => c.subreddit === selectedCell.subreddit);
         const row = rows.find((r) => r.pain_point === selectedCell.pain_point);
         const cellFindings = community ? community.findings.filter((f) => f.pain_point === selectedCell.pain_point) : [];
-        const quotes = painPointExamples(cellFindings, 4)[selectedCell.pain_point] || [];
+        const quotes = painPointExamples(cellFindings, 20)[selectedCell.pain_point] || [];
         return (
           <div style={{ marginTop: 16, padding: 18, borderRadius: 12, background: "var(--card)", border: "1px solid var(--amber)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
               <div className="eyebrow" style={{ color: "var(--amber)" }}>
                 {community?.label} × {row?.label} · {cellFindings.length} finding{cellFindings.length === 1 ? "" : "s"}
+                {quotes.length < cellFindings.length && ` · showing ${quotes.length}`}
               </div>
               <button
                 onClick={() => setSelectedCell(null)}
@@ -125,7 +140,7 @@ export function PainPointHeatmap({
               </button>
             </div>
             {quotes.length > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 360, overflowY: "auto", paddingRight: 4 }}>
                 {quotes.map((ex, i) => (
                   <QuoteRow key={i} ex={ex} />
                 ))}
@@ -138,7 +153,7 @@ export function PainPointHeatmap({
       })()}
 
       <div style={{ marginTop: 14, fontSize: 11.5, color: "var(--ink-faint)", lineHeight: 1.6 }}>
-        Color is normalized per row, not globally - each pain point's own darkest cell is its own peak, so a smaller community's real signal on that specific issue is still visible next to a bigger one. Hover a cell for the exact reading, click a lit cell for the evidence right here below.
+        Color is normalized per row, not globally - each pain point's own darkest cell is its own peak, so a smaller community's real signal on that specific issue is still visible next to a bigger one. A low count from a low-volume community will correctly look dim here, that's the row's own scale, not a bug. Cells marked with a dashed border and ¹ are from a community with zero strong-tier findings overall (currently r/hyrox) - the color reflects raw volume only, not confidence, so treat those specific numbers as directional. Hover a cell for the exact reading, click a lit cell for the evidence right here below.
       </div>
     </div>
   );

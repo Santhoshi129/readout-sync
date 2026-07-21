@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { StatTiles } from "@/components/Charts";
 import { CommunitySelector } from "@/components/CommunitySelector";
 import { PainPointStackedBars } from "@/components/PainPointStackedBars";
@@ -86,11 +86,6 @@ export function RetentionResearchDashboard({
   ];
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
-  const evidencePanelRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
-  const [scrollTrigger, setScrollTrigger] = useState(0);
-  const [evidenceFromChart, setEvidenceFromChart] = useState(false);
-  const [expandedEvidenceQuote, setExpandedEvidenceQuote] = useState<string | null>(null);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -162,33 +157,24 @@ export function RetentionResearchDashboard({
   const coverageNarrative = useMemo(() => soWhatCoverage(coverageRows, communities.length), [coverageRows, communities.length]);
   const longTail = useMemo(() => longTailStats(scopedCommunities), [scopedCommunities]);
   const combinedNotes = useMemo(() => combinedTakeaways(radarAxesData, coverageRows, communities.length), [radarAxesData, coverageRows, communities.length]);
-  const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 2), [memberFindingsForRadar]);
-  const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 2), [ownerFindingsForRadar]);
+  // 20, not the old 2 - these now feed GapBarChart's own inline evidence
+  // expansion directly, and a header claiming "(84 findings)" next to a
+  // 2-item list was exactly the mismatch that made scrolling pointless.
+  const memberExamples = useMemo(() => painPointExamples(memberFindingsForRadar, 20), [memberFindingsForRadar]);
+  const ownerExamples = useMemo(() => painPointExamples(ownerFindingsForRadar, 20), [ownerFindingsForRadar]);
   const activePainPointLabel = filters.painPoint !== "All" ? painPointLabel(filters.painPoint) : null;
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    if (activePainPointLabel && evidencePanelRef.current) {
-      evidencePanelRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [scrollTrigger]);
   const selectCombinedPainPoint = (pp: string) => {
-    setEvidenceFromChart(false);
     select("painPoint", pp);
   };
-  // Only GapBarChart selections open the shared evidence panel and
-  // page-jump to it. Cross-community pain points, Feature development,
-  // and the heatmap all render their own evidence inline now (below or
-  // near whatever you clicked), so opening the shared panel too would
-  // show the exact same quotes twice on screen at once.
+  // GapBarChart now expands its own evidence inline, directly under
+  // whichever row was clicked - no shared panel, no scroll. This just
+  // keeps the global painPoint filter (and therefore cross-highlighting
+  // with the heatmap/cross-community table) in sync with whatever's
+  // expanded in the chart.
   const selectCombinedAxis = (label: string) => {
     const axis = radarAxesData.find((a) => a.label === label);
     if (axis) {
-      setEvidenceFromChart(true);
       select("painPoint", axis.key);
-      setScrollTrigger((t) => t + 1);
     }
   };
   // Community pill click sets both filters explicitly (not a toggle like
@@ -196,17 +182,8 @@ export function RetentionResearchDashboard({
   // land on "coaching quality, r/f45", not sometimes clear it depending on
   // what was already selected.
   const selectCommunityAndPainPoint = (subreddit: string, pp: string) => {
-    setEvidenceFromChart(false);
     setFilters((prev) => ({ ...prev, painPoint: pp, community: `r/${subreddit}` }));
   };
-  const allCombinedFindings = useMemo(() => scopedCommunities.flatMap((c) => c.findings), [scopedCommunities]);
-  const selectedCombinedRow = filters.painPoint !== "All" ? coverageRows.find((r) => r.pain_point === filters.painPoint) : null;
-  const selectedCombinedFindings = useMemo(
-    () => (filters.painPoint !== "All" ? allCombinedFindings.filter((f) => f.pain_point === filters.painPoint) : []),
-    [allCombinedFindings, filters.painPoint]
-  );
-  const selectedRelevanceBreakdown = useMemo(() => appRelevanceBreakdown(selectedCombinedFindings), [selectedCombinedFindings]);
-  const selectedTimeline = useMemo(() => timelineBreakdown(selectedCombinedFindings), [selectedCombinedFindings]);
   const memberCommunities = communities.filter((c) => MEMBER_SUBREDDITS.includes(c.subreddit));
   const ownerCommunities = communities.filter((c) => OWNER_SUBREDDITS.includes(c.subreddit));
   const topBuildable = [...coverageRows].sort((a, b) => b.buildableCount - a.buildableCount).slice(0, 6);
@@ -725,150 +702,12 @@ export function RetentionResearchDashboard({
                     active={activePainPointLabel}
                     memberLabel={`Members (${memberFindingsForRadar.length} findings)`}
                     ownerLabel={`Owners (${ownerFindingsForRadar.length} findings)`}
+                    memberExamples={memberExamples}
+                    ownerExamples={ownerExamples}
+                    painPointMeaning={PAIN_POINT_MEANING}
                   />
                 </div>
                 <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.6, color: "var(--ink-dim)", maxWidth: 760 }}>{radarNarrative}</div>
-
-                {activePainPointLabel && evidenceFromChart && (
-                  <div ref={evidencePanelRef} style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid var(--border)" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
-                      <div className="eyebrow" style={{ color: "var(--amber)" }}>Evidence for: {activePainPointLabel}</div>
-                      <button
-                        onClick={() => clear("painPoint")}
-                        style={{ background: "transparent", border: "1px solid var(--border)", borderRadius: 999, color: "var(--ink-dim)", fontFamily: "var(--mono)", fontSize: 10.5, padding: "4px 10px", cursor: "pointer" }}
-                      >
-                        CLEAR
-                      </button>
-                    </div>
-                    {PAIN_POINT_MEANING[filters.painPoint] && (
-                      <div style={{ fontSize: 14, color: "var(--ink)", lineHeight: 1.55, marginBottom: 18, maxWidth: 760 }}>
-                        {PAIN_POINT_MEANING[filters.painPoint]}
-                      </div>
-                    )}
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>SOURCE COMMUNITIES</div>
-                        {selectedCombinedRow ? (
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                            {selectedCombinedRow.communities.map((c) => (
-                              <span
-                                key={c.subreddit}
-                                onClick={() => c.count > 0 && selectCommunityAndPainPoint(c.subreddit, filters.painPoint as string)}
-                                style={{
-                                  fontSize: 11.5,
-                                  fontFamily: "var(--mono)",
-                                  padding: "4px 10px",
-                                  borderRadius: 999,
-                                  border: `1px solid ${filters.community === `r/${c.subreddit}` ? "var(--amber)" : c.count > 0 ? "var(--border)" : "var(--border-soft)"}`,
-                                  color: c.count > 0 ? "var(--ink)" : "var(--ink-faint)",
-                                  background: filters.community === `r/${c.subreddit}` ? "rgba(201,168,76,0.12)" : c.count > 0 ? "var(--card)" : "transparent",
-                                  cursor: c.count > 0 ? "pointer" : "default",
-                                }}
-                              >
-                                {c.label}: {c.count}
-                              </span>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>CAN TWU FIX THIS?</div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                          {selectedRelevanceBreakdown.map((a) => (
-                            <div key={a.key} style={{ fontSize: 12.5, display: "flex", alignItems: "baseline", gap: 8 }}>
-                              <span style={{ fontWeight: 700, fontSize: 16, color: a.key === "core_fit" ? "var(--hot)" : a.key === "partial_fit" ? "var(--amber)" : "var(--ink-faint)", minWidth: 24 }}>{a.count}</span>
-                              <span style={{ color: "var(--ink-dim)" }}>
-                                {a.key === "core_fit" && `findings TWU's product could directly address`}
-                                {a.key === "partial_fit" && `findings TWU could help with around the edges, not solve outright`}
-                                {a.key === "not_addressable" && `findings outside what a connection layer can fix (staffing, pricing, facility, etc.)`}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--border-soft)", marginBottom: 14 }}>
-                      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.05em", marginBottom: 10 }}>OVER TIME</div>
-                      <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 44 }}>
-                        {selectedTimeline.map(([q, count]) => {
-                          const maxT = Math.max(1, ...selectedTimeline.map((t) => t[1]));
-                          return (
-                            <div key={q} title={`${q}: ${count}`} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
-                              <div style={{ width: "100%", maxWidth: 14, background: "var(--series-a)", borderRadius: 2, height: `${Math.max(3, (count / maxT) * 100)}%` }} />
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div style={{ fontSize: 11, color: "var(--ink-faint)", marginTop: 6 }}>
-                        {selectedTimeline.length > 0 ? `${selectedTimeline[0][0]} through ${selectedTimeline[selectedTimeline.length - 1][0]}, ${selectedTimeline.reduce((s, t) => s + t[1], 0)} findings total` : "No dated findings"}
-                      </div>
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-a)" }}>
-                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT MEMBERS SAY</div>
-                        {memberExamples[filters.painPoint]?.length ? (
-                          <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
-                            {memberExamples[filters.painPoint].map((ex, i) => {
-                              const qKey = `member::${i}`;
-                              const isQOpen = expandedEvidenceQuote === qKey;
-                              return (
-                                <div
-                                  key={i}
-                                  onClick={() => setExpandedEvidenceQuote((k) => (k === qKey ? null : qKey))}
-                                  style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, padding: "8px 10px", borderRadius: 6, borderLeft: "2px solid var(--series-a)", background: isQOpen ? "var(--card)" : "transparent", cursor: "pointer" }}
-                                >
-                                  {isQOpen ? ex.reasoning : ex.short}
-                                  {ex.evidence && (
-                                    <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
-                                      "{isQOpen || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
-                                    </div>
-                                  )}
-                                  <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{isQOpen ? "tap to collapse" : "tap to read full"}</div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No member findings in this category.</div>
-                        )}
-                      </div>
-                      <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-b)" }}>
-                        <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT OWNERS SAY</div>
-                        {ownerExamples[filters.painPoint]?.length ? (
-                          <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
-                            {ownerExamples[filters.painPoint].map((ex, i) => {
-                              const qKey = `owner::${i}`;
-                              const isQOpen = expandedEvidenceQuote === qKey;
-                              return (
-                                <div
-                                  key={i}
-                                  onClick={() => setExpandedEvidenceQuote((k) => (k === qKey ? null : qKey))}
-                                  style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55, padding: "8px 10px", borderRadius: 6, borderLeft: "2px solid var(--series-b)", background: isQOpen ? "var(--card)" : "transparent", cursor: "pointer" }}
-                                >
-                                  {isQOpen ? ex.reasoning : ex.short}
-                                  {ex.evidence && (
-                                    <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>
-                                      "{isQOpen || ex.evidence.length <= 140 ? ex.evidence : ex.evidence.slice(0, 140) + "…"}"
-                                    </div>
-                                  )}
-                                  <div style={{ marginTop: 4, fontSize: 10.5, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>{isQOpen ? "tap to collapse" : "tap to read full"}</div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>No owner findings in this category.</div>
-                        )}
-                      </div>
-                    </div>
-                    <div style={{ marginTop: 14, fontSize: 12, color: "var(--ink-faint)" }}>
-                      {filters.community !== "All" ? `Filtered to ${filters.community}. ` : ""}Scroll down to "The receipts" for every individual finding, filtered automatically.
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })()}
@@ -1008,10 +847,16 @@ export function RetentionResearchDashboard({
                         </div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                           <div>
-                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>
+                              WHAT MEMBERS SAY {(() => {
+                                const total = radarAxesData.find((a) => a.key === r.pain_point)?.memberCount ?? memberExamples[r.pain_point]?.length ?? 0;
+                                const shown = memberExamples[r.pain_point]?.length ?? 0;
+                                return `(${shown < total ? `showing ${shown} of ${total}` : total})`;
+                              })()}
+                            </div>
                             {memberExamples[r.pain_point]?.length ? (
                               <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
-                                {memberExamples[r.pain_point].slice(0, 3).map((ex, i) => (
+                                {memberExamples[r.pain_point].map((ex, i) => (
                                   <EvidenceQuote key={i} ex={ex} color="var(--series-a)" />
                                 ))}
                               </div>
@@ -1020,10 +865,16 @@ export function RetentionResearchDashboard({
                             )}
                           </div>
                           <div>
-                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
+                            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>
+                              WHAT OWNERS SAY {(() => {
+                                const total = radarAxesData.find((a) => a.key === r.pain_point)?.ownerCount ?? ownerExamples[r.pain_point]?.length ?? 0;
+                                const shown = ownerExamples[r.pain_point]?.length ?? 0;
+                                return `(${shown < total ? `showing ${shown} of ${total}` : total})`;
+                              })()}
+                            </div>
                             {ownerExamples[r.pain_point]?.length ? (
                               <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
-                                {ownerExamples[r.pain_point].slice(0, 3).map((ex, i) => (
+                                {ownerExamples[r.pain_point].map((ex, i) => (
                                   <EvidenceQuote key={i} ex={ex} color="var(--series-b)" />
                                 ))}
                               </div>
@@ -1084,6 +935,30 @@ export function RetentionResearchDashboard({
                   generalText={soWhatPriority(priority)}
                   onClear={() => setFilters((prev) => ({ ...prev, painPoint: "All", relevance: "All" }))}
                 />
+
+                <button
+                  onClick={() => setShowDeepDive((v) => !v)}
+                  className="diagnostics-toggle"
+                  data-open={showDeepDive}
+                  style={{ marginTop: 22 }}
+                >
+                  <span>{showDeepDive ? "Hide the full math" : "Show the full math, the scatter plot and sortable table behind this ranking"}</span>
+                  <span className="chev">&#9656;</span>
+                </button>
+
+                {showDeepDive && (
+                  <div style={{ marginTop: 20 }}>
+                    <div style={{ fontSize: 12.5, color: "var(--ink-dim)", marginBottom: 16 }}>
+                      Same data as the leaderboard above, pooled across every community, plotted so you can see how close the calls actually are, plus a sortable table with a confidence breakdown per pain point.
+                    </div>
+                    <div ref={mapRef}>
+                      <OpportunityMap rows={priority} active={priorityActivePainPoint} onSelect={selectPriority} />
+                    </div>
+                    <div style={{ marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--border-soft)" }}>
+                      <PriorityMatrixTable rows={priority} activePainPoint={priorityActivePainPoint} onSelect={selectPriority} />
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <div style={{ color: "var(--ink-faint)", marginTop: 16 }}>No findings yet.</div>

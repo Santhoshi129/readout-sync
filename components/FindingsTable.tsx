@@ -7,6 +7,7 @@ import {
   AppRelevance,
   CONFIDENCE_TONE,
   CONFIDENCE_RANK,
+  RELEVANCE_RANK,
   APP_RELEVANCE_LABEL,
   APP_RELEVANCE_TONE,
   painPointLabel,
@@ -45,7 +46,7 @@ const TONE_COLOR: Record<string, string> = {
 };
 
 const SORTS: { key: SortKey; label: string }[] = [
-  { key: "default", label: "Severity + Confidence" },
+  { key: "default", label: "App fit + Severity + Confidence" },
   { key: "confidence", label: "Confidence tier" },
   { key: "severity", label: "Severity" },
   { key: "newest", label: "Newest first" },
@@ -150,9 +151,21 @@ export function FindingsTable({
       return true;
     });
     const by: Record<SortKey, (a: Finding, b: Finding) => number> = {
-      default: (a, b) =>
-        (b.pain_severity ?? 0) - (a.pain_severity ?? 0) ||
-        CONFIDENCE_RANK[b.confidence_tier] - CONFIDENCE_RANK[a.confidence_tier],
+      // Groups core-fit before partial-fit before not-addressable first -
+      // otherwise, with the app-fit filter left on "All", findings from all
+      // three buckets interleave purely on severity/confidence, the same
+      // issue CrossCommunityTable's quote lists had before sortByRelevance.
+      // A no-op when the app-fit filter is already narrowed to one value
+      // (every row ties on relevance rank, so severity/confidence decide).
+      default: (a, b) => {
+        const ra = a.app_relevance ? RELEVANCE_RANK[a.app_relevance] : 3;
+        const rb = b.app_relevance ? RELEVANCE_RANK[b.app_relevance] : 3;
+        if (ra !== rb) return ra - rb;
+        return (
+          (b.pain_severity ?? 0) - (a.pain_severity ?? 0) ||
+          CONFIDENCE_RANK[b.confidence_tier] - CONFIDENCE_RANK[a.confidence_tier]
+        );
+      },
       severity: (a, b) => (b.pain_severity ?? 0) - (a.pain_severity ?? 0),
       confidence: (a, b) => CONFIDENCE_RANK[b.confidence_tier] - CONFIDENCE_RANK[a.confidence_tier],
       newest: (a, b) => (b.readable_date ?? "").localeCompare(a.readable_date ?? ""),

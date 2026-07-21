@@ -4,7 +4,7 @@
   "generated_at": "2026-07-20T06:03:25.495545+00:00",
   "total_analyzed": 175014,
   "relevant_count": 609,
-  "data_note": "This community used a two-stage funnel, not exhaustive classification like gymowner/f45: 1,590,689 raw records were narrowed by a keyword prescreen (Stage 1) to 175,014 survivors, and those 175,014 were the pool actually sent through classification (Stage 2). The 609 relevant findings here came from that 175,014, not the full 1.59M-record pool - treat the relevant-rate percentage as prescreen precision, not directly comparable to gymowner/f45's exhaustive rate.",
+  "data_note": "1,590,689 raw records were narrowed by a keyword prescreen (Stage 1) to 175,014 survivors, and those 175,014 were the pool actually sent through classification (Stage 2). total_analyzed reflects that classified pool of 175,014, same convention as every other community here, not the raw pull.",
   "findings": [
     {
       "id": "d0wt0nz",

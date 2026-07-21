@@ -940,6 +940,9 @@ export function RetentionResearchDashboard({
                 <div style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink-dim)" }}>
                   Bar length is the mean absolute percentage-point difference between gymowner and that community across every shared canonical pain point - a rough "how differently do these two groups talk about retention" score, not a judgment of which side is right. Color is relative to these four communities specifically (greenest = most aligned of the four, warmest/most orange = least), not a fixed grade.
                 </div>
+                <div style={{ marginTop: 6, fontSize: 12, color: "var(--ink-faint)", fontStyle: "italic" }}>
+                  Same comparison as "Who talks about what" above, just not pooled - that chart treats all four member communities as one "members" lens, this one keeps them separate so a community unusually in or out of sync with owners doesn't get averaged away.
+                </div>
 
                 <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "130px 1fr 44px", gap: 14 }}>
                   <div />

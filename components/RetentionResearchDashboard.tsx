@@ -810,7 +810,7 @@ export function RetentionResearchDashboard({
                       <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-a)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT MEMBERS SAY</div>
                         {memberExamples[filters.painPoint]?.length ? (
-                          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
                             {memberExamples[filters.painPoint].map((ex, i) => {
                               const qKey = `member::${i}`;
                               const isQOpen = expandedEvidenceQuote === qKey;
@@ -838,7 +838,7 @@ export function RetentionResearchDashboard({
                       <div style={{ padding: 16, borderRadius: 10, background: "var(--card-raised)", border: "1px solid var(--series-b)" }}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 10 }}>WHAT OWNERS SAY</div>
                         {ownerExamples[filters.painPoint]?.length ? (
-                          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
                             {ownerExamples[filters.painPoint].map((ex, i) => {
                               const qKey = `owner::${i}`;
                               const isQOpen = expandedEvidenceQuote === qKey;
@@ -1010,7 +1010,7 @@ export function RetentionResearchDashboard({
                           <div>
                             <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-a)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT MEMBERS SAY</div>
                             {memberExamples[r.pain_point]?.length ? (
-                              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                              <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
                                 {memberExamples[r.pain_point].slice(0, 3).map((ex, i) => (
                                   <EvidenceQuote key={i} ex={ex} color="var(--series-a)" />
                                 ))}
@@ -1022,7 +1022,7 @@ export function RetentionResearchDashboard({
                           <div>
                             <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--series-b)", letterSpacing: "0.05em", marginBottom: 8 }}>WHAT OWNERS SAY</div>
                             {ownerExamples[r.pain_point]?.length ? (
-                              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                              <div className="scroll-panel" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto", paddingRight: 4 }}>
                                 {ownerExamples[r.pain_point].slice(0, 3).map((ex, i) => (
                                   <EvidenceQuote key={i} ex={ex} color="var(--series-b)" />
                                 ))}

@@ -137,7 +137,7 @@ export type CrossCommunityRow = {
   coreFitCount: number;
   partialFitCount: number;
   avgSeverityBuildable: number;
-  communities: { subreddit: string; label: string; count: number }[];
+  communities: { subreddit: string; label: string; count: number; buildableCount: number }[];
   coverage: number;
   universal: boolean;
 };
@@ -154,6 +154,7 @@ export function crossCommunityPainPoints(communities: CommunityDataset[]): Cross
         subreddit: c.subreddit,
         label: c.label,
         count: c.findings.filter((f) => f.pain_point === pp).length,
+        buildableCount: c.findings.filter((f) => f.pain_point === pp && (f.app_relevance === "core_fit" || f.app_relevance === "partial_fit")).length,
       }));
       const allFindings = communities.flatMap((c) => c.findings).filter((f) => f.pain_point === pp);
       const coreFit = allFindings.filter((f) => f.app_relevance === "core_fit");

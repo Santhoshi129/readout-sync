@@ -206,7 +206,7 @@ export function CrossCommunityTable({
                     return (
                       <span
                         key={c.subreddit}
-                        title={c.count > 0 ? `${c.count} finding${c.count === 1 ? "" : "s"} from ${c.label} on ${r.label.toLowerCase()}. Tap to preview.` : `${c.label} has no findings in this category.`}
+                        title={c.count > 0 ? `${c.count} finding${c.count === 1 ? "" : "s"} from ${c.label} on ${r.label.toLowerCase()}, ${c.buildableCount} of them buildable (core-fit or partial-fit, the rest not addressable by software). Tap to preview.` : `${c.label} has no findings in this category.`}
                         onClick={(e) => {
                           e.stopPropagation();
                           if (c.count === 0) return;
@@ -225,10 +225,13 @@ export function CrossCommunityTable({
                           transition: "background 0.1s ease, border-color 0.1s ease",
                         }}
                       >
-                        {c.label}: {c.count}
+                        {c.label}: {c.count}{c.count > 0 ? ` (${c.buildableCount} buildable)` : ""}
                       </span>
                     );
                   })}
+                </div>
+                <div style={{ fontSize: 10, color: "var(--ink-faint)", marginBottom: 8 }}>
+                  {r.buildableCount} of {r.totalCount} total findings for {r.label} are buildable (core-fit or partial-fit) - that's the split shown per community above and in the composition bar; the rest is staffing, facility, or pricing that no software fixes directly.
                 </div>
                 {previewPill?.startsWith(`${r.pain_point}::`) && communities && (() => {
                   const subreddit = previewPill.split("::")[1];

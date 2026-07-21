@@ -580,30 +580,40 @@ export function StatTiles({ tiles }: { tiles: { label: string; value: number | n
 
 function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: string; value: number | null; note?: string; tip?: string; tone?: string; suffix?: string; flag?: string }) {
   const [hover, setHover] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const open = hover || expanded;
   return (
     <div
       className="card"
-      style={{ padding: 24, position: "relative" }}
+      style={{ padding: 24, position: "relative", cursor: note ? "pointer" : undefined }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={() => note && setExpanded((e) => !e)}
     >
       <div
         style={{
           position: "absolute", top: 0, left: 0, right: 0, height: 2,
           borderRadius: "16px 16px 0 0",
           background: `linear-gradient(90deg, ${TONE[tone || "amber"]}, transparent)`,
-          opacity: hover ? 1 : 0.5, transition: "opacity 200ms ease",
+          opacity: open ? 1 : 0.5, transition: "opacity 200ms ease",
         }}
       />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: tone ? TONE[tone] : "var(--ink-faint)" }}>
           {label}
         </div>
-        {flag && flag !== "live" && (
-          <span className={`chip ${flag}`} style={{ fontSize: 9 }}>
-            {flag === "cached" ? "cached" : flag === "not-instrumented" ? "n/a" : "canary"}
-          </span>
-        )}
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          {flag && flag !== "live" && (
+            <span className={`chip ${flag}`} style={{ fontSize: 9 }}>
+              {flag === "cached" ? "cached" : flag === "not-instrumented" ? "n/a" : "canary"}
+            </span>
+          )}
+          {note && (
+            <span style={{ fontSize: 10, color: "var(--ink-faint)", transform: open ? "rotate(180deg)" : "none", transition: "transform 150ms ease" }}>
+              &#9662;
+            </span>
+          )}
+        </div>
       </div>
       <div style={{ fontFamily: "var(--font-head)", fontSize: 32, fontWeight: 800, marginTop: 8 }}>
         {tip ? (
@@ -624,11 +634,14 @@ function StatTile({ label, value, note, tip, tone, suffix, flag }: { label: stri
         // and data-note explanations. Grid-template-rows animating between
         // 0fr and 1fr grows to fit whatever the actual content height is,
         // so nothing is ever truncated regardless of note length.
+        // Driven by tap (expanded) as well as hover, since hover alone
+        // isn't discoverable or usable on touch devices - the small caret
+        // next to the label signals it's tappable either way.
         <div
           style={{
             display: "grid",
-            gridTemplateRows: hover ? "1fr" : "0fr",
-            opacity: hover ? 1 : 0,
+            gridTemplateRows: open ? "1fr" : "0fr",
+            opacity: open ? 1 : 0,
             transition: "grid-template-rows 200ms ease, opacity 200ms ease",
           }}
         >

@@ -43,7 +43,7 @@ function FitBadge({ rel, reasoning }: { rel: AppRelevance | null; reasoning?: st
   const label = rel === "not_addressable" ? "not addressable" : rel === "core_fit" ? "core fit" : "partial fit";
   return (
     <span
-      title={reasoning || "No reasoning captured for this label - it was assigned without a documented rationale."}
+      title={reasoning || undefined}
       style={{
         display: "inline-block",
         fontFamily: "var(--mono)",
@@ -55,12 +55,9 @@ function FitBadge({ rel, reasoning }: { rel: AppRelevance | null; reasoning?: st
         marginBottom: 2,
         color,
         border: `1px solid ${color}`,
-        borderStyle: reasoning ? "solid" : "dashed",
-        opacity: reasoning ? 1 : 0.7,
-        cursor: "help",
       }}
     >
-      {label}{!reasoning && " *"}
+      {label}
     </span>
   );
 }

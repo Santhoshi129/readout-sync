@@ -478,7 +478,11 @@ function shorten(text: string, maxLen = 62): string {
 // format" does. Picks the clearest, highest-confidence findings, not a
 // random sample, so the example shown is representative, not a fluke.
 export type PainPointExample = { reasoning: string; short: string; evidence: string | null; permalink: string; link: string; app_relevance: AppRelevance | null };
-export function painPointExamples(findings: Finding[], perPoint = 3): Record<string, PainPointExample[]> {
+// app_relevance sort precedence when sortByRelevance is on: core_fit first
+// (most actionable), then partial_fit, then not_addressable, with findings
+// missing an app_relevance value pushed to the very end.
+const RELEVANCE_RANK: Record<AppRelevance, number> = { core_fit: 0, partial_fit: 1, not_addressable: 2 };
+export function painPointExamples(findings: Finding[], perPoint = 3, sortByRelevance = false): Record<string, PainPointExample[]> {
   const byPoint: Record<string, Finding[]> = {};
   findings.forEach((f) => {
     const k = f.pain_point || "other";
@@ -488,6 +492,11 @@ export function painPointExamples(findings: Finding[], perPoint = 3): Record<str
   const out: Record<string, PainPointExample[]> = {};
   Object.entries(byPoint).forEach(([pp, group]) => {
     const sorted = [...group].sort((a, b) => {
+      if (sortByRelevance) {
+        const ra = a.app_relevance ? RELEVANCE_RANK[a.app_relevance] : 3;
+        const rb = b.app_relevance ? RELEVANCE_RANK[b.app_relevance] : 3;
+        if (ra !== rb) return ra - rb;
+      }
       const tierDiff = TIER_RANK[a.confidence_tier] - TIER_RANK[b.confidence_tier];
       if (tierDiff !== 0) return tierDiff;
       return (b.pain_severity ?? 0) - (a.pain_severity ?? 0);

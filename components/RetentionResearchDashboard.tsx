@@ -69,6 +69,7 @@ import {
   analyzedNote,
   rawScrapedFor,
   relevantNote,
+  methodologyExplainer,
   NO_SOLUTION_KEY,
   PAIN_POINT_MEANING,
   latestQuarterIndex,
@@ -93,6 +94,7 @@ export function RetentionResearchDashboard({
   const [active, setActive] = useState("all");
   const [filters, setFilters] = useState<TableFilters>(EMPTY_FILTERS);
   const [showDeepDive, setShowDeepDive] = useState(false);
+  const [showMethodology, setShowMethodology] = useState(false);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const ds = useMemo(() => {
@@ -358,6 +360,16 @@ export function RetentionResearchDashboard({
             { label: "Strong confidence", value: tiers.strong, tone: "hot", note: `${tiers.moderate} moderate, ${tiers.weak} weak${isRecencyScoped ? ", within the scoped last-12-months set" : ""}. Strong/moderate/weak reflects how confident the reasoning is, not how severe the pain point is.` },
           ]}
         />
+        <button
+          onClick={() => setShowMethodology((v) => !v)}
+          className="diagnostics-toggle"
+          data-open={showMethodology}
+          style={{ marginTop: 14 }}
+        >
+          <span>{showMethodology ? "Hide the methodology" : "Why raw and analyzed differ"}</span>
+          <span className="chev">&#9656;</span>
+        </button>
+        {showMethodology && <MethodologyPanel ds={ds} />}
       </section>
 
       {!showCombinedExtras && (
@@ -1653,6 +1665,66 @@ function EvidenceQuote({ ex, color }: { ex: { reasoning: string; short: string; 
         >
           view original thread &#8599;
         </a>
+      )}
+    </div>
+  );
+}
+
+// "Why raw and analyzed differ" - a per-community breakdown of the raw
+// scrape count vs. what actually reached classification vs. what turned out
+// relevant, plus the plain-English reason for the gap (or lack of one).
+// Scoped by methodologyExplainer() to either the full 5-community picture
+// (with the orangetheory sampling caveat) or a single community's own row.
+function MethodologyPanel({ ds }: { ds: CommunityDataset }) {
+  const { intro, rows, caveat } = methodologyExplainer(ds);
+  return (
+    <div style={{ marginTop: 14, padding: "18px 20px", borderRadius: 12, border: "1px solid var(--border-soft)", background: "var(--card)" }}>
+      {intro && <div style={{ fontSize: 13.5, color: "var(--ink-dim)", lineHeight: 1.6, marginBottom: 18 }}>{intro}</div>}
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {rows.map((row) => (
+          <div key={row.label} style={{ padding: "14px 16px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--card-raised)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+              <div style={{ fontFamily: "var(--font-head)", fontSize: 15, fontWeight: 700 }}>{row.label}</div>
+              <span
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 9.5,
+                  letterSpacing: "0.05em",
+                  padding: "2px 9px",
+                  borderRadius: 999,
+                  color: row.prescreened ? "var(--amber)" : "var(--hot)",
+                  border: `1px solid ${row.prescreened ? "var(--amber)" : "var(--hot)"}`,
+                }}
+              >
+                {row.prescreened ? "PRESCREENED" : "NO PRESCREEN"}
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--mono)", fontSize: 13, color: "var(--ink)", flexWrap: "wrap", marginBottom: 8 }}>
+              <span>{row.raw.toLocaleString()} raw</span>
+              <span style={{ color: "var(--ink-faint)" }}>&#8594;</span>
+              <span>{row.analyzed.toLocaleString()} analyzed</span>
+              <span style={{ color: "var(--ink-faint)" }}>&#8594;</span>
+              <span style={{ color: "var(--amber)" }}>{row.relevant.toLocaleString()} relevant</span>
+            </div>
+            <div style={{ fontSize: 12.5, color: "var(--ink-dim)", lineHeight: 1.55 }}>{row.detail}</div>
+          </div>
+        ))}
+      </div>
+      {caveat && (
+        <div
+          style={{
+            marginTop: 16,
+            padding: "12px 16px",
+            borderRadius: 8,
+            border: "1px solid var(--amber-deep)",
+            background: "rgba(201,168,76,0.06)",
+            fontSize: 12.5,
+            color: "var(--amber)",
+            lineHeight: 1.55,
+          }}
+        >
+          {caveat}
+        </div>
       )}
     </div>
   );

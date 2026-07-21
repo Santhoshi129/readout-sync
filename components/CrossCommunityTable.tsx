@@ -1,9 +1,120 @@
 "use client";
 import { useState } from "react";
 import { CrossCommunityRow } from "@/lib/combined-analysis";
-import { APP_RELEVANCE_LABEL, APP_RELEVANCE_TONE, CommunityDataset, Finding, PainPointExample, painPointExamples, severityHistogram, sourceLink, timelineBreakdown } from "@/lib/retention-research";
+import {
+  APP_RELEVANCE_TONE,
+  AppRelevance,
+  CommunityDataset,
+  CONFIDENCE_TONE,
+  ConfidenceTier,
+  Finding,
+  PainPointExample,
+  painPointExamples,
+  severityHistogram,
+  sourceLink,
+  timelineBreakdown,
+} from "@/lib/retention-research";
 
 const SEVERITY_COLOR = (s: number) => (s >= 3.5 ? "var(--bad)" : s >= 2.5 ? "var(--amber)" : "var(--ink-dim)");
+// Text-safe tone lookup - APP_RELEVANCE_TONE/CONFIDENCE_TONE map to CSS custom
+// property names ("muted", "hot"...), and "muted" is a dark background color
+// (--muted), unreadable as text. FindingsTable.tsx and SectionInsight.tsx
+// solve this the same way: map the tone name to an actual foreground color.
+const TONE_COLOR: Record<string, string> = { hot: "var(--hot)", amber: "var(--amber)", muted: "var(--ink-faint)" };
+
+const APP_FIT_OPTIONS: { value: AppRelevance | "All"; label: string }[] = [
+  { value: "All", label: "All" },
+  { value: "core_fit", label: "Core fit" },
+  { value: "partial_fit", label: "Partial fit" },
+  { value: "not_addressable", label: "Not addressable" },
+];
+const TIER_OPTIONS: { value: ConfidenceTier | "All"; label: string }[] = [
+  { value: "All", label: "All" },
+  { value: "strong", label: "Strong" },
+  { value: "moderate", label: "Moderate" },
+  { value: "weak", label: "Weak" },
+];
+
+// Fit-tier badge, shared by the pill-preview panel and the member/owner
+// quote blocks - same visual, same TONE_COLOR fix, in both places.
+function FitBadge({ rel }: { rel: AppRelevance | null }) {
+  if (!rel) return null;
+  const color = TONE_COLOR[APP_RELEVANCE_TONE[rel]];
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        fontFamily: "var(--mono)",
+        fontSize: 9,
+        letterSpacing: "0.03em",
+        padding: "1px 6px",
+        borderRadius: 999,
+        marginRight: 6,
+        marginBottom: 2,
+        color,
+        border: `1px solid ${color}`,
+      }}
+    >
+      {rel === "not_addressable" ? "not addressable" : rel === "core_fit" ? "core fit" : "partial fit"}
+    </span>
+  );
+}
+
+// Small pill row shared by the app-fit and confidence-tier filters below -
+// each pill shows a live count for what selecting it would leave in view
+// (already combined with whatever the *other* filter is set to), and pills
+// that would leave zero results hide themselves rather than sit there dead.
+function FilterPillRow<T extends string>({
+  optionsLabel,
+  options,
+  active,
+  countFor,
+  onSelect,
+  toneFor,
+}: {
+  optionsLabel: string;
+  options: { value: T; label: string }[];
+  active: T;
+  countFor: (value: T) => number;
+  onSelect: (value: T) => void;
+  toneFor?: (value: T) => string | undefined;
+}) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 6 }}>
+      <span style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--ink-faint)", letterSpacing: "0.05em", marginRight: 2 }}>
+        {optionsLabel}
+      </span>
+      {options.map((opt) => {
+        const count = countFor(opt.value);
+        if (opt.value !== "All" && count === 0) return null;
+        const isActive = active === opt.value;
+        const tone = toneFor?.(opt.value);
+        const color = isActive ? tone ?? "var(--amber)" : "var(--ink-faint)";
+        return (
+          <span
+            key={opt.value}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(opt.value);
+            }}
+            style={{
+              fontFamily: "var(--mono)",
+              fontSize: 10.5,
+              padding: "3px 9px",
+              borderRadius: 999,
+              border: `1px solid ${isActive ? color : "var(--border)"}`,
+              color,
+              background: isActive ? "var(--card-raised)" : "transparent",
+              cursor: "pointer",
+            }}
+          >
+            {opt.label} ({count})
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
 export function CrossCommunityTable({
   rows,
@@ -27,7 +138,8 @@ export function CrossCommunityTable({
   communities?: CommunityDataset[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [buildableOnly, setBuildableOnly] = useState(false);
+  const [appFitFilter, setAppFitFilter] = useState<AppRelevance | "All">("All");
+  const [tierFilter, setTierFilter] = useState<ConfidenceTier | "All">("All");
   const [severityOpen, setSeverityOpen] = useState<string | null>(null); // pain_point whose severity breakdown is showing
   const [previewPill, setPreviewPill] = useState<string | null>(null); // "<pain_point>::<subreddit>"
   const [expandedQuote, setExpandedQuote] = useState<string | null>(null); // "<pain_point>::<side>::<index>"
@@ -243,48 +355,55 @@ export function CrossCommunityTable({
                   // a pain point that's mostly not-addressable (e.g.
                   // crossfit pricing: 5 of 114 buildable) would otherwise
                   // crowd every buildable example out of the first 25 shown,
-                  // since painPointExamples sorts by confidence/severity,
-                  // not by app_relevance.
-                  const sourceFindings = buildableOnly
-                    ? commFindings.filter((f) => f.app_relevance === "core_fit" || f.app_relevance === "partial_fit")
-                    : commFindings;
+                  // now sorted app-fit-first (sortByRelevance) rather than
+                  // purely by confidence/severity, so this still matters for
+                  // getting the not-addressable tail out of the way too.
+                  const sourceFindings = commFindings.filter(
+                    (f) =>
+                      (appFitFilter === "All" || f.app_relevance === appFitFilter) &&
+                      (tierFilter === "All" || f.confidence_tier === tierFilter)
+                  );
                   // Enough examples that the panel's own scroll has real
                   // content to scroll through, instead of a count in the
                   // header that implies far more than the 4 rows actually
                   // shown - jumping to the receipts table for "the rest"
                   // was the workaround for that gap; showing enough right
                   // here removes the need for it.
-                  const commExamples = painPointExamples(sourceFindings, 25)[r.pain_point] || [];
+                  const commExamples = painPointExamples(sourceFindings, 25, true)[r.pain_point] || [];
                   return (
                     <div style={{ marginBottom: 12, padding: "10px 12px", borderRadius: 8, background: "var(--card-raised)", border: "1px solid var(--border-soft)" }}>
-                      <div style={{ marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
-                        <div>
-                          <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
-                            {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}, {commBuildableCount} BUILDABLE
-                            {commExamples.length < sourceFindings.length && ` · showing ${commExamples.length}`}
-                          </div>
-                          <div style={{ fontSize: 10, color: "var(--ink-faint)", marginTop: 4 }}>
-                            Each quote's badge shows whether it's <span style={{ color: "var(--hot)" }}>core fit</span>, <span style={{ color: "var(--amber)" }}>partial fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - only core + partial fit count toward "buildable" above.
-                          </div>
+                      <div style={{ marginBottom: 6 }}>
+                        <div style={{ fontFamily: "var(--mono)", fontSize: 9.5, color: "var(--amber)", letterSpacing: "0.05em" }}>
+                          {community?.label.toUpperCase()} · {commFindings.length} FINDING{commFindings.length === 1 ? "" : "S"}, {commBuildableCount} BUILDABLE
+                          {commExamples.length < sourceFindings.length && ` · showing ${commExamples.length}`}
                         </div>
-                        {commBuildableCount > 0 && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); setBuildableOnly((b) => !b); }}
-                            style={{
-                              flexShrink: 0,
-                              fontFamily: "var(--mono)",
-                              fontSize: 10,
-                              padding: "4px 10px",
-                              borderRadius: 999,
-                              border: `1px solid ${buildableOnly ? "var(--hot)" : "var(--border)"}`,
-                              color: buildableOnly ? "var(--hot)" : "var(--ink-faint)",
-                              background: buildableOnly ? "rgba(212,110,90,0.1)" : "transparent",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {buildableOnly ? `\u2713 buildable only` : `show buildable only`}
-                          </button>
-                        )}
+                        <div style={{ fontSize: 10, color: "var(--ink-faint)", marginTop: 4 }}>
+                          Each quote's badge shows whether it's <span style={{ color: "var(--hot)" }}>core fit</span>, <span style={{ color: "var(--amber)" }}>partial fit</span>, or <span style={{ color: "var(--ink-faint)" }}>not addressable</span> - only core + partial fit count toward "buildable" above.
+                        </div>
+                        <FilterPillRow
+                          optionsLabel="APP FIT"
+                          options={APP_FIT_OPTIONS}
+                          active={appFitFilter}
+                          onSelect={setAppFitFilter}
+                          toneFor={(v) => (v === "All" ? undefined : TONE_COLOR[APP_RELEVANCE_TONE[v as AppRelevance]])}
+                          countFor={(v) =>
+                            commFindings.filter(
+                              (f) => (v === "All" || f.app_relevance === v) && (tierFilter === "All" || f.confidence_tier === tierFilter)
+                            ).length
+                          }
+                        />
+                        <FilterPillRow
+                          optionsLabel="CONFIDENCE"
+                          options={TIER_OPTIONS}
+                          active={tierFilter}
+                          onSelect={setTierFilter}
+                          toneFor={(v) => (v === "All" ? undefined : TONE_COLOR[CONFIDENCE_TONE[v as ConfidenceTier]])}
+                          countFor={(v) =>
+                            commFindings.filter(
+                              (f) => (v === "All" || f.confidence_tier === v) && (appFitFilter === "All" || f.app_relevance === appFitFilter)
+                            ).length
+                          }
+                        />
                       </div>
                       {commExamples.length > 0 ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -300,24 +419,7 @@ export function CrossCommunityTable({
                                 }}
                                 style={{ fontSize: 12, color: "var(--ink-dim)", lineHeight: 1.5, cursor: "pointer", padding: "4px 6px", margin: "-4px -6px", borderRadius: 4, background: isQOpen ? "var(--card)" : "transparent" }}
                               >
-                                {ex.app_relevance && (
-                                  <span
-                                    style={{
-                                      display: "inline-block",
-                                      fontFamily: "var(--mono)",
-                                      fontSize: 9,
-                                      letterSpacing: "0.03em",
-                                      padding: "1px 6px",
-                                      borderRadius: 999,
-                                      marginRight: 6,
-                                      marginBottom: 2,
-                                      color: `var(--${APP_RELEVANCE_TONE[ex.app_relevance]})`,
-                                      border: `1px solid var(--${APP_RELEVANCE_TONE[ex.app_relevance]})`,
-                                    }}
-                                  >
-                                    {ex.app_relevance === "not_addressable" ? "not addressable" : ex.app_relevance === "core_fit" ? "core fit" : "partial fit"}
-                                  </span>
-                                )}
+                                <FitBadge rel={ex.app_relevance} />
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && isQOpen && <div style={{ marginTop: 3, color: "var(--ink-faint)", fontStyle: "italic" }}>"{ex.evidence}"</div>}
                                 <div style={{ marginTop: 3, fontSize: 10, fontFamily: "var(--mono)", color: "var(--ink-faint)" }}>
@@ -354,8 +456,8 @@ export function CrossCommunityTable({
                   const maxT = Math.max(1, ...timeline.map(([, v]) => v));
                   const memberFindings = pooled.filter((f) => f.perspective === "member");
                   const ownerFindings = pooled.filter((f) => f.perspective === "owner");
-                  const memberQuotes = painPointExamples(memberFindings, 25)[r.pain_point] || [];
-                  const ownerQuotes = painPointExamples(ownerFindings, 25)[r.pain_point] || [];
+                  const memberQuotes = painPointExamples(memberFindings, 25, true)[r.pain_point] || [];
+                  const ownerQuotes = painPointExamples(ownerFindings, 25, true)[r.pain_point] || [];
 
                   const quoteBlock = (quotes: PainPointExample[], side: "member" | "owner", count: number) => (
                     <div>
@@ -385,6 +487,7 @@ export function CrossCommunityTable({
                                   cursor: "pointer",
                                 }}
                               >
+                                <FitBadge rel={ex.app_relevance} />
                                 {isQOpen ? ex.reasoning : ex.short}
                                 {ex.evidence && (
                                   <div style={{ marginTop: 4, color: "var(--ink-faint)", fontStyle: "italic" }}>

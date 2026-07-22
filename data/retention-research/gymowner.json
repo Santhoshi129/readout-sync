@@ -77,7 +77,7 @@
       "evidence_snippet": "we almost shut down during covid and one big reason we survived was moving everything online booking, payments, even classes",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Moving booking, payments, and classes online during COVID is billing/booking software adoption - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -202,7 +202,7 @@
       "evidence_snippet": "it almost made me quit the industry entirely",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is a vague emotional statement about nearly quitting the industry, without a specific mechanism - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -252,7 +252,7 @@
       "evidence_snippet": "over the past 2 years it started to dip and idk what to do",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague statement about a two-year dip with no specifics is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -327,7 +327,7 @@
       "evidence_snippet": "Migration errors have cost us real membership revenue. Hundreds of client records \u2014 including stored payment information for nearly 300 clients \u2014 did not transfer cleanly",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Switching billing/CRM platforms after documented migration failures and lost client records is a software-migration issue - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -377,7 +377,7 @@
       "evidence_snippet": "realized I'd left fifteen grand on the table from people who slipped through the cracks. Now I have an automated dunning sequence",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Recovering fifteen thousand dollars in missed revenue through automated failed-payment tracking is a billing-automation win - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -427,7 +427,7 @@
       "evidence_snippet": "It catches failed payments and automatically retries. Probably saved us 1000s in missed payments.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A named platform (Glofox) automatically catching and retrying failed payments is billing-automation software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -452,7 +452,7 @@
       "evidence_snippet": "3 gyms have reached out and asked me for help in fixing their client churn and LTV problems",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is a coach's own paid consulting service helping other gyms with churn and lifetime value - a human consulting offering, not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -502,7 +502,7 @@
       "evidence_snippet": "Trailing 12 months alone went from 650 members to 550 members.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A bare membership-decline statistic (650 to 550) with no mechanism named is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -552,7 +552,7 @@
       "evidence_snippet": "a competitor opened up 10 minutes away, and we lost about 15% of our members. At least half of them ended up returning.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "Losing 15% of members to a nearby competitor opening is a competitive-market dynamic - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -577,7 +577,7 @@
       "evidence_snippet": "I'm at ~2,000 members but as I increase signups, cancellations are rising.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "An observation that cancellations are rising alongside signups, with no specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -1077,7 +1077,7 @@
       "evidence_snippet": "if you're still using separate software for billing, scheduling, and workout programming, you're bleeding members.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Switching to a unified gym-management platform for billing, scheduling, and programming is owner-facing operations software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1352,7 +1352,7 @@
       "evidence_snippet": "failed cards that nobody notices immediately... once membership count grows, it becomes really easy for things to slip through the cracks",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A centralized system tying memberships and billing together, catching failed cards early, is billing/membership-administration software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1377,7 +1377,7 @@
       "evidence_snippet": "Exit surveys fixed that for me. Simple form. Two questions. Honest answers. Once the data started coming in the patterns became impossible to ignore",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Two-question exit surveys to segment churn causes is a business feedback/data-collection tool - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1402,7 +1402,7 @@
       "evidence_snippet": "once I hit around 20 clients the admin just ate up all my time. forms, chasing payments, sending reminders etc.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Admin overload from forms, payment-chasing, and reminders once client count grows is a billing/admin-burden issue - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1427,7 +1427,7 @@
       "evidence_snippet": "Automate the detection, keep the human on the touch.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Automated dunning (card retry, auto-email, escalation flags) is billing-automation software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1477,7 +1477,7 @@
       "evidence_snippet": "Members would book a class, the payment would fail silently, and they would show up anyway with no record of it being flagged",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Tight integration between scheduling and billing to prevent silent payment failures is booking/billing-software integration - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1552,7 +1552,7 @@
       "evidence_snippet": "\"who came in April but hasn't been in June?\" \"how much revenue am I missing?\"",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Plain-English querying over spreadsheets for revenue and attendance answers is a business-intelligence tool - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1627,7 +1627,7 @@
       "evidence_snippet": "The key is automating the catch, not the response. Consistent escalation without being tone-deaf.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Automated flagging of accounts five days past due, with escalation, is billing-collections automation - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1702,7 +1702,7 @@
       "evidence_snippet": "they need to actually configure retry schedules and dunning flows",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Configuring retry schedules and dunning flows in billing software is a billing-automation task - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1977,7 +1977,7 @@
       "evidence_snippet": "I want to avoid going one by one and manually marking the payments or membership as paid",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Wanting to avoid manually marking payments as paid one by one is a billing-admin efficiency request - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2027,7 +2027,7 @@
       "evidence_snippet": "My people forget to pay me",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Members forgetting to pay is a billing-collections issue - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2052,7 +2052,7 @@
       "evidence_snippet": "flagging bounced/failed payments and preventing further bookings until resolved (her biggest issue)",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "A named vendor's add-on layer (on Mindbody) flagging bounced payments and blocking further bookings is billing-automation software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2252,7 +2252,7 @@
       "evidence_snippet": "The administrative time burden and all that revenue slipping through the cra[cks]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Switching from pen-and-paper or Excel tracking to dedicated software to reduce admin burden and revenue leakage is a business-operations software need - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2277,7 +2277,7 @@
       "evidence_snippet": "it doesn't give me analytics that are worth a damn. It's a giant pain in the ass to have to do all that myself.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "A critique that existing analytics aren't worth much and require manual work is a business-intelligence/reporting software gap - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2377,7 +2377,7 @@
       "evidence_snippet": "not getting a proper management platform in place, caused us having so much admin overhead that was completely unnecessary",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Lacking a proper management platform causing excessive admin overhead is a business-operations software gap - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {

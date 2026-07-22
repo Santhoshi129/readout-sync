@@ -592,7 +592,7 @@
       "pain_point_reasoning": "Describes the tradeoff of raising prices on members who already pay but don't attend, flagging that this could push them to cancel.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Explicitly identifies a mechanism ('gets them to cancel') affecting a meaningful segment, though not quantified.",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -602,8 +602,8 @@
       "evidence_snippet": "dealing with that large percentage of members that pay but don't come. This might be the thing that gets them to cancel.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is the ghost-member problem (paying but not attending) again - TWU's engagement-visibility features could help surface and re-engage this group, though nothing specific is proposed here.",
+      "outside_scope_type": null
     },
     {
       "id": "lkxtme7",
@@ -652,7 +652,7 @@
       "evidence_snippet": "Cheap leads that are costly to bring in end up churning quick.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is an observation about cheap leads churning quickly - a customer-acquisition-cost and lead-quality issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -702,8 +702,8 @@
       "evidence_snippet": "Studios seem to be leaving Class Pass in pretty large numbers lately. The conversion just isnt there and it ends up costing money.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Studios leaving a third-party booking marketplace (ClassPass) due to poor conversion is a marketing-channel and booking-platform issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nr2zxhs",
@@ -1127,8 +1127,8 @@
       "evidence_snippet": "Almost every-time we have run a front-end offer (discount, promo, etc.) everything has been worse (show rate, close rate, LTV., etc.)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
-      "outside_scope_type": "adjacent_tooling"
+      "app_relevance_reasoning": "Stopping discount-based front-end offers because they attracted the wrong customers is a pricing/marketing-strategy decision - not something a connection app changes.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ol9t6u6",
@@ -1152,7 +1152,7 @@
       "evidence_snippet": "our lifecycle has definitely increased year over year as we've attracted more of the right clients (e.g. individuals who are not price sensitive)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Filtering for non-price-sensitive clients is a customer-targeting and pricing-positioning strategy - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1177,8 +1177,8 @@
       "evidence_snippet": "I recall TwoBrain pulling 24+ as functional industry average you should aim at with retention goals. My gyms scored 29 months",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
-      "outside_scope_type": "adjacent_tooling"
+      "app_relevance_reasoning": "Setting a retention-tenure benchmark based on industry data is a business goal-setting practice - not something a connection app provides.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "olqctuq",
@@ -2152,7 +2152,7 @@
       "evidence_snippet": "My concern is preserving the relationship. I don't want them to feel like I'm taking something away from them",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a coach's concern about preserving the coaching relationship while transitioning a client's training structure - a service-design and business-relationship issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2302,7 +2302,7 @@
       "evidence_snippet": "free trials - heavily discounted promos I just find they don't lead to long term clients and devalue my brand",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a critique that heavily discounted promos devalue the service and don't produce long-term clients - a pricing/marketing-strategy issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2402,7 +2402,7 @@
       "evidence_snippet": "giving away too many deals (hurting themselves long-term)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a caution about giving away too many deals hurting the business long-term - a pricing-strategy issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2552,8 +2552,8 @@
       "evidence_snippet": "one of my bigger regrets was over relying on ClassPass to bring traffic into the studio in the beginning",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Regretting over-reliance on a third-party marketplace (ClassPass) for traffic is a business-channel-strategy issue involving booking-platform software - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nvo6gdx",
@@ -3527,7 +3527,7 @@
       "evidence_snippet": "Promotions - These are the worst. \"Get 3 classes for $50\" or \"$1 for your first month\".",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a member's critique of gimmicky promotional pricing tactics - a pricing/marketing-strategy issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5127,7 +5127,7 @@
       "evidence_snippet": "12 month commitment and get 1 month free!! That really worked in my favor",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A 12-month commitment with a free month as an incentive is a contract/pricing structure - not something a connection app builds.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5677,7 +5677,7 @@
       "evidence_snippet": "I would emphasize retention as it sounds like your price point is at a level where keeping might be more difficult.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is strategic advice about prioritizing retention over acquisition given the price point - a business-strategy recommendation, not something a connection app implements directly.",
       "outside_scope_type": "operational"
     },
     {
@@ -6102,7 +6102,7 @@
       "evidence_snippet": "What changed things was dropping the hard 12\u2011month ask at the beginning and treating the first 90 days like a \"dating phase.\"",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Replacing a hard 12-month commitment with a month-to-month structure is a contract/pricing-policy change - not something a connection app builds.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6127,8 +6127,8 @@
       "evidence_snippet": "I would remove the 12 month 'commitment.' There is a psychology with a commitment:Time frame:cost ratio they can scare people",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is advice to remove long-term commitment requirements based on pricing psychology - a contract-structure recommendation, not something a connection app implements.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ofd89yv",
@@ -6152,7 +6152,7 @@
       "evidence_snippet": "Discounts work, but not the best ROI long-term.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a marketing-strategy recommendation favoring low-friction trials and referral programs over discounts - a business-growth strategy, not something a connection app builds.",
       "outside_scope_type": "operational"
     },
     {

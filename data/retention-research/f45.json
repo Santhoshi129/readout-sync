@@ -1029,7 +1029,7 @@
       "evidence_snippet": "the trainers have always been really good in helping me modify and making sure I\u2019m not overdoing it... I still trained everyday and now I\u2019m tape free again and back at full functionality.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Trainers helping modify exercises to prevent overdoing it is coaching attentiveness around injury prevention - not something a connection app replicates.",
       "outside_scope_type": "operational"
     },
     {
@@ -1469,7 +1469,7 @@
       "pain_point_reasoning": "Quit F45 after 3 months and returned to OTF: friends/'crew' were at OTF, founders rate $30/mo cheaper, and F45 was farther away",
       "pain_severity": 4,
       "pain_severity_reasoning": "Explicitly cancelled F45 membership",
-      "app_relevance": "not_addressable",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -1479,8 +1479,8 @@
       "evidence_snippet": "I also had a founders rate (30 bucks cheaper than F45) and the F45 was further away... Just missed my crew and wanted to get back there.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Choosing to stay despite a cheaper, closer alternative specifically because he missed his 'crew' is community bond directly outweighing price and convenience - exactly the retention value TWU's connection features aim to create.",
+      "outside_scope_type": null
     },
     {
       "id": "egmknca",
@@ -1904,7 +1904,7 @@
       "evidence_snippet": "chat to your trainers, they took me around each morning and we chatted about what to avoid and change.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Trainers walking through daily modifications for an injury each morning is coaching attentiveness - not something a connection app replicates.",
       "outside_scope_type": "operational"
     },
     {
@@ -1979,7 +1979,7 @@
       "evidence_snippet": "the trainers are fine with you modifying your excersise, as long as you are not slacking off and have good form. After a 6 months of training and losing >20kg. I have no more knee pain.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Trainer-approved exercise modifications for an injury are coaching guidance - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -2054,7 +2054,7 @@
       "evidence_snippet": "I busted my meniscus in F45 and had no surgery but 4 months off...after ignoring the pain.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "This is a medical recovery plan (physio, ice, anti-inflammatories) after a meniscus injury - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -2079,7 +2079,7 @@
       "evidence_snippet": "I really didn\u2019t want to quit either so now I just make it work!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Taking a week off, getting a knee brace, and modifying exercises is a personal injury-management approach - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -2229,7 +2229,7 @@
       "evidence_snippet": "Honestly, I thought it would have been the end of f45 for me for ages, but was back doing modified cardio 2 weeks later.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Trainers co-designing modifications each session is coaching attentiveness around an injury; the workout sneak-peeks are a nice touch from staff, not a connection-layer mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -2779,7 +2779,7 @@
       "evidence_snippet": "I actually stopped going to the gym and exactly two weeks later I got my period, so turns out mine was because of the gym! Currently easing my way back in and making sure I\u2019m eating a whole lot more",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Stopping to recover and easing back in gradually, later realizing the cause was hormonal, is a personal health circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2929,7 +2929,7 @@
       "evidence_snippet": "I was kind of worried that I wouldn\u2019t be able to do F45 but even with modifications I was able to maintain my target heart rate so that\u2019s encouraging.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Following an orthopedist's plan with a knee brace and in-class modifications is medical guidance - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -3729,7 +3729,7 @@
       "evidence_snippet": "My studio in San Mateo had a one year long \u201cbiggest loser\u201d transformation. I got a year membership, had to attend at least 5 classes a week and post on social media about it. Today was my year anniversary",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A year-long 'biggest loser' transformation program with attendance requirements is the studio's own program design - not something a connection app builds.",
       "outside_scope_type": "operational"
     },
     {
@@ -3779,7 +3779,7 @@
       "evidence_snippet": "my gym is super pushy about the final scan and losing the weight with twice weekly calls, whats app groups, and the trainers asking us if we're on the plan each time we train",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Being pushed hard about final scan results and weight loss through calls and WhatsApp groups is a coaching/business-pressure tactic - not something a connection app creates or should replicate.",
       "outside_scope_type": "operational"
     },
     {
@@ -4529,7 +4529,7 @@
       "evidence_snippet": "saying I burned hundreds of calories more makes it seem like the workout is far more effective than it actually is, which encourages me to return",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Skepticism about inflated calorie-burn marketing claims is a trust/marketing-accuracy issue - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -4629,7 +4629,7 @@
       "evidence_snippet": "I\u2019ve had the sorest knee just lately!!! ... I\u2019ve had to stop doing so much jumpy cardio now cause it got so bad.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A sore knee requiring less high-impact cardio is a personal injury circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -7029,7 +7029,7 @@
       "evidence_snippet": "Coach came over and checked on me within a minute or so... We've got a fantastic coaching staff. I've got every intention of lifting less and modifying when I go back.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A coach checking on an injured member within a minute is fast, attentive coaching - not a mechanism a connection app replicates.",
       "outside_scope_type": "operational"
     },
     {
@@ -7129,7 +7129,7 @@
       "evidence_snippet": "I was die-hard OTF. Well over 1000 classes... after a month of F45 I quit OTF and havent looked back",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "This is a personal preference switch from one gym to another with no specific mechanism named - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -7179,7 +7179,7 @@
       "evidence_snippet": "The thing that keeps me coming back is being a cheap ass, and this being by far the most expensive \"gym\" I've ever been a member of...",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Staying partly because being frugal makes it hard to walk away from the price paid is a personal psychology tied to cost - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -7354,7 +7354,7 @@
       "evidence_snippet": "Mine was raging when I began F45. I stopped for a month to rehab my knees and when I returned, I stopped all high impact exercises",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Taking a month off to rehab and returning with high-impact moves dropped is a personal injury-recovery approach - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -7829,7 +7829,7 @@
       "evidence_snippet": "I tore my calf muscle in varsity a week and a half ago! So I'm out for at least 6-8 weeks :(",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A torn calf muscle requiring six to eight weeks off is a health event - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -8154,7 +8154,7 @@
       "evidence_snippet": "I had to take off a few weeks (2) and then I would lift much lighter than before... Its been a few months now and it has not happened again and I have gained enough strenght... I am lifting more than before.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Taking time off and returning at a lighter intensity with trainer guidance is a personal recovery approach paired with coaching support - not something a connection app replicates.",
       "outside_scope_type": "operational"
     },
     {
@@ -8454,7 +8454,7 @@
       "evidence_snippet": "I'm taking a break now because of the corona virus that's going around - trying to avoid being out and about for too long/much, so I'm missing it!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A break taken due to COVID concerns is a personal health-safety decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -8629,7 +8629,7 @@
       "evidence_snippet": "I'm off F45 too for the last 2 weeks then I'll get surgery soon to have gallbladder remove... I probably won't be back until April arrgghh.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Time off for gallbladder surgery is a medical event - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -9654,7 +9654,7 @@
       "evidence_snippet": "I cancelled my membership at the 4S studio where the \"global\" female champion worked as a coach.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Cancelling after finding out about a specific coach's background, with no further detail given, is too vague to point to a concrete mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -11354,7 +11354,7 @@
       "evidence_snippet": "I already had in mind to stop for a little while or possibly cancel, but this virus just escalated it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "A pre-existing intent to pause or cancel that COVID accelerated is a personal circumstance and health-safety decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13044,7 +13044,7 @@
       "pain_point_reasoning": "Long-time OTF member is torn about switching to F45 with her daughter, worried about burnout and feeling F45 skews to a younger crowd",
       "pain_severity": 2,
       "pain_severity_reasoning": "Genuine indecision about switching gyms, no resolution reached, but no immediate financial loss described",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -13054,8 +13054,8 @@
       "evidence_snippet": "Now I'm torn...F45 is hard and I worry I might get burnt out...I also feel that the F45 is more for youngish crowd. I'm in my early 40s.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Feeling like F45 skews toward a younger crowd and worrying about burnout touches on community fit - TWU's connection features could help surface people with more similar circumstances, though it can't change the studio's actual member mix.",
+      "outside_scope_type": null
     },
     {
       "id": "au9nyi",
@@ -13079,7 +13079,7 @@
       "evidence_snippet": "I've been going to Orange Theory consistently for two years and my progress is stagnant...I really liked it. Do I make the switch?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Two years of stagnant progress prompting consideration of a switch is a programming-effectiveness issue - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -13354,7 +13354,7 @@
       "evidence_snippet": "loved it but I can't decide if I want to ditch my orangetheory membership for it",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Being torn about switching gyms despite loving the current one is a personal preference decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -13669,7 +13669,7 @@
       "pain_point_reasoning": "New corporate 'no kid' policy bars bringing a toddler to class, which was the only way both parents could attend workouts together",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member explicitly states one partner will have to quit, directly cutting household workout frequency by 3-5 sessions/week",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -13679,8 +13679,8 @@
       "evidence_snippet": "one of us is going to have to quit since it's gonna reduce workouts by 3-5/week",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "One of two workout partners needing to quit because something is cutting their shared sessions touches the workout-partner dynamic TWU's matching feature supports, though what's actually reducing the sessions isn't specified here.",
+      "outside_scope_type": null
     },
     {
       "id": "d3fnmc",
@@ -15879,7 +15879,7 @@
       "evidence_snippet": "We're sadly moving out of the city (London) so I had to give my notice and now my membership is up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a personal injury/health circumstance, relocation, cross-gym comparison, pricing, or coaching-staff behavior, none of which a connection-layer app changes.",
+      "app_relevance_reasoning": "Moving out of the city and ending the membership is a relocation circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {

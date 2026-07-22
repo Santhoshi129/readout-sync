@@ -3229,7 +3229,7 @@
       "evidence_snippet": "I went to orange theory for many years and just switched two months ago... I needed more weight training than I was getting at OTF. I would do both if I could afford it!",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Switching gyms for more weight-training focus is a programming-goal-fit decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -3254,7 +3254,7 @@
       "evidence_snippet": "I did OTF for a couple years, switched to F45 a few months ago. I'll never, ever go back. F45 is so much more fun and functional.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is a strong preference statement after switching gyms, with no specific mechanism named - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -3354,7 +3354,7 @@
       "evidence_snippet": "I made the switch from F45 to OT and am so happy! The workouts just don't compare in my eyes.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Switching back from F45 to a competitor because the workouts compare better is a programming-quality preference - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -3454,7 +3454,7 @@
       "evidence_snippet": "I am getting much better results with the HIIT cardio at F45 than I did at OTF. My friends, who I run with, noticed that I am running noticeably faster since I left OTF.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Getting better HIIT results at F45 than at a competitor is a programming-effectiveness comparison - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -3754,7 +3754,7 @@
       "evidence_snippet": "I just ended my membership with OTF, I don't miss the treads or rowers",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Not missing the treadmills or rowers after ending a membership is a programming-format preference - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4029,7 +4029,7 @@
       "evidence_snippet": "during transition timings there isn't sufficient time to change the weights that she want... Eventually she left f45 to went on to a traditional gym",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Not having enough time to change weights during transitions is a program-pacing/format constraint - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4104,7 +4104,7 @@
       "evidence_snippet": "I did OTF for 3 years and I\u2019ve been doing F45 for 7 months now and won\u2019t even look back... No more dreadful treadmills and 2000m rows... I also love the community F45 creates",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Not missing the treadmill-heavy format after switching gyms is a programming-format preference - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -4129,7 +4129,7 @@
       "evidence_snippet": "I did OTF for one year before switching to F45 this past December... No matter how much I lost at OTF, I always felt \"flabby\"... OTF is too much cardio based.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This compares personal outcomes between two gyms' programming approaches - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4179,7 +4179,7 @@
       "evidence_snippet": "Fellow recent switcher to F45 here... I feel like I \u201cgraduated\u201d from OTF as I\u2019m getting my ass kicked every single class.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Feeling like she 'graduated' to harder workouts after switching is a programming-difficulty comparison - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -4229,7 +4229,7 @@
       "evidence_snippet": "I loved f45, but I wouldnt go back... I was getting a lot of niggles that I dont get in crossfit. I feel like the programming in f45 leads to potential overload easier than crossfit does",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Getting physical niggles at one gym that don't occur at another is a programming/injury-risk comparison - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4254,7 +4254,7 @@
       "evidence_snippet": "Did CF for 1.5 years and loved it but kept giving myself significant lower back injuries there. That led me to F45 where I've been loving it for over a year now, mostly injury free",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Switching to lower-impact programming after repeated lower-back injuries at a previous gym is an injury-driven programming decision - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -4279,7 +4279,7 @@
       "evidence_snippet": "I decided to cancel my OTF membership after 2 years and make the switch to F45. I just found I wasn't progressing any further at OTF... Also found lots of annoying cliques at OTF where F45 feels more welcoming",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Cancelling after two years for a strength-focused program elsewhere is a programming-goal-fit decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -4754,7 +4754,7 @@
       "evidence_snippet": "Oh my gosh, yes! I went from hating pipeline to loving it when our studio did this.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "A studio changing its class structure and members loving the new version is the studio's own program-design change - not something a connection app makes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4779,7 +4779,7 @@
       "evidence_snippet": "I don't know where they're getting their information but my studio is almost empty when Brixton is on!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Skepticism about attendance claims for a specific class format, based on his own studio's turnout, is a program-popularity observation - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -5229,7 +5229,7 @@
       "evidence_snippet": "I did OTF for a year and while I lost weight, I also lost a ton of strength and muscle tone.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Losing strength and muscle tone despite losing weight on a cardio-heavy program is a programming-tradeoff observation - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5254,7 +5254,7 @@
       "evidence_snippet": "I can run on a treadmill anytime and I hate to spend as much money as I was on OTF to spend half the class on a treadmill.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Resenting paying for class time spent on something free to do elsewhere (treadmill running) is a programming-value complaint - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -5329,7 +5329,7 @@
       "evidence_snippet": "I injured myself on a hopping exercise and was out for three months.  It's ok to adjust down and you can still get a fantastic workout.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "An injury from a hopping exercise requiring three months off, followed by learning to self-modify, is a personal injury circumstance - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -5454,8 +5454,8 @@
       "evidence_snippet": "the more I go on, the less it seems like they actually care to improve on it. Still waiting on the Android Life app... For that reason I'm considering joining crossfit... it's 60 dollars cheaper pm",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Waiting on F45's own app to add feature parity (mentioned specifically for Android) is a complaint about F45's software, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f0l6hzi",
@@ -5479,7 +5479,7 @@
       "evidence_snippet": "In the end I had to leave F45 to go to another generic HIIT gym that has more focus on strength/endurance rather than cardio/weightloss.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Leaving for another gym with more strength/endurance focus is a programming-goal-fit decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -5554,7 +5554,7 @@
       "evidence_snippet": "it's hard to go heavy at F45 because your restricted by time...I find it hard to slow the movements down when in club...the pressure of moving stations quick enough for the next person",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Difficulty lifting heavy or slowing movements down given the class's time structure is a program-format constraint - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5904,7 +5904,7 @@
       "evidence_snippet": "I felt like I'd plateaued at OTF and there weren't enough weights. The workouts at OTF were starting to get too easy and became somewhat boring.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Plateauing due to insufficient weight options is a programming-effectiveness limitation - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -6129,7 +6129,7 @@
       "evidence_snippet": "I'm getting tired of the unimaginative lunges and split squats we've been doing the last few weeks...it's def the best gym I've found in Austin so far and it keeps me going. But if I see lunges every day again ....... I'm going to change it up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Getting tired of repetitive lunges and split squats recently is a programming-variety complaint - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6579,7 +6579,7 @@
       "evidence_snippet": "No comparison in quality of workout. Barry's beats F45 hands down. I burn twice as many calories doing a Barry's class...The cost between the two is not comparable. Barry's is in a different stratosphere for price point.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Preferring a different studio's workout quality and calorie burn is a programming comparison - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -6679,7 +6679,7 @@
       "evidence_snippet": "The slides bear crawl is one of those exercises that makes me want to not support F45 and go elsewhere. There is nothing functional about it. It's a gimmick exercise...this is just dragging yourself on furniture movers.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Disliking a specific exercise enough to consider leaving is a programming-design preference - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6854,7 +6854,7 @@
       "evidence_snippet": "my main reasons were: Overall a more structured resistance/strength focus...Locally the BFT gym is bigger, has better kit, and great aircon...your knees and ankles will thank you...F45 for high intensity cardio and weight loss, and BFT when you're ready to progress your weights or plateaued",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Wanting a more structured resistance focus and preferring a bigger competing gym are programming and facility preferences - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -7044,7 +7044,7 @@
       "pain_point_reasoning": "Member maxed out station weights, stagnating on muscle goals, calls F45 'stupid expensive' ($150 on top of $80 gyms) and is actively investigating CrossFit switch",
       "pain_severity": 3,
       "pain_severity_reasoning": "Clearly recurring frustration with explicit consideration of leaving, but hasn't cancelled yet",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -7054,8 +7054,8 @@
       "evidence_snippet": "Considering Crossfit as I love the team focus, but I feelnlike I'm stagnating(and paying a lot to do so)",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "The pull toward CrossFit's team focus is a real community-value gap TWU's connection features could help close within the current gym, even though the stagnation and value concerns driving the search are programming and pricing issues outside TWU's scope.",
+      "outside_scope_type": null
     },
     {
       "id": "feesf8x",
@@ -7579,7 +7579,7 @@
       "evidence_snippet": "Otf felt slow and boring and honestly once I quit otf and stuck to f45 my knees, hips and shins stopped hurting (since we don't run everyday) and I no longer needed modifications.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Switching for variety and more strength classes, with physical pains resolving afterward, is a programming-fit decision - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -7629,7 +7629,7 @@
       "evidence_snippet": "it had just gotten stale and boring without a lot of variety. A new F45 opened near me so I thought I would try it out, went to a couple of classes and never looked back.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "A stale program prompting a trial and switch to a newly opened studio is a programming-variety decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -7654,7 +7654,7 @@
       "evidence_snippet": "after 1.5 years it was stale, same thing everytime... I saw f45 offered a free week... First class loved it, ended up signing up at the end of my week",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "A free trial week converting a lapsed member from a stale program elsewhere is the studio's own promotional and programming appeal - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -7679,7 +7679,7 @@
       "evidence_snippet": "I hated the running part of OTF. I'd stare at the monitor begging for the cardio part to be over. The F45 classes seem to fly by.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Classes 'flying by' versus dreading the running portion elsewhere is a programming-format preference - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -8004,7 +8004,7 @@
       "evidence_snippet": "too many reps of the same stuff that a) wears down cartilage and b) results in a butt that would look cute on a 25 year old, but isn't compatible with work trousers",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Too many repeated reps wearing down cartilage is a programming-design and injury-risk concern - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -8044,7 +8044,7 @@
       "pain_point_reasoning": "2-year member about to cancel: last 3 months of format changes (squat/RDL-heavy) changed her body in ways she hates vs prior cardio-rich mix",
       "pain_severity": 3,
       "pain_severity_reasoning": "Explicitly 'about to cancel' membership after 2 years; frustration recurring across 3 months of programming",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": "Peer commenter suggested using lighter weights on strength days or skipping strength classes; member decided to try that instead of cancelling",
       "solution_category": "community_events",
       "effectiveness": 3,
@@ -8054,8 +8054,8 @@
       "evidence_snippet": "that\u2019s really interesting about the weights and going lighter, and I\u2019m definitely going to try it rather than cancel my membership in a huff. :)",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A fellow member suggesting lighter weights based on their own experience is peer knowledge-sharing - the kind of exchange TWU's own community feed could host directly instead of happening on Reddit.",
+      "outside_scope_type": null
     },
     {
       "id": "ffz34f4",
@@ -8504,7 +8504,7 @@
       "evidence_snippet": "I not only had plateaued but had constant hip /adductor injuries and pain from running... Quit OT 3 weeks ago, joined F45 and my pain is mostly gone",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Switching to varied, lower-impact programming after plateauing and chronic hip injuries from running is an injury-driven programming decision - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -8529,7 +8529,7 @@
       "evidence_snippet": "After starting f45 and seeing all those pains go away I realized I was actually really hurt and breaking my body down with those treadmills every week.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Realizing how much a treadmill-heavy program had hurt her, after switching away from it, is a programming/injury-risk realization - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -8579,7 +8579,7 @@
       "evidence_snippet": "Then it was injury after injury the last 10 months. I just switched at the end of December... Zero injuries to report and all my issues from running seem to be healing well.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a workout-programming complaint - programming quality and format are coaching/business decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "Going from injury after injury to zero injuries after switching programs is a programming/injury-risk comparison - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {

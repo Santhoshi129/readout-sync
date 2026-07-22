@@ -629,7 +629,7 @@
       "evidence_snippet": "I was going 6 times a week... Sadly, the studio closed and I had no other studios around. A new one just opened up and am back at it.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closing with no others nearby, followed by a new one opening, is a business-availability circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -7454,7 +7454,7 @@
       "evidence_snippet": "But now that there are new owners and trainers, it's not the same as when I signed up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "New owners and trainers changing the studio's feel since signup is a business-level change - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -7804,7 +7804,7 @@
       "evidence_snippet": "Was at Kahala in like March! I've stopped going there since June though under some new management.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Reduced attendance following a change in management is a business/ownership shift - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -11129,7 +11129,7 @@
       "evidence_snippet": "the owner doesn't pay his employee...I'm rethinking my decision and may go next day \"orange\"",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "An owner not paying an employee is a serious business-ethics issue - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -12704,7 +12704,7 @@
       "evidence_snippet": "We have had several change of ownership and a complete turnover of trainers. They possibly struggle to compete with...cheaper [offerings] in town.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Relying on cheap starter-membership promos amid ownership and trainer turnover is a business-survival strategy - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -12754,7 +12754,7 @@
       "evidence_snippet": "I'd bet your owners are trying to get out and not looking after/caring about business anymore...Awesome consistent coaches are back!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio being sold to new ownership that restored consistency is a business-level change - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -13779,7 +13779,7 @@
       "evidence_snippet": "Local Studio sent out an email saying they were forced to close...received the email an hour later and the IG page is gone...I'm gutted",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio being forced to close, with notice sent by email, is a business closure - not something a connection app prevents or fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13804,7 +13804,7 @@
       "evidence_snippet": "Last week F45 in Paris suddenly closed and I've received an email saying that they were forced to close the doors but did not mention the reason",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A sudden forced studio closure is a business event - not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -13829,7 +13829,7 @@
       "evidence_snippet": "reduced its hours before and never brought back the classes they canceled...now reduced hours drastically again. I'm guessing this studio is on its way out",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Reduced hours and cancelled classes at the business level are operations decisions - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13854,7 +13854,7 @@
       "evidence_snippet": "My local F45 has had 3 owners since opening in March 2021...The current owner said it has not been profitable for him and he's moving",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Three ownership changes and a stated lack of profitability are business-viability issues - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14054,7 +14054,7 @@
       "evidence_snippet": "this studio is closing effective immediately due to the owner not paying his bills...The TVs stopped working a week ago. That should have been the sign",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closing immediately because the owner isn't paying bills is a business-failure event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -14179,7 +14179,7 @@
       "evidence_snippet": "Multiple trainers leaving at the same time, equipment sell off. Is my studio closing?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Multiple trainers leaving at once and equipment being sold off are signs of business trouble - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -14254,8 +14254,8 @@
       "evidence_snippet": "the studio suddenly closed without any prior notice...I haven't received any clear response regarding my membership or refund",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A sudden studio closure with no clear response about membership status is a billing/membership-communication gap during closure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1l9chiy",
@@ -14279,7 +14279,7 @@
       "evidence_snippet": "last night received an email out of the blue saying the lease is up and Saturday would be the last classes. Ever.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A lease ending and abrupt closure notice is a business-level event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -14404,7 +14404,7 @@
       "evidence_snippet": "we got the dreaded text message that the studio was closing...my closest studio is 150 kilometres away. Thanks for nothing guys.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Offering a free month at another studio 150km away as closure compensation is a business accommodation - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -14429,7 +14429,7 @@
       "evidence_snippet": "My F45 sent the dreaded closing-down text message with 5 days' notice...they have been sold directly to Code5...still not loving the idea",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A franchise being sold to another operator rather than closing outright is a business transaction - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -14479,7 +14479,7 @@
       "evidence_snippet": "My Phoenix, AZ studio is closing and I feel so sad! I'm going to miss my little gym family.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closing and the resulting sense of losing a 'gym family' is a business closure, even though what's being lost is community value a connection app can't replace once the location is gone.",
       "outside_scope_type": "operational"
     },
     {
@@ -14604,7 +14604,7 @@
       "evidence_snippet": "CSG offered our founding member rate at another studio the own, but me and otger refuse to give them another dime, they closed at least 5-6 in the area in the last 2 years",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Being offered a founding rate at a different studio owned by the same group, and declining it, is a business relationship decision - not something a connection app manages.",
       "outside_scope_type": "operational"
     },
     {
@@ -14904,7 +14904,7 @@
       "evidence_snippet": "my plan when the studio closes is to still continue doing F45 workouts at the nearby traditional gym based on video intel",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Planning to continue F45-style workouts solo at a traditional gym after closure is a personal workaround - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -15079,7 +15079,7 @@
       "evidence_snippet": "My local gym (Bermondsey) has just closed. There seems to be more and more closing down locally.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A local gym closing amid a wave of closures is a business trend - not something a connection app reverses.",
       "outside_scope_type": "operational"
     },
     {
@@ -15279,7 +15279,7 @@
       "evidence_snippet": "I am so sad that my F45 just announced they are closing down...Overall, I'm devastated. F45 is my community",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closure taking away what this member calls 'my community' is a business-level event, even though the community value lost is real and exactly what a connection-layer app is meant to sustain - it just can't do so once the physical location is gone.",
       "outside_scope_type": "operational"
     },
     {
@@ -15379,7 +15379,7 @@
       "evidence_snippet": "A lot of the OGs switched to BFT but seeing there's only 2 OG members still at the same F45 since 2019",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Most original members switching to a competitor, leaving only two at the same studio since 2019, is a business-retention trend - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -15579,7 +15579,7 @@
       "evidence_snippet": "There's a new owner at my local F45, he got rid of all the old trainers, some had been there for up to 3 years",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A new owner replacing long-tenured trainers is a business-level staffing decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -15604,7 +15604,7 @@
       "evidence_snippet": "That evening, we got the next text that the studio was officially closed for good...I'm feeling a bit lost and out of routine",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "An official closure notice is a business event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -15629,7 +15629,7 @@
       "evidence_snippet": "They made a post saying they cancelled last Friday and they've been cancelled ever since and I'll be so bummed if they are closed!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio posting about being cancelled and closed is a business closure - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -15654,7 +15654,7 @@
       "evidence_snippet": "So sad to see my old studio closed and shuttered",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closing and being shuttered is a business event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -15854,7 +15854,7 @@
       "evidence_snippet": "They always encouraged their members during classes, and that's a big part of why, almost a year later, I'm still showing up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Owners personally encouraging members during class, keeping him there almost a year, is ownership/staff behavior - not a mechanism a connection app replicates.",
       "outside_scope_type": "operational"
     },
     {
@@ -15979,7 +15979,7 @@
       "evidence_snippet": "my f45 just announced that they were closing next tuesday...im so upset im literally crying!!!! i would go here 3-4 times a week and have met such great people",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "An imminent studio closure is a business event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -16004,7 +16004,7 @@
       "evidence_snippet": "It's messed up why they would close such a brilliantly run studio...I hope they're able to find a place in Marina itself for us loyalists.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Confusion over why a well-run studio would close is a business-decision question - not something a connection app answers.",
       "outside_scope_type": "operational"
     },
     {
@@ -16029,8 +16029,8 @@
       "evidence_snippet": "This is the 3rd studio closure for me...classes attended dont carry over to the studio not that im joining one ever again.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Class credits not carrying over between studios after a closure is a billing/credit-portability gap - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1sh6bay",
@@ -16079,7 +16079,7 @@
       "evidence_snippet": "Coolum permanently closed on March 25 then followed by permanent closure of Bli Bli and Caloundra. Theres now not a single F45 operating in this region.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A sequence of permanent location closures is a business-contraction trend - not something a connection app reverses.",
       "outside_scope_type": "operational"
     },
     {
@@ -16204,7 +16204,7 @@
       "evidence_snippet": "Been told last week that the gym is closing next Saturday. Feels like very short notice and very disappointing.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Short-notice closure timing is a business decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -16254,7 +16254,7 @@
       "evidence_snippet": "Our studio has dropped to under 100 members. It was over 200 a year ago.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Membership dropping from over 200 to under 100 in a year is a business-decline statistic - not something a connection app reverses on its own.",
       "outside_scope_type": "operational"
     },
     {
@@ -16579,7 +16579,7 @@
       "evidence_snippet": "Just joined F45 Oshawa two weeks ago and just got an email about its closure due to ongoing issues with the lease holders REI.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A lease-related closure two weeks after joining is a business event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {
@@ -16604,7 +16604,7 @@
       "evidence_snippet": "In the past 18-ish months, 4 of those have closed (and not with much - or any - notice)...also getting tired of having to switch locations.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "Four studio closures in eighteen months with little notice is a business-stability pattern - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -16654,7 +16654,7 @@
       "evidence_snippet": "Joined F45 Paddington and last week guess what? They closed down. I will miss it, but it's time to say goodbye. Too many nails in the coffin.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is an ownership/affiliation change - a business-level event, not something a member-connection product addresses.",
+      "app_relevance_reasoning": "A studio closing the week after joining is a business event - not something a connection app prevents.",
       "outside_scope_type": "operational"
     },
     {

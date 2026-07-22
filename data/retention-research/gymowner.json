@@ -4167,7 +4167,7 @@
       "pain_point_reasoning": "A booking-software builder notes their system's underlying booking-history data could technically be used to spot engagement drops (e.g., a client whose visit frequency has fallen), but this analysis isn't built yet.",
       "pain_severity": null,
       "pain_severity_reasoning": "Describes an unrealized capability, not a measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4177,7 +4177,7 @@
       "evidence_snippet": "the data exists to spot engagement drops (e.g., \"Client used to book 3x",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Spotting engagement drops from booking-frequency data is exactly the engagement-visibility mechanism TWU's connection layer could surface directly.",
       "outside_scope_type": null
     },
     {
@@ -4417,7 +4417,7 @@
       "pain_point_reasoning": "Describes a churn-reduction tactic (attributed to Alex Hormozi): when a member's attendance drops, the owner or coach sends a genuinely personal voice or text message, since members can tell if it's not from a real person.",
       "pain_severity": null,
       "pain_severity_reasoning": "Reported secondhand as a tactic used by 'top gyms', no specific outcome number given here.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "When a member's attendance starts dropping, have the owner or coach personally send a real (non-automated) voice message or text.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -4427,7 +4427,7 @@
       "evidence_snippet": "it must be a real person, cause people can see if its a real p[erson]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "When a member's attendance starts dropping, have the owner or coach personally send a real... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "TWU could flag the attendance drop that should trigger outreach, but the finding specifically emphasizes it needs to be a real, recognizable person reaching out - not something an app can substitute for the human side of.",
       "outside_scope_type": null
     },
     {
@@ -4602,7 +4602,7 @@
       "evidence_snippet": "at the 10 day mark we're calling.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Call members who haven't shown up in about 10 days. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "The 10-day absence trigger is a detection mechanism TWU's engagement visibility could surface, though the actual follow-through here is a phone call, which is human outreach outside what a connection app itself does.",
       "outside_scope_type": null
     },
     {
@@ -4677,7 +4677,7 @@
       "evidence_snippet": "we also try to engage them in-person when they come in for a class, by inviting them personally for events",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Manually trigger re-engagement emails with promotions/events for lapsed members, plus personal... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Manual re-engagement emails are a communication mechanism TWU could support, though personally inviting members in-person is staff-driven and outside what an app replicates.",
       "outside_scope_type": null
     },
     {
@@ -4767,7 +4767,7 @@
       "pain_point_reasoning": "Suggests win-back offers (free class or 50% off for three months) for past members, and distinguishes the impact of a live phone call versus an SMS.",
       "pain_severity": null,
       "pain_severity_reasoning": "Proposed tactic, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Offer past members a free class or a discount (e.g. 50% off for three months) via live phone call rather than SMS.",
       "solution_category": "automated_reminders",
       "effectiveness": null,
@@ -4777,8 +4777,8 @@
       "evidence_snippet": "is there money sitting on the table if you offered past members a free class or 50% off for three months",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Offer past members a free class or a discount (e.g. 50% off for three months) via live phone call... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Offering a free class or discount to past members is a pricing/promotional win-back tactic - a billing decision, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "o1xc1iv",
@@ -4892,7 +4892,7 @@
       "pain_point_reasoning": "States the real retention challenge isn't equipment or curriculum but maintaining members' sense of participation and self-discipline over time.",
       "pain_severity": null,
       "pain_severity_reasoning": "General principle, not a specific measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Use small engagement strategies like punch challenges, personalized follow-up, and small incentives to sustain participation.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -4902,7 +4902,7 @@
       "evidence_snippet": "it is difficult to maintain everyone's sense of participation and self-discipline for a long time",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Use small engagement strategies like punch challenges, personalized follow-up, and small incentives... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Small engagement strategies like punch-card challenges are exactly the gamified engagement mechanic TWU's connection layer could build directly.",
       "outside_scope_type": null
     },
     {
@@ -4917,7 +4917,7 @@
       "pain_point_reasoning": "States retention is 'usually a big problem for most gyms' because members lose focus on their original motivation or feel results aren't worth the time invested.",
       "pain_severity": null,
       "pain_severity_reasoning": "General industry characterization, not tied to a specific gym's outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4927,8 +4927,8 @@
       "evidence_snippet": "Retention rates are usually a big problem for most gyms.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a generic statement that retention is a common problem, without a specific mechanism - not something to act on here.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o4vv75t",
@@ -4977,7 +4977,7 @@
       "evidence_snippet": "I would pull reports that show you those",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Focus on member goal achievement and consistency, tracked via utilization reports, instead of perks. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Tracking member goal achievement and consistency is a genuine engagement-visibility mechanism, though 'pulling reports' frames it as an owner-facing analytics tool rather than a member-facing connection feature.",
       "outside_scope_type": null
     },
     {
@@ -5052,7 +5052,7 @@
       "evidence_snippet": "the 3 month stage is crucial for building habits/routine/commitment",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Watch for attendance drops and check in on member goals proactively, especially around the 3-month... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Watching for attendance drops and checking in on member goals, especially during the critical three-month habit-forming window, is exactly the engagement-visibility mechanism TWU's connection layer is built to provide.",
       "outside_scope_type": null
     },
     {
@@ -5077,7 +5077,7 @@
       "evidence_snippet": "People often quit mentally way before the cancelled membership! Attendance drops, interest lost.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This is the core insight behind engagement-visibility features - mental quitting happens before the formal cancellation - which is exactly what TWU's connection layer could catch early, even though no specific mechanism is proposed here.",
       "outside_scope_type": null
     },
     {
@@ -5217,7 +5217,7 @@
       "pain_point_reasoning": "Recommends capturing a member's stated reason for signing up and referencing it in later messages to drive better engagement.",
       "pain_severity": null,
       "pain_severity_reasoning": "Recommended tactic, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Capture each member's stated reason for signing up and reference it in later communications to drive engagement.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -5227,7 +5227,7 @@
       "evidence_snippet": "capture their reason for signing up, then include it in subsequent messages; it will drive better engagement",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Capture each member's stated reason for signing up and reference it in later communications to... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Capturing a member's stated reason for signing up and referencing it in later messages is exactly the kind of personalized engagement TWU's connection layer could build directly.",
       "outside_scope_type": null
     },
     {
@@ -5592,7 +5592,7 @@
       "pain_point_reasoning": "States that discounts weren't what moved retention for their small gym \u2014 capped-spot, time-limited challenges tied to local events plus a referral ladder was what worked.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described as effective without a specific quantified retention number.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Run capped-spot 4-6 week challenges tied to local events (e.g. summer shred, ski prep) with a referral ladder reward structure, instead of relying on discounts.",
       "solution_category": "community_events",
       "effectiveness": 4,
@@ -5602,7 +5602,7 @@
       "evidence_snippet": "What moved the needle for my small gym wasn't more discounts, it was tight \"moments.\"",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Run capped-spot 4-6 week challenges tied to local events (e.g. summer shred, ski prep) with a... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Capped-spot challenges built around tight community 'moments' rather than discounts is exactly the kind of community/event mechanic TWU's connection layer is built to create.",
       "outside_scope_type": null
     },
     {
@@ -5892,7 +5892,7 @@
       "pain_point_reasoning": "Names 'reducing churn' and getting disengaged ('lazy') members the results they signed up for as ongoing core tasks, alongside leads and marketing.",
       "pain_severity": null,
       "pain_severity_reasoning": "General characterization of ongoing work, not a specific incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -5902,8 +5902,8 @@
       "evidence_snippet": "reducing churn, getting lazy members the results they said they wanted",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a general goal statement about reducing churn and helping members get results, without a specific mechanism - not something to act on here.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oe3z2zr",
@@ -5917,7 +5917,7 @@
       "pain_point_reasoning": "Describes personal (non-automated) re-engagement texts referencing specific changes (like new equipment) sent by the owner or an employee to lapsed members as consistently effective.",
       "pain_severity": null,
       "pain_severity_reasoning": "Strong claim of effectiveness but no specific number given.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Personal text messages to lapsed members from the owner/employee, referencing specific recent changes at the gym.",
       "solution_category": "member_feedback_program",
       "effectiveness": 4,
@@ -5927,7 +5927,7 @@
       "evidence_snippet": "what always works is re-engagement campaigns...sends people a personal text",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Personal text messages to lapsed members from the owner/employee, referencing specific recent... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Personal text messages from the owner to lapsed members - explicitly framed as what actually works - is exactly the kind of personalized outreach TWU's connection layer could enable.",
       "outside_scope_type": null
     },
     {
@@ -6342,7 +6342,7 @@
       "pain_point_reasoning": "Describes early-days anxiety about empty gym days despite ongoing rent/bills, explicitly wondering why members aren't staying.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described as ongoing anxiety/uncertainty, not a specific measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -6352,8 +6352,8 @@
       "evidence_snippet": "Constant anxiety on where are the people or why aren't they staying",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is an owner expressing anxiety about attendance and retention, without naming a specific mechanism - not something to act on here.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ojcr6zq",
@@ -6392,7 +6392,7 @@
       "pain_point_reasoning": "For martial arts schools specifically, notes retention hinges on belt-progression visibility \u2014 students/parents who lose sight of where they are in the journey quietly disengage.",
       "pain_severity": null,
       "pain_severity_reasoning": "Domain-specific insight, not tied to one measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -6402,7 +6402,7 @@
       "evidence_snippet": "students and parents lose sight of where they are in the journey and quietly disengage.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Losing sight of where someone is in their journey, leading to quiet disengagement, is exactly the progress-visibility gap TWU's connection layer is built to close.",
       "outside_scope_type": null
     },
     {
@@ -6492,7 +6492,7 @@
       "pain_point_reasoning": "Owner combats non-renewal with escalating tenure-based perks; states management platforms can only remind, not retain",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Tenure-based loyalty perks (free shakes, PT sessions, body analysis) that reset if the member lapses; geofenced Google ads for reactivation",
       "solution_category": "other",
       "effectiveness": null,
@@ -6502,8 +6502,8 @@
       "evidence_snippet": "for retention we have perks, the longer you stay the more perks you get... the moment they don't renew they have to start over",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Tenure-based loyalty perks (free shakes, PT sessions, body analysis) that reset if the member... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Tenure-based perks like free shakes, PT sessions, or gifts are the gym's own loyalty program - a business/pricing incentive, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "on41wx3",
@@ -6527,7 +6527,7 @@
       "evidence_snippet": "retention really comes down to helping students feel connected not just attending random sessions",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Themed workshops, progress-based challenges (21-day mobility, breathwork), helping teachers build... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Explicitly framing retention as helping members feel connected, not just attending random sessions, paired with progress-based challenges, is exactly what TWU's community/connection layer is built to create.",
       "outside_scope_type": null
     },
     {
@@ -6742,7 +6742,7 @@
       "pain_point_reasoning": "members lapsing in attendance without follow-up",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "not_addressable",
+      "app_relevance": "core_fit",
       "solution": "software automatically messages members who haven't attended for 10 days (GymOS)",
       "solution_category": "automated_reminders",
       "effectiveness": null,
@@ -6752,8 +6752,8 @@
       "evidence_snippet": "a member hasn't attended for 10 days, the system automatically sends a message",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
-      "outside_scope_type": "adjacent_tooling"
+      "app_relevance_reasoning": "An automated system that messages members after 10 days of no attendance is exactly the engagement-visibility and automated-outreach mechanism TWU's connection layer is built to provide.",
+      "outside_scope_type": null
     },
     {
       "id": "oxhvaer",
@@ -6842,7 +6842,7 @@
       "pain_point_reasoning": "Community-refined plan: trigger outreach on attendance drop-off signals instead of scheduled blasts",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Signal-based retention outreach: react to long gaps/usage drop, loop trainer in when member slipping",
       "solution_category": "churn_risk_tracking",
       "effectiveness": null,
@@ -6852,7 +6852,7 @@
       "evidence_snippet": "only reach back out when there's an actual signal (long gaps, drop-off, usage slowing)",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Signal-based retention outreach: react to long gaps/usage drop, loop trainer in when member slipping \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Signal-based outreach - reacting only to real usage signals like long gaps or slowing activity, rather than blanket messaging - is exactly the smart engagement-detection mechanism TWU's connection layer is built to provide.",
       "outside_scope_type": null
     },
     {

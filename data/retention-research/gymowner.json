@@ -477,7 +477,7 @@
       "evidence_snippet": "Zero overcrowding incidents... The premium, intimate training experience is back",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A custom booking system with hard capacity limits eliminating overcrowding is booking/capacity software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2227,7 +2227,7 @@
       "evidence_snippet": "getting their schedule full enough with consistent clients is the next big hurdle",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Filling a schedule with consistent clients is a general business-growth goal, without a specific mechanism - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -2492,7 +2492,7 @@
       "pain_point_reasoning": "Warns that over-automating member-facing communication (beyond booking/reminders) risks gyms losing their 'community' feel when everything comes from a bot.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Framed as an observed recurring pattern ('I've seen gyms lose that community feel'), not one incident.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2502,8 +2502,8 @@
       "evidence_snippet": "I've seen gyms lose that \"community\" feel because everything started coming from a bot.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a caution that over-automating communication (everything coming from a bot) can erode community feel - a warning relevant to how TWU should design its own features, not evidence that a connection app itself is the fix.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nuqf9g5",
@@ -2817,7 +2817,7 @@
       "pain_point_reasoning": "Uses a real data point (15% lost to new competition, half returned) to argue the loss was temporary curiosity, and recommends focusing on community/service rather than reacting out of fear.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Cites a specific but recoverable churn event (15% loss, half returning), not a severe ongoing problem.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2827,8 +2827,8 @@
       "evidence_snippet": "If you lost 15% last time and half returned, that's actually useful data.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about analyzing churn and win-back rate data - business analytics, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oarzhct",
@@ -3402,7 +3402,7 @@
       "evidence_snippet": "for most of the members to stay in a gym is based on well-being! ...more the relationship with the staff, especially trainers.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This names relationships with staff as the retention driver - directionally aligned with TWU's connection value, though the specific relationship described here is with staff, which an app doesn't replace, even if it could complement member-to-member relationships.",
       "outside_scope_type": null
     },
     {
@@ -3667,7 +3667,7 @@
       "pain_point_reasoning": "Based on conversations with many gym owners (including failed ones), identifies friendly/engaging staff as 'table stakes' for survival, though notes some big-box gyms survive despite lacking this.",
       "pain_severity": null,
       "pain_severity_reasoning": "General cross-gym observation, causal link to closures not firmly established (counterexample noted in the same comment).",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -3677,8 +3677,8 @@
       "evidence_snippet": "Table stakes is having a nice facility with great amenities and friendly, engaging staff",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This names facility quality and friendly staff as baseline expectations - facility and staffing matters, not something a connection app provides.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m9mkq4k",
@@ -3817,7 +3817,7 @@
       "pain_point_reasoning": "States the gym's community feel is its core selling point, and members prefer waiting longer for a real person over an AI chat response.",
       "pain_severity": null,
       "pain_severity_reasoning": "General preference stated, not a specific incident.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -3827,8 +3827,8 @@
       "evidence_snippet": "our people would rather wait a little longer for a real person to email them back than an ai chat",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This explicitly states members prefer waiting for a real person over an AI chatbot response - a direct caution against automating this kind of communication, not evidence for a connection-app feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "npgmi2w",
@@ -5142,7 +5142,7 @@
       "pain_point_reasoning": "In response to being asked how they keep churn low, credits an amazing community culture, absence of 'gym bro' negativity, 24/7 access, and high responsiveness to member needs.",
       "pain_severity": null,
       "pain_severity_reasoning": "Positive self-report of low churn, not a specific quantified figure in this comment.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -5152,8 +5152,8 @@
       "evidence_snippet": "Our community is amazing, we have none of the \"gym bro\" problems...we are very responsive to member needs and support",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This describes an already strong, welcoming community culture and high staff responsiveness - an achieved culture and service quality, not a software mechanism to build.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o73cex6",
@@ -6052,7 +6052,7 @@
       "evidence_snippet": "What's worked way better (and more consistently) for us is focusing on small community events",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Run simple, low-cost recurring community events (e.g. weekly runs, a monthly event series) instead... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Running small, recurring community events is exactly the kind of community-building activity TWU's own event/community features could help coordinate and surface, even though the events themselves happen in person.",
       "outside_scope_type": null
     },
     {
@@ -6467,7 +6467,7 @@
       "pain_point_reasoning": "Experienced operator: belonging, hospitality and staff touchpoints (plus clean facilities and maintenance) are what reviews name as top retention factors; urges measuring why members leave",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Measure cancellation reasons (why people leave/join) and build hospitality processes and professional touchpoints so members feel they belong",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -6477,8 +6477,8 @@
       "evidence_snippet": "Do you know why people leave? (Do you measure it?)",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Measure cancellation reasons (why people leave/join) and build hospitality processes and... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Measuring cancellation reasons is a feedback-data-collection practice for the business - not something a connection app conducts.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "omovvc4",

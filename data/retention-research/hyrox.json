@@ -19,7 +19,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Real, stated impact (lost a full weekly session) but no mention of quitting or broader consequences beyond needing to adjust the training split.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "A gym changing a class time to a slot this member can't make is a scheduling decision by the business, not something a connection app changes.",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -1019,7 +1019,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a practical barrier to attending, but no further stated consequence beyond not being able to train there.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "All available locations being too far from home is a geographic-access limitation, not something a connection app changes.",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -1029,7 +1029,7 @@
       "evidence_snippet": "All of the F45 gyms are located deep in the city. I live closer to the burbs so training at any of those facilities wouldnt work",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "nf2sa6l",
@@ -1144,7 +1144,7 @@
       "pain_severity": 3,
       "pain_severity_reasoning": "Real reduction in schedule availability described as a direct consequence of attendance decline.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "This is the gym's own class-scheduling decision made in response to demand; TWU doesn't manage bookings or class schedules.",
+      "app_relevance_reasoning": "A gym cutting its Hyrox class days due to low attendance is a scheduling decision by the business, not something a connection app changes.",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -1154,7 +1154,7 @@
       "evidence_snippet": "A second gym I would go to because of hyrox class times, cut Thier days to wed and sat only.due to attendance",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "1ojlwk5",
@@ -1294,7 +1294,7 @@
       "pain_severity": 3,
       "pain_severity_reasoning": "Stated impact is concrete: the athlete says it is 'very difficult' and 'not realistic' to get needed access at one gym, forcing them toward paying for two separate memberships to meet training needs.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "Needing two separate gym memberships to make a schedule work is a facility-access limitation, not something a connection app changes.",
       "solution": "Maintaining two separate gym memberships simultaneously (one regular/commercial gym for strength training, one specialized HYROX-class gym for conditioning) to work around scheduling and equipment limitations.",
       "solution_category": "dual_gym_membership_workaround",
       "effectiveness": null,
@@ -1304,7 +1304,7 @@
       "evidence_snippet": "It seems the only solution is to have 2 gym memberships for 2 different gyms if I want to make this work.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "noavvac",
@@ -1369,7 +1369,7 @@
       "pain_severity": 3,
       "pain_severity_reasoning": "Stated real financial impact: had to acquire an additional paid membership because the original gym's schedule didn't accommodate working hours.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "Needing another membership because of no open gym time and early closing hours is a scheduling and access limitation, not something a connection app changes.",
       "solution": "Got a second gym membership to access open training time not available at the HYROX box.",
       "solution_category": "other",
       "effectiveness": 3,
@@ -1379,7 +1379,7 @@
       "evidence_snippet": "I had to get another membership because there was no open gym time to the BOX or they would close early . They have classes every hr all day everyday when people are at work which isn't realistic.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "nohq0s9",
@@ -1944,7 +1944,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a mild limitation prompting a search for supplemental programming; no stated business impact or intent to leave the gym.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "A gym offering Hyrox only once a week is a scheduling limitation by the business, not something a connection app changes.",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -1954,7 +1954,7 @@
       "evidence_snippet": "my gym only does HYROX once a week and I\u2019m looking for alt programs I can follow",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "onx7eoe",
@@ -2344,7 +2344,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Member is only considering a location switch at this point; no confirmed loss of membership yet.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "Considering switching locations within the same membership is a personal scheduling decision, not something a connection app changes.",
       "solution": "Planning to check whether their membership allows switching to a different F45 location that still offers HYROX classes.",
       "solution_category": "location_change",
       "effectiveness": null,
@@ -2354,7 +2354,7 @@
       "evidence_snippet": "I already pay for classes weekly at f45 Lincoln sq, I\u2019ll definitely find out if I can switch locations! That was very helpful! Thank you.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "otwn0ra",
@@ -2394,7 +2394,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a recurring scheduling constraint affecting training quality, not a severe or quitting-level outcome.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "Fixed class slots not working around work and family schedules is a scheduling limitation by the business, not something a connection app changes.",
       "solution": "Suggests that load/recovery insight tools (beyond how one feels) could help members manage training sequencing when they can't control which day they train.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -2404,7 +2404,7 @@
       "evidence_snippet": "a lot of people can't fully pick their days, fixed class slots, coaching, work and kids, so the heavy lower sometimes lands the day before a key run whether you like it or not... load insights (besides how you actually feel) could help",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "oupxf28",
@@ -2444,7 +2444,7 @@
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as an ongoing search difficulty, not a severe outcome like quitting or loss of a membership.",
       "app_relevance": "not_addressable",
-      "app_relevance_reasoning": "TWU explicitly does not replace class booking or scheduling; this is a gym-operations issue outside its scope.",
+      "app_relevance_reasoning": "Only finding one gym offering open-gym time to train independently is a facility-access limitation, not something a connection app changes.",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2454,7 +2454,7 @@
       "evidence_snippet": "So far I only found one gym that offers CrossFit classes but I was looking more for open gym so I can train on my own schedule",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "outside_scope_type": "adjacent_tooling"
+      "outside_scope_type": "operational"
     },
     {
       "id": "ovpuz0l",

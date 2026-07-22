@@ -729,7 +729,7 @@
       "evidence_snippet": "The OTFs out here just aren't the same and have dated treadmills in comparison to the dc area. I just joined F45 a few weeks ago and love it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Comparing dated treadmill equipment between two OTF locations before switching to F45 is an equipment-quality comparison - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1329,7 +1329,7 @@
       "evidence_snippet": "I had previously been a member of another studio that was really close to home but it missed all the above points & I rage quit.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Choosing a farther studio over a closer one for a better overall experience is a facility/quality preference - not a mechanism a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -3054,7 +3054,7 @@
       "evidence_snippet": "I ended up pulling the head trainer aside during a rather tight and frustrating class and let them know how I felt about it... the next week the classes were back down to capacity",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Raising a facility issue directly with the head trainer, who addressed it, is direct member-staff communication - not something a connection app mediates.",
       "outside_scope_type": "operational"
     },
     {
@@ -3079,7 +3079,7 @@
       "evidence_snippet": "Studios can purchase an expansion pack if their classes tend to be crowded... The F45 HQ definitely tries to limit class size and they take it seriously if you contact them.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Studios purchasing an equipment expansion pack for crowded classes is a facility-investment decision at the business level - not TWU's domain.",
       "outside_scope_type": "operational"
     },
     {
@@ -3654,7 +3654,7 @@
       "evidence_snippet": "yeah our gym pretty much has no limit.. they squeeze people in and there have been over 70 in a class at a time",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A studio running classes with no capacity limit, resulting in overcrowding, is a facility-capacity management issue - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4654,7 +4654,7 @@
       "evidence_snippet": "Someone made a few complaints to our studio so they sent out a few emails, started announcing it before class, and started actually enforcing no training without a towel.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "The studio responding to complaints with emails and pre-class announcements is its own communication and facility-management response - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -4679,7 +4679,7 @@
       "evidence_snippet": "my gym has a no towel no train policy but sadly it\u2019s not being enforced. Many times I had to wipe off sweat from others",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A hygiene policy (no towel, no train) that isn't being enforced is a facility-management enforcement gap - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5029,7 +5029,7 @@
       "evidence_snippet": "Much better when they finally hired an experienced trainer that had worked at a top notch F45, daily cleaning, great demos",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Hiring a more experienced trainer who improved daily cleaning standards is a staffing and facility-management fix - not something a connection app does.",
       "outside_scope_type": "operational"
     },
     {
@@ -5054,8 +5054,8 @@
       "evidence_snippet": "I am wondering if I would be able to transfer my membership to another location or if not hopefully just get out of the contract without paying fees. It sucks cos I do really like the workouts.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wondering about transferring a membership to another location is a billing/membership-administration question - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "etvpx9p",
@@ -5429,7 +5429,7 @@
       "evidence_snippet": "you're paying money for slipping service, and you're not the only one",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Advising someone to raise a facility issue directly with the owner or trainer is interpersonal advice - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -6504,7 +6504,7 @@
       "evidence_snippet": "I lasted two weeks before I went back to my old studio. The new studio had a few issues (low sweat towel usage, crowded classes, poor layout), and I was starting to dread going to class so I decided it was worth the extra drive.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Trying a new studio and returning to the old one after facility issues (low towel use, among others) is a personal comparison and reversal - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -6529,7 +6529,7 @@
       "evidence_snippet": "Old F45 was an Award winner, and great atmosphere...Brand new F45, had no idea...He was replaced 12 months later...I have left F45 now, and doing HIIT at an independent studio that is Half the price and is so much more variety in workouts.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A formerly award-winning studio declining after a management/staff change is a facility and management-quality shift - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -6729,7 +6729,7 @@
       "evidence_snippet": "I won the most recent challenge for my studio but then the knee pain that had been annoying me became unbearable so I had to stop going. I've still not been back yet but my knees are feeling better.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a knee injury that became unbearable after a challenge - a health circumstance, not something a connection app touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -7279,7 +7279,7 @@
       "evidence_snippet": "I hated it at my gym, and don't knpw how to bring it up. It was top crowded, too hot, and too many people to get tips from trainers.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Feeling the gym is overcrowded, too hot, and too full of people is a facility-capacity and climate-control complaint - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -7904,7 +7904,7 @@
       "evidence_snippet": "I couldn't do a burpee without risking a smashed jaw / death... I mentioned it to a trainer and now it's mostly fine because it gets cleaned every night.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Reporting a physical safety hazard to a trainer, who had it cleaned up, is direct incident reporting handled by staff - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -7979,7 +7979,7 @@
       "evidence_snippet": "I do not want to take an allergy pill every time i go to a workout. Ill see how long this continues. Eventually i ll mention something or ill switch location.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Needing allergy medication before every workout points to a facility hygiene or allergen issue - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -8704,7 +8704,7 @@
       "evidence_snippet": "Our gym can't safely run NoHo and yet when I brought it up to the trainer that day she laughed at me... I got kicked in the face and was also constantly worried about not bumping into the person in front of/ behind me",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Raising a safety issue with a trainer who laughed it off is a serious staff-responsiveness failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -9804,7 +9804,7 @@
       "evidence_snippet": "I am about to break my deal coz it's bad...I slipped in a puddle of sweat while doing the balance trainer burpees during Hollywood yesterday... and the owner didn't clean it up or let alone mention the towel thing to the members",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Slipping in a puddle of sweat during a workout is a facility-cleanliness safety hazard - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -10329,7 +10329,7 @@
       "evidence_snippet": "I do love my home studio as I am used to it but due to sizing we miss out on ropes/sleds etc a fair bit.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A smaller studio missing some equipment due to space constraints is a facility-capacity limitation - not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -10379,7 +10379,7 @@
       "evidence_snippet": "Our studio is on the smaller side as well so they only do 1 per station but all 27 stations are there. They also offer 4 classes per Saturday so there is enough for people to get in.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A studio keeping one member per station across all 27 stations is a facility-layout and capacity-management choice - not TWU's domain.",
       "outside_scope_type": "operational"
     },
     {
@@ -10429,7 +10429,7 @@
       "evidence_snippet": "If you're thinking it, so are others, and that can be the piece that drives members away, honestly.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Providing borrowable, staff-laundered towels is a facility amenity the studio manages - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -10579,7 +10579,7 @@
       "evidence_snippet": "Personally, I'm genuinely considering suspending my membership.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a brief, vague statement about considering suspension with no specific facility detail named - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -10604,8 +10604,8 @@
       "evidence_snippet": "I placed a hold on my membership for now because my area has had a few cases of community transmission sadly.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Placing a hold on a membership due to community-transmission concerns is a billing/membership-pause action - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjqqrs6",
@@ -10929,7 +10929,7 @@
       "evidence_snippet": "I've been really disappointed in my club so far...I'm just about ready to suspend my membership.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "General disappointment in the club, considering suspending, without a specific facility detail - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -10954,7 +10954,7 @@
       "evidence_snippet": "It's annoying as membership is expensive and I want to keep going but I want my club to step up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Wanting the club to 'step up' given the expensive membership is a general facility/value expectation - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -12479,7 +12479,7 @@
       "evidence_snippet": "My studio closed so I switched to another one and I've gone from obsessed to meh...I regret switching tbh...hardly gone in the 2ish weeks since I switched.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Switching studios after a closure and feeling less enthusiastic at the new one is a facility/culture shift from the move - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -12679,7 +12679,7 @@
       "evidence_snippet": "I left my gym because the quality of the gym seemed to be deteriorating quickly...trainers were dropping like flys. Not worth the money for poor quality!",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Leaving because overall gym quality was deteriorating and trainers were leaving is a facility and staffing decline - not something a connection app reverses.",
       "outside_scope_type": "operational"
     },
     {
@@ -12779,7 +12779,7 @@
       "evidence_snippet": "I was in a similar situation and switched to a different better maintained studio. My old studio just closed recently. Those owners had really stopped caring after COVID.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Switching to a better-maintained studio after the old one closed is a facility-quality comparison - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -13179,7 +13179,7 @@
       "evidence_snippet": "Not once was a single piece of equipment or mat wiped down...completely unsanitary",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Equipment and mats never being wiped down is an unsanitary facility-maintenance failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13329,7 +13329,7 @@
       "evidence_snippet": "the gym was super packed...at one point we were told to do the exercises outside in the car park",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Being told to exercise in the car park due to overcrowding is a facility-capacity failure - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -13504,7 +13504,7 @@
       "evidence_snippet": "the gym has been getting worse and worse in terms of general upkeep and cleanliness...I emailed the owner asking for cancellation options",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "General upkeep and cleanliness worsening, prompting an email to the owner, is a facility-maintenance issue - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13704,7 +13704,7 @@
       "evidence_snippet": "the overall experience has been slipping...the floor pads are coming up/moving, we have a weird mouldy patch on the ceiling and equipment has taken a toll",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Floor pads coming loose and a mouldy patch are physical facility deterioration - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -13754,7 +13754,7 @@
       "evidence_snippet": "I've asked multiple times for blowing fans...nothing seems to change...this isn't a cheap gym membership, I don't understand",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Repeatedly requesting fans with no change is a facility-comfort request going unaddressed - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14029,7 +14029,7 @@
       "evidence_snippet": "The coach proceeded to tell me that I would have to purchase a towel or leave...Am I crazy for thinking this is a broken system?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Being told to buy a towel or leave is a facility policy being enforced in the moment by a coach - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14454,7 +14454,7 @@
       "evidence_snippet": "the owner went from having 2 coaches per class to 1...towels were removed...Really frustrated and looking for alternatives.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Cutting coaches per class from two to one and removing towels are cost-cutting staffing and facility decisions - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -14504,7 +14504,7 @@
       "evidence_snippet": "I've thought about canceling my membership...I feel like I'm fighting through every minute just to survive the workout, not to get stronger or feel good.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Raising an issue with the studio manager multiple times with no resolution is a facility-management follow-through failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14654,7 +14654,7 @@
       "evidence_snippet": "I'm getting tired of paying good money to use nearly-broken equipment on a regular basis.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Paying to use nearly-broken equipment is a facility-maintenance failure - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -14854,7 +14854,7 @@
       "evidence_snippet": "ever since we lost our manager, our gym's appearance has gone downhill. Our turf has tape covering the multiple areas that have holes in them.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "The gym's appearance declining since losing a manager, including damaged turf, is a facility-management gap - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14879,7 +14879,7 @@
       "evidence_snippet": "Is it worth pushing through, or does this sound like a red flag that it's time to move on?",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Raising an AC issue with the manager multiple times without resolution is a facility-maintenance follow-through failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -15504,7 +15504,7 @@
       "evidence_snippet": "It feels like the quality of the workouts we signed up for is being sacrificed for profit. Did management listen?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Feeling workout quality is being sacrificed for profit under new management is a business-priorities concern - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -15794,7 +15794,7 @@
       "pain_point_reasoning": "Run-down studio (torn equipment, holes in walls, 2 of 3 bathroom sinks broken) despite a signed member petition for a promised revamp that never happened",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member says only location, coaches, and members are stopping them from leaving for a competitor",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -15804,8 +15804,8 @@
       "evidence_snippet": "If it weren't for the location, coaches and members I would be certainly looking elsewhere.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Location, coaches, and fellow members are cited together as what's keeping him - the member-community piece is TWU-relevant even though location and coaching aren't.",
+      "outside_scope_type": null
     },
     {
       "id": "1rd1hbe",

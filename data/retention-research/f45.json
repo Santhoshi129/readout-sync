@@ -104,7 +104,7 @@
       "evidence_snippet": "The cost is higher than any fitness-related expense I\u2019ve spent in the past but I can easily justify it by going 3-4 times a week (and of course through the results I\u2019m seeing). I love it!",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a personal cost-justification calculation based on how often she attends - a value perception, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -129,7 +129,7 @@
       "evidence_snippet": "I've joined one in the uk for a promo price of 195\u00a3... comparing some of the prices below I'm getting ripped off big time.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a price comparison across studios and promotional rates, concluding this one feels overpriced - a pricing perception issue, not a connection-layer fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -429,7 +429,7 @@
       "evidence_snippet": "Im currently paying AU$55 a week, when my contract is up I got it down to AU$47.50 just through asking. They will normally do a better deal if more than one are joining",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Directly negotiating a fee reduction with the owner is a pricing negotiation between the member and the business - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -504,8 +504,8 @@
       "evidence_snippet": "It\u2019s one of the main reasons I cancelled my membership. I travel too much and could never get into a class. Too expensive for access to just one location.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Being unable to get into classes while traveling frequently is a booking/capacity access issue - not something a connection layer solves, though it's really a scheduling limitation more than a pricing one.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ebmrxbo",
@@ -654,7 +654,7 @@
       "evidence_snippet": "I'm seriously bored with the treadmill and rower and realized I'm paying a lot of money for 23 minutes of weights per class and treadmill time I could do in my own.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This combines programming boredom with a cost-per-minute value complaint - a program-design and pricing issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1729,7 +1729,7 @@
       "evidence_snippet": "unlimited is $251 per month (including taxes). I love the workouts, but I'm not gonna stay much longer at this price. I mean I can get an unlimited OTF membership two blocks away... for $139 a month.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A straightforward high-price complaint with no solution attempted - pricing itself is outside a connection app's reach.",
       "outside_scope_type": "operational"
     },
     {
@@ -1754,7 +1754,7 @@
       "evidence_snippet": "I had a Foundation membership at AU$49.95pw, but I left after 12 months for a cheaper HIIT gym (AU$30pw)... then they just raise the prices and members drop off and space is cleared for new member to join at a higher price.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Switching to a cheaper competitor with a bigger facility is a pricing and facility comparison between two businesses - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -1779,7 +1779,7 @@
       "evidence_snippet": "You should mention that to the owner and try renegotiate, I hhave recently done this and saved au$10 a week for me and my wife, so 80 a month just for asking.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Directly asking the owner to renegotiate the rate is a personal pricing negotiation - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -1804,7 +1804,7 @@
       "evidence_snippet": "Free! I DJ at my local one once a month for Hollywood sessions... They've given me a membership in return. See if there's any sort of service you can do or deal you can strum up to lower your cost",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Trading DJ services for a free membership is a personal barter arrangement with the studio - not something a connection app facilitates.",
       "outside_scope_type": "operational"
     },
     {
@@ -1829,7 +1829,7 @@
       "evidence_snippet": "Our gym offers a discount to people to come in and clean the equipment and put things away at night",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A discount in exchange for helping clean the studio is the gym's own labor-trade program - a pricing/business arrangement, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -2104,7 +2104,7 @@
       "evidence_snippet": "I negotiated mine down to $49au/week. I was paying $59au. Just waited until membership was up for renewal and I asked for a better rate or Ill go somewhere else.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Waiting for renewal to negotiate a lower rate is a personal pricing negotiation strategy - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -2579,7 +2579,7 @@
       "evidence_snippet": "people freak when I tell them how much I pay but I go 6 days a week (so $10 per session in NZD) and the community that are now my friends, the fact I never miss a class... is all worth it",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a personal cost-per-session value calculation justifying the price through frequency of use - a pricing perception, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2604,7 +2604,7 @@
       "evidence_snippet": "Even after this next challenge I plan to keep the membership because it forces me to maintain an active and healthy life style... created the amount of value that keeps me coming back.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Keeping the membership specifically because the cost forces continued activity is a pricing-as-accountability dynamic - a personal psychology tied to cost, not a connection-app mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -2629,8 +2629,8 @@
       "evidence_snippet": "made a nerdy little spreadsheet on google sheets to work out my cost per class... At the end of my 6 months it was just over $12 per class!! ... At my old gym I paid $25 a week but it was a good week if I even went once!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Building a personal cost-per-class spreadsheet to track value is a self-made analytics habit - closer to billing/value tracking than TWU's community/connection layer, even though it shows real appetite for that kind of visibility.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "elm1gnz",
@@ -3279,7 +3279,7 @@
       "evidence_snippet": "This was a big reason why I left. At a traditional gyms when I don't feel like thinking of a routine I just head to the treadmill. So why did I pay so much to do that at otf?",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This compares F45's paid structured format unfavorably to a traditional gym's flexibility - a programming and value comparison, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -3679,7 +3679,7 @@
       "evidence_snippet": "too many members to have only 2-3 trainers per class and when you\u2019re paying so much a week I would expect some more attention in form/technique and general coaching etc",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a complaint about trainer-to-member ratio not matching the price paid - a staffing-adequacy and value issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -3854,7 +3854,7 @@
       "evidence_snippet": "I ended up deciding on signing up for 6 months to get my form in better check. Then will try to emulate at home.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a personal strategy of paying short-term to learn proper form, then continuing at home for free - a value/cost decision, not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -3929,7 +3929,7 @@
       "evidence_snippet": "its incredibly expensive at nearly $400/month... the last class is 615pm and I usually work until 8pm... I ended up switching back to F45 because I feel like I get a better workout",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This combines a high-price complaint with a scheduling conflict (the last class is too early for her work hours) - pricing and access limitations, neither something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -4454,7 +4454,7 @@
       "evidence_snippet": "I did the same 6 months ago (left F45) before I joined another cheaper HIIT gym (1/2 the cost)",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Switching to a competitor at half the cost is a straightforward pricing comparison between two businesses - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4479,7 +4479,7 @@
       "evidence_snippet": "that's super good to hear cos the cost is getting a bit too high for me too",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a brief agreement that costs are getting too high, with no further detail - a general pricing sentiment, not a mechanism to act on.",
       "outside_scope_type": "operational"
     },
     {
@@ -4579,7 +4579,7 @@
       "evidence_snippet": "With the kind of money I'm spending per month ($200 CDN) I can see how I could get tons of equipment within 6 months and keep going with that. It's at the back of my mind for sure.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is an opportunity-cost comparison - what the membership costs versus buying home equipment instead - a personal financial calculation, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4604,7 +4604,7 @@
       "evidence_snippet": "partly why i left couldnt justify the cost for 3/4 classes a week",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A brief cost-justification statement tied to attending only three to four classes a week - a value perception, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -4854,7 +4854,7 @@
       "evidence_snippet": "it's because the studio I've been trialing *doesn't* do these things that I will not be buying a long term membership after my 3 week trial is over.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This references unspecified shortcomings at the trial studio driving a decision against a long-term membership - too vague to point to a concrete mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -5079,7 +5079,7 @@
       "evidence_snippet": "the ratio of about 10 people to one trainer. I felt there was just no way they could keep an eye on me and for the rate I would pay (about $200 a month) I could go somewhere else",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A 10-to-1 member-to-trainer ratio leaving her feeling unwatched is a staffing-ratio concern - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5104,7 +5104,7 @@
       "evidence_snippet": "Overall it wasn't the worst gym. I loved the workouts but I couldn't justify spending $67 a week  on the membership with so few benefits.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Even with the studio's own attendance-prize program, the cost still wasn't justified for this member - a pricing/value decision the studio's own incentive program didn't overcome, and not something a connection app would either.",
       "outside_scope_type": "operational"
     },
     {
@@ -5304,7 +5304,7 @@
       "evidence_snippet": "I have a founders rate with Orangetheory that I just can\u2019t justify giving up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A legacy founders-rate deal locking in loyalty at a competing gym is a pricing/loyalty mechanism between the member and a different business - not something TWU touches.",
       "outside_scope_type": "operational"
     },
     {
@@ -5504,7 +5504,7 @@
       "evidence_snippet": "F45 really doesn't seem worth the money to just do 3 classes a week. Maybe I should be looking at a more normal gym? ... F45 is about triple the price of a normal gym",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A value-per-visit complaint - not worth it for just three classes a week - considering a switch to a regular gym is a pricing/usage calculation, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5729,7 +5729,7 @@
       "evidence_snippet": "I've gotten my studio to price match my membership with my old one. As I always say, there's no harm in asking.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Successfully getting the studio to price-match an old membership through direct negotiation is a pricing arrangement between the member and the business, not something a connection app arranges.",
       "outside_scope_type": "operational"
     },
     {
@@ -6429,7 +6429,7 @@
       "evidence_snippet": "I switched from OTF mostly because I felt nickeled and dimed at OTF. It always felt like there was some other fee or cost to participate...They really treat you like family and are so welcoming and kind.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Switching gyms over feeling 'nickeled and dimed' by fee structure is a billing-transparency and pricing issue; the new studio's welcome pack is a hospitality touch - neither is a connection-layer mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -6804,8 +6804,8 @@
       "evidence_snippet": "why do members who have been with f45 for a year still have to pay the same rate the following year etc...If my wife and I stay with f45 for the next 10 years we would have paid 60k...they must be over charging.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a suggestion for loyalty-based pricing tiers for long-tenured members - a billing/pricing-structure idea, not TWU's community/connection domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fcwo462",
@@ -6829,7 +6829,7 @@
       "evidence_snippet": "I now comeback to F45 occasionally for a full week every couple months or do a Hollywood occasionally...paying $70 CAD a week for my membership was a bit too much.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Coming back for occasional full weeks every couple months instead of a standing membership is a personal usage strategy to manage cost - not a mechanism a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6979,7 +6979,7 @@
       "evidence_snippet": "if you paid less money to go to a gym that leaves you 100% to your own devices, would you still attend as regularly? For me, the answer was a hard no :)",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This frames the price itself as buying built-in coached-class structure compared to a cheap self-directed gym - a pricing/value argument, not a connection-app mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -7004,7 +7004,7 @@
       "evidence_snippet": "One of my friends got all her money back her studio as the goal was 10% body fat... I'm currently doing a 4 week challenge where I get my money back if I reach 7kg or 4.5% body fat.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A money-back guarantee tied to hitting a body-fat goal is the studio's own promotional refund program - a pricing incentive, not something a connection app builds.",
       "outside_scope_type": "operational"
     },
     {
@@ -7079,8 +7079,8 @@
       "evidence_snippet": "I ended up leaving F45 and joining an independent HIIT gym that was half the weekly cost... I need the class booking style, and group activity to keep attendance",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Switching to a cheaper gym with a booking system she preferred is a mix of pricing and booking-software preference - neither is TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fehbj07",
@@ -7554,7 +7554,7 @@
       "evidence_snippet": "I had to change locations for this exact reason. The owner at my old location didn't really give a shit as they make enough money as it is.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Switching to a different F45 location over the previous owner's attitude is an ownership/management issue - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -7704,7 +7704,7 @@
       "evidence_snippet": "I've been able to negotiate half off at two different locations.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Successfully negotiating 50% off at two locations is a personal pricing negotiation - not a mechanism a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -7729,7 +7729,7 @@
       "evidence_snippet": "the head trainer asked me if i wanted to continue and i told him that i wish i could but i can't afford it. anyway, he offered me a discounted rate.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A trainer personally checking in about continuing and affordability is staff outreach - not a mechanism a connection app replicates, even though the studio's own promo pricing is the backdrop.",
       "outside_scope_type": "operational"
     },
     {
@@ -8354,8 +8354,8 @@
       "evidence_snippet": "mine offers a per class subsidised package if you buy 10 or 20 classes... I don't feel the pressure to do '3 x per week to get my money's worth'",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A subsidized class-pack pricing option instead of a flat weekly rate is a billing/pricing-structure choice by the studio - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fgnlary",
@@ -8379,8 +8379,8 @@
       "evidence_snippet": "Yes, it is expensive at $40 a week... For the holidays I asked for a 2 week break and it was no issue.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A hassle-free pause request granted by the studio is a membership/billing accommodation - not something a connection app manages.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fgld6lj",
@@ -8644,7 +8644,7 @@
       "pain_point_reasoning": "Member repeatedly debates whether F45 is too expensive but stays because the team format sustains motivation solo gyms couldn't",
       "pain_severity": 2,
       "pain_severity_reasoning": "Ongoing price doubt stated but never escalated to leaving; member upgraded instead",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": "Team-workout motivation plus solid trainers; free week trial converted to 20-class pack then unlimited as attendance rose",
       "solution_category": "community_events",
       "effectiveness": 4,
@@ -8654,8 +8654,8 @@
       "evidence_snippet": "It is expensive for sure and at times I've debated if it's too expensive as well. But for me the team workout keeps me motivated in a way that working out in a gym alone just can't.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "The team-workout motivation is genuine community value that could tie into TWU's connection features, even though the underlying cost debate itself is a pricing matter outside TWU's scope.",
+      "outside_scope_type": null
     },
     {
       "id": "fh9dsoc",
@@ -8679,8 +8679,8 @@
       "evidence_snippet": "the 10 classes had to be used in 30 days, so I was better off paying monthly. I try to forget how much I pay because it's high, even though I got in on a founders discount.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Comparing class-pack expiration terms against a monthly plan is a billing-structure decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhat5f1",
@@ -9029,7 +9029,7 @@
       "evidence_snippet": "compared to Crossfit at 90 dollars pm. I'll be making the switch when my contract runs out",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A straightforward price comparison against a competitor leading to a planned switch - a pricing decision, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -9054,7 +9054,7 @@
       "evidence_snippet": "I've had traditional gym memberships before but it was extremely hard to stay on track, and with Orangetheory I would skip some days because I didn't want to use the treadmill. With F45 I always go at least 3-5x a week",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is about routine and convenience keeping her on track, more than the price itself - a program-fit and value justification, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -9254,7 +9254,7 @@
       "evidence_snippet": "Doing the PT session 3 times a week plus the membership I was paying $165 a week. ($660 a month) I go to F45 here and pay $55 a week",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Replacing expensive 1:1 personal training with cheaper F45 group coaching is a cost-substitution decision - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -9379,8 +9379,8 @@
       "evidence_snippet": "I keep saying I'm going to leave because it's so expensive but here we are... I don't find there's enough flexibility with the memberships.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This cites a lack of membership flexibility alongside the cost complaint - a billing/plan-structure issue, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhvol04",
@@ -9404,8 +9404,8 @@
       "evidence_snippet": "They said only with a doctors note saying I'm not able to complete my contract. :( I asked about buy out or early termination fees. And the doctor is the only option.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a question about contract buyout or early-termination policy - a billing/contract-terms matter, not TWU's connection-layer scope.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhz3oo5",
@@ -9454,7 +9454,7 @@
       "evidence_snippet": "I quit OTF and joined as a founding member at my studio for $35 a week, no way I could do both at those costs.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Switching gyms to lock in a lower founding-member rate is a pricing decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -9629,7 +9629,7 @@
       "evidence_snippet": "im thinking of leaving due to the cost and im bored and want to push myself more on the weight side of things... that tool is now defunct and i can do more",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This combines a cost concern with programming boredom and a preference for more weight training - pricing and program-design issues, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -10179,8 +10179,8 @@
       "evidence_snippet": "I already feel we get ripped off on public holidays and weekends...some of us also have to work shift work, and can't make it to the 1 class they do on the weekend or public holiday.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a fairness complaint about paying full price despite limited holiday/weekend access, compounded by a shift-work scheduling conflict - a billing and access-policy issue, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjcyyjf",
@@ -10204,8 +10204,8 @@
       "evidence_snippet": "I'm tired of paying for class bundles at the one near my house and my unlimited monthly at the one near work",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Paying for two separate memberships at two locations is a billing/plan-structure gap - a multi-location membership feature, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjet9fg",
@@ -10554,7 +10554,7 @@
       "evidence_snippet": "It's now year 2 and I still have that founders rate. As long as I'm a member of that studio I keep that very discounted rate.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Keeping a locked-in founders rate as long as membership continues is a pricing arrangement - not something a connection app manages.",
       "outside_scope_type": "operational"
     },
     {
@@ -10829,8 +10829,8 @@
       "evidence_snippet": "Would we still have to pay if our studio closed for a few weeks?",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a billing question about whether payment continues during a closure - a membership administration question, not TWU's connection-layer scope.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkcx7l5",
@@ -10854,8 +10854,8 @@
       "evidence_snippet": "My gym did say they would put a membership to pending for up to 2 months a year.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A membership-pause allowance of up to two months a year is a billing/membership policy - not something a connection app manages.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fke4bff",
@@ -10879,8 +10879,8 @@
       "evidence_snippet": "I'm really happy with my gym's response in Canada... pausing anyone's membership if you are sick and for a week after any travel without penalty.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A no-penalty pause policy for illness is a billing/membership-policy feature - a good practice, but still membership administration, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkjn0zm",
@@ -10979,8 +10979,8 @@
       "evidence_snippet": "You shouldn't have to pay for online videos if your studio is closed.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking, payment, or admin-system friction - TWU explicitly does not replace class booking, scheduling, or billing software.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is an opinion about billing fairness during a closure (shouldn't have to pay for a substitute you didn't ask for) - a billing-policy question, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkmekx5",
@@ -11029,8 +11029,8 @@
       "evidence_snippet": "they will extend the membership by 2 weeks once they reopen...I can't continue to indefinitely pay money for a service I'm not receiving.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "The studio's own closure-compensation policy (extending membership by two weeks) and the member's frustration with continued payment are both billing/membership matters - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkmkdzz",
@@ -11054,8 +11054,8 @@
       "evidence_snippet": "my studio offered some incentives for continuing support the back end of the business. Some future perks are %off merch, extra late cancel fee's online training, and 2 extra future freezes.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "These are the studio's own retention incentives (merch discounts, waived fees, bonus sessions) - pricing and promotional decisions, not something a connection app builds.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkndbdx",
@@ -11154,8 +11154,8 @@
       "evidence_snippet": "pause upcoming payments...Refunded for this upcoming weeks payment...Continue payments and credited weeks closed to their account once the studio re-opens",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking, payment, or admin-system friction - TWU explicitly does not replace class booking, scheduling, or billing software.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "These are the studio's own billing options during a closure (pause, refund, or credit) - membership/payment administration, not TWU's connection-layer scope.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkn8fog",
@@ -11229,7 +11229,7 @@
       "evidence_snippet": "if they offer nothing to replace going to class then it's hard to justify $200 a month to donate.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a value-justification complaint (nothing to replace class access) during a closure - a pricing/value question, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -11279,8 +11279,8 @@
       "evidence_snippet": "My gym is offering your last month, whenever you cancel, at 50% off. It's not much but it's something.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A discounted final month at cancellation is the studio's own retention pricing tactic - a billing decision, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkq9066",
@@ -11304,8 +11304,8 @@
       "evidence_snippet": "I don't think it's worth paying $260 a month for that. Will they allow us to suspend payments until we come back?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This combines a value complaint with a request to suspend payments - both billing/membership matters, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkv7wt6",
@@ -11329,8 +11329,8 @@
       "evidence_snippet": "I believe our studio is still charging people while they are closed... where's the incentive to keep paying?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A complaint about being charged during closure with no clear incentive to keep paying is a billing-fairness issue - membership administration, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fkweh7b",
@@ -11404,8 +11404,8 @@
       "evidence_snippet": "They also are allowing couples/siblings to only pay one membership fee rather than double so they can save money.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A shared membership rate for couples or siblings is a pricing-structure decision by the studio - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fl6joqt",
@@ -11454,8 +11454,8 @@
       "evidence_snippet": "They have not mentioned fee reduction / allowing people to pause memberships. Whilst I appreciate it is nice to support the local gym, I am not in a financial position to be giving money away",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a complaint about the studio not offering fee reductions or pause options - a billing/membership-policy gap, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fl9zsk3",
@@ -11479,8 +11479,8 @@
       "evidence_snippet": "now they are telling me I have to pay bi weekly to access this app????? I ain't paying a cent, in fact this is making me want to cancel it all together and take my business elsewhere.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is frustration about being charged separately to access the studio's own app - a billing/software-access issue with a different app, not TWU.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fla1nft",
@@ -11504,8 +11504,8 @@
       "evidence_snippet": "F45 needs to keep us engaged or they will lose members. OTF or at least mine, froze memberships and provides the daily workout on their app.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This compares F45's closure response unfavorably to a competitor's membership-freeze practice - a billing-policy comparison between businesses, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "flab0z1",
@@ -11529,7 +11529,7 @@
       "evidence_snippet": "I won't go back to $200/month workouts after being treated like this. Good luck to the gym competing with running for free and a plethora of free online workouts.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a churn statement citing price and how she was treated, comparing to free alternatives - pricing and service-quality issues, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -11729,8 +11729,8 @@
       "evidence_snippet": "everyones membership has been suspended and they have added live sessions each day...if you still want the live sessions you can opt. back in for half the membership.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Suspending memberships while adding free live sessions is the studio's own closure-response program - a billing and content decision, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "flddwjo",
@@ -11754,7 +11754,7 @@
       "evidence_snippet": "I want to support them but I am thinking real hard about dropping out until things get back to normal.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a personal loyalty-versus-cost dilemma during uncertain times - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -11779,8 +11779,8 @@
       "evidence_snippet": "pay upfront for two months (~$320) and get a 3rd month free. I am opting for option 3, its really the best deal, if you can afford it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking, payment, or admin-system friction - TWU explicitly does not replace class booking, scheduling, or billing software.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Choosing among the studio's own flexible payment options during a shutdown is a billing decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fldkvbe",
@@ -11804,7 +11804,7 @@
       "evidence_snippet": "I haven't committed yet because of this considering there's lots of free content right now or less expensive options. Until the app has worked out it's kinks, I'll hold off.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is hesitation to commit given free or cheaper alternatives currently available - a value comparison, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -11854,8 +11854,8 @@
       "evidence_snippet": "limited class times, esp weekends, inability to go to other studios and the price that i feel are not balanced...i'm going to get a regular gym membership and lift on my own on top of otf",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This combines limited class times, no cross-studio access, and a price/value imbalance - scheduling and billing-plan limitations, not something a connection app resolves.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "hjv68yy",
@@ -12129,7 +12129,7 @@
       "evidence_snippet": "I still have my unlimited at OTF and I try to buy packs on sale at F45 but I'm struggling to justify staying with both long term.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a struggle to justify paying for two gym memberships at once - a personal budget decision, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -12329,8 +12329,8 @@
       "evidence_snippet": "That's one reason I left OTF and went to F45. I hated that policy. Ridiculous to insist on 8 hours to cancel...Just a money grab.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Leaving a competitor over its strict cancellation-notice policy is a booking/cancellation-policy issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ijpy3at",
@@ -12904,7 +12904,7 @@
       "evidence_snippet": "I stopped going to F45 a while back for financial and injury reasons, but I never experienced anything like that. Coaches were encouraging but never forced higher weights...",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This cites financial and injury reasons for stopping, without further detail - a cost and health matter, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -13204,8 +13204,8 @@
       "evidence_snippet": "I was told that challenges are free and included as part of membership...now asking for $89",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This is a complaint about the challenge switching from free-with-membership to a $89 charge - a pricing-consistency and billing-communication issue, not TWU's domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "bjel8r",
@@ -13279,7 +13279,7 @@
       "evidence_snippet": "I am finding the price to be somewhat unsustainable",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A brief, vague statement that the price feels unsustainable - a value perception, not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -13404,7 +13404,7 @@
       "evidence_snippet": "considering of moving away from doing f45 and probably join equinox (cheaper compared to f45 too)",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Considering a switch to a cheaper competitor is a pricing comparison between two businesses - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -13454,7 +13454,7 @@
       "evidence_snippet": "ending my F45 membership after a few months mostly because I have achieved my goals...and the cost is getting too high",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Leaving after achieving personal fitness goals, with cost as a secondary factor - a natural churn point, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -13554,7 +13554,7 @@
       "evidence_snippet": "The Founder's Rate at my F45 location is $55/week compared to my $169/month membership at OTF...I will stay with OTF",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Comparing a locked-in founder's rate favorably against a competitor's price and deciding to stay is a pricing comparison - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -13629,8 +13629,8 @@
       "evidence_snippet": "I signed up before the studio opened at $45/w for life... I was just asked to increase what I pay and it is apparently due to HQ telling their franchisees to do it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A studio asking to raise a rate that was promised 'for life' is a billing-commitment dispute - a pricing/contract-terms issue, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "cxklls",
@@ -14079,7 +14079,7 @@
       "evidence_snippet": "it seems they're trying to push CPers out...I am finally starting to get in good groove with my workout routine",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This suspects the studio is trying to push out discount-rate members for revenue reasons - a pricing/business-strategy concern, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14204,7 +14204,7 @@
       "evidence_snippet": "this seems a little over priced considering the class times and the working outs only 45 minutes",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A value-per-minute complaint (45-minute classes feeling overpriced) - a pricing perception, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -14229,8 +14229,8 @@
       "evidence_snippet": "My gym now has remembered I'm not a student and wants to raise my membership by $50 a month...I think this raise is really steep",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Losing a student discount and facing a rate increase is a billing/pricing-tier matter - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1kfxzc5",
@@ -14579,8 +14579,8 @@
       "evidence_snippet": "With the new credit based system, I'll be paying 2.5 times more than what I previously paid...I find the increased price difficult to justify.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A new credit-based billing system causing a 2.5x cost increase is a pricing-structure change - a billing matter, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1m1wc1w",
@@ -14954,7 +14954,7 @@
       "evidence_snippet": "When I compare that to a $30/month commercial gym that offers way more amenities...it's hard to justify staying with F45.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A value comparison against a much cheaper commercial gym with more amenities - a pricing/value decision, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -15029,7 +15029,7 @@
       "evidence_snippet": "If I go to fewer than 9 classes a month it ends up being around $25/class or more...does it feel like a bummer to anyone else?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A cost-per-class calculation tied to attendance frequency - a personal value calculation, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -15129,8 +15129,8 @@
       "evidence_snippet": "Have a three week work trip and told I couldn't pause by the owner. Feel like I'm just throwing money away now",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "An owner denying a pause request for a work trip is a billing/membership-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1ocjbav",
@@ -15554,8 +15554,8 @@
       "evidence_snippet": "The owner is now saying that the locked in prices will no longer be honored...starting this month, there is now a $99 annual equipment and maintenance fee",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "An owner reneging on a previously locked-in price is a billing-commitment and trust issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1q8yda1",
@@ -15829,7 +15829,7 @@
       "evidence_snippet": "it's hard not to feel a little slapped in the face seeing newcomers paying less than those of us who've been loyal for years...I've seen members leave because they felt uncomfortable.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A fairness complaint about newcomers paying less than long-tenured members is a pricing-structure grievance - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -16279,8 +16279,8 @@
       "evidence_snippet": "all of sudden this entire week is 15 credits...I just booked another gym (more expensive) in the area for 6 credits!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A credit-based booking system suddenly requiring more credits is a billing/booking-system change - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1td9w8p",
@@ -16354,7 +16354,7 @@
       "evidence_snippet": "membership rates at F45 Training will go up, and we will no longer be able to offer our current pricing...around 400 active members at our gym, for context.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a broad membership rate-increase announcement - a pricing decision, not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -16504,7 +16504,7 @@
       "evidence_snippet": "81 a week for a 3 month contract!!! Is F45 literally charging Lagree and Equinox prices now?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "A price-shock comparison against premium studio brands - a pricing perception, not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -16679,7 +16679,7 @@
       "evidence_snippet": "I quit back in December 2024 and gave up my founders rate ($179)...it's $230! I can't justify paying $50 more monthly for basically the same thing.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "Regretting giving up a founders rate and now facing a higher price to return is a personal pricing decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {

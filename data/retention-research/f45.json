@@ -9494,7 +9494,7 @@
       "pain_point_reasoning": "2.5-year OTF member says workouts are 'getting stale', wants a change, can't afford both, and is giving notice at OTF after grabbing an F45 founders rate ($35/wk)",
       "pain_severity": 4,
       "pain_severity_reasoning": "Staleness plus cost explicitly triggering cancellation notice at OTF ('will be putting my notice in soon')",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Competitor's founders-rate offer converted a bored long-tenure member before the new studio even opened; member plans a 3-6 month trial before deciding to return",
       "solution_category": "pricing_change",
       "effectiveness": 3,
@@ -9504,8 +9504,8 @@
       "evidence_snippet": "I just secured an F45 founders rate for 35$ a week. I can't afford both and will be putting my notice in soon for OTF.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Competitor's founders-rate offer converted a bored long-tenure member before the new studio even... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A competitor's pricing offer luring away a bored long-tenure member is a pricing and marketing dynamic between two businesses - not something a connection app influences.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fi158pd",
@@ -9544,7 +9544,7 @@
       "pain_point_reasoning": "1.5-year OTF member fully switched to F45: OTF got stale, constant turnover at the studio was 'exhausting', culture felt uptight, and corporate policies grated",
       "pain_severity": 4,
       "pain_severity_reasoning": "Accumulated culture/turnover/staleness issues explicitly caused a full defection from OTF",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "F45's two-trainer model with hands-on form correction and an upbeat, encouraging environment ('you really are the star of the show') retained the switcher",
       "solution_category": "coaching_change",
       "effectiveness": 4,
@@ -9554,8 +9554,8 @@
       "evidence_snippet": "OTF was getting stale and the constant turnover rate at my studio was exhausting... With OTF you get very little attention and little to no help with form on the strength floor.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "F45's two-trainer model with hands-on form correction and an upbeat, encouraging environment ('you... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The two-trainer model and upbeat coaching style are F45's own staffing and coaching approach - not a mechanism a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fi2tlke",
@@ -9669,7 +9669,7 @@
       "pain_point_reasoning": "Trainer broke confidentiality telling the dog-owning member that this member had complained, felt unprofessional and 'like high school'",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member explicitly states 'Too many options out there for that price I'll go elsewhere' as a result of the mishandling",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -9679,8 +9679,8 @@
       "evidence_snippet": "Felt like high school. Too many options out there for that price I'll go elsewhere.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a vague complaint about cliquish social dynamics ('felt like high school') plus pricing competition, with no concrete mechanism proposed - not enough here to act on with a connection feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fj0iice",
@@ -9719,7 +9719,7 @@
       "pain_point_reasoning": "Member injured in class (ankle) fears no one from the studio reached out to check on her afterward",
       "pain_severity": 3,
       "pain_severity_reasoning": "Ankle injury is ongoing, member is afraid to ask for a freeze, and momentum from training is waning",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -9729,8 +9729,8 @@
       "evidence_snippet": "I've thought about asking to freeze my membership, but I'm afraid to take that step. I have to admit my feelings are a little hurt that no one has reached out to me, even though I was injured in class.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a personal hesitation about freezing membership tied to hurt feelings - an emotional state, not something a connection app resolves.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fj9gmy1",
@@ -9744,7 +9744,7 @@
       "pain_point_reasoning": "Member injured and in pain considered quitting ('throw it in') but worked out a return plan with a physio and studio",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member was in significant pain and openly considered giving up F45 before getting professional guidance",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Physio ordered a week off F45, then a graded return with modified movements, supplemented with Pilates",
       "solution_category": "injury_accommodation",
       "effectiveness": 4,
@@ -9754,8 +9754,8 @@
       "evidence_snippet": "I saw the physio today who has put me on no F45 for another week... she is going to then help me get back into it next week with modifications... I still can do it which makes me happy.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Physio ordered a week off F45, then a graded return with modified movements, supplemented with... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A physio-directed recovery plan with modified movements and supplemental Pilates is medical guidance - not something a connection app provides.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fj30fav",
@@ -9869,7 +9869,7 @@
       "pain_point_reasoning": "Member switched from OTF to F45, implying OTF had grown stale/boring by contrast",
       "pain_severity": 2,
       "pain_severity_reasoning": "No severe stated harm, just a preference-driven switch away from a competitor gym",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Switched gyms from OTF to F45",
       "solution_category": "studio_switch",
       "effectiveness": 5,
@@ -9879,8 +9879,8 @@
       "evidence_snippet": "I left OTF for F45 and the tornado style workout is a pretty accurate description of these workouts. Absolutely love them because they're fast paced and never get boring!!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Switched gyms from OTF to F45 \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is just a gym switch with no detail on why or how - nothing here for a connection app to act on.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fj9z00l",
@@ -10144,7 +10144,7 @@
       "pain_point_reasoning": "Casual free-trial users attended a couple of times then disappeared, wasting trainer time meant for retaining committed members",
       "pain_severity": 3,
       "pain_severity_reasoning": "Serious enough that the studio ended free trials entirely as a policy change",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Studio stopped offering free trials because trainers were wasting time on people who'd attend a couple of times then disappear, refocusing on existing member progress/community",
       "solution_category": "flexible_membership_policy",
       "effectiveness": null,
@@ -10154,8 +10154,8 @@
       "evidence_snippet": "my studio stopped offering the free trails because people were taking advantage of it and the trainers would usually waste their time on people who would only work out at the studio for a couple of stays and then disappear",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio stopped offering free trials because trainers were wasting time on people who'd attend a... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Stopping free trials because trainers were spending time on people who'd disappear is a studio operations/policy decision - not a mechanism a connection app builds.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fjcwx0y",
@@ -10354,7 +10354,7 @@
       "evidence_snippet": "The social scene is great, so I keep going back.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Continues attending primarily for the social scene despite uncertainty about optimal train... \u2014 this is community/connection value (social scene, noticing an absent member, deliberate partnering), the exact mechanism TWU's chat/matching/profile layer targets.",
+      "app_relevance_reasoning": "Staying primarily for the social scene, even while unsure about the optimal training approach, shows the community pull outweighing the programming concern - exactly the kind of retention value TWU's connection features aim to create.",
       "outside_scope_type": null
     },
     {
@@ -10469,7 +10469,7 @@
       "pain_point_reasoning": "All-day pregnancy sickness and nausea threatened her ability/motivation to keep attending classes",
       "pain_severity": 2,
       "pain_severity_reasoning": "Mild-to-moderate impact (nausea) but no stated intent to quit; largely offset by support received",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Trainers provided workout modifications and monitored her exertion by feel rather than strict heart-rate targets, enabling continued attendance",
       "solution_category": "coaching_change",
       "effectiveness": 4,
@@ -10479,8 +10479,8 @@
       "evidence_snippet": "Trainers have been great with mods and keeping an eye on how I'm doing!...I've been keeping up with classes 5-6 times a week my whole pregnancy so far.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Trainers provided workout modifications and monitored her exertion by feel rather than strict... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Trainers monitoring exertion by feel rather than strict HR targets is a coaching judgment call - not a mechanism a connection app replicates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fjihzc3",
@@ -10494,7 +10494,7 @@
       "pain_point_reasoning": "Unexplained stamina drop during early pregnancy led to a full stop in attendance for the pregnancy's duration",
       "pain_severity": 2,
       "pain_severity_reasoning": "Temporary life-event lapse rather than a permanent churn, member self-resolved by pausing then returning",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Stopped attending entirely during pregnancy due to energy loss, then returned to F45 classes two months after delivery",
       "solution_category": "win_back_offer",
       "effectiveness": 4,
@@ -10504,8 +10504,8 @@
       "evidence_snippet": "stopped attending for the duration of my pregnancy as I just couldn't find the energy for it. Went back to it 2 months after delivery.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Stopped attending entirely during pregnancy due to energy loss, then returned to F45 classes two... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A pregnancy-related pause and return two months after delivery is a personal life circumstance - not something a connection app influences.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fjjf3vi",
@@ -10619,7 +10619,7 @@
       "pain_point_reasoning": "Left F45 for CrossFit to build muscle but struggled to form friendships and felt demotivated by being weaker than the group",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member describes dreading sessions and not lasting long at the new gym before returning to F45",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Returned to original F45 studio after less than a year at CrossFit, drawn back by the friendships already built there",
       "solution_category": "community_events",
       "effectiveness": 5,
@@ -10629,7 +10629,7 @@
       "evidence_snippet": "i do find it hard to form the same type of friendship that i have forged in my F45 studio... I am back to my studio for more than a year now and have found myself new motivation.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Returned to original F45 studio after less than a year at CrossFit, drawn back by the friendships... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Being drawn back specifically by friendships already built at that studio is the community-retention effect TWU's connection features are designed to create and sustain.",
       "outside_scope_type": null
     },
     {
@@ -10894,7 +10894,7 @@
       "pain_point_reasoning": "Studio gave no info on COVID freeze policy, class caps, or safety steps; member's calls/emails went unanswered",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member stopped attending class over unanswered safety/billing questions, a recurring frustration",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -10904,7 +10904,7 @@
       "evidence_snippet": "No mention of whether or not we can place a freeze on our membership... I've attempted to contact them via phone and email... with no luck",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Repeated unanswered attempts to reach the studio by phone and email about a freeze is exactly the kind of unresolved communication gap TWU's own messaging layer is built to close.",
       "outside_scope_type": null
     },
     {
@@ -10994,7 +10994,7 @@
       "pain_point_reasoning": "Studio closure risked losing member engagement during the shutdown",
       "pain_severity": 1,
       "pain_severity_reasoning": "Minor disruption; studio offered a workaround rather than losing members outright",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Studio put memberships on hold and ran online classes funded by minimum $10 donations to the instructor",
       "solution_category": "community_events",
       "effectiveness": null,
@@ -11004,8 +11004,8 @@
       "evidence_snippet": "putting memberships on hold and will be holding online classes and asking for a minimum of 10 dollar donations to go to the instructor.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio put memberships on hold and ran online classes funded by minimum $10 donations to the... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Running donation-funded online classes during a hold is the studio's own pandemic-era program - not a mechanism a connection app builds.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fkmuaxj",
@@ -11169,7 +11169,7 @@
       "pain_point_reasoning": "Member almost quit after a brutal, disorienting first class and planned to only finish the month already paid for",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member seriously considered quitting after month one, a real near-churn moment",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Member pushed through the prepaid month and gradually grew to look forward to classes",
       "solution_category": "onboarding_program",
       "effectiveness": 4,
@@ -11179,8 +11179,8 @@
       "evidence_snippet": "I almost threw up in the first class...Told myself I was only going to do the month I'd paid for and go... I started looking forward to going",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Member pushed through the prepaid month and gradually grew to look forward to classes \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is personal habituation over a prepaid month with no external mechanism described - not something a connection app changes.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fkpokc1",
@@ -11194,7 +11194,7 @@
       "pain_point_reasoning": "Gym closed for COVID but never proactively mentioned membership fees/freeze options; member had to seek it out and was pushed to try online classes instead",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member states she can't justify the cost without in-person classes and elsewhere in thread confirms switching to a $20/month competing app instead",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Studio required members to email in to unfreeze/opt out and suggested online classes as the alternative, without proactively addressing fees",
       "solution_category": "flexible_membership_policy",
       "effectiveness": 1,
@@ -11204,7 +11204,7 @@
       "evidence_snippet": "if you want us to do that....be more transparent about it. It's not a good look to not even mention membership fees... I just cant justify the cost.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio required members to email in to unfreeze/opt out and suggested online classes as the... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Requiring members to email in rather than proactively communicating freeze/opt-out options is exactly the kind of passive-communication gap TWU's own messaging or status updates could close by reaching members directly instead of waiting for them to ask.",
       "outside_scope_type": null
     },
     {
@@ -11254,7 +11254,7 @@
       "evidence_snippet": "they haven't automatically paused all our membership with the option to opt back in, and are ignoring requests about membership status/pauses while constantly still posting on Instagram",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Auto-pausing memberships is a billing feature outside TWU's scope, but ignoring member requests about their own status is the communication failure TWU's messaging layer could help prevent by keeping members proactively informed.",
       "outside_scope_type": null
     },
     {
@@ -11369,7 +11369,7 @@
       "pain_point_reasoning": "Studio kept charging full membership during COVID closure with almost no formal communication about status or options",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member calls it unfair and says they must now be mindful of expenses, but hasn't cancelled yet",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -11379,7 +11379,7 @@
       "evidence_snippet": "I think it's unfair of a studio to continue charging without at least sending out a formal communication to each member letting them know what is going on",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Continuing to charge without any proactive communication to members is precisely the kind of gap TWU's messaging could close - keeping members informed doesn't require solving the billing question itself.",
       "outside_scope_type": null
     },
     {
@@ -11429,7 +11429,7 @@
       "evidence_snippet": "I had to cancel my membership.. honestly the way they handled this was poor at my local f45... If my centre had done something like this i might have stayed",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This is a general complaint about how the studio handled communication poorly, without naming a specific alternative - TWU's messaging tools could help, but there's no concrete mechanism described here to point to.",
       "outside_scope_type": null
     },
     {
@@ -11544,7 +11544,7 @@
       "pain_point_reasoning": "All closure communication went out via social media only, excluding members without those accounts; royalty-fee rumor adds to distrust",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member states they'll definitely switch to something else once their annual contract ends",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -11554,7 +11554,7 @@
       "evidence_snippet": "I'm disappointed that all communication was shared via social media and not email... Once my annual contract ends, I'll definitely be finding something else.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Relying only on social media instead of direct communication with members is exactly the channel gap TWU's own messaging layer is built to close.",
       "outside_scope_type": null
     },
     {
@@ -11569,7 +11569,7 @@
       "pain_point_reasoning": "Studio communicated only via social media under young/inexperienced management with no owner relationship; workouts stayed low-effort gravity style",
       "pain_severity": 4,
       "pain_severity_reasoning": "Member wants a refund now and says they'll freeze next month if the situation doesn't improve",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -11579,7 +11579,7 @@
       "evidence_snippet": "I'm so disappointed in my local studio for their lack of communication and when I called them out on it, they said they 'used many methods'. Total BS.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A studio's lack of direct communication with members, even when called out on it, is the exact gap TWU's messaging layer is designed to close.",
       "outside_scope_type": null
     },
     {
@@ -11594,7 +11594,7 @@
       "pain_point_reasoning": "Contrasts with other studios by proactively emailing every government-guideline update and offering options as things changed",
       "pain_severity": null,
       "pain_severity_reasoning": "impact not described; account is entirely positive with no stated negative outcome",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Studio emails members with every new government guideline update and waived the membership pause fee for those uncomfortable attending",
       "solution_category": "flexible_membership_policy",
       "effectiveness": 4,
@@ -11604,7 +11604,7 @@
       "evidence_snippet": "as soon as the government release new guidelines, we're informed by email... They've also waived the pause fee if we do not want to attend.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio emails members with every new government guideline update and waived the membership pause... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Proactively emailing members with policy updates is exactly the kind of broadcast communication TWU's own messaging feature is built to support; the fee waiver itself is a billing decision outside that scope.",
       "outside_scope_type": null
     },
     {
@@ -11629,7 +11629,7 @@
       "evidence_snippet": "we have been receiving personal emails from the studio manager to keep us abreast of latest updates and precautionary measures... How thoughtful!",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Personal update emails from the studio manager plus added benches and sanitizing supplies at every... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "The manager's personal update emails are the kind of direct communication TWU's messaging could support at scale; the added benches and sanitizing supplies are facility changes outside that scope.",
       "outside_scope_type": null
     },
     {
@@ -11654,7 +11654,7 @@
       "evidence_snippet": "My F45 waited for my weekly payment to go through before responding that they would suspend my membership",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "The core issue is billing timing - charging before informing of a suspension - which is payment processing, not TWU's domain; though more proactive notification in general is where a messaging layer like TWU's could help.",
       "outside_scope_type": null
     },
     {
@@ -11669,7 +11669,7 @@
       "pain_point_reasoning": "Studio got ahead of hygiene/class-size changes and personally called around members with alternative membership options",
       "pain_severity": null,
       "pain_severity_reasoning": "impact not described; entirely positive account",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Trainers called members individually and suggested two alternative models (FB top-up strength sessions plus Gravity workouts) to keep memberships going",
       "solution_category": "communication_tooling",
       "effectiveness": null,
@@ -11679,8 +11679,8 @@
       "evidence_snippet": "They have already called around members and suggested two alternative models to keep up membership, offering the trainers doing top up sessions for strength via FB",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Trainers called members individually and suggested two alternative models (FB top-up strength... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Trainers personally calling each member individually to offer alternatives is staff-intensive outreach - not a mechanism a connection app scales or replaces.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "flcxq68",
@@ -11704,7 +11704,7 @@
       "evidence_snippet": "If anything the way they've gone about it makes me want to help them out more.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Immediate membership pause, clear ongoing communication, $20/week workout-from-home option, and... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Clear, ongoing communication paired with community-building around online workouts during a closure is exactly the combination TWU's messaging and community features are built to support, even though the pause and pricing details are billing decisions outside that scope.",
       "outside_scope_type": null
     },
     {
@@ -11819,7 +11819,7 @@
       "pain_point_reasoning": "Members risked disengaging during closure without structured ways to stay connected to the studio community",
       "pain_severity": 2,
       "pain_severity_reasoning": "Member kept paying to support the studio specifically because of the community connection maintained online",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "Studio ran daily online videos across exercise styles, a weekly Zoom happy hour, and 3 live Zoom workouts per week during closure",
       "solution_category": "community_events",
       "effectiveness": 4,
@@ -11829,7 +11829,7 @@
       "evidence_snippet": "my gym is also doing daily online videos from our coaches...a weekly happy hour on zoom to chat with everyone and 3 live workouts a week on zoom",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio ran daily online videos across exercise styles, a weekly Zoom happy hour, and 3 live Zoom... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "The daily workout videos are the studio's own content production, outside TWU's scope; the Zoom happy hour and live workouts are the kind of community event TWU could help coordinate or surface, even though this instance ran on Zoom.",
       "outside_scope_type": null
     },
     {
@@ -12179,7 +12179,7 @@
       "evidence_snippet": "I started being so unfit and was always embarrassed to go to the gym...F45 is the only gym I've ever stayed at for more than 2 weeks as well",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "No-judgment class format where individual performance doesn't affect or get noticed by others let a... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A no-judgment class format where performance isn't visible to others is a program-design choice by the studio; TWU could support the same self-consciousness barrier with private, non-public engagement options, but it doesn't design the class format.",
       "outside_scope_type": null
     },
     {
@@ -12519,7 +12519,7 @@
       "pain_point_reasoning": "Studio energy and attendance have visibly collapsed over the member's 6-month tenure, though they don't want to leave",
       "pain_severity": 4,
       "pain_severity_reasoning": "Concrete decline stat: classes went from 10+ people to only 4, with member calling the studio 'slowly dying out'",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -12529,8 +12529,8 @@
       "evidence_snippet": "Our studio has slowly been dying out...from seeing 10+ people in a class that now 4. And also the energy just is not the same.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This describes an overall decline in studio attendance and energy with no solution attempted - a broader business trend, not something a connection app reverses.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ijwhm77",
@@ -12644,7 +12644,7 @@
       "pain_point_reasoning": "Occasionally considers whether to stick with F45 or switch, especially on low-motivation days",
       "pain_severity": 2,
       "pain_severity_reasoning": "Mild recurring temptation to quit but member reports always being glad they attended",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Consistent set of trainers who already know the member's needed adjustments keeps them coming back",
       "solution_category": "coaching_change",
       "effectiveness": 4,
@@ -12654,8 +12654,8 @@
       "evidence_snippet": "there are times where I consider if I should stick with f45 or change it up...We've had a pretty consistent set of trainers since I've been going",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Consistent set of trainers who already know the member's needed adjustments keeps them coming back \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Trainer consistency and familiarity with a member's needed adjustments is a staffing/coaching continuity factor - not a mechanism a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ijy8t64",
@@ -12719,7 +12719,7 @@
       "pain_point_reasoning": "Pandemic-driven work-from-home shift significantly cut studio attendance",
       "pain_severity": 3,
       "pain_severity_reasoning": "Concrete attendance stat: member has been in a class with only 4 people total",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -12729,8 +12729,8 @@
       "evidence_snippet": "Every since the pandemic started people have been working from home so attendance has dropped significantly. I've been in a class with 4 people total.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This describes a broad, pandemic-driven attendance decline tied to remote work - a macro trend, not something a connection app addresses.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ijzks81",

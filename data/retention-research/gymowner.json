@@ -342,7 +342,7 @@
       "pain_point_reasoning": "New members from ads signed up but quit within 2-3 weeks because they felt they'd never be fit enough or know the exercises \u2014 an onboarding confidence gap",
       "pain_severity": 4,
       "pain_severity_reasoning": "Explicit member loss at scale (up to 20 signups/month all quitting in 2-3 weeks); quantified revenue impact once fixed",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Mandatory 4-session PT on-ramp before group classes, plus goal setting/review cadence with existing clients, higher rates, dropped 6-week discount trial (Two Brain Business mentorship)",
       "solution_category": "onboarding_program",
       "effectiveness": 5,
@@ -352,8 +352,8 @@
       "evidence_snippet": "Our Length of Engagement went from 8 months to 24 months and still climbing... It was why we were losing people after 2-3 weeks. They felt like they were never going to be fit enough",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Mandatory 4-session PT on-ramp before group classes, plus goal setting/review cadence with existing... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A mandatory 4-session personal-training on-ramp before joining group classes is the business's own onboarding-program structure - not a mechanism a connection app builds.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ouj159d",
@@ -792,7 +792,7 @@
       "pain_point_reasoning": "A push to go fully digital backfired for older clients who couldn't use the app, creating more support work than the old paper logbook.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Explicitly states half of older clients couldn't figure out the app, and it ended up creating net-negative extra work.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -802,8 +802,8 @@
       "evidence_snippet": "half our older clients couldn't figure out the app. Ended up being more work explaining the system than just keeping the old paper logbook.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a usability complaint about an existing app being hard for older clients to use - a software-design caution worth heeding if TWU builds similar features, but not itself a TWU mechanism.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nyyn9vd",
@@ -1602,7 +1602,7 @@
       "evidence_snippet": "With most newbies, you have about 1 to 3 months to make it happen, after that, they churn.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Focus the first visits on building a lasting healthy habit as quickly as possible rather than on... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This is the insight behind onboarding-window urgency (1-3 months to build a lasting habit) without a specific mechanism - TWU's engagement features could support habit-building during this window, though nothing concrete is described here.",
       "outside_scope_type": null
     },
     {
@@ -2067,7 +2067,7 @@
       "pain_point_reasoning": "First-person quit story: paid, showed up twice, felt lost, no guidance, quit; claims 60-day quit window is common",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member cancelled after two visits; framed as recurring pattern, no gym-level numbers",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "White-label member app with meal plans, workout splits, machine guides, progress photos to keep new members engaged (vendor pitch, unlaunched)",
       "solution_category": "onboarding_program",
       "effectiveness": null,
@@ -2077,8 +2077,8 @@
       "evidence_snippet": "Paid the membership. Showed up twice. Felt completely lost. Didn't know what to eat, didn't know what workout to do... So I quit.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "White-label member app with meal plans, workout splits, machine guides, progress photos to keep new... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Wanting meal plans and workout splits in an app is fitness-programming content - not TWU's community/connection layer, which doesn't design workouts or diets.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1u2y7gx",
@@ -2342,7 +2342,7 @@
       "pain_point_reasoning": "Notes that fragmented sign-up processes (Google Forms/PDFs pieced together) create extra manual work later, especially for less tech-savvy members.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a recurring pattern across 'a lot of places', creating ongoing manual work rather than a one-off.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2352,8 +2352,8 @@
       "evidence_snippet": "I've seen a lot of places try to piece it together with Google Forms or PDFs, but that just creates more manual work later.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Cobbling together onboarding paperwork with Google Forms or PDFs is an admin/intake-process gap - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "no54wnt",
@@ -2892,7 +2892,7 @@
       "pain_point_reasoning": "Frustrated that their software lacks a rollover membership option so trials don't automatically convert into full memberships when they finish.",
       "pain_severity": 2,
       "pain_severity_reasoning": "A missing feature causing an ongoing manual workaround, not a one-off incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2902,8 +2902,8 @@
       "evidence_snippet": "after a trial finishes it doesn't auto roll over into a full membership",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A trial not automatically rolling over into a full membership is a billing/conversion-process gap - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "okihrze",
@@ -3202,7 +3202,7 @@
       "evidence_snippet": "Something that could autofill membership forms for me. Right now I do it manually",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Wanting software that autofills membership forms is an admin-efficiency request - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3577,7 +3577,7 @@
       "evidence_snippet": "After the 6 week challenge then they go to the normal membership for me personally. I'd check in with them",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Personally check in with challenge participants when they transition to a normal membership. \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Personally checking in with challenge participants as they transition to regular membership is exactly the kind of proactive, timed outreach TWU's connection layer could support at that critical transition point.",
       "outside_scope_type": null
     },
     {
@@ -3702,7 +3702,7 @@
       "evidence_snippet": "Anything you can do to take the process out of the customers hand will improve your sign up rates.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Taking manual steps out of the sign-up process to improve conversion rates is a business/onboarding-funnel optimization - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3717,7 +3717,7 @@
       "pain_point_reasoning": "Describes a gym with single-click booking (app and web) that made a noticeable difference in trial conversions, versus friction-heavy booking elsewhere.",
       "pain_severity": null,
       "pain_severity_reasoning": "No specific numbers given, described qualitatively as 'a huge difference'.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Single-click booking flow across both app and web for trial sign-ups.",
       "solution_category": "software_management_tool",
       "effectiveness": 4,
@@ -3727,8 +3727,8 @@
       "evidence_snippet": "single-click booking from both app and web...made a huge difference in trial conversions",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Single-click booking flow across both app and web for trial sign-ups. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A single-click booking flow across app and web improving trial conversions is a booking/scheduling UX feature - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "n3khu69",
@@ -3842,7 +3842,7 @@
       "pain_point_reasoning": "Pilates studio owner reports a very low ClassPass drop-in-to-membership conversion rate, questioning ROI of that acquisition channel.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described qualitatively as 'rly low' without an exact figure.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -3852,8 +3852,8 @@
       "evidence_snippet": "Our CP conversion rate is rly low, and I understand it's the same for most studios",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a general observation about low conversion rates, without a specific mechanism - a business/marketing metric, not something a connection app addresses.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "npq720k",
@@ -4127,7 +4127,7 @@
       "evidence_snippet": "welcome email within an hour of signing up - welcome gift at first day - hand written card sent to house after first month",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Structured onboarding/retention touchpoints: welcome email <1hr after signup, welcome gift on day... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "The welcome email is a communication touchpoint TWU's messaging could support; the physical gift and hand-written card are hospitality gestures outside what a connection app provides.",
       "outside_scope_type": null
     },
     {
@@ -4142,7 +4142,7 @@
       "pain_point_reasoning": "Continuing the touchpoint description, credits more frequent session-based check-ins in members' first 3 months as something that recently helped a lot.",
       "pain_severity": null,
       "pain_severity_reasoning": "Effectiveness stated qualitatively ('helped alot'), not with a specific retention number.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Increased frequency of session check-ins with members during their first 3 months.",
       "solution_category": "member_feedback_program",
       "effectiveness": 4,
@@ -4152,7 +4152,7 @@
       "evidence_snippet": "Something that helped alot recently was checking in on members more frequently in their first 3 months",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Increased frequency of session check-ins with members during their first 3 months. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Increasing check-in frequency with new members during their critical first three months is exactly the kind of engagement cadence TWU's connection layer could support directly.",
       "outside_scope_type": null
     },
     {
@@ -4802,7 +4802,7 @@
       "evidence_snippet": "your retention has little to do with memberships fees or sign up fees and everything to do with utilization and new member nurturing",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This insight - that retention comes down to utilization, not fees - supports the case for engagement-visibility features like TWU's, though no specific mechanism is proposed here.",
       "outside_scope_type": null
     },
     {
@@ -4992,7 +4992,7 @@
       "pain_point_reasoning": "States that having a structured process to help new members build the habit in their first 4-6 weeks significantly improves long-term retention.",
       "pain_severity": null,
       "pain_severity_reasoning": "General claim, no specific number given.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Structured habit-building process for new members during their first 4-6 weeks.",
       "solution_category": "member_feedback_program",
       "effectiveness": 4,
@@ -5002,7 +5002,7 @@
       "evidence_snippet": "having a process to help a new member build the habit in the first 4-6 weeks significantly improves longterm success/retention",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Structured habit-building process for new members during their first 4-6 weeks. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A structured process to help new members build the habit in their first four to six weeks is exactly the kind of onboarding engagement cadence TWU's connection layer could support directly.",
       "outside_scope_type": null
     },
     {
@@ -5702,7 +5702,7 @@
       "evidence_snippet": "keeping them engaged after the first month is where most gyms struggle.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This names post-first-month engagement as the hard part, without proposing a specific mechanism - directionally TWU's engagement-visibility lane, though not concrete.",
       "outside_scope_type": null
     },
     {

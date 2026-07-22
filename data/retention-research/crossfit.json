@@ -13144,7 +13144,7 @@
       "pain_point_reasoning": "The poster describes a clique of \"ex-college athletes\" and coaches/owner called \"The Cool Kids Club\" that made the gym feel \"like something out of high school,\" and says raising it with owners/coaches \"fell on deaf ears.\"",
       "pain_severity": 5,
       "pain_severity_reasoning": "The poster states plainly, \"It was the reason I quit the box 2 years ago.\"",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Raised the clique/culture problem with the owners and coaches directly.",
       "solution_category": "direct_communication_with_owner",
       "effectiveness": 1,
@@ -13154,8 +13154,8 @@
       "evidence_snippet": "It was impossible to really break them up and it was like something out of high school... It was the reason I quit the box 2 years ago.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community challenge features could foster more inclusive engagement across all members, but it cannot force a box's existing clique or ownership/coaching behavior to change.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "An established group at this box behaved like an exclusive high school clique toward him. That group already knew each other before he arrived. TWU helps people discover new connections, it has no way to make a group that already excludes someone choose to open up.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ek4hw60",
@@ -13169,7 +13169,7 @@
       "pain_point_reasoning": "The poster explains they stopped attending their box after 7 years because they \"didn't have the time to commit with parenting, being a small business owner, and life,\" and their goals changed.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Life demands led the poster to stop attending their box, though the transition sounds voluntary and amicable rather than driven by a bad experience.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Switched to a home-based StreetParking program with Wodify access for $18/month instead of attending a box.",
       "solution_category": "switched_to_home_program",
       "effectiveness": 4,
@@ -13179,8 +13179,8 @@
       "evidence_snippet": "then just didn't have the time to commit with parenting, being a small business owner, and life.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's streaks/accountability could help a time-strapped member stay engaged with a box, but here the poster found success maintaining fitness entirely outside any box via a home program, which TWU doesn't directly support.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "He built a home program around parenting and running a small business, and it worked for his life. There is no community or accountability gap left here to fill since he found a solution entirely on his own outside a box.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "bepbyx",
@@ -13319,7 +13319,7 @@
       "pain_point_reasoning": "The poster developed chronic low back pain that \"finally caught up\" to them, forcing them to \"completely back off on most barbell movements\" and think they \"would have to quit crossfit.\"",
       "pain_severity": 4,
       "pain_severity_reasoning": "The pain was severe enough that the poster seriously considered quitting CrossFit altogether.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Dedicated time to stretching and mobility work outside of class, 5-7 times a week before bed, in addition to class.",
       "solution_category": "mobility_stretching_routine",
       "effectiveness": 5,
@@ -13329,8 +13329,8 @@
       "evidence_snippet": "Now I'm virtually pain free... I stretch 5-7 times a week before bed and do some mobility stuff outside class.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's streak/accountability features could help reinforce a consistent daily stretching/mobility habit like the one that fixed this poster's pain, even though it can't address the underlying injury or box programming.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "His stretching and mobility routine outside class already resolved his pain on its own. Nothing in this finding points to a community or accountability need, just a personal habit that is already working.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "elnfsat",
@@ -13344,7 +13344,7 @@
       "pain_point_reasoning": "Poster's old box closed and they were forced into a new, much larger gym, describing 'coaches that seem more like class runners than coaches' compared to the 'teeny boutique gym' they lost.",
       "pain_severity": 2,
       "pain_severity_reasoning": "They say the transition 'wasn't easy' but ultimately became happy and fitter, so impact was moderate but not severance-level.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Joined the new large gym, scaled/worked up to new programming, and kept a list of feedback for the owner.",
       "solution_category": "adapted_to_new_gym",
       "effectiveness": 4,
@@ -13354,8 +13354,8 @@
       "evidence_snippet": "In the end I'm pretty happy and extremely fit. It wasn't easy but all in all I think the transition made me fitter.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot prevent a box closing or change coaching staff/style, but its community/streak features could help ease a forced transition to a new gym by rebuilding social accountability.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "He calls the outcome of this forced transition a positive one and says it made him fitter overall. There is no unmet need described here for TWU to address.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "es0y1eu",
@@ -13419,7 +13419,7 @@
       "pain_point_reasoning": "Poster describes a specific confrontation at their box where another member tried to take their preferred dumbbell during a scaled workout, illustrating cliquish/entitled behavior from a fellow athlete.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as annoying but poster 'took a deep breath and moved on' rather than it causing any lasting harm.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Refused to give up the equipment and moved to the next heat instead of engaging further.",
       "solution_category": "avoided_confrontation",
       "effectiveness": 3,
@@ -13429,8 +13429,8 @@
       "evidence_snippet": "I'm like FUCK NO (I hate the metal DBs, they're basically just extras). It wasn't worth the effort so I went the next heat.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability community features could foster more positive norms, but it cannot directly police individual member conflicts or personalities at a box.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This was a single low stakes disagreement over shared dumbbells that he resolved himself in the moment by switching heats. It is not a recurring community pattern, just one small interaction he handled fine on his own.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "brhsz9",
@@ -13469,7 +13469,7 @@
       "pain_point_reasoning": "On their first-ever class the poster was given no scaling guidance for movements they'd never done (HSPU, GHD situps, rings) and the coach 'didn't seem to give a shit', leaving their shoulders 'FUBAR for weeks'.",
       "pain_severity": 5,
       "pain_severity_reasoning": "Poster explicitly says their shoulders were injured for weeks and they quit mid-workout in frustration ('FUCK THIS!').",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Eventually found their way back to CrossFit at a different time/box after the bad first experience.",
       "solution_category": "returned_later",
       "effectiveness": 3,
@@ -13479,8 +13479,8 @@
       "evidence_snippet": "I didn't know anything about scaling or modifying, and the coach didn't seem to give a shit. My shoulders were FUBAR for weeks after.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot fix a coach's failure to scale or supervise, but visible attendance/community support could have encouraged the poster to return sooner rather than needing to independently find their way back.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This finding is entirely about a coach who failed to teach scaling and let him get injured. There is no peer or community element in the evidence at all, this is a coaching quality issue outside TWU's territory.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "es0delx",
@@ -13594,7 +13594,7 @@
       "pain_point_reasoning": "Poster describes trying several boxes and rejecting them over scheduling and facility mismatches, e.g. one owner has a rigid 'must go RX all the time... don't bother showing up' policy and another 'only ran classes M-W-F and only noon and 5pm'.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Frustrating but the poster settled at a workable commute/box rather than describing severe harm.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Tried multiple other boxes but ultimately stayed at current, less-convenient box because none of the alternatives suited them better.",
       "solution_category": "evaluated_alternatives",
       "effectiveness": 3,
@@ -13604,8 +13604,8 @@
       "evidence_snippet": "the owner has this gung-ho philosophy of you must go RX all the time and if you unable to do a movement as a result of lack of mobility or even injury, don't bother showing up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU can't change a box's class schedule or an owner's programming philosophy, but attendance-visibility could help a member find/keep momentum despite an imperfect schedule fit.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The owner's philosophy of expecting everyone to go at full intensity regardless of injury or mobility is a culture and programming decision the box itself sets. This has nothing to do with class scheduling or a feature TWU could offer.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "d9x2yu",
@@ -13619,7 +13619,7 @@
       "pain_point_reasoning": "After a couple weeks out due to injury, poster is medically cleared to return but says 'I've been feeling unmotivated to go back' despite knowing workouts can be scaled.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Poster hasn't returned yet and is actively struggling with motivation, though no long-term quitting is confirmed.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -13629,7 +13629,7 @@
       "evidence_snippet": "I recently got injured and so I haven't been able to go for a couple of weeks now... But I've been feeling unmotivated to go back.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is precisely the re-engagement gap TWU targets \u2014 streaks, peer visibility, and community nudges are designed to pull a lapsed member back after a break.",
+      "app_relevance_reasoning": "TWU's streaks and peer visibility could help pull him back after this break. But an injury is the reason he stopped in the first place, matching the other injury driven cases capped at partial credit this session.",
       "outside_scope_type": null
     },
     {
@@ -13919,7 +13919,7 @@
       "pain_point_reasoning": "Poster is upset that their old gym 'started erasing numbers and times and giving them to the person that had the best lift...NOT the actual gym record' and diluted the RX standard, calling it 'watering down' and 'fake ego boosting,' and says they ultimately left for a gym with 'strong programming'.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Strong enough dissatisfaction that the poster changed affiliates specifically citing this and wanting to be pushed.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Moved to a new affiliate with stronger programming ('voted with my money')",
       "solution_category": "switched_box",
       "effectiveness": 4,
@@ -13929,8 +13929,8 @@
       "evidence_snippet": "Apparently they have started erasing numbers and times and giving them to the person that had the best lift or best time that day, NOT the actual gym record...Watering down the record board is fake ego boosting.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's streak/leaderboard-style visibility could help restore the competitive record-tracking motivation the poster misses, though it can't dictate a box's own RX/scaling standards.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about how the box itself decided to track and display its own gym records, giving credit to the day's best result instead of the true all time record. That is the box's own record keeping policy, not something a discovery or community feature touches.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "etic62r",
@@ -14019,7 +14019,7 @@
       "pain_point_reasoning": "Poster weighed the cost of membership ('$120' for 3 days/week) against the benefit that 'the purchase of the membership holds me accountable,' and separately notes she 'injured myself a few times early in my CF journey, from improper form i.e. laziness on my part' before her coach started correcting her.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Mild friction \u2014 cost/value tradeoff was resolved positively, and early-injury issue was corrected by coaching rather than causing harm.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Cut other discretionary spending (coffee, eating out) to afford membership; relies on coach calling out form issues",
       "solution_category": "budget_reallocation_and_coaching_feedback",
       "effectiveness": 4,
@@ -14029,8 +14029,8 @@
       "evidence_snippet": "The purchase of the membership holds me accountable as well. I am making an investment in myself...I have injured myself a few times early in my CF journey, from improper form i.e. laziness on my part, but my coach will call me on it now.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "The accountability-through-financial-commitment dynamic the poster describes is exactly what TWU's peer-visibility/streak features aim to reinforce without requiring a monetary lever.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The accountability he describes comes from the money he spent on membership and from his coach calling him out on form. Neither of those is peer or community accountability, so there is nothing here for TWU's features to reinforce.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "f4bha6b",
@@ -14044,7 +14044,7 @@
       "pain_point_reasoning": "Poster, new to CrossFit and self-conscious about her weight and balance, says she 'actually ran out the room crying and having a panic attack' during her first class because she felt intimidated and couldn't do a movement.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The intimidation triggered a panic attack severe enough that she fled the room, a serious barrier to a first session.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "A coach followed her out, talked her through it, and she returned to finish a modified workout",
       "solution_category": "coach_intervention",
       "effectiveness": 5,
@@ -14054,8 +14054,8 @@
       "evidence_snippet": "I actually ran out the room crying and having a panic attack because I knew I couldn't do it...We modified the rest of the workout and I stayed moving.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU can't fix in-the-moment intimidation during a workout, but its community/peer-support framing could help reinforce the kind of coach encouragement that got her to return.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "What got her through the panic attack and back into the workout was her coach's encouragement in that moment. That is staff behavior, and TWU does not stand in for a coach.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "f6lo7j7",
@@ -14544,7 +14544,7 @@
       "pain_point_reasoning": "Amid mostly advice to the OP, the poster shares his own experience: \"I've unplanned quit in wods 5 times I think over a couple years... I sure remember the coaches looking down at me and i could tell their discontent,\" revealing a lack of supportive coaching response to struggling.",
       "pain_severity": 2,
       "pain_severity_reasoning": "He says he had \"no regret\" and kept attending despite the coaches' disapproval, so it did not drive cancellation.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "He reframed his mindset to prioritize enjoyment over performance judgment, deciding \"I'm their client and I should be happy.\"",
       "solution_category": "mindset_reframe",
       "effectiveness": 3,
@@ -14554,8 +14554,8 @@
       "evidence_snippet": "I've unplanned quit in wods 5 times I think over a couple years. I had no regret but I sure remember the coaches looking down at me and i could tell their discontent.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot change how coaches react to a member quitting a WOD, but its peer-accountability and encouragement features could offer supportive motivation instead of judgment.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This finding is entirely about how coaches reacted when he quit a WOD early, not about anything peers did or could have done. There is no community angle described anywhere in the evidence.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "elamh1",
@@ -14644,7 +14644,7 @@
       "pain_point_reasoning": "Poster describes their first box's members as being in \"cliques\" who \"pretty much ignored me when I tried to talk to them,\" leading to feeling isolated.",
       "pain_severity": 5,
       "pain_severity_reasoning": "Poster states \"I quit 3 months in because I felt so alone,\" i.e. it drove full cancellation.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Left that box and tried other boxes until finding one with better community and coaching fit.",
       "solution_category": "switched_gyms",
       "effectiveness": 5,
@@ -14654,8 +14654,8 @@
       "evidence_snippet": "The people there were already in their \u201ccliques\u201d and they pretty much ignored me when I tried to talk to them. I quit 3 months in because I felt so alone.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community-visibility features could help a new member feel seen and included, though it cannot force existing members to be less cliquish.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Existing cliques at this box ignored her when she tried to talk to them, and she quit after three months feeling alone. TWU can help someone find new people, it cannot make an established group choose to include someone it is already ignoring.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fjyqnt5",
@@ -14669,7 +14669,7 @@
       "pain_point_reasoning": "Poster says their own gym \"has gotten to be a bit cliquey too,\" describing younger members sticking to the same groups, and admits \"it sometimes bothers me.\"",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a mild recurring annoyance (\"sometimes bothers me\") rather than something that drove them to leave.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Personally makes an effort to notice and include new/left-out people at the gym.",
       "solution_category": "personal_effort_inclusion",
       "effectiveness": 3,
@@ -14679,8 +14679,8 @@
       "evidence_snippet": "My gym has gotten to be a bit cliquey too. Mostly the young attractive folks in the their twenties who all stick to the same select groups...It sometimes bothers me",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's community/accountability features could help surface and include quieter members, but cannot directly dissolve informal social cliques.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This describes an established clique of members who stick together at his gym. Same as other clique findings this session, TWU has no way to dissolve or open up a group that already excludes people.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fk60s6m",
@@ -14794,7 +14794,7 @@
       "pain_point_reasoning": "Poster describes always being left as \"the odd man out\" in partner WODs because \"the same people pair up with each other,\" and says being paired with the coach out of sympathy \"makes me feel crappy.\"",
       "pain_severity": 3,
       "pain_severity_reasoning": "Poster calls it \"demoralizing\" and is \"kind of tired\" of it, a recurring emotional toll though not stated to have caused quitting.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -14804,8 +14804,8 @@
       "evidence_snippet": "I'm kind of tired of always being the odd man out and that everyone in their cliques just strictly stays in them and don't want to pair with me...it really feels a bit demoralizing",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's community/accountability visibility features could help surface inclusive pairing or recognize participation, but cannot force cliques to include a specific member.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "He describes always being the odd one out because established cliques at his box will not pair with him. This is the same exclusion pattern seen elsewhere this session, and TWU cannot force an existing group to include someone it already leaves out.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fymkzo",
@@ -14944,7 +14944,7 @@
       "pain_point_reasoning": "Poster left their box after a year, describing \"a lot of negative energy with the only coach always gossiping to members about other members\" and a forced leveling system with no individualized scaling.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The experience was bad enough that she fully left the box and called it \"a terrible experience for me.\"",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Left the box entirely and joined a different one she now loves.",
       "solution_category": "switched_gyms",
       "effectiveness": 5,
@@ -14954,8 +14954,8 @@
       "evidence_snippet": "It was just a lot of negative energy with the only coach always gossiping to members about other members.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot fix a box's gossiping coach or its programming/leveling structure, though a healthier peer-accountability community layer is tangential to the culture complaint.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The negative energy here comes from a specific coach gossiping about members to other members. That is a staff conduct issue, not something a peer or community feature reaches.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "fqm4e4f",

@@ -5102,7 +5102,7 @@
       "evidence_snippet": "if they don't cancel it auto rolls into full membership. No real sales needed",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A trial that auto-converts to a full membership via card-on-file is a billing/conversion tactic - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5167,7 +5167,7 @@
       "pain_point_reasoning": "Vendor claims their AI engine identifies members about to churn before they stop renewing, claiming up to a 30% retention improvement for customers.",
       "pain_severity": null,
       "pain_severity_reasoning": "Vendor-sourced marketing claim; treat the specific percentage with caution as it's self-reported and unverified.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "AI engine flags members likely to churn before their renewal lapses, enabling proactive intervention.",
       "solution_category": "churn_risk_tracking",
       "effectiveness": 4,
@@ -5177,8 +5177,8 @@
       "evidence_snippet": "helping our customers improve retention by upto 30%",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "AI engine flags members likely to churn before their renewal lapses, enabling proactive... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a vendor pitch for an AI churn-prediction engine - owner-facing business-intelligence software, not TWU's member-facing connection layer.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "o6p1zee",
@@ -5342,7 +5342,7 @@
       "pain_point_reasoning": "Recommends that cancellation requests trigger a call to try to save the member and understand why, plus using a digital cancellation form.",
       "pain_severity": null,
       "pain_severity_reasoning": "Recommended practice, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "When a cancellation request comes in, call the member to try to save them and ask why; use a digital cancellation request form to keep the process clean.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -5352,8 +5352,8 @@
       "evidence_snippet": "most likely thing you do after is call and try and save and ask the questions about why",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "When a cancellation request comes in, call the member to try to save them and ask why; use a... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Calling a member who requests cancellation to understand why and try to save them is a staff retention practice - not something a connection app replicates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o9lna2j",
@@ -5392,7 +5392,7 @@
       "pain_point_reasoning": "Deliberately routes cancellations through an email process specifically to force a conversation with the member before they leave, sometimes managing to retain them.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described as sometimes working, not a specific measured save rate.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Require cancellations to go through email so staff can have a conversation with the member before it's finalized.",
       "solution_category": "member_feedback_program",
       "effectiveness": 3,
@@ -5402,8 +5402,8 @@
       "evidence_snippet": "We basically force cancellations via email so we can actually have a conversation with people. Sometimes we even manage to keep them",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Require cancellations to go through email so staff can have a conversation with the member before... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Requiring cancellations to go through email specifically to force a retention conversation is a cancellation-process policy - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oap5o41",
@@ -5427,7 +5427,7 @@
       "evidence_snippet": "Most owners don't even know who's on it until it's too late.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This is a general statement about owners lacking visibility into at-risk members until too late - directionally TWU's engagement-visibility lane, though vague on mechanism.",
       "outside_scope_type": null
     },
     {
@@ -5452,7 +5452,7 @@
       "evidence_snippet": "The CRM we use gives us a notification if payment fails/cards expire!",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Auto-renewal defaults plus CRM notifications for failed payments are billing/payment-processing features - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5492,7 +5492,7 @@
       "pain_point_reasoning": "Runs an opt-out auto-renewal system where front desk staff work through a list and an email/text reminder goes out seven days before charges.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described as a working practice, no specific outcome number given.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Opt-out auto-renewal with an email/text reminder sent seven days before the renewal charge.",
       "solution_category": "automated_reminders",
       "effectiveness": null,
@@ -5502,8 +5502,8 @@
       "evidence_snippet": "We have an email or text sent out seven days before the charges.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Opt-out auto-renewal with an email/text reminder sent seven days before the renewal charge. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "An opt-out auto-renewal with a reminder sent before charging is a billing/renewal-communication feature - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oastph6",
@@ -5517,7 +5517,7 @@
       "pain_point_reasoning": "Argues automated email reminders alone go a long way for revenue, regardless of which specific software platform is used.",
       "pain_severity": null,
       "pain_severity_reasoning": "General claim, not tied to a specific incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -5527,8 +5527,8 @@
       "evidence_snippet": "something as small as automated email reminders goes a long way when it comes to revenue.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a general statement about automated email reminders helping revenue - a billing/communication tactic, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oauxf35",
@@ -5542,7 +5542,7 @@
       "pain_point_reasoning": "Checks attendance/payment status weekly and reviews overall drop-offs monthly, reaching out personally when a regular member suddenly stops paying or lapses.",
       "pain_severity": null,
       "pain_severity_reasoning": "Described as a working routine, no specific save-rate number given.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Weekly check plus monthly drop-off review, with personal outreach when a regular member's membership lapses.",
       "solution_category": "churn_risk_tracking",
       "effectiveness": null,
@@ -5552,7 +5552,7 @@
       "evidence_snippet": "If a regular member suddenly stops paying or their membership lapses, we still reach out personally.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Weekly check plus monthly drop-off review, with personal outreach when a regular member's... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A weekly check and monthly drop-off review that triggers personal outreach when a regular member lapses is exactly the engagement-visibility-plus-personal-touch mechanism TWU's connection layer is built to provide.",
       "outside_scope_type": null
     },
     {
@@ -5577,7 +5577,7 @@
       "evidence_snippet": "It definitely takes a lot of the stress off, because I don't ha[ve to chase members]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Fully automating renewal and payment tracking through a named platform is owner-facing billing automation - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5742,7 +5742,7 @@
       "pain_point_reasoning": "A small (under 150-member) gym owner's stated major issues to a developer were not tracking subscriptions and not tracking check-ins/check-outs.",
       "pain_severity": null,
       "pain_severity_reasoning": "Named as the owner's real stated pain points, but without further detail on impact.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -5752,7 +5752,7 @@
       "evidence_snippet": "Not tracking subscriptions Not tracking check in and check outs",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "This names two gaps - not tracking subscriptions (a billing matter, outside TWU's scope) and not tracking check-ins (an attendance-visibility gap TWU's engagement features could help close).",
       "outside_scope_type": null
     },
     {
@@ -5767,7 +5767,7 @@
       "pain_point_reasoning": "After trying multiple generic gym-management products, settled on Mat Track specifically because it's churn/retention-focused rather than generic feature bloat.",
       "pain_severity": null,
       "pain_severity_reasoning": "No specific outcome number given, but implies generic tools were insufficient for retention needs.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Switched to a churn/retention-focused platform (Mat Track) instead of a generic all-purpose gym management tool.",
       "solution_category": "churn_risk_tracking",
       "effectiveness": null,
@@ -5777,8 +5777,8 @@
       "evidence_snippet": "It's churn / retention focused so it doesn't just do the 'generic' stuff that most will.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Switched to a churn/retention-focused platform (Mat Track) instead of a generic all-purpose gym... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Switching to a named churn/retention-focused management platform is adopting a specific competing owner-facing tool - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ocl613v",
@@ -5792,7 +5792,7 @@
       "pain_point_reasoning": "Uses Vibefam's dual-sided renewal reminder notifications sent to both the owner and the member.",
       "pain_severity": null,
       "pain_severity_reasoning": "Feature description, no specific outcome given.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Send renewal reminder notifications to both the owner and the member, not just one side.",
       "solution_category": "automated_reminders",
       "effectiveness": null,
@@ -5802,8 +5802,8 @@
       "evidence_snippet": "it also sends notifications to both owners and members as reminders to renew",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Send renewal reminder notifications to both the owner and the member, not just one side. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Sending renewal reminders to both owner and member is a billing/renewal notification feature - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "odgky99",
@@ -6077,7 +6077,7 @@
       "evidence_snippet": "Knowing who didn't renew, who stopped showing up, and what action to take next sounds way more useful than 20 extra reports.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Knowing who stopped showing up is directly in TWU's engagement-visibility lane; knowing who didn't renew is more of a billing-status question - the finding mixes both.",
       "outside_scope_type": null
     },
     {
@@ -6217,7 +6217,7 @@
       "pain_point_reasoning": "States gyms lose renewals simply because nobody follows up at the right time, and automated reminders could directly impact revenue.",
       "pain_severity": null,
       "pain_severity_reasoning": "General claim, not a specific measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -6227,8 +6227,8 @@
       "evidence_snippet": "A lot of gyms lose renewals simply because nobody follows up at the right time",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a general observation about losing renewals due to poor follow-up timing - a billing/renewal-process issue, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oh3jlss",
@@ -6242,7 +6242,7 @@
       "pain_point_reasoning": "Names manually reminding members about expiring memberships as a tedious task, proposing an automated WhatsApp reminder sent 7 days before expiry.",
       "pain_severity": null,
       "pain_severity_reasoning": "Vendor-proposed solution with a claimed time-savings figure, not an independently verified outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Automated WhatsApp reminder (via Twilio integration) sent 7 days before a membership expires.",
       "solution_category": "automated_reminders",
       "effectiveness": 3,
@@ -6252,8 +6252,8 @@
       "evidence_snippet": "This can save you 3+ hours a week.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "Automated WhatsApp reminder (via Twilio integration) sent 7 days before a membership expires. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "An automated WhatsApp reminder system built on a paid integration, framed around saving the owner hours a week, is an owner-facing automation tool - not clearly TWU's member-facing connection layer without more detail on what it reminds members about.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ohie1hl",
@@ -6277,7 +6277,7 @@
       "evidence_snippet": "a problem i faced was keeping track of people's membership expiry, like when a person comes to the gym how do i quickly validate their membership expiry",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "An NFC membership-card app for validating membership expiry at check-in is a front-desk/billing validation tool - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6292,7 +6292,7 @@
       "pain_point_reasoning": "A data scientist describes building a churn-audit tool that calculates 'Value at Risk' for specific sessions/members, aiming to identify the mental/financial load of churn risk rather than just a generic churn score.",
       "pain_severity": null,
       "pain_severity_reasoning": "Early-stage vendor pitch, not a measured customer outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Run churn audits that calculate 'Value at Risk' for specific at-risk sessions/members rather than a generic churn percentage.",
       "solution_category": "churn_risk_tracking",
       "effectiveness": null,
@@ -6302,8 +6302,8 @@
       "evidence_snippet": "I run churn audits that identify the Value at Risk ($VaR$) in specific sessions.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "Run churn audits that calculate 'Value at Risk' for specific at-risk sessions/members rather than a... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Running churn audits that calculate financial 'value at risk' is owner-facing business/financial analytics - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ohtn4ir",
@@ -6567,7 +6567,7 @@
       "pain_point_reasoning": "Group X owner: new members churn without human connection; automation alone insufficient",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Member-ambassador program: designated regulars introduce themselves to newcomers and follow up, instructors do the same, on top of SMS/digital retention touchpoints; gives direct insight on churn",
       "solution_category": "community_events",
       "effectiveness": null,
@@ -6577,7 +6577,7 @@
       "evidence_snippet": "I have some 'regulars' in my building who are specifically signed up to make sure they introduce themselves, invite someone to stand next to them, and make it a point to follow up",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Member-ambassador program: designated regulars introduce themselves to newcomers and follow up,... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A member-ambassador program where regulars are specifically tasked with introducing newcomers is peer-to-peer community-building in its purest form - exactly the mechanism TWU's matching and community features are designed to enable.",
       "outside_scope_type": null
     },
     {

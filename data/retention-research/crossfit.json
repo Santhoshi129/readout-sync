@@ -4819,7 +4819,7 @@
       "pain_point_reasoning": "Poster says they originally quit CrossFit because of \"this feeling of I always had to constantly lift heavier, run faster, strive to PR,\" and that they \"wasn't having fun and ultimately stopped,\" a first-person account of burnout-driven quitting.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The internal pressure to constantly perform led to fully stopping CrossFit for three years.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Poster restarted after three years with a new mindset of just showing up and having fun rather than always pushing to the limit, modifying workouts freely.",
       "solution_category": "mindset_shift",
       "effectiveness": 4,
@@ -4829,8 +4829,8 @@
       "evidence_snippet": "A lot of why I originally quit CrossFit was due to this feeling of I always had to constantly lift heavier, run faster, strive to PR, do competitions, etc. I wasn't having fun and ultimately stopped.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's accountability/community framing (showing up rather than chasing PRs) directly addresses the mindset shift the poster describes needing to sustain re-engagement.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about the box's competitive, PR-chasing programming culture, not a community or accountability gap. TWU has no feature that provides the mindset shift the poster describes needing.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "itb9ca9",
@@ -5169,7 +5169,7 @@
       "pain_point_reasoning": "Poster describes consistently being picked last for partner workouts and says \"the cliqueness makes it even worse, I feel like the odd one out,\" reflecting negative community culture at their regular class times.",
       "pain_severity": 3,
       "pain_severity_reasoning": "\"This is now making me want to avoid classes\" shows a real motivation impact though the poster has not quit.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -5179,8 +5179,8 @@
       "evidence_snippet": "I can tell I am the last choice... the cliqueness makes it even worse, I feel like the odd one out",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community features could help connect the poster to a wider group beyond one clique-y class time, but it cannot force existing members to be more inclusive.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is the same existing-clique exclusion pattern flagged elsewhere. The poster is already in a specific class and being treated as last choice by people already there, which is a culture problem for the box to fix, not a discovery gap.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "11xfpnh",
@@ -5594,7 +5594,7 @@
       "pain_point_reasoning": "Poster says once they quit competing, 'I started doing things I enjoyed more (running, biking, rucking, etc) and stopped following strength cycles,' and now 'only take 1-2 classes of CrossFit per week.'",
       "pain_severity": 2,
       "pain_severity_reasoning": "Attendance dropped significantly from full CrossFit training to 1-2 classes a week, but the poster stayed connected to the gym rather than quitting entirely.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "Shifted focus to other activities (running, biking, rucking, BJJ) and kept minimal CrossFit attendance mainly to stay connected to the gym community.",
       "solution_category": "activity_substitution",
       "effectiveness": 3,
@@ -5604,7 +5604,7 @@
       "evidence_snippet": "I never fell out of love with CrossFit, I just think I had a hard time transitioning from competing to simply enjoying GPP and needed to switch gears to new challenges to motivate me.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is exactly the kind of motivation/attendance drop-off TWU's peer-accountability and streak visibility features are designed to counteract by keeping members engaged with their community.",
+      "app_relevance_reasoning": "TWU's community and streak features could help sustain some motivation through this kind of transition. But 'needing new challenges to switch gears' is vague and closer to a training-goals shift than a specific accountability gap TWU is built to solve.",
       "outside_scope_type": null
     },
     {
@@ -5769,7 +5769,7 @@
       "pain_point_reasoning": "The poster stopped attending CrossFit entirely in 2020 and never returned, explaining they needed someone to write them programming to stay on track without needing 'directives or external motivation.'",
       "pain_severity": 3,
       "pain_severity_reasoning": "The poster fully stopped going to CrossFit ('never looked back') in favor of an alternative solution, though no acute negative incident is described.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "The poster switched to individualized programming from a coach at FBB (a non-CrossFit provider) that they've used for 2.5 years and love.",
       "solution_category": "switched_to_individual_coaching",
       "effectiveness": 5,
@@ -5779,8 +5779,8 @@
       "evidence_snippet": "I need someone to write me programming so I stay on track, but dont need directives or external motivation to do it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak features directly target the 'need someone to keep me on track' gap the poster describes, though TWU doesn't provide programming itself.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The poster explicitly says he does not need directives or external motivation, only someone to write him programming. Crediting TWU's accountability features here directly contradicts what he described needing.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "181plgs",
@@ -5869,7 +5869,7 @@
       "pain_point_reasoning": "After transitioning from a supportive cancer-recovery cohort into regular classes, the poster feels isolated and overwhelmed ('I feel like the odd person'), noting that despite coaches talking up community, they've barely spoken to anyone.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The poster explicitly says the mental load 'sometimes makes me want to quit.'",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "The poster kept training privately 2x/week with the coach they trust, at a pace their body can handle, rather than only relying on group classes.",
       "solution_category": "reduced_class_frequency_private_coaching",
       "effectiveness": 3,
@@ -5879,7 +5879,7 @@
       "evidence_snippet": "But I feel like the odd person. I struggle a lot mentally or get frustrated I'm the one scaling the scaled version.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community/attendance-visibility features are designed to combat exactly this kind of isolation by helping members connect and feel seen around showing up.",
+      "app_relevance_reasoning": "TWU's peer-visibility features could help the poster feel less isolated around showing up. But 'struggle a lot mentally' points to something deeper than a peer-matching problem, so this only gets partial credit.",
       "outside_scope_type": null
     },
     {
@@ -5894,7 +5894,7 @@
       "pain_point_reasoning": "She describes getting so sick during pregnancy that she \"stopped going to the gym completely,\" then had \"a hard time in the gym w/ discipline and motivation\" after having her baby.",
       "pain_severity": 2,
       "pain_severity_reasoning": "She had a temporary motivation lapse postpartum but continued attending and is now seeing progress, so it did not escalate further.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "She kept showing up despite exhaustion (\"Sometimes I'm dead as hell but I still show up if I can\") and reframed the workout as competition only with herself.",
       "solution_category": "self_motivation_reframe",
       "effectiveness": 4,
@@ -5904,8 +5904,8 @@
       "evidence_snippet": "I had a hard time in the gym w/ discipline and motivation so I joined a local box as a complete CF beginner.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak features directly target the discipline/motivation gap she describes needing to push through to keep showing up.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is vague, generic motivation language with no community or peer signal in the evidence. Crediting TWU here would be assuming a connection the poster never described.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1bsc343",
@@ -5994,7 +5994,7 @@
       "pain_point_reasoning": "She says she has \"already gone through multiple cycles of 'I'm done with this shit'\" and describes a recurring love/hate burnout pattern with CrossFit.",
       "pain_severity": 3,
       "pain_severity_reasoning": "She repeatedly nears quitting and takes multi-week breaks, but has always returned rather than fully cancelling.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "She takes 1-3 week breaks and scales back to 1-2x/week, sometimes tracking the CF workouts but doing them on her own at lower intensity.",
       "solution_category": "scaled_back_attendance",
       "effectiveness": 3,
@@ -6004,8 +6004,8 @@
       "evidence_snippet": "I have taken cycles off of anywhere from 1-3 weeks in my attempts to stave off complete burnout.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's streak/attendance-visibility model could help her track lighter self-directed sessions during burnout cycles instead of disengaging entirely.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is self-managed burnout prevention through planned breaks, not a lapse in attendance TWU's streak features are meant to catch. She is proactively pacing herself, not disengaging.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ky15t2q",
@@ -6294,7 +6294,7 @@
       "pain_point_reasoning": "Poster describes a 'cool kid clique' at his gym where a couple members give him 'dirty looks' and won't acknowledge him, causing him to 'avoid the social functions' entirely.",
       "pain_severity": 2,
       "pain_severity_reasoning": "The cliquishness causes him to skip social gatherings, but he continues attending workouts regularly and hasn't considered leaving the box seriously.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Projects confidence (posture, eye contact) and goes out of his way to welcome new members himself, rather than confronting the clique or switching gyms.",
       "solution_category": "self_confidence_coping",
       "effectiveness": 3,
@@ -6304,8 +6304,8 @@
       "evidence_snippet": "there are a couple of them that absolutely snub me. Will not say hi, make small talk, or acknowledge me in any way, other than dirty looks.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's community/peer-accountability layer could foster broader inclusive engagement, but it cannot directly fix interpersonal clique behavior among existing members.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Specific existing members are actively snubbing her. TWU's discovery features are for finding new people to connect with, not for fixing how members who already know her choose to treat her.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "lofxnln",
@@ -6444,7 +6444,7 @@
       "pain_point_reasoning": "Beginner describes sessions as 'extremely competitive and overwhelming,' with pressure to push harder than comfortable so as not to 'let the team down,' while coaches' attention 'quickly gets swept back into the advanced techniques with the old timers.'",
       "pain_severity": 3,
       "pain_severity_reasoning": "She is dreading class and struggling to find motivation to continue, though she explicitly says she doesn't want to quit yet.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Makes technique adjustments (e.g., front squats instead of back squats) to work around a joint condition and pushes through despite discomfort.",
       "solution_category": "self_managed_scaling",
       "effectiveness": 2,
@@ -6454,8 +6454,8 @@
       "evidence_snippet": "The sessions are extremely competitive and overwhelming for beginners... I feel pressure to push myself harder than is comfortable to keep up with the more experianced people because I don't want to let the team down",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability/community framing could help or hurt here since it's team-based social pressure at a mismatched skill level that is intimidating a beginner, an area TWU could tune but not something it directly fixes since it can't change coach attention allocation.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The team pairings and intensity here are set by how the box structures its classes. That is a programming decision the box makes, not something TWU's discovery or matching features touch.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m2zis9e",

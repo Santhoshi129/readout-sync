@@ -3619,7 +3619,7 @@
       "pain_point_reasoning": "Friend's overly strict 8-wk challenge left her miserable; attendance collapsed to 'a handful of times in 2 weeks'",
       "pain_severity": 3,
       "pain_severity_reasoning": "Concrete attendance drop-off described for the friend",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Member deprioritised 'the challenge' and focused on enjoying training and fitting it into daily life to sustain long-term",
       "solution_category": "other",
       "effectiveness": null,
@@ -3629,8 +3629,8 @@
       "evidence_snippet": "One of my friends has not socialised in 6 weeks, not had a single treat and she's miserable now and only made it to the gym a handful of times in 2 weeks.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Member deprioritised 'the challenge' and focused on enjoying training and fitting it into daily... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a personal mindset shift - deprioritizing the competitive challenge in favor of sustainable, daily-life-fitting training - not a mechanism a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "epsicq8",
@@ -3804,7 +3804,7 @@
       "evidence_snippet": "I have had the same experience and is a reason I changed from f45. My studio was very much get in and get out, everyone was really pleasant, but not enough to form actual relationships.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "The unwelcoming, transactional 'get in and get out' vibe is largely set by the studio's own culture and staff tone; TWU's chat or community features could open connection points members wouldn't otherwise find, but it can't manufacture a warmer studio culture on its own.",
       "outside_scope_type": null
     },
     {
@@ -3879,7 +3879,7 @@
       "evidence_snippet": "We always notice when someone isn\u2019t in class, we chat before and after, and having our core group together in big Hollywood classes is fun. Lionheart competition is really what got us all talking.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "We always notice when someone isn\u2019t in class, we chat before and after, and having our cor... \u2014 this is community/connection value (social scene, noticing an absent member, deliberate partnering), the exact mechanism TWU's chat/matching/profile layer targets.",
+      "app_relevance_reasoning": "Members noticing on their own when someone's missing and checking in before or after class is peer-level engagement tracking - exactly what TWU's chat or profile visibility could formalize and scale beyond just the people already showing up.",
       "outside_scope_type": null
     },
     {
@@ -3904,7 +3904,7 @@
       "evidence_snippet": "They really encourage the interaction by partnering you up. I didn\u2019t think I\u2019d make friends because I\u2019m quite the introvert. It took a while (personally) but I now look forward to seeing some workout buddies.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio deliberately partners members up during class to spark interaction and friendships \u2014 this is community/connection value (social scene, noticing an absent member, deliberate partnering), the exact mechanism TWU's chat/matching/profile layer targets.",
+      "app_relevance_reasoning": "The studio deliberately pairing members up in class to spark friendships is workout-partner matching in its simplest form - the exact mechanism TWU's matching feature is built around.",
       "outside_scope_type": null
     },
     {
@@ -4044,7 +4044,7 @@
       "pain_point_reasoning": "Global-schedule F45 workouts are 'definitely harder' than new members can handle; new studio used a 2-week ramped soft-opening schedule",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "New studio ran a 2-week 'soft opening schedule' that eases members into the F45 format and builds fitness before switching to the global schedule",
       "solution_category": "onboarding_program",
       "effectiveness": 4,
@@ -4054,8 +4054,8 @@
       "evidence_snippet": "The soft opening schedule helps you ease your way into the F45 format and builds up your fitness over 2 weeks. The global schedule is definitely harder but I felt really prepared.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "New studio ran a 2-week 'soft opening schedule' that eases members into the F45 format and builds... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A studio-designed soft-opening schedule easing new members into the format is a program-design decision - not something a connection-layer app builds or replicates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "erip6jw",
@@ -4069,7 +4069,7 @@
       "pain_point_reasoning": "Member trained over a year with no visual results while eating loosely on weekends; only the structured 8-week challenge produced change",
       "pain_severity": 2,
       "pain_severity_reasoning": "Year of no results described, but member stayed; no quit or lapse stated",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Followed the 8-week challenge diet; endorses the '8 weeks on 4 weeks off' cadence to sustain motivation through the year",
       "solution_category": "other",
       "effectiveness": 4,
@@ -4079,8 +4079,8 @@
       "evidence_snippet": "I think the 8 weeks on 4 weeks off method is good as it keeps you motivated enough and you will steadily see results throughout the year.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Followed the 8-week challenge diet; endorses the '8 weeks on 4 weeks off' cadence to sustain... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Following the studio's own challenge diet and endorsing its on/off cadence is a program-structure preference - not a mechanism a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "erk96kr",
@@ -4144,7 +4144,7 @@
       "pain_point_reasoning": "At OTF felt like 'a face in the crowd', impersonal, never talked to anyone including coaches; F45's gym-family feel is why they stay",
       "pain_severity": 3,
       "pain_severity_reasoning": "Contributed to leaving OTF for F45, cited as a recurring experience",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4154,7 +4154,7 @@
       "evidence_snippet": "At OTF for some reason I felt like a face in the crowd and never really talked to anyone including the coaches. It felt very impersonal to me... F45 feels more like a gym family to me.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Feeling like 'a face in the crowd' with no real conversations happening, including with coaches, is precisely the isolation problem TWU's chat and community features exist to solve - surfacing who else is there and prompting connection.",
       "outside_scope_type": null
     },
     {
@@ -4194,7 +4194,7 @@
       "pain_point_reasoning": "Tried CrossFit 5 months and hated it: overfull classes forced station sharing, members compromised form, and community felt arrogant",
       "pain_severity": 4,
       "pain_severity_reasoning": "Explicitly quit CrossFit after 5 months",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4204,8 +4204,8 @@
       "evidence_snippet": "I tried CF for 5 months and hated it... We also had to share the station when the class gets too full. And in CF community I felt like there\u2019s that air of arrogance for some reason",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This mixes two departure drivers - overcrowded stations (a facility-capacity issue) and a vague sense of not fitting the community - neither is a concrete connection-app fix, more a complaint that led to switching gyms.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "erkzd6n",
@@ -4329,7 +4329,7 @@
       "evidence_snippet": "I just got rid of my lionheart it was bringing me down! I would have a great class and only get 39 pts and then feel s** so just using my fitbit to track",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Got rid of the LionHeart tracker and switched to a Fitbit for self-referenced tracking \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Switching from the competitive Lionheart leaderboard to a personal Fitbit for self-referenced tracking is a device preference; TWU could offer a similar personal, non-competitive progress view, though it isn't a fitness tracker itself.",
       "outside_scope_type": null
     },
     {
@@ -4344,7 +4344,7 @@
       "pain_point_reasoning": "Member since Oct feels no accomplishment or improvement in recent months - post-progress motivation plateau; took 2 weeks off",
       "pain_severity": 2,
       "pain_severity_reasoning": "Clear ongoing demotivation but no quit threat stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Setting short-term 2-week goals to regain sense of progress",
       "solution_category": "other",
       "effectiveness": null,
@@ -4354,7 +4354,7 @@
       "evidence_snippet": "I have been f45ing since oct last year and i am so much better than i was at the start but feel like i havent accomplished much or improved in the last few months",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Setting short-term 2-week goals to regain sense of progress \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Setting short-term 2-week goals to regain a sense of progress is a self-directed goal-tracking habit TWU's own goal or streak feature could support directly.",
       "outside_scope_type": null
     },
     {
@@ -4379,7 +4379,7 @@
       "evidence_snippet": "We've also had a lot of monthly activities. One month was a bingo board where you got stickers for stuff. We've done gym pride weeks, lion heart challenges, burpee and wall sit challenges",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Studio runs monthly engagement activities: playoffs fitness-test check-ins, sticker bingo boards,... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This is the studio's own monthly engagement calendar (fitness tests, bingo boards, pride weeks); TWU doesn't run studio events, though a digital challenge or badge feature could echo the same gamified engagement pattern.",
       "outside_scope_type": null
     },
     {
@@ -4394,7 +4394,7 @@
       "pain_point_reasoning": "Overweight beginner with poor cardio fitness found classes intimidating; trainers/members actively compensate with encouragement and modifications",
       "pain_severity": 2,
       "pain_severity_reasoning": "Intimidation described as real but managed; member stayed",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Arrive 15 min early, tell trainer you're new and intimidated; trainers give modifications, set personal benchmarks, act as cheer squad",
       "solution_category": "onboarding_program",
       "effectiveness": 4,
@@ -4404,8 +4404,8 @@
       "evidence_snippet": "I'm hella overweight and my cardio fitness is dreadful. F45 has been nothing but a supportive environment... Come 15 mins early and let the trainer know you're new",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Arrive 15 min early, tell trainer you're new and intimidated; trainers give modifications, set... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Trainers giving modifications and acting as a personal cheer squad for a nervous newcomer is staff behavior in the room - not something a connection app replicates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "es32hol",
@@ -4419,7 +4419,7 @@
       "pain_point_reasoning": "New member threw up mid first class, feels shy and lost walking in; trainer follow-up and station adjustments got her back for class two",
       "pain_severity": 2,
       "pain_severity_reasoning": "Embarrassing first-class experience and ongoing shyness, but returned next day",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Trainer personally checked up on her after the rough first class; stations adjusted to her level on return visit",
       "solution_category": "coaching_change",
       "effectiveness": 4,
@@ -4429,8 +4429,8 @@
       "evidence_snippet": "didn't pace myself well and got to like the 5th station and had to throw up... trainer even checked up on me after my embarrassing first night",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Trainer personally checked up on her after the rough first class; stations adjusted to her level on... \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A trainer personally checking in after a rough first class and adjusting stations to her level is coaching attentiveness - not a mechanism a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "esmt4gn",
@@ -4494,7 +4494,7 @@
       "pain_point_reasoning": "Seeing workout previews makes member more likely to skip class or think about cancelling; same pattern happened at Orangetheory",
       "pain_severity": 3,
       "pain_severity_reasoning": "Recurring across two gyms; leads to skipped classes and cancel urges, no quit yet",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4504,8 +4504,8 @@
       "evidence_snippet": "I noticed that I am personally more likely to cancel or skip after i view the workout. This happened to me when I used to belong to orange theory too.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a personal-psychology observation - seeing the workout preview in advance makes her more likely to skip - rather than a solution attempted; insight into a pain point's mechanism, not a fix a connection app would provide.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "espq3rh",
@@ -4544,7 +4544,7 @@
       "pain_point_reasoning": "ClassPass classes 'never really stuck'; needed commitment device \u2014 high F45 price plus 1-week trial converted her into a 4-5x/week regular",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "One-week trial converted to membership; member treats the high cost as accountability ('if I'm paying that much, I better get my ass in there') plus done-for-you programming",
       "solution_category": "other",
       "effectiveness": 4,
@@ -4554,8 +4554,8 @@
       "evidence_snippet": "A lot of folks complain about the costs but honestly it\u2019s one of my main motivators: if I\u2019m going to be paying that much for it, I better get my ass in there.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "One-week trial converted to membership; member treats the high cost as accountability ('if I'm... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Using the high cost itself as a personal accountability motivator ('if I'm paying that much...') is a pricing/psychology dynamic - not a mechanism a connection-layer app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "etd18sw",
@@ -4704,7 +4704,7 @@
       "evidence_snippet": "I\u2019m working on getting my \u2018days in a row\u2019 badges on F45 life. This week may actually kill me",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "In-app streak gamification: 'days in a row' attendance badges tied to the Lionheart tracker that... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Attendance-streak badges are pure digital gamification - TWU could build an equivalent 'days in a row' feature on its own, independent of F45's Lionheart hardware, which only supplies the underlying HR data here.",
       "outside_scope_type": null
     },
     {
@@ -4719,7 +4719,7 @@
       "pain_point_reasoning": "Member leans on the 8-week challenge structure and group participation to stay motivated and 'honest' with goals between challenges",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "Uses the recurring 8-week challenge format with group participation as an accountability/motivation device, adapting the meal plan to muscle-gain goals",
       "solution_category": "community_events",
       "effectiveness": 4,
@@ -4729,7 +4729,7 @@
       "evidence_snippet": "I\u2019ve found the challenge format and group participation to be a great motivator for my individual goals which are also about building not losing.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Uses the recurring 8-week challenge format with group participation as an accountability/motivation... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "The recurring challenge format and meal-plan design are the studio's own program; the group-participation piece, though, is where TWU's community features could reinforce accountability alongside it.",
       "outside_scope_type": null
     },
     {
@@ -4869,7 +4869,7 @@
       "pain_point_reasoning": "At OTF member felt anonymous (never knew the owner); switched and pays double at F45 because owners know every member",
       "pain_severity": 3,
       "pain_severity_reasoning": "Anonymity contributed to leaving OTF",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Owners active in studio and know pretty much every member; member appreciation events",
       "solution_category": "community_events",
       "effectiveness": 4,
@@ -4879,8 +4879,8 @@
       "evidence_snippet": "it was because they did these things, and I felt valued as a member that I've stuck with F45. I didn't even know who owned the OTF I went to before",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Owners active in studio and know pretty much every member; member appreciation events \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Owners personally knowing every member and running appreciation events is ownership style and in-person hospitality - not something a connection app creates.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ettwklw",
@@ -4894,7 +4894,7 @@
       "pain_point_reasoning": "Member lists what keeps engagement up: milestone gifts, technique videos, engaged trainers vs ones who just shout timer calls",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "Session-count milestone rewards (1000 sessions = F45 shoes/Moet), 'technique tuesday' videos, inventive challenge prizes (cash, holidays, pooled grand prizes)",
       "solution_category": "community_events",
       "effectiveness": null,
@@ -4904,7 +4904,7 @@
       "evidence_snippet": "semi-regular achievements - the current round seems to be \"X sessions completed\" where once you get to 1000, the trophies are F45 shoes and bottles of moet",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "Session-count milestone rewards (1000 sessions = F45 shoes/Moet), 'technique tuesday' videos,... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Milestone tracking (session counts triggering rewards) is a mechanic TWU could mirror digitally, even though the physical prizes, video content, and prize structure are the studio's own program.",
       "outside_scope_type": null
     },
     {
@@ -4919,7 +4919,7 @@
       "pain_point_reasoning": "Left OTF after 200 classes and nobody noticed; also worried F45 owners dropping off coaching schedule will erode community feel",
       "pain_severity": 3,
       "pain_severity_reasoning": "Member left OTF unnoticed; current concern is a risk not yet a quit",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4929,7 +4929,7 @@
       "evidence_snippet": "200 classes there and I don't know if they even noticed when I left. I ran into a coach months later and she looked at me like \"hmmm where do I know you from?\"",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Two hundred classes and no one noticed when he stopped coming is exactly the gap TWU's engagement/churn-risk visibility is built to close - flagging a member who's gone quiet before it gets this far.",
       "outside_scope_type": null
     },
     {

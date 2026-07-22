@@ -26,9 +26,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Point is, they moved the Hyrox from Wednesday to Tuesday at a time I can’t make. \n\nHence it means I can only train Hyrox 2 x week, Mondays and Saturdays.",
+      "evidence_snippet": "Point is, they moved the Hyrox from Wednesday to Tuesday at a time I can\u2019t make. \n\nHence it means I can only train Hyrox 2 x week, Mondays and Saturdays.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ktyq4pr",
@@ -52,7 +53,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "They've now been telling me they are going to put on hyrox classes I said they need to get balls and more ski regs. So it's do-able but a pain if it's busy so time it around their classes.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "l0exl4s",
@@ -74,9 +76,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "The trainer at our gym hates running and did everything he could to avoid it while training for a Hyrox. It’s a Hyrox affiliated gym and we followed his program. After a while we realised there was no running. I left the gym but friends continued and followed his classes",
+      "evidence_snippet": "The trainer at our gym hates running and did everything he could to avoid it while training for a Hyrox. It\u2019s a Hyrox affiliated gym and we followed his program. After a while we realised there was no running. I left the gym but friends continued and followed his classes",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "l61lfxd",
@@ -100,7 +103,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I used this coach and within weeks I was injured. All i was sent were basic sessions via whatsapp with no explanation to what they were, no feedback, no outside support, no form checking, no calls were given and no check ins.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "l8e2tli",
@@ -124,7 +128,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "there was a hyrox focused gym in Seattle that unfortunately closed down late last year",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1dfrpwx",
@@ -135,7 +140,7 @@
       "score": 2,
       "perspective": "member",
       "pain_point": "pricing_cost_value",
-      "pain_point_reasoning": "Member reports their affiliate gym raised the monthly price from €90 to €130 immediately after they had just signed/renewed a contract at the lower rate, a direct pricing/value grievance.",
+      "pain_point_reasoning": "Member reports their affiliate gym raised the monthly price from \u20ac90 to \u20ac130 immediately after they had just signed/renewed a contract at the lower rate, a direct pricing/value grievance.",
       "pain_severity": 3,
       "pain_severity_reasoning": "A ~44% price increase right after contract renewal is a clearly recurring/material cost impact stated directly, though no mention of cancelling membership.",
       "app_relevance": "not_addressable",
@@ -146,9 +151,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Price increase from €90 p/m to €130p/m. Only signed a contract at €90 p/m renewal last month, what the hell",
+      "evidence_snippet": "Price increase from \u20ac90 p/m to \u20ac130p/m. Only signed a contract at \u20ac90 p/m renewal last month, what the hell",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ldj9bep",
@@ -172,7 +178,8 @@
       "difficulty_reasoning": "Switching/adding an affiliation is primarily an administrative and cost decision, not highly complex.",
       "evidence_snippet": "We just affiliated a few months ago to see if it would better fit our community demographic. TBH no one around PNW knows about Hyrox yet so it's taking a bit. But I like how it's 1/3 of the cost and we get more onboarding content and a whole drive of marketing materials.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ldmej96",
@@ -194,9 +201,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I belong to a CrossFit gym in Denver, and I’m starting to do extremely modified Hyrox workouts on the weekends. I would love it, love it if my gym were both. I’d even be willing to pay more.",
+      "evidence_snippet": "I belong to a CrossFit gym in Denver, and I\u2019m starting to do extremely modified Hyrox workouts on the weekends. I would love it, love it if my gym were both. I\u2019d even be willing to pay more.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "lgbs2vt",
@@ -220,7 +228,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I found doing them on my own versus class based workouts became a mental grind. If I was being critical I would say their product / app and communication could be much better.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "lgn0bbk",
@@ -242,9 +251,10 @@
       "effectiveness_reasoning": "Member describes the purchase as 'awesome' and says it solved the access problem without taking much space.",
       "difficulty": 2,
       "difficulty_reasoning": "Requires a purchase and home space but is a straightforward workaround.",
-      "evidence_snippet": "F45 has them, but they don’t really have open gym time to just go and use them - it’s part of some of the class workouts.",
+      "evidence_snippet": "F45 has them, but they don\u2019t really have open gym time to just go and use them - it\u2019s part of some of the class workouts.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "lh7ir5m",
@@ -268,7 +278,8 @@
       "difficulty_reasoning": "Signing up for an event required little effort or cost to implement.",
       "evidence_snippet": "my gym routine is starting to get boring so why not have some goal",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "lift5d3",
@@ -292,7 +303,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "There is a BFT gym near my place, but I don't like group sessions since I know I won't be able to keep up.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ljqo0g9",
@@ -314,9 +326,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "the workout descriptions are a dog’s breakfast. At a quick glance, it’s pretty hard to interpret some of the workouts and some days had the text descriptions of a completely different day on it.",
+      "evidence_snippet": "the workout descriptions are a dog\u2019s breakfast. At a quick glance, it\u2019s pretty hard to interpret some of the workouts and some days had the text descriptions of a completely different day on it.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "lk2dz3p",
@@ -340,7 +353,8 @@
       "difficulty_reasoning": "Required buying specific equipment and arranging personal training, a moderate but achievable effort.",
       "evidence_snippet": "I did buy my own Hyrox wall ball since the balls at my gym were smaller than the official Hyrox balls and none matched the weight (6 kg, 13.2 lbs).",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "llsyasd",
@@ -364,7 +378,8 @@
       "difficulty_reasoning": "Required self-education on training principles but no major barriers to switching.",
       "evidence_snippet": "I dropped them because even though it was supposed to be custom workouts, it was just the same regurgitated workouts used in classes.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ltagvaz",
@@ -388,7 +403,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "you're not allowed in the studio unless it's manned and they don't have ski, wall balls etc. Avaliable in the gym itself (only in the studio) so if you're training for Hyrox and not allowed in the studio whilst it's unmanned, you can't properly train",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "luq19mr",
@@ -412,7 +428,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I have a hyrox affiliate gym and I use beyond the white board. It I snot hyrox friendly . You can segment or ZONE workouts . I and looking for a programming app for hyrox as well.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "lv5j515",
@@ -436,7 +453,8 @@
       "difficulty_reasoning": "Fostering a supportive class culture is a human/cultural practice rather than a structural change, moderately easy for a coach/box to cultivate but not trivial.",
       "evidence_snippet": "generally it was a super supportive environment and turns out if you keep showing up after awhile you no longer are lowest",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "m0fgkh8",
@@ -460,7 +478,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I have access to all equipment except a sled at my current gym... but since it seems like thats the hardest part i think im gonna end up switching gyms anyways.",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m68du0w",
@@ -484,7 +503,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "my gym started charging $35pp for special Hyrox training sessions every Sat and Sun morning. Each class has about 10 people.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "m68q5eu",
@@ -508,7 +528,8 @@
       "difficulty_reasoning": "Requires ongoing accreditation renewal cost and equipment (e.g., sleds) investment.",
       "evidence_snippet": "This has significantly raised their profile, and their Hyrox classes are always full... I know several people who found out about this gym through Hyrox classes and have since become regular clients.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m690u3z",
@@ -532,7 +553,8 @@
       "difficulty_reasoning": "Involves an ongoing accreditation cost (~$1500/yr per other threads) to obtain and maintain affiliate status.",
       "evidence_snippet": "It's a great spot, just more spendy than we can do at the moment. The owner said the affiliation has been a huge factor in their recent growth.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "m69cx3x",
@@ -556,7 +578,8 @@
       "difficulty_reasoning": "Requires a gym-wide shift in affiliate status and class programming.",
       "evidence_snippet": "Went from CrossFit ( not an affiliate but CrossFit training style ) to an official hyrox affiliate. We still do a good mix of some CrossFit stuff and barbell work but it's been so much better since the switch personally! The members seem to enjoy it and get more out of it too!",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "m6al328",
@@ -580,7 +603,8 @@
       "difficulty_reasoning": "Involves adjusting existing class content and maintaining affiliate status/discount program.",
       "evidence_snippet": "We have Hyrox classes and out HIIT sessions (twice a week) is more hyrox style now which has helped recruit more members.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m6b48n9",
@@ -604,7 +628,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "It wasn't well advertised and quite a few people did it because they showed up to the gym and that was what was happening.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "1i7ys27",
@@ -626,9 +651,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I just felt like if you were a beginner you were made to feel like you’re holding people back. The instructor even said you need to be running at a 5-4min pace and if you’re not why are you doing hyrox. It just didn’t feel inclusive which is disappointing.",
+      "evidence_snippet": "I just felt like if you were a beginner you were made to feel like you\u2019re holding people back. The instructor even said you need to be running at a 5-4min pace and if you\u2019re not why are you doing hyrox. It just didn\u2019t feel inclusive which is disappointing.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "m8rfetz",
@@ -652,7 +678,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I enjoyed some of CrossFit, but a lot of it didn't appeal, particularly the cost of membership. As a consequence, I dismissed it, did a lot of other endurance sports, and neglected strength training.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "mb3bm12",
@@ -674,9 +701,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": 2,
       "difficulty_reasoning": "Requires some research to find a local gym offering month-to-month terms with the right equipment, but no major organizational hurdles once found.",
-      "evidence_snippet": "My main issue was finding a gym with a skierg that didn’t require a year contract.",
+      "evidence_snippet": "My main issue was finding a gym with a skierg that didn\u2019t require a year contract.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "mfwbzx4",
@@ -700,7 +728,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Do they have the right gear? Yes. Is it a terrible gym? Also yes.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "mjzr2o1",
@@ -716,15 +745,16 @@
       "pain_severity_reasoning": "A value/preference comparison is described, but no acute consequence (e.g. quitting, financial hardship) is stated.",
       "app_relevance": "not_addressable",
       "app_relevance_reasoning": "TWU has no pricing, billing, or membership-tier features; this is a business/cost decision outside its scope.",
-      "solution": "yes my hyrox gym is £55 a month, unlimited classes, also do strength classes, and non hyrox classes. Can do multiple types of classes a day. the crossfit gym we went to before was £90 a month, and just crossfit, same session on all day.",
+      "solution": "yes my hyrox gym is \u00a355 a month, unlimited classes, also do strength classes, and non hyrox classes. Can do multiple types of classes a day. the crossfit gym we went to before was \u00a390 a month, and just crossfit, same session on all day.",
       "solution_category": "pricing_change",
       "effectiveness": null,
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "the crossfit gym we went to before was £90 a month, and just crossfit, same session on all day.",
+      "evidence_snippet": "the crossfit gym we went to before was \u00a390 a month, and just crossfit, same session on all day.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "mjzeeui",
@@ -748,7 +778,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I pay a fraction for hyrox gym membership with no restrictions compared to a crossfit box with heavy use restrictions.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ml8pi4v",
@@ -770,9 +801,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "There is a hyrox gym really close to me but I don’t want to lose my spin classes and just can’t afford 2 gym memberships :(",
+      "evidence_snippet": "There is a hyrox gym really close to me but I don\u2019t want to lose my spin classes and just can\u2019t afford 2 gym memberships :(",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "mmjvv4b",
@@ -794,9 +826,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Fit box Brighton went there once and the trainers there were awful, didn’t master stand different training systems just all out slog",
+      "evidence_snippet": "Fit box Brighton went there once and the trainers there were awful, didn\u2019t master stand different training systems just all out slog",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1k99jn1",
@@ -818,9 +851,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I have taken a lot of cross training classes and hyrox prep classes but nobody was actually teaching me what to do and I didn’t really research either.",
+      "evidence_snippet": "I have taken a lot of cross training classes and hyrox prep classes but nobody was actually teaching me what to do and I didn\u2019t really research either.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "mpxa2k8",
@@ -844,7 +878,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "my gym shut down two years ago and I just haven't been able to find a new place. I was just running for a while, with sporadic lifting, but I recently found the IBEX app and I love it.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "my2wh4h",
@@ -857,7 +892,7 @@
       "pain_point": "coaching_quality_inconsistency",
       "pain_point_reasoning": "Member paid a large sum for personalized 1:1 online coaching as a beginner but received generic, copy-pasted programming identical to plans for elite athletes chasing podiums, rather than programming suited to a beginner's needs.",
       "pain_severity": 3,
-      "pain_severity_reasoning": "Clearly recurring problem over a 9-month paid engagement with a specific financial cost stated (£1299), but no explicit business-threatening outcome or reported churn from an underlying gym/affiliate is described.",
+      "pain_severity_reasoning": "Clearly recurring problem over a 9-month paid engagement with a specific financial cost stated (\u00a31299), but no explicit business-threatening outcome or reported churn from an underlying gym/affiliate is described.",
       "app_relevance": "not_addressable",
       "app_relevance_reasoning": "TWU has no coaching or instruction features; this is a training-quality issue outside its scope.",
       "solution": null,
@@ -866,9 +901,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I paid £1299 for 9 months coaching as a beginner training for my first hyrox. I got copy and paste workouts that were the same the pros trying to get podiums. She’s a very good bullshitter but not a good coach.",
+      "evidence_snippet": "I paid \u00a31299 for 9 months coaching as a beginner training for my first hyrox. I got copy and paste workouts that were the same the pros trying to get podiums. She\u2019s a very good bullshitter but not a good coach.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "n29g89b",
@@ -892,7 +928,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "it's been frustrating that they use our HYROX efforts as a bit of a marketing tool while not actually adjusting the programming to support it... So I've made the call to start skipping a few BFT sessions and doing my own work around those areas.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "n2br0pn",
@@ -916,7 +953,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "BFT is not enough for Hyrox, their strength classes & their cardio for that matter really are poor, I trained for 3 years 6 days a week, moved over to f45 & couldn't believe the defence. Much more high intensity training & they do a regular Hyrox class once a week",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "n2a8cja",
@@ -940,7 +978,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "What I've done is pick and choose classes and supplement them with running either doing double session days or dropping BFT classes for a running session.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nalfnly",
@@ -964,7 +1003,8 @@
       "difficulty_reasoning": "Simply attending a different scheduled class time; low implementation effort for the member.",
       "evidence_snippet": "the coach ended up doing the workout with everyone. I was a little put off by it, to be honest, but went back again anyway.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nexbhd4",
@@ -988,7 +1028,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "All of the F45 gyms are located deep in the city. I live closer to the burbs so training at any of those facilities wouldnt work",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nf2sa6l",
@@ -1012,7 +1053,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "we had a influx of new member and they all quit coming to hyrox class once they were announced",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "nfxl2az",
@@ -1036,7 +1078,8 @@
       "difficulty_reasoning": "Switching gyms required no special implementation, just finding an affiliated gym.",
       "evidence_snippet": "the trainers there used to laugh about how shit Hyrox is and belittle me for doing it.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nl448c9",
@@ -1060,7 +1103,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Even the hyrox classes at my gym are having a dip in attendance and once the hyrox competition here happens , I'm sure that hyrox classes will be down to 5 people from the max we had 40",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "nl451zh",
@@ -1084,7 +1128,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "the hyrox classes at my gym have really dropped off too. Before excel last year, they were pulling in around 30 people. Now it's consistently fewer than 10.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "nl46pxn",
@@ -1108,7 +1153,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "A second gym I would go to because of hyrox class times, cut Thier days to wed and sat only.due to attendance",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1ojlwk5",
@@ -1130,9 +1176,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": "not stated",
-      "evidence_snippet": "I’d have to increase my monthly fee from around $60CAD/month to $110CAD per month to have access to their fitness classes (and some other features I don’t get with my essential membership).",
+      "evidence_snippet": "I\u2019d have to increase my monthly fee from around $60CAD/month to $110CAD per month to have access to their fitness classes (and some other features I don\u2019t get with my essential membership).",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nm5xejb",
@@ -1154,9 +1201,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Yeah I have them at my gym and they’re no different to a normal HIIT class... there’s much less value in taking the class than spending your time on focusing mixing that equipment and running.",
+      "evidence_snippet": "Yeah I have them at my gym and they\u2019re no different to a normal HIIT class... there\u2019s much less value in taking the class than spending your time on focusing mixing that equipment and running.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nnnyf6u",
@@ -1180,7 +1228,8 @@
       "difficulty_reasoning": "Switching disciplines/gyms is a personal decision requiring moderate effort (finding a new gym/community).",
       "evidence_snippet": "very expensive and for the advanced lifting we were required to do it was just too many people in the classes to adequately learn how to do the lifts & not get injured. I really needed individualized attention for me to succeed in CrossFit & I never really got that anywhere",
       "confidence_tier": "moderate",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nnmkzy4",
@@ -1204,7 +1253,8 @@
       "difficulty_reasoning": "Requires new equipment, affiliate fees, and programming changes to add HYROX classes.",
       "evidence_snippet": "the poster mentioned \"throwing in a few hyrox classes to capitalize on the hype\"... I think hyrox and hybrid fitness classes are saving a lot of crossfit gyms on the brink too.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nnn2nj6",
@@ -1228,7 +1278,8 @@
       "difficulty_reasoning": "Rebranding existing classes and becoming an affiliate is a relatively low-effort change for a gym already running similar sessions.",
       "evidence_snippet": "My CrossFit gym introduced Hyrox classes a few months ago. Essentially they just rebranded their previous \"boot camp\" sessions and affiliated with Hyrox, but the classes are always full now.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "1ou9obc",
@@ -1252,7 +1303,8 @@
       "difficulty_reasoning": "Requires sourcing, paying for, and coordinating schedules across two separate gym memberships, adding cost and logistical complexity, though it is a straightforward (if inconvenient) workaround.",
       "evidence_snippet": "It seems the only solution is to have 2 gym memberships for 2 different gyms if I want to make this work.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "noavvac",
@@ -1276,7 +1328,8 @@
       "difficulty_reasoning": "Requires becoming an official affiliate and adjusting programming, a moderate business change.",
       "evidence_snippet": "I'm a CrossFit affiliate owner in Minneapolis and we also affiliated with HYROX and got a lot of traffic AND our existing members (including myself) love it!",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nockuvr",
@@ -1300,7 +1353,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "In my old gym yes because everyone was super wholesome. All ages mixed and training together but now not so much in my new city and gym. Maybe because i'm new but not getting the same warmth we had at my old place.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "nodft4b",
@@ -1324,7 +1378,8 @@
       "difficulty_reasoning": "Purchasing an additional gym membership is a low-effort but costly workaround.",
       "evidence_snippet": "I had to get another membership because there was no open gym time to the BOX or they would close early . They have classes every hr all day everyday when people are at work which isn't realistic.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nohq0s9",
@@ -1348,7 +1403,8 @@
       "difficulty_reasoning": "Finding an online program and appropriate gym is a low-to-moderate effort workaround.",
       "evidence_snippet": "I've rarely found \"HYROX classes\" that actually prep you for the race. They are usually 30 min of metcon station work with little to no running.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "npoe6f0",
@@ -1372,7 +1428,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "the monthly memberships are pricey so I have to consider that as well",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nqzbo73",
@@ -1394,9 +1451,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "As someone who’s been an affiliate for 2 years now. It’s sad. They’ve raised the affiliation price and reduced what we get.",
+      "evidence_snippet": "As someone who\u2019s been an affiliate for 2 years now. It\u2019s sad. They\u2019ve raised the affiliation price and reduced what we get.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nrdsdms",
@@ -1420,7 +1478,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I come to the gym to sweat and get my ass kicked, I'm not interested in learning how to walk on my hands, do olympic style lifting, or swing from a bar.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nucc6jh",
@@ -1442,9 +1501,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Specific Hyrox training is an extra $80 on top of membership for 12 weeks of training, I’m considering it but it’s a bit pricy",
+      "evidence_snippet": "Specific Hyrox training is an extra $80 on top of membership for 12 weeks of training, I\u2019m considering it but it\u2019s a bit pricy",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "o0nu5f2",
@@ -1468,7 +1528,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Even my local Hyrox community that was open to everyone and inclusive slowly turned into a means of trying to get everyone to join a local affiliate gym and pay for other \"services\".",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "oc4tv2b",
@@ -1490,9 +1551,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "There’s a big gap between what the affiliate gyms say will make you race ready and what actually makes you race ready, and that’s actually a huge issue.",
+      "evidence_snippet": "There\u2019s a big gap between what the affiliate gyms say will make you race ready and what actually makes you race ready, and that\u2019s actually a huge issue.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ocfecdq",
@@ -1514,9 +1576,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I have another Hyrox coming up but I don’t plan to visit their gym ever again",
+      "evidence_snippet": "I have another Hyrox coming up but I don\u2019t plan to visit their gym ever again",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ocgr47c",
@@ -1540,7 +1603,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "it was an f45 that transitioned to private ownership (two of the four trainers are the owners and create the workouts!)",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "odukri3",
@@ -1562,9 +1626,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": 3,
       "difficulty_reasoning": "Requires restructuring class offerings and rebuilding community programming, a moderate business undertaking.",
-      "evidence_snippet": "He’s planning to offer different types of classes and community gatherings because he understands that the current demand will not last for long",
+      "evidence_snippet": "He\u2019s planning to offer different types of classes and community gatherings because he understands that the current demand will not last for long",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "odtvlny",
@@ -1588,7 +1653,8 @@
       "difficulty_reasoning": "Requires adjusting class programming standards, achievable for an experienced coach/owner without major structural investment.",
       "evidence_snippet": "my members all say the BBJ, sled & wallballs they found a breeze!",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "odu94l1",
@@ -1612,7 +1678,8 @@
       "difficulty_reasoning": "Organizing an informal accountability group is low-effort, mainly requiring social coordination rather than gym infrastructure.",
       "evidence_snippet": "we all hold each other accountable on showing up... Days I solo train I sleep in, do less.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "oenngmw",
@@ -1625,7 +1692,7 @@
       "pain_point": "facility_experience_decline",
       "pain_point_reasoning": "Member's regular gym lacks HYROX-specific equipment (sled, ski erg), a facility gap that limited their training options.",
       "pain_severity": 1,
-      "pain_severity_reasoning": "Mild inconvenience — required joining a second gym for equipment access, no stated financial or performance crisis.",
+      "pain_severity_reasoning": "Mild inconvenience \u2014 required joining a second gym for equipment access, no stated financial or performance crisis.",
       "app_relevance": "not_addressable",
       "app_relevance_reasoning": "TWU does not affect physical equipment or facility space; this is a physical/business issue outside its scope.",
       "solution": "Joined F45 as a second gym membership specifically to access sled and ski erg equipment",
@@ -1634,9 +1701,10 @@
       "effectiveness_reasoning": "Member reports the workaround worked well ('felt good', pull weight 'felt relatively easy'), suggesting the second membership solved the equipment gap.",
       "difficulty": 2,
       "difficulty_reasoning": "Requires paying for and attending an additional gym, a moderate but straightforward personal cost/logistics change.",
-      "evidence_snippet": "My gym is very tiny and doesn’t have a sled or ski erg, so I joined F45 to have access to them.",
+      "evidence_snippet": "My gym is very tiny and doesn\u2019t have a sled or ski erg, so I joined F45 to have access to them.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oewz5ik",
@@ -1649,7 +1717,7 @@
       "pain_point": "facility_experience_decline",
       "pain_point_reasoning": "Member's home gym lacks sled/ski erg equipment and space, and she also lacks the expertise/time to design varied programming (AMRAPs, EMOMs) herself, prompting her to join structured classes elsewhere.",
       "pain_severity": 1,
-      "pain_severity_reasoning": "Mild — a facility/knowledge gap addressed proactively by joining classes, no stated crisis or quitting.",
+      "pain_severity_reasoning": "Mild \u2014 a facility/knowledge gap addressed proactively by joining classes, no stated crisis or quitting.",
       "app_relevance": "not_addressable",
       "app_relevance_reasoning": "TWU does not affect physical equipment or facility space; this is a physical/business issue outside its scope.",
       "solution": "Joined a class-based training program (separate from her small home gym) for equipment access and structured/varied programming",
@@ -1658,9 +1726,10 @@
       "effectiveness_reasoning": "States classes are 'way more effective and efficient' than solo training after 6 weeks of trying it alone.",
       "difficulty": 2,
       "difficulty_reasoning": "Simply joining an existing class offering; low implementation burden for the member.",
-      "evidence_snippet": "I joined mainly because my gym is tiny and doesn’t have a ski erg or sled, or space to really practice walking lunges",
+      "evidence_snippet": "I joined mainly because my gym is tiny and doesn\u2019t have a ski erg or sled, or space to really practice walking lunges",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "of3ktl0",
@@ -1684,7 +1753,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "just not training half the stations due to my gym",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ogj9cm2",
@@ -1708,7 +1778,8 @@
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "It's very clear she is assuming everyone is there to get their best time and lose weight. She offers no modifications, no different levels of training. She treats every class like it's race day. It almost put me off the whole thing!",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ogkz8bh",
@@ -1730,9 +1801,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": "not stated",
-      "evidence_snippet": "The instructors haven't really done any education on how to do any of the stations from a skill perspective... It's only for the next month until race day. Then I'm outta there 😂",
+      "evidence_snippet": "The instructors haven't really done any education on how to do any of the stations from a skill perspective... It's only for the next month until race day. Then I'm outta there \ud83d\ude02",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ogyibtw",
@@ -1756,7 +1828,8 @@
       "difficulty_reasoning": "not stated",
       "evidence_snippet": "Also the pricing changes every month due to cleaning one month it'll be 150 next month. It'll be 195 super fucking annoying and when you try to quit, they say they need excellent amount of days in advance and obviously you're never within that range. I always suggest not going there.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oljqzdm",
@@ -1778,9 +1851,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "I coach F45, it’s totally lazy people/poor management.",
+      "evidence_snippet": "I coach F45, it\u2019s totally lazy people/poor management.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oms4oty",
@@ -1804,7 +1878,8 @@
       "difficulty_reasoning": "Requires coordinating a membership freeze and temporary second gym access, but is a routine, repeatable process.",
       "evidence_snippet": "I freeze my OTF membership for 1-2 months before hyrox and then do specific hyrox training at another place until the race. Then back to OTF.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oms8r2c",
@@ -1828,7 +1903,8 @@
       "difficulty_reasoning": "Requires maintaining access to a second facility in addition to primary gym membership.",
       "evidence_snippet": "The Hyrox Classes at OTF are great for threshold training, but they do lack some of the specific stations... I go to another gym to get the ski erg and sled work.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "omsp5es",
@@ -1850,9 +1926,10 @@
       "effectiveness_reasoning": "Author states the trial let them discover a technique that worked far better for them, describing a clear, positive result.",
       "difficulty": 1,
       "difficulty_reasoning": "A short-term membership at another gym is a low-effort, low-cost workaround.",
-      "evidence_snippet": "one thing I’m glad I did in advance was take a membership at another gym briefly (literally a week) that had a full sled station.",
+      "evidence_snippet": "one thing I\u2019m glad I did in advance was take a membership at another gym briefly (literally a week) that had a full sled station.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1to6tmq",
@@ -1874,9 +1951,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "my gym only does HYROX once a week and I’m looking for alt programs I can follow",
+      "evidence_snippet": "my gym only does HYROX once a week and I\u2019m looking for alt programs I can follow",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "onx7eoe",
@@ -1900,7 +1978,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "the membership difference to have the Hyrox classes included or not is $70/mo which is how I ended up asking this here lol.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "onx9ryx",
@@ -1924,7 +2003,8 @@
       "difficulty_reasoning": "Requires negotiating a comped trial with gym staff, which may not always be accommodated.",
       "evidence_snippet": "I think I could get them to sign me up at the lower tier and comp a class or two due to my interest and then I can upgrade if I want to keep taking them.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "onzfnb5",
@@ -1948,7 +2028,8 @@
       "difficulty_reasoning": "Simply not renewing a month-to-month trial; no described switching costs.",
       "evidence_snippet": "I joined a HYROX gym for a month to see if it was worth it. Only one class per week was actually coached by someone who had competed in HYROX. For $160 a month, it was a total waste of my time.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "onzhc1b",
@@ -1970,9 +2051,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": 1,
       "difficulty_reasoning": "Simple tier selection at sign-up.",
-      "evidence_snippet": "Dude this gym is $150/mo or $220/mo for the Hyrox membership... 220 is nuts if I don’t need the classes",
+      "evidence_snippet": "Dude this gym is $150/mo or $220/mo for the Hyrox membership... 220 is nuts if I don\u2019t need the classes",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ooukzgp",
@@ -1994,9 +2076,10 @@
       "effectiveness_reasoning": "Explicitly states this is how they met race partners of all ages.",
       "difficulty": 1,
       "difficulty_reasoning": "Simply choosing a pricier, community-oriented gym.",
-      "evidence_snippet": "I pay a little more money for a gym that’s more community based and that’s how I met people to do races with (of all ages)",
+      "evidence_snippet": "I pay a little more money for a gym that\u2019s more community based and that\u2019s how I met people to do races with (of all ages)",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ooun0vd",
@@ -2018,9 +2101,10 @@
       "effectiveness_reasoning": "Author states they met tons of like-minded people this way, versus never speaking to anyone at chain gyms.",
       "difficulty": 2,
       "difficulty_reasoning": "Requires finding and switching to a different type of gym.",
-      "evidence_snippet": "I’ve met tons of like minded people that way and never once spoke to anyone at the secular chain style gyms",
+      "evidence_snippet": "I\u2019ve met tons of like minded people that way and never once spoke to anyone at the secular chain style gyms",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "oouqezv",
@@ -2044,7 +2128,8 @@
       "difficulty_reasoning": "Requires maintaining multiple drop-in/punch-card relationships alongside a home gym membership.",
       "evidence_snippet": "I started just paying their drop in fees or getting punch cards and taking the Hyrox classes or the HIIT classes at each depending on when it works.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ooujgh9",
@@ -2066,9 +2151,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "Unless there’s a dedicated space for things like sled pull..which..not at mine.",
+      "evidence_snippet": "Unless there\u2019s a dedicated space for things like sled pull..which..not at mine.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oouttf0",
@@ -2092,7 +2178,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Really I feel like the only way I can meet like minded people is at an actual Hyrox gym",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "oow05d8",
@@ -2116,7 +2203,8 @@
       "difficulty_reasoning": "Would require finding and joining a new gym/box.",
       "evidence_snippet": "I was told by instructors they just simulate Hyrox motions.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oow8bp9",
@@ -2138,9 +2226,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": 2,
       "difficulty_reasoning": "Requires self-motivation to design and follow one's own program instead of relying on class structure.",
-      "evidence_snippet": "some classes can be beginner friendly and won’t improve your overall condition. At least that’s my experience from hyrox classes in Berlin.",
+      "evidence_snippet": "some classes can be beginner friendly and won\u2019t improve your overall condition. At least that\u2019s my experience from hyrox classes in Berlin.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ooxqmlz",
@@ -2164,7 +2253,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "I trird a hyrox affiliated gym but my pockets were running dry lol",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ooz0a5t",
@@ -2188,7 +2278,8 @@
       "difficulty_reasoning": "Requires visiting/trialing multiple gyms before finding the right cultural fit.",
       "evidence_snippet": "I literally asked ChatGPT what gyms are closest to that around me. And now I am a member at a gym that it tough and I love it",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "otrw6vk",
@@ -2212,7 +2303,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "starting this week they paused the Hyrox style classes and are just doing cardio/ HIIT based, I have the skill  now to do it on my own, just having the equipment would be helpful lol",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "otrywgl",
@@ -2236,7 +2328,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Drop in is $55 tho but the month to month package is cheaper for members it's $95 not sure for nonmembers what they would charge... curious bc the f45 prices don't feel sustainable with membership and package",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ots1kp4",
@@ -2258,9 +2351,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": 2,
       "difficulty_reasoning": "Simple as switching locations within an existing membership, if permitted by the gym chain.",
-      "evidence_snippet": "I already pay for classes weekly at f45 Lincoln sq, I’ll definitely find out if I can switch locations! That was very helpful! Thank you.",
+      "evidence_snippet": "I already pay for classes weekly at f45 Lincoln sq, I\u2019ll definitely find out if I can switch locations! That was very helpful! Thank you.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "otwn0ra",
@@ -2284,7 +2378,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "many gym owners are stubborn, believing they know best and are unwilling to change with the times. That, or they more than likely just don't have the mindset to change.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "otxlhiv",
@@ -2308,7 +2403,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "a lot of people can't fully pick their days, fixed class slots, coaching, work and kids, so the heavy lower sometimes lands the day before a key run whether you like it or not... load insights (besides how you actually feel) could help",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oupxf28",
@@ -2332,7 +2428,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "There's no real oversight of what the quality is of any HYROX affiliated gym. And with the affiliation price being so low it's actually just an easy way to market yourself.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ouq3js1",
@@ -2356,7 +2453,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "So far I only found one gym that offers CrossFit classes but I was looking more for open gym so I can train on my own schedule",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ovpuz0l",
@@ -2378,9 +2476,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "proper coaching, not just “do a horrible circuit” ... a community that makes you actually turn up",
+      "evidence_snippet": "proper coaching, not just \u201cdo a horrible circuit\u201d ... a community that makes you actually turn up",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ovpw60t",
@@ -2402,9 +2501,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "If someone is made to feel like they’re “holding people back,” that’s usually a coaching issue, not an athlete issue.",
+      "evidence_snippet": "If someone is made to feel like they\u2019re \u201cholding people back,\u201d that\u2019s usually a coaching issue, not an athlete issue.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ovpx4ee",
@@ -2426,9 +2526,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "we try very hard not to make people feel like they have to be “good enough” before they walk in.",
+      "evidence_snippet": "we try very hard not to make people feel like they have to be \u201cgood enough\u201d before they walk in.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ovpxyt3",
@@ -2450,9 +2551,10 @@
       "effectiveness_reasoning": "not stated",
       "difficulty": null,
       "difficulty_reasoning": null,
-      "evidence_snippet": "It’s a proper community gym, not a “scan in, train alone, leave without speaking to anyone” setup.",
+      "evidence_snippet": "It\u2019s a proper community gym, not a \u201cscan in, train alone, leave without speaking to anyone\u201d setup.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ovvplf9",
@@ -2476,7 +2578,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "F45 and similar group classes are fine for general fitness, but they rarely replicate the continuous run-to-station stress of race day.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ow3ugqz",
@@ -2487,7 +2590,7 @@
       "score": 1,
       "perspective": "member",
       "pain_point": "community_culture_negative",
-      "pain_point_reasoning": "Prospective member describes his wife objecting to him training in a HYROX class that is majority female, leading him to decide not to join at all—a social/relationship dynamic tied to the class's gender composition blocking enrollment.",
+      "pain_point_reasoning": "Prospective member describes his wife objecting to him training in a HYROX class that is majority female, leading him to decide not to join at all\u2014a social/relationship dynamic tied to the class's gender composition blocking enrollment.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Concrete outcome stated: the person resigned to not participating at all, i.e. a fully lost potential member due to the class's social composition.",
       "app_relevance": "partial_fit",
@@ -2500,7 +2603,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Unfortunately near me it's majority women that are doing hyrox. So I've resigned to not doing it.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": null
     },
     {
       "id": "ow2txha",
@@ -2524,7 +2628,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "the going back and forth so many times in the small gym was terrible. Also had to run outside in 90 degree weather.",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oxus4kp",
@@ -2548,7 +2653,8 @@
       "difficulty_reasoning": null,
       "evidence_snippet": "Time to buy your own. I thought it was silly at first but it was that or quadruppling my gym membership expense to one that has the wallball I want to train with",
       "confidence_tier": "weak",
-      "source_trust": "standard"
+      "source_trust": "standard",
+      "outside_scope_type": "adjacent_tooling"
     }
   ]
 }

@@ -5477,7 +5477,7 @@
       "evidence_snippet": "The hidden cost most people miss is member churn due to dissatisfaction",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general statement about churn-due-to-dissatisfaction being a hidden cost, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5627,7 +5627,7 @@
       "evidence_snippet": "Your number one thing has to been your member experience",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general philosophy statement that member experience is the top priority, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5652,7 +5652,7 @@
       "evidence_snippet": "you can't only focus on sign up if there is no reason why people should stay",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general statement that retention matters as much as acquisition, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5727,7 +5727,7 @@
       "evidence_snippet": "A lot of gyms don't fail because of demand, but because of poor retention, pricing strategy, or inconsistent management.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general diagnosis that gyms fail from poor retention, pricing, or inconsistency, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5827,7 +5827,7 @@
       "evidence_snippet": "do not forget churn. Many presale cancels before they even start.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A reminder not to forget presale churn, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5852,7 +5852,7 @@
       "evidence_snippet": "I've seen places shut down not because there's no demand, but more due to poor retention",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general observation that businesses shut down from poor retention rather than low demand, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5877,8 +5877,8 @@
       "evidence_snippet": "Renewals- automatic. What takes up most of my day? Cleaning and planning",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Automatic renewals are billing software already in place; the time spent on cleaning and planning is facility/operations work - neither is TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ods5us7",
@@ -5952,7 +5952,7 @@
       "evidence_snippet": "What usually gets gym owners in this spot is exactly what you said\u2026 not changing anything.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague meta-comment about owners not changing anything, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5977,7 +5977,7 @@
       "evidence_snippet": "opened the second, with focusing on hospitality, client experience, team building, and standard procedures, growth skyrocketed.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "Opening a second location focused on hospitality, experience, and team-building is a broad business-strategy approach, not a specific software mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -6002,7 +6002,7 @@
       "evidence_snippet": "retention.. and everything else can be taken care of by any SaaS products at fair price.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A statement that SaaS products handle most things except retention itself is a general observation, not a specific mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -6017,7 +6017,7 @@
       "pain_point_reasoning": "Argues that beyond reasonable pricing, the only real differentiator between gyms is how they create 'moments' for members, since equipment/offerings are largely interchangeable.",
       "pain_severity": null,
       "pain_severity_reasoning": "General opinion, not a specific incident.",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -6027,8 +6027,8 @@
       "evidence_snippet": "the only thing that can differentiate your gym from other gyms is how you create \"moment\" for your members.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This names creating meaningful 'moments' for members as the true differentiator - directionally aligned with TWU's community/connection value, though no specific mechanism is described here.",
+      "outside_scope_type": null
     },
     {
       "id": "oexyl2m",
@@ -6177,7 +6177,7 @@
       "evidence_snippet": "it's more about retention than you think",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague statement that retention matters more than expected, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6202,7 +6202,7 @@
       "evidence_snippet": "going from 30 to 50 is less about getting more people through the door and more about getting more out of who you already have.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A growth-strategy insight favoring getting more from existing members over new signups, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6327,7 +6327,7 @@
       "evidence_snippet": "they care about \"does this make me more money or save me time right now?\"",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general statement about owner priorities (money and time savings), without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6627,7 +6627,7 @@
       "evidence_snippet": "I get concerned when my EFT attrition exceeds 5% in membership and 10% in Personal Training",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A churn-rate concern threshold (5% membership, 10% PT), without a specific mechanism, is a business-metric observation, not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6677,7 +6677,7 @@
       "evidence_snippet": "missing (at risk) members, the member utilization report (how many classes they use vs how many classes they pay for, which gives me churn signals)",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "A named platform's (Kilo) dashboard showing at-risk members and utilization reports is owner-facing business-intelligence software - not TWU's member-facing connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6702,7 +6702,7 @@
       "evidence_snippet": "the 'who hasn't booked in 2 weeks' one feels like the gap nobody's actually solved",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Surfacing 'who hasn't shown up' (the 'who hasn't booked in 2 weeks' one feels like the gap nobody's actually solved) is an attendance-visibility/engagement signal \u2014 exactly the kind of member-facing awareness a connection layer like TWU can plausibly flag.",
+      "app_relevance_reasoning": "This explicitly names the 'who hasn't booked in two weeks' visibility gap as unsolved - precisely the engagement-detection mechanism TWU's connection layer is built to close.",
       "outside_scope_type": null
     },
     {
@@ -6727,7 +6727,7 @@
       "evidence_snippet": "The engagement automation gap is real and almost nobody has cracked it well. The 'who hasn't booked in 2 weeks' thing should be a standard feature by now",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Surfacing 'who hasn't shown up' (The engagement automation gap is real and almost nobody has cracked it well. The 'who hasn...) is an attendance-visibility/engagement signal \u2014 exactly the kind of member-facing awareness a connection layer like TWU can plausibly flag.",
+      "app_relevance_reasoning": "This explicitly names the engagement-automation gap - flagging who hasn't booked recently - as real and largely unsolved, precisely the mechanism TWU's connection layer is built to address.",
       "outside_scope_type": null
     },
     {
@@ -6777,7 +6777,7 @@
       "evidence_snippet": "I do manually cancel memberships each week so I could just send an additional email",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Sending an additional win-back email during a manual weekly cancellation process is a billing/email-automation idea - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6802,8 +6802,8 @@
       "evidence_snippet": "Don't like it then refund my membership. Don't refund my membership and I'll quit",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A member's ultimatum over a refund is a billing dispute - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1posm0o",
@@ -6877,7 +6877,7 @@
       "evidence_snippet": "My gym has a problem for retention rate and im nowadays fixing it",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague statement about currently fixing a retention problem, without specifics, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6902,7 +6902,7 @@
       "evidence_snippet": "We let them gift the remainder of their membership to a friend... Cheapest acquisition we had by a mile.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Letting a departing member gift their remaining membership to a friend is a billing/membership-transfer mechanism - not TWU's connection-layer domain, even though it has a social angle.",
       "outside_scope_type": "adjacent_tooling"
     }
   ]

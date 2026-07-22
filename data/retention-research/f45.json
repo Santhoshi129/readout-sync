@@ -1654,8 +1654,8 @@
       "evidence_snippet": "Biggest issue atm , and it's not specific to F45HI, is people booking in and not showing up for classes. Very poor form.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A general complaint about no-shows plus a call for some kind of enforcement system is a booking/policy-enforcement question - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "eh7wlzj",
@@ -1679,8 +1679,8 @@
       "evidence_snippet": "there needs to be some form of regulation or something for repeat offenders. In saying that, if im 2 or 3 on a waitlist ill turn up anyway knowing some won't show up.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wanting regulation for repeat no-show offenders is a booking-policy enforcement request - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "eh7y8l9",
@@ -1704,8 +1704,8 @@
       "evidence_snippet": "There was a Facebook post from the owner yesterday saying they would charge people for non-attendance. I suspect that legally they can't do that but threatening to do so might prompt some action.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "An owner announcing a non-attendance charge, even via a community Facebook post, is fundamentally a billing-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "eh82ky6",
@@ -1854,8 +1854,8 @@
       "evidence_snippet": "They do the $10 charge up in Mackay! I'm at labrador and it's an honesty system... If you don't show up to a booked class there's a charity jar on the front bench to throw money in.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Comparing a $10 no-show fee at one studio to an honesty system at another is a billing/policy-enforcement comparison - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "eheqasv",
@@ -2954,8 +2954,8 @@
       "evidence_snippet": "Yep, $5 if you cancel within 4hrs of the start time. If you have a reasonable excuse and not a serial offender, I feel like ours would negotiate a refund. The money raised goes toward social events.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancel fee with a negotiable refund for legitimate excuses is a billing-policy structure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "enfoi6p",
@@ -2979,8 +2979,8 @@
       "evidence_snippet": "Our gym charges full fee if you cancel less than 8h before a class. this is due to how many people are on the waitlist and not giving them enough time to replan if they can make it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Charging the full class fee for cancellations inside eight hours is a billing/booking policy - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "enh7vk8",
@@ -3004,8 +3004,8 @@
       "evidence_snippet": "Mine charges $25 a class for no show or late cancel, which is within 12 hours of your class time... I actually like the fees, I feel like it keeps people accountable and is more of a reason to go.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A no-show/late-cancel fee with conditional waivers is a billing-policy structure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "enu5sv8",
@@ -3019,7 +3019,7 @@
       "pain_point_reasoning": "Instead of fees, studio manages late cancels on waitlisted classes with gentle reminders via private Facebook group",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "not_addressable",
+      "app_relevance": "core_fit",
       "solution": "Studio posts in private Facebook group about waitlisted classes, reminding members to cancel if not 50-50 on attending",
       "solution_category": "communication_tooling",
       "effectiveness": null,
@@ -3029,8 +3029,8 @@
       "evidence_snippet": "They often post on our private facebook group about wait listed classes and give people a gentle reminder about cancelling if you're not 50-50 on attending. Such a great community!",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Posting gentle reminders about waitlisted classes in the community Facebook group is exactly the kind of broadcast communication TWU's own messaging or community feed could support directly.",
+      "outside_scope_type": null
     },
     {
       "id": "enlebh5",
@@ -3979,8 +3979,8 @@
       "evidence_snippet": "I support charging especially as I get the feeling that they\u2019re having lots of issues with late drop outs. I\u2019ve fed back 12 hours is a bit harsh but 8 hours would work",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancellation charge imposed to deter last-minute drop-outs is a billing-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "er3htx1",
@@ -4304,8 +4304,8 @@
       "evidence_snippet": "you have to cancel by 10pm the evening before morning classes or 12 hours before. If you late cancel it's $15USD and $20 for no show",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A cancellation fee tied to a specific cutoff time is a billing-policy structure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "es2vuk3",
@@ -5804,8 +5804,8 @@
       "evidence_snippet": "I was a consistent no show and my gym didn't even charge me.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A studio choosing not to charge for consistent no-shows is a billing-policy leniency decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f1zemuu",
@@ -5929,8 +5929,8 @@
       "evidence_snippet": "I pay $40 more a month for F45...it actually saves me money because I kept getting stung for $12 late cancel fees with OTF if I didn't cancel within 8 hours/no show",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Paying more monthly specifically to avoid late-cancellation fees is a billing/plan-structure decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f291hns",
@@ -6169,7 +6169,7 @@
       "pain_point_reasoning": "Thread on what keeps members motivated to keep attending long-term",
       "pain_severity": null,
       "pain_severity_reasoning": "not applicable - describes a working retention mechanism, not a pain point",
-      "app_relevance": "not_addressable",
+      "app_relevance": "core_fit",
       "solution": "Trainers proactively send a 'welfare-check' message when a regular member misses their usual class",
       "solution_category": "coaching_change",
       "effectiveness": 4,
@@ -6179,8 +6179,8 @@
       "evidence_snippet": "Habit/Routine - I've been keeping this schedule since the studio opened...I always show up to the same classes. If I don't show up, I'll get an occasional welfare-check message from the trainers.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Trainers proactively sending a welfare-check message when a regular unexpectedly misses class is exactly the kind of absence-triggered outreach TWU's messaging or engagement features are built to enable.",
+      "outside_scope_type": null
     },
     {
       "id": "f427tio",
@@ -6704,8 +6704,8 @@
       "evidence_snippet": "I think that's bad on their part. I understand the frustration, but surely there are other ways of dealing with the problem then limiting everyone's classes. Our gym does a $5 penalty if you don't show; this money then gets donated to a allocated charity for the month.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancel/no-show fee donated to charity is still a billing-policy mechanism - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fc2kl3o",
@@ -8254,7 +8254,7 @@
       "evidence_snippet": "Fortunately the majority seem to have dropped off by about week three and aren\u2019t seen again until week 8.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is an observation about a typical mid-program attendance drop-off pattern (weeks three through eight), without a specific solution attempted - worth noting, but not a mechanism to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -9104,8 +9104,8 @@
       "evidence_snippet": "There have been times I felt lazy but just signed up for class anyways and then I force myself to go so I don\u2019t pay",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancel/no-show fee with waivers for legitimate reasons is a billing-policy structure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhmbk2g",
@@ -9129,8 +9129,8 @@
       "evidence_snippet": "Heaps of people were canceling out the morning of, leaving people like you hanging... as a chronic insomniac, I sometimes cancel the morning of",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Charging for morning-of cancellations to protect other members' spots is a billing-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhmj05m",
@@ -9154,8 +9154,8 @@
       "evidence_snippet": "All proceeds go to a local charity... It was a way to stop people cancelling at 2am for a 7am class.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancel fee limited to one class type, donated to charity, is still a billing-policy mechanism - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhn515x",
@@ -9179,8 +9179,8 @@
       "evidence_snippet": "after the third time, all your future classes are unbooked and your account is locked. You have to pay $20 to unlock... This has worked pretty well!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking, payment, or admin-system friction - TWU explicitly does not replace class booking, scheduling, or billing software.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A three-strikes booking lockout with a reinstatement fee is a booking/billing-policy enforcement system - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhn440q",
@@ -9204,8 +9204,8 @@
       "evidence_snippet": "they're simply not acquiring and/or retaining enough members to make it feasible. The classes are almost less than half full",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Proposing then abandoning a no-show fee over retention concerns is a billing-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhmmvja",
@@ -9354,8 +9354,8 @@
       "evidence_snippet": "Who's more likely to keep signing up month after month? The person who's consistently making it to class, or the person that keeps missing classes?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Framing no-show/late-cancel fees as a retention tool is still a billing-policy mechanism - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhvntcn",
@@ -13304,8 +13304,8 @@
       "evidence_snippet": "just got slugged a $5 fee for late cancellation...seems steep when your already paying $66 a week",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A late-cancellation fee feeling steep relative to the weekly cost is a billing-policy and value complaint - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "bovz8d",
@@ -13429,8 +13429,8 @@
       "evidence_snippet": "we have to cancel outside 12 hours to avoid the \u00a35 fee...this change has annoyed a lot of members",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A cancellation-window policy change that annoyed members is a billing-policy decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "c8haao",

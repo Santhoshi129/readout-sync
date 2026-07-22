@@ -2804,7 +2804,7 @@
       "evidence_snippet": "They do help me but I'm the suffer in silence type. It's like I have two left feet when I enter the studio. I guess it doesnt help many of the exercises are quite difficult to get down in the beginning.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "The friction is mostly personal shyness ('suffer in silence type') that staff already try to help with in person - TWU could ease first-visit anxiety with a pre-visit intro or buddy pairing, but it can't fix self-consciousness directly.",
+      "app_relevance_reasoning": "TWU could ease first-visit anxiety by surfacing a compatible person she could reach out to before her first visit, though it can't fix self-consciousness directly.",
       "outside_scope_type": null
     },
     {
@@ -2854,7 +2854,7 @@
       "evidence_snippet": "My first class the trainer essentially followed me around telling me where to go next. Yesterday I was partnered with a newbie. After a while you memorize what you lift on each exercise. It gets easier",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "The trainer personally shepherding a new member through her first class is staff-intensive onboarding TWU can't replicate; pairing newbies with experienced members, though, is exactly the kind of matching TWU's own feature could handle.",
+      "app_relevance_reasoning": "The trainer personally shepherding a new member through her first class is staff-intensive onboarding TWU can't replicate; surfacing experienced members a newcomer could reach out to themselves is exactly the kind of discovery TWU's own matching feature is built for.",
       "outside_scope_type": null
     },
     {
@@ -7204,7 +7204,7 @@
       "evidence_snippet": "One of those wonderful people came with me to a few classes as my buddy until I was comfortable going on my own. It's truly a community",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "A staff member personally buddying up with a nervous newcomer until they're comfortable is exactly the buddy-pairing function TWU's matching feature could provide with a peer instead of relying on staff availability.",
+      "app_relevance_reasoning": "A staff member personally buddying up with a nervous newcomer until they're comfortable is exactly what TWU's matching feature could do instead - surfacing a peer this newcomer could connect with herself, rather than that support depending on which staff member happens to be free.",
       "outside_scope_type": null
     },
     {

@@ -8619,7 +8619,7 @@
       "pain_point_reasoning": "The poster says a single workout 'made me want to quit crossfit, but quit exerting myself physically in any capacity ever again,' describing an acute motivation crash from a specific WOD (Kalsu).",
       "pain_severity": 2,
       "pain_severity_reasoning": "The reaction is described as an intense but likely temporary emotional response ('Kalsu made me furious') rather than an actual cancellation.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -8629,8 +8629,8 @@
       "evidence_snippet": "This was the only workout I've ever done that not only made me want to quit crossfit, but quit exerting myself physically in any capacity ever again for the rest of my life. Kalsu made me furious.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer accountability/streak features could help counteract this kind of motivation dip after a brutal workout by keeping the poster engaged with community support, though it can't change programming difficulty itself.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is frustration with the difficulty of one specific brutal workout, not a community or accountability gap. There is no peer or social signal in the evidence at all.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "d3s41rq",
@@ -9569,7 +9569,7 @@
       "pain_point_reasoning": "The poster describes returning from \"a long absence\" and nearly quitting mid-workout, saying \"Wanted to quit after 3,\" reflecting a motivation dip tied to reduced fitness after time away.",
       "pain_severity": 2,
       "pain_severity_reasoning": "The poster pushed through and finished the workout rather than quitting, indicating a mild, transient struggle.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Pushed through and completed the workout despite wanting to quit",
       "solution_category": "self_motivation_pushthrough",
       "effectiveness": 3,
@@ -9579,8 +9579,8 @@
       "evidence_snippet": "I came back from a long absence to do that exact same wod. Wanted to quit after 3. Sucked it up through 4.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's streak and peer-accountability visibility features directly target the kind of post-absence motivation dip described here, helping people push through and return consistently.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is personal grit pushing through a hard workout after a long absence, not an attendance or re-engagement pattern. There is no peer or community signal in the evidence.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "5evg27",
@@ -9669,7 +9669,7 @@
       "pain_point_reasoning": "The poster describes deliberately building rapport (\"help everyone clean up... pick up plates, wipe down abmats\") after switching boxes due to a move, implying it was initially hard to feel integrated into a new box's community.",
       "pain_severity": 1,
       "pain_severity_reasoning": "The poster frames this as a minor personal habit rather than describing significant distress, indicating a mild inconvenience.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Proactively helped clean up after workouts at the new box to build rapport with other members",
       "solution_category": "proactive_social_integration",
       "effectiveness": 4,
@@ -9679,8 +9679,8 @@
       "evidence_snippet": "One thing I started doing when I switched boxes due to a move about a year ago. I do my best to help everyone clean up at the end of the WOD.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community-visibility features could help new members at a box feel socially connected faster, though it doesn't directly enable a physical activity like cleanup.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This describes the poster's own proactive choice to help clean up after WODs to feel connected. It is not a gap or struggle for TWU to fix, it is something he is already doing successfully on his own.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "5rd1xw",
@@ -9769,7 +9769,7 @@
       "pain_point_reasoning": "The poster recalls that \"Last year's open workout with dubs was demoralizing. I hated doing 90 singles instead of 30 dubs,\" describing personal frustration with a skill gap that nearly drove them to quit.",
       "pain_severity": 3,
       "pain_severity_reasoning": "The poster describes being \"demoralized\" by the experience, though they ultimately stuck with it rather than quitting.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Practiced the skill (double-unders) outside of class over the following year",
       "solution_category": "independent_skill_practice",
       "effectiveness": 5,
@@ -9779,8 +9779,8 @@
       "evidence_snippet": "Last year's open workout with dubs was demoralizing. I hated doing 90 singles instead of 30 dubs.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak-tracking features directly target this kind of demoralization-driven drop-off risk by keeping people engaged through difficult stretches.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is skill-gap frustration with one specific competition workout (double-unders in the Open), not a community or accountability issue. There is no peer signal in the evidence.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "dbz2nad",
@@ -9969,7 +9969,7 @@
       "pain_point_reasoning": "Poster describes a chronic low back injury sustained during CrossFit and states \"at most gyms I've been to there is absolutely NO accountability on calling people out on sub pristine form,\" linking the injury risk to a lack of coaching/community accountability.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The injury caused chronic low back pain that has \"had a pretty large impact on my life\" and required a full year away from training.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Returned to CrossFit after a year off, being extremely deliberate about maintaining neutral spine/form on every movement, especially when fatigued.",
       "solution_category": "self_imposed_form_discipline",
       "effectiveness": 3,
@@ -9979,8 +9979,8 @@
       "evidence_snippet": "at most gyms I've been to there is absolutely NO accountability on calling people out on sub pristine form.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability framing could reinforce a culture of watching out for each other, but it cannot substitute for coach-level form correction or fix programming-driven injury risk.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about safety and form correction, a coaching function. The word 'accountability' overlaps with TWU's language, but the actual need described is technical form correction, not social/peer accountability.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "dcc3pco",
@@ -10269,7 +10269,7 @@
       "pain_point_reasoning": "The poster says \"I think the owner is worried he might have to shut down unless he can get more clients who will stay,\" directly citing member retention as the box's core problem.",
       "pain_severity": 4,
       "pain_severity_reasoning": "The poster frames the issue as existential for the box, risking closure without better member retention.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "The poster is crowdsourcing ideas from the community (artwork, fun classes, social extracurriculars, merchandise, social networks) for \"box basics\" that keep members invested.",
       "solution_category": "community_engagement_brainstorm",
       "effectiveness": null,
@@ -10279,8 +10279,8 @@
       "evidence_snippet": "I think the owner is worried he might have to shut down unless he can get more clients who will stay.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability, streaks and attendance-visibility features directly target member retention/engagement, which is exactly what this box needs to keep clients staying.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a thin, generic observation about an owner's business worries, not a specific personal finding with any detail to tie to a TWU feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "djli93b",
@@ -10344,7 +10344,7 @@
       "pain_point_reasoning": "The poster describes stopping going \"for weeks at a time,\" having \"lost a lot of motivation,\" and struggling with depression, directly tied to considering a hiatus from their box.",
       "pain_severity": 3,
       "pain_severity_reasoning": "They haven't quit yet but are seriously considering a hiatus, going \"once a month\" at most, indicating significant disengagement.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -10354,7 +10354,7 @@
       "evidence_snippet": "I've lost a lot of motivation in myself, due to lack of confidence and probably a little bit of depression. I can't make myself go anymore, even when I know I have the time to go.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak-tracking features are designed exactly for this kind of motivation dip, helping surface attendance drop-off before a member drifts into a full hiatus.",
+      "app_relevance_reasoning": "TWU's peer-accountability and streak-tracking features could help surface an attendance drop-off before it becomes a full hiatus. But depression is named as a driver here, the same as other cases this session, so this only gets partial credit.",
       "outside_scope_type": null
     },
     {

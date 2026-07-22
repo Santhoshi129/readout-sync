@@ -52,7 +52,7 @@
       "evidence_snippet": "getting that 70% of the member base that is paying monthly but not going.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -77,7 +77,7 @@
       "evidence_snippet": "we almost shut down during covid and one big reason we survived was moving everything online booking, payments, even classes",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Move booking, payments, and classes online.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -102,7 +102,7 @@
       "evidence_snippet": "A shrug where accountability used to be. I was sure members would leave.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (A shrug where accountability used to be. I was sure members would leave.) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -127,7 +127,7 @@
       "evidence_snippet": "If memberships have been declining steadily for 12\u201318 months, that's almost always an experience + retenti[on issue]",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (If memberships have been declining steadily for 12\u201318 months, that's almost always an...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -152,7 +152,7 @@
       "evidence_snippet": "Current members get tired of shitty equipment and leave. Perspective members see shitty equipment and never sign up.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (Current members get tired of shitty equipment and leave. Perspective members see shitty...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -177,7 +177,7 @@
       "evidence_snippet": "Two issues that leaked the most members were cleanliness and recurring problems with some part of the facility",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (Two issues that leaked the most members were cleanliness and recurring problems with some...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -202,7 +202,7 @@
       "evidence_snippet": "it almost made me quit the industry entirely",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (it almost made me quit the industry entirely) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -227,7 +227,7 @@
       "evidence_snippet": "Automated reminders + confirmations killed our no-show rate - went from ~20% to under 5%.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (Automated reminders + confirmations killed our no-show rate - went from ~20% to under 5%.) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -252,7 +252,7 @@
       "evidence_snippet": "over the past 2 years it started to dip and idk what to do",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (over the past 2 years it started to dip and idk what to do) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -277,7 +277,7 @@
       "evidence_snippet": "Show up rate is 20-30% and our lead to close ratio is 10%. We do everything manually.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (Show up rate is 20-30% and our lead to close ratio is 10%. We do everything manually.) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -302,7 +302,7 @@
       "evidence_snippet": "Reasons I have left a gym: Stupidly over engineered app for entry / Messy and unhygienic / Weights not re-racked",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (Reasons I have left a gym: Stupidly over engineered app for entry / Messy and unhygienic...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -327,7 +327,7 @@
       "evidence_snippet": "Migration errors have cost us real membership revenue. Hundreds of client records \u2014 including stored payment information for nearly 300 clients \u2014 did not transfer cleanly",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Switched platforms to Walla after documented failures) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -377,7 +377,7 @@
       "evidence_snippet": "realized I'd left fifteen grand on the table from people who slipped through the cracks. Now I have an automated dunning sequence",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Pulled a year of failed-payment data, set up automated dunning sequence and a...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -402,7 +402,7 @@
       "evidence_snippet": "Martial arts schools run reports on who hasn't attended in past 7 to 10 days and downward attendance trend to identify at risk members",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (Martial arts schools run reports on who hasn't attended in past 7 to 10 days and downward...) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -427,7 +427,7 @@
       "evidence_snippet": "It catches failed payments and automatically retries. Probably saved us 1000s in missed payments.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Glofox automatically catches and retries failed payments) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -452,7 +452,7 @@
       "evidence_snippet": "3 gyms have reached out and asked me for help in fixing their client churn and LTV problems",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (3 gyms have reached out and asked me for help in fixing their client churn and LTV problem...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -477,7 +477,7 @@
       "evidence_snippet": "Zero overcrowding incidents... The premium, intimate training experience is back",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Custom booking system with hard capacity limits, real-time slots, cancellation rules) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -502,7 +502,7 @@
       "evidence_snippet": "Trailing 12 months alone went from 650 members to 550 members.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Trailing 12 months alone went from 650 members to 550 members.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -527,7 +527,7 @@
       "evidence_snippet": "even when we took this off, customer churn is still present",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Removed the initial sign-up fee to reduce churn) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -552,7 +552,7 @@
       "evidence_snippet": "a competitor opened up 10 minutes away, and we lost about 15% of our members. At least half of them ended up returning.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (a competitor opened up 10 minutes away, and we lost about 15% of our members. At least hal...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -577,7 +577,7 @@
       "evidence_snippet": "I'm at ~2,000 members but as I increase signups, cancellations are rising.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (I'm at ~2,000 members but as I increase signups, cancellations are rising.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -602,7 +602,7 @@
       "evidence_snippet": "dealing with that large percentage of members that pay but don't come. This might be the thing that gets them to cancel.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (dealing with that large percentage of members that pay but don't come. This might be the...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -627,7 +627,7 @@
       "evidence_snippet": "they start changing your programming for classes or sitting on their phones when they should be coaching",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (they start changing your programming for classes or sitting on their phones when they...) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -652,7 +652,7 @@
       "evidence_snippet": "Cheap leads that are costly to bring in end up churning quick.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (Cheap leads that are costly to bring in end up churning quick.) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -677,7 +677,7 @@
       "evidence_snippet": "Most gyms make their money off members who pay but don't show up.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -702,7 +702,7 @@
       "evidence_snippet": "Studios seem to be leaving Class Pass in pretty large numbers lately. The conversion just isnt there and it ends up costing money.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (Studios seem to be leaving Class Pass in pretty large numbers lately. The conversion just...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -727,7 +727,7 @@
       "evidence_snippet": "Keeping members engaged long-term",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -752,7 +752,7 @@
       "evidence_snippet": "That coach started off strong and then numbers fell flat and then went negative.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (That coach started off strong and then numbers fell flat and then went negative.) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -777,7 +777,7 @@
       "evidence_snippet": "those patterns probably get missed until it's alr[eady too late]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -802,7 +802,7 @@
       "evidence_snippet": "half our older clients couldn't figure out the app. Ended up being more work explaining the system than just keeping the old paper logbook.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -827,7 +827,7 @@
       "evidence_snippet": "When attendance starts to change they're about to quit.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -852,7 +852,7 @@
       "evidence_snippet": "They bought clubs with most equipment over 6 years old. Much of it 8 and some even",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "Physical-space complaint (They bought clubs with most equipment over 6 years old. Much of it 8 and some even) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -877,7 +877,7 @@
       "evidence_snippet": "Owner never maintained the equipment. When I got there, all the equipment needed reupholstering, grips needed replacing",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (Owner never maintained the equipment. When I got there, all the equipment needed...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -902,7 +902,7 @@
       "evidence_snippet": "he had equipment not being maintained and fal[ling apart]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (he had equipment not being maintained and fal[ling apart]) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -927,7 +927,7 @@
       "evidence_snippet": "charge little enough each month that when they stop coming, they don't cancel",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -952,7 +952,7 @@
       "evidence_snippet": "it was probably 2+ months of them",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -1002,7 +1002,7 @@
       "evidence_snippet": "8\u201312 hours sounds about right if you're doing it manually...the 2 PM panic wondering if you remembered to send that renewal notice",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -1027,7 +1027,7 @@
       "evidence_snippet": "That silent churn is what used to kill us.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -1052,7 +1052,7 @@
       "evidence_snippet": "By the time a membership lapses, the member has already mentally moved on.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -1077,7 +1077,7 @@
       "evidence_snippet": "if you're still using separate software for billing, scheduling, and workout programming, you're bleeding members.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Switch to a unified gym management platform (TeamBuildr OS) instead of separate...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1102,7 +1102,7 @@
       "evidence_snippet": "It's way too easy for the gym to be overcrowded at peak hours and create a massive churn cycle.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (It's way too easy for the gym to be overcrowded at peak hours and create a massive churn...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1127,7 +1127,7 @@
       "evidence_snippet": "Almost every-time we have run a front-end offer (discount, promo, etc.) everything has been worse (show rate, close rate, LTV., etc.)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Stopped promoting free/discount front-end offers; only a risk-free satisfaction guarantee...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1152,7 +1152,7 @@
       "evidence_snippet": "our lifecycle has definitely increased year over year as we've attracted more of the right clients (e.g. individuals who are not price sensitive)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (our lifecycle has definitely increased year over year as we've attracted more of the...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -1177,7 +1177,7 @@
       "evidence_snippet": "I recall TwoBrain pulling 24+ as functional industry average you should aim at with retention goals. My gyms scored 29 months",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Set retention/tenure goals (24+ months benchmark, own gyms hit 29 months) and avoid...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1202,7 +1202,7 @@
       "evidence_snippet": "we started charging for no-shows too... it actually filtered out a lot of the flaky ones. Plus automated waitlists helped a ton",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (we started charging for no-shows too... it actually filtered out a lot of the flaky ones....) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -1277,7 +1277,7 @@
       "evidence_snippet": "We started charging a $10 fee... Within two weeks, our app booking data almost perfectly mirrored actual attendance because people hate losing money.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request ($10 no-show fee (or lost class credit) unless cancelled 2+ hours ahead) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1352,7 +1352,7 @@
       "evidence_snippet": "failed cards that nobody notices immediately... once membership count grows, it becomes really easy for things to slip through the cracks",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Centralized management system tying memberships, bookings, payments and attendance...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1377,7 +1377,7 @@
       "evidence_snippet": "Exit surveys fixed that for me. Simple form. Two questions. Honest answers. Once the data started coming in the patterns became impossible to ignore",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Two-question exit surveys to segment churn causes; automated card-updater dunning resolvin...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1402,7 +1402,7 @@
       "evidence_snippet": "once I hit around 20 clients the admin just ate up all my time. forms, chasing payments, sending reminders etc.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (once I hit around 20 clients the admin just ate up all my time. forms, chasing payments, s...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1427,7 +1427,7 @@
       "evidence_snippet": "Automate the detection, keep the human on the touch.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Automated dunning (card retry, auto-email, flag for call) plus software flagging at-risk...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1452,7 +1452,7 @@
       "evidence_snippet": "Even people who know they should workout and may be even don't hate it eventually quit. You're just in a constant fight to stay above natural attrition.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -1477,7 +1477,7 @@
       "evidence_snippet": "Members would book a class, the payment would fail silently, and they would show up anyway with no record of it being flagged",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Tight real-time integration between scheduling and billing so failed payments are flagged...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1502,7 +1502,7 @@
       "evidence_snippet": "YTD we've had 466 no-shows and/or late cancels. Do the math.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (8-hour cancellation window with $30 late-cancel/no-show fee, waived for genuine...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1527,7 +1527,7 @@
       "evidence_snippet": "We actually used to make hundreds per month on no show fees.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Charge no-show fees to at least recoup the wasted spot) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1552,7 +1552,7 @@
       "evidence_snippet": "\"who came in April but hasn't been in June?\" \"how much revenue am I missing?\"",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Plain-English querying over existing spreadsheets ('who came in April but hasn't been in J...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1577,7 +1577,7 @@
       "evidence_snippet": "once members know there is a consequence attached to reserving a spot and not showing up, no-shows drop significantly",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Automated no-show/late-cancel fees (unlimited members) and lost class credits (pack...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1627,7 +1627,7 @@
       "evidence_snippet": "The key is automating the catch, not the response. Consistent escalation without being tone-deaf.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Automated flag at 5 days past due plus a conversational escalation ladder (day 5 friendly ...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1652,7 +1652,7 @@
       "evidence_snippet": "I left as soon as I found a better gym and the price was actually higher",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (I left as soon as I found a better gym and the price was actually higher) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1677,7 +1677,7 @@
       "evidence_snippet": "recently switched to a boutique gym which is 3x the price monthly because the environment, volume of people and equipment are better suited",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (recently switched to a boutique gym which is 3x the price monthly because the...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1702,7 +1702,7 @@
       "evidence_snippet": "they need to actually configure retry schedules and dunning flows",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (configure retry schedules and dunning flows in billing software) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1852,7 +1852,7 @@
       "evidence_snippet": "there are penalties for late cancellations/no-shows and enforce it through the system. This has reduced my no-show rate to almost 0.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (penalties for late cancellations/no-shows communicated upfront and enforced through the...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1877,7 +1877,7 @@
       "evidence_snippet": "We enforce no-show fees since the slot goes empty. The fee is about 50% of the cost of each class to deter no-shows.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (waitlist auto-fills cancelled slots plus enforced no-show fee of ~50% of class cost) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1952,7 +1952,7 @@
       "evidence_snippet": "Every week it's a new issue, new complaint... we are considering taking out the daycare completely",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (Every week it's a new issue, new complaint... we are considering taking out the daycare...) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1977,7 +1977,7 @@
       "evidence_snippet": "I want to avoid going one by one and manually marking the payments or membership as paid",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (I want to avoid going one by one and manually marking the payments or membership as paid) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2027,7 +2027,7 @@
       "evidence_snippet": "My people forget to pay me",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (My people forget to pay me) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2052,7 +2052,7 @@
       "evidence_snippet": "flagging bounced/failed payments and preventing further bookings until resolved (her biggest issue)",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Built add-on layer on Mindbody: flags bounced/failed payments and blocks bookings until re...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2102,7 +2102,7 @@
       "evidence_snippet": "Right now we send reminders, but it doesn't seem to change much.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (Right now we send reminders, but it doesn't seem to change much.) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -2127,7 +2127,7 @@
       "evidence_snippet": "People renew, people are positive. They just don't come.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2152,7 +2152,7 @@
       "evidence_snippet": "My concern is preserving the relationship. I don't want them to feel like I'm taking something away from them",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (My concern is preserving the relationship. I don't want them to feel like I'm taking...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -2177,7 +2177,7 @@
       "evidence_snippet": "seeing who hasnt booked in 2 weeks and sending them a check in message inside the platform",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Settled on a platform 8 months ago that nails daily basics (fast booking, auto-retry...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2202,7 +2202,7 @@
       "evidence_snippet": "I have lost many trainers to taking jobs in fields out side of fitness.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (I have lost many trainers to taking jobs in fields out side of fitness.) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -2227,7 +2227,7 @@
       "evidence_snippet": "getting their schedule full enough with consistent clients is the next big hurdle",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Class/location access issue (getting their schedule full enough with consistent clients is the next big hurdle) \u2014 TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
       "outside_scope_type": "operational"
     },
     {
@@ -2252,7 +2252,7 @@
       "evidence_snippet": "The administrative time burden and all that revenue slipping through the cra[cks]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Switch from pen-and-paper/Excel tracking to dedicated gym management software.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2277,7 +2277,7 @@
       "evidence_snippet": "it doesn't give me analytics that are worth a damn. It's a giant pain in the ass to have to do all that myself.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (it doesn't give me analytics that are worth a damn. It's a giant pain in the ass to have t...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2302,7 +2302,7 @@
       "evidence_snippet": "free trials - heavily discounted promos I just find they don't lead to long term clients and devalue my brand",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (free trials - heavily discounted promos I just find they don't lead to long term clients...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -2327,7 +2327,7 @@
       "evidence_snippet": "Whether it's leads, inactive members, letting my coaches know about pertinent info regarding members. The constant communication is draining",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2352,7 +2352,7 @@
       "evidence_snippet": "I've seen a lot of places try to piece it together with Google Forms or PDFs, but that just creates more manual work later.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2377,7 +2377,7 @@
       "evidence_snippet": "not getting a proper management platform in place, caused us having so much admin overhead that was completely unnecessary",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request () \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2402,7 +2402,7 @@
       "evidence_snippet": "giving away too many deals (hurting themselves long-term)",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (giving away too many deals (hurting themselves long-term)) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -2427,7 +2427,7 @@
       "evidence_snippet": "they've felt like they just had a rep counter or babysitter not someone that's intentional on help[ing]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (they've felt like they just had a rep counter or babysitter not someone that's...) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -2452,7 +2452,7 @@
       "evidence_snippet": "Lack of consistency is the biggest headache, different spreadsheets, different calendars, total chaos.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Build a clean, integrated operational system (facility software + scheduling/calendars in ...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2477,7 +2477,7 @@
       "evidence_snippet": "Wellnessliving keeps us from losing track of who's paid, who's cancelled, and who's new. Before that it was post-it notes and chaos.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Adopted WellnessLiving to track payment status, cancellations, and new members instead of...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2502,7 +2502,7 @@
       "evidence_snippet": "I've seen gyms lose that \"community\" feel because everything started coming from a bot.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -2527,7 +2527,7 @@
       "evidence_snippet": "the members would always complain about our auto[mated messages]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2552,7 +2552,7 @@
       "evidence_snippet": "one of my bigger regrets was over relying on ClassPass to bring traffic into the studio in the beginning",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (one of my bigger regrets was over relying on ClassPass to bring traffic into the studio...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -2577,7 +2577,7 @@
       "evidence_snippet": "we communicate comes off as semi offensive, wrong tone, or for whatever reason triggers the s[tudent]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2602,7 +2602,7 @@
       "evidence_snippet": "Notes about members, staff decisions, schedule changes, exceptions, all of that often lives in people's heads or scattered messages.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2627,7 +2627,7 @@
       "evidence_snippet": "everything used to be all over the place. Calendars here, notes there, messages everywhere.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Moved scheduling, PT sessions, and client tracking into WellnessLiving to consolidate...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2652,7 +2652,7 @@
       "evidence_snippet": "those metrics are great for understanding churn AFTER the fact, but still require someone to notice trends and then act manually",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2677,7 +2677,7 @@
       "evidence_snippet": "current owner isn't implementing any retention strategies.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (current owner isn't implementing any retention strategies.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -2702,7 +2702,7 @@
       "evidence_snippet": "finding out after class that someone's card had failed weeks ago, or a coach guessing if a member was active",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Switched to Wodify for better visibility into member/payment status.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2727,7 +2727,7 @@
       "evidence_snippet": "I've had a member ask \"did I already pay?\" while my coach waits on me to figure it out, and is a big pain.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Upgraded to Wodify to manage billing/membership status visibility.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2752,7 +2752,7 @@
       "evidence_snippet": "it's the constant back and forth that drains them.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2802,7 +2802,7 @@
       "evidence_snippet": "chasing failed payments and trial follow-ups manually is a guaranteed recipe for burnout",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (chasing failed payments and trial follow-ups manually is a guaranteed recipe for burnout) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2827,7 +2827,7 @@
       "evidence_snippet": "If you lost 15% last time and half returned, that's actually useful data.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2852,7 +2852,7 @@
       "evidence_snippet": "the membership tracking is always the thing that slips last.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2877,7 +2877,7 @@
       "evidence_snippet": "it falls back to reactive fixes because syste[ms aren't in place]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2902,7 +2902,7 @@
       "evidence_snippet": "after a trial finishes it doesn't auto roll over into a full membership",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -2927,7 +2927,7 @@
       "evidence_snippet": "Even gyms paying $300+ a month for Mindbody or Zen Planner end up with staff doing half this stuff by hand because the UI buries it.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3027,7 +3027,7 @@
       "evidence_snippet": "making people feel seen instead of just being another booking has helped a lot with members consistency and retention",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (making people feel seen instead of just being another booking has helped a lot with...) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -3052,7 +3052,7 @@
       "evidence_snippet": "atm i think the biggest problem is summers I dont know why people stop hitting gym in summers",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3077,7 +3077,7 @@
       "evidence_snippet": "It's helped reduce member churn, because my at risk members are visible right on my dashboard",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Management software dashboard that surfaces at-risk members as the first thing the owner...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3102,7 +3102,7 @@
       "evidence_snippet": "The reminder going out 24h ahead with a one-tap cancel button was the big one. People who'd have ghosted just cancel instead",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (The reminder going out 24h ahead with a one-tap cancel button was the big one. People...) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -3127,7 +3127,7 @@
       "evidence_snippet": "opening registration only 24 to 48 hours before class drastically cuts down on ghosting",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (opening registration only 24 to 48 hours before class drastically cuts down on ghosting) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -3152,7 +3152,7 @@
       "evidence_snippet": "Before COVID, people would just always show up, no excuses. But in the years since, it seems like it gets worse every year.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3177,7 +3177,7 @@
       "evidence_snippet": "My staff is still just handling the waitlists manually for no shows",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (My staff is still just handling the waitlists manually for no shows) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -3202,7 +3202,7 @@
       "evidence_snippet": "Something that could autofill membership forms for me. Right now I do it manually",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Wants software that autofills membership forms with name, payment amount/date, duration,...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3227,7 +3227,7 @@
       "evidence_snippet": "Losing members or quality trainers and debt.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Losing members or quality trainers and debt.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -3277,7 +3277,7 @@
       "evidence_snippet": "Motivation and believing they can succeed is more important.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3302,7 +3302,7 @@
       "evidence_snippet": "Most people stay, so now they come in on a 6 week challenge...but are really signing up for a 6 week [+ 18 month program]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Auto-enroll fitness-challenge signups into an 18-month program (cancelable anytime), so...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3327,7 +3327,7 @@
       "evidence_snippet": "Check how many members are in or out of contract and the risk level of them leaving.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Pull reports on contract status per member and assess cancellation risk level, rather...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3352,7 +3352,7 @@
       "evidence_snippet": "Client acquisition and client retention are paramount. Understand how much it costs to acquire a client and your attrition rate.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Client acquisition and client retention are paramount. Understand how much it costs to acq...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -3377,7 +3377,7 @@
       "evidence_snippet": "combining member retention and supplement offerings is murky at best. I would like to see stats that specifically talk to that.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (combining member retention and supplement offerings is murky at best. I would like to see ...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -3402,7 +3402,7 @@
       "evidence_snippet": "for most of the members to stay in a gym is based on well-being! ...more the relationship with the staff, especially trainers.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3452,7 +3452,7 @@
       "evidence_snippet": "the problem with gym retention is that they're trying to keep members that were never interested in working out anyway.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3502,7 +3502,7 @@
       "evidence_snippet": "I'm not really convinced that an app can solve that problem",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3527,7 +3527,7 @@
       "evidence_snippet": "Promotions - These are the worst. \"Get 3 classes for $50\" or \"$1 for your first month\".",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (Promotions - These are the worst. \"Get 3 classes for $50\" or \"$1 for your first month\".) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -3602,7 +3602,7 @@
       "evidence_snippet": "there are other things I believe that need to be com[municated personally]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3627,7 +3627,7 @@
       "evidence_snippet": "your clients having real connections and building relationships in person is way more valuable",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3652,7 +3652,7 @@
       "evidence_snippet": "I just want simple ones like customer engagement and retention and class scheduling optimization",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (I just want simple ones like customer engagement and retention and class scheduling optimi...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3677,7 +3677,7 @@
       "evidence_snippet": "Table stakes is having a nice facility with great amenities and friendly, engaging staff",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3702,7 +3702,7 @@
       "evidence_snippet": "Anything you can do to take the process out of the customers hand will improve your sign up rates.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Take manual steps out of customers' hands during sign-up by collecting lead info upfront...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3752,7 +3752,7 @@
       "evidence_snippet": "selling a membership gets someone in the door, selling an experience keeps them coming back",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (selling a membership gets someone in the door, selling an experience keeps them coming bac...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -3777,7 +3777,7 @@
       "evidence_snippet": "People hire trainers mainly for accountability.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -3802,7 +3802,7 @@
       "evidence_snippet": "they spend less time chasing people and more time actually training.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (they spend less time chasing people and more time actually training.) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -3827,7 +3827,7 @@
       "evidence_snippet": "our people would rather wait a little longer for a real person to email them back than an ai chat",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -3852,7 +3852,7 @@
       "evidence_snippet": "Our CP conversion rate is rly low, and I understand it's the same for most studios",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3877,7 +3877,7 @@
       "evidence_snippet": "They like the freedom of \"sampling the buffet\" without committing regardless of how serious they are about fitness.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -3902,7 +3902,7 @@
       "evidence_snippet": "If the person who \"specializes\" in weight loss can't get anyone to renew, then is it the best thing for your gym or the client",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (If the person who \"specializes\" in weight loss can't get anyone to renew, then is it the...) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -3927,7 +3927,7 @@
       "evidence_snippet": "most trainers are bad. So they intentionally avoid trainers unless they are interested.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Coach/programming inconsistency (most trainers are bad. So they intentionally avoid trainers unless they are interested.) \u2014 this is a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
       "outside_scope_type": "operational"
     },
     {
@@ -3952,7 +3952,7 @@
       "evidence_snippet": "It handles all the boring stuff, bookings, renewals, reminders.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Adopted WellnessLiving to handle bookings, renewals, and reminders once client count grew...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3977,7 +3977,7 @@
       "evidence_snippet": "Having basic systems for money, retention, and daily ops saves a lot of stress.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Having basic systems for money, retention, and daily ops saves a lot of stress.) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4002,7 +4002,7 @@
       "evidence_snippet": "having zero structure usually lea[ds to problems]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (having zero structure usually lea[ds to problems]) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -4177,7 +4177,7 @@
       "evidence_snippet": "the data exists to spot engagement drops (e.g., \"Client used to book 3x",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4202,7 +4202,7 @@
       "evidence_snippet": "What we DON'T have yet is automated adherence analytics - no alerts for \"Client X",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4227,7 +4227,7 @@
       "evidence_snippet": "I'd start measuring churn rate, retention rate, growth rate as a percentage, average length of stay, class fill rate",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Track churn rate, retention rate, growth rate (%), average length of stay, and class fill ...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4327,7 +4327,7 @@
       "evidence_snippet": "most software seems built for big gyms with tons of features I'd never use.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request () \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4352,7 +4352,7 @@
       "evidence_snippet": "Biggest software pain points gym owners talk about are messy billing, disconnected tools, and weak retention/lead flow.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Biggest software pain points gym owners talk about are messy billing, disconnected tools, ...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4402,7 +4402,7 @@
       "evidence_snippet": "The vast majority of locations get it wrong. They focus on the sales more than the retention.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "General retention commentary or opinion (The vast majority of locations get it wrong. They focus on the sales more than the retenti...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -4477,7 +4477,7 @@
       "evidence_snippet": "doing this manually can be daunting for owners",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4502,7 +4502,7 @@
       "evidence_snippet": "Our booking system has an in-built churn predictor...to some level of accuracy, to help us identify which members we should intervene in",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Use a built-in churn predictor to flag at-risk members, then offer them exclusive...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4527,7 +4527,7 @@
       "evidence_snippet": "It only hold up at anytime if it is a part of your organization's weekly process.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4552,7 +4552,7 @@
       "evidence_snippet": "They struggle with visibility and accountability. Who is assigned to who, who missed sessions, who stopped logging",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -4577,7 +4577,7 @@
       "evidence_snippet": "This probably is guest experience based not competition based.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (This probably is guest experience based not competition based.) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4652,7 +4652,7 @@
       "evidence_snippet": "what would that be - a member at risk of leaving, an opportunity that's ripe for engaging, a class that's trending down",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4727,7 +4727,7 @@
       "evidence_snippet": "90% of our cancellations are due to people moving out of the area or state.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (90% of our cancellations are due to people moving out of the area or state.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -4752,7 +4752,7 @@
       "evidence_snippet": "I know that's not the norm for most gyms.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4802,7 +4802,7 @@
       "evidence_snippet": "your retention has little to do with memberships fees or sign up fees and everything to do with utilization and new member nurturing",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4877,7 +4877,7 @@
       "evidence_snippet": "maintaining member satisfaction and retention\u2014while consistently driving revenue and managing profit loss\u2014can be a significant challenge",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "General retention commentary or opinion (maintaining member satisfaction and retention\u2014while consistently driving revenue and manag...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -4927,7 +4927,7 @@
       "evidence_snippet": "Retention rates are usually a big problem for most gyms.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -4952,7 +4952,7 @@
       "evidence_snippet": "most \"member perks\" sound great but end up being one more thing you have to babysit.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "General retention commentary or opinion (most \"member perks\" sound great but end up being one more thing you have to babysit.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5077,7 +5077,7 @@
       "evidence_snippet": "People often quit mentally way before the cancelled membership! Attendance drops, interest lost.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -5102,7 +5102,7 @@
       "evidence_snippet": "if they don't cancel it auto rolls into full membership. No real sales needed",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request ($30-for-30-days trial with card on file that auto-converts to full membership unless the...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5127,7 +5127,7 @@
       "evidence_snippet": "12 month commitment and get 1 month free!! That really worked in my favor",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Offer a 12-month commitment with one month free to encourage longer-term sign-ups.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5152,7 +5152,7 @@
       "evidence_snippet": "Our community is amazing, we have none of the \"gym bro\" problems...we are very responsive to member needs and support",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -5202,7 +5202,7 @@
       "evidence_snippet": "our average churn is 5.95% with no long term contracts",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (our average churn is 5.95% with no long term contracts) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5252,7 +5252,7 @@
       "evidence_snippet": "What actually drives retention long-term? Expert staff and the right gym management software working together.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (What actually drives retention long-term? Expert staff and the right gym management softwa...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5277,7 +5277,7 @@
       "evidence_snippet": "a 78% retention rate is hella strong.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (a 78% retention rate is hella strong.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5302,7 +5302,7 @@
       "evidence_snippet": "Improve retention. Check his member retebtion KPIs and find out why the memb[ers leave]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Improve retention. Check his member retebtion KPIs and find out why the memb[ers leave]) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5327,7 +5327,7 @@
       "evidence_snippet": "most cancellations happen naturally as kids grow older and move on",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (most cancellations happen naturally as kids grow older and move on) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5377,7 +5377,7 @@
       "evidence_snippet": "A sub-10% cancellat[ion rate]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (A sub-10% cancellat[ion rate]) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5427,7 +5427,7 @@
       "evidence_snippet": "Most owners don't even know who's on it until it's too late.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -5452,7 +5452,7 @@
       "evidence_snippet": "The CRM we use gives us a notification if payment fails/cards expire!",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Opt-out auto-renew default plus CRM notifications when a payment fails or a card expires.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5477,7 +5477,7 @@
       "evidence_snippet": "The hidden cost most people miss is member churn due to dissatisfaction",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (The hidden cost most people miss is member churn due to dissatisfaction) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5527,7 +5527,7 @@
       "evidence_snippet": "something as small as automated email reminders goes a long way when it comes to revenue.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -5577,7 +5577,7 @@
       "evidence_snippet": "It definitely takes a lot of the stress off, because I don't ha[ve to chase members]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Fully automate renewal and payment tracking (Vibefam) so memberships renew and payments...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5627,7 +5627,7 @@
       "evidence_snippet": "Your number one thing has to been your member experience",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "General retention commentary or opinion (Your number one thing has to been your member experience) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5652,7 +5652,7 @@
       "evidence_snippet": "you can't only focus on sign up if there is no reason why people should stay",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (you can't only focus on sign up if there is no reason why people should stay) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5677,7 +5677,7 @@
       "evidence_snippet": "I would emphasize retention as it sounds like your price point is at a level where keeping might be more difficult.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (I would emphasize retention as it sounds like your price point is at a level where...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -5702,7 +5702,7 @@
       "evidence_snippet": "keeping them engaged after the first month is where most gyms struggle.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -5727,7 +5727,7 @@
       "evidence_snippet": "A lot of gyms don't fail because of demand, but because of poor retention, pricing strategy, or inconsistent management.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (A lot of gyms don't fail because of demand, but because of poor retention, pricing strateg...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5752,7 +5752,7 @@
       "evidence_snippet": "Not tracking subscriptions Not tracking check in and check outs",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "\u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
       "outside_scope_type": null
     },
     {
@@ -5827,7 +5827,7 @@
       "evidence_snippet": "do not forget churn. Many presale cancels before they even start.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (do not forget churn. Many presale cancels before they even start.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5852,7 +5852,7 @@
       "evidence_snippet": "I've seen places shut down not because there's no demand, but more due to poor retention",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (I've seen places shut down not because there's no demand, but more due to poor retention) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5877,7 +5877,7 @@
       "evidence_snippet": "Renewals- automatic. What takes up most of my day? Cleaning and planning",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Renewals- automatic. What takes up most of my day? Cleaning and planning) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5902,7 +5902,7 @@
       "evidence_snippet": "reducing churn, getting lazy members the results they said they wanted",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -5952,7 +5952,7 @@
       "evidence_snippet": "What usually gets gym owners in this spot is exactly what you said\u2026 not changing anything.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (What usually gets gym owners in this spot is exactly what you said\u2026 not changing anything.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -5977,7 +5977,7 @@
       "evidence_snippet": "opened the second, with focusing on hospitality, client experience, team building, and standard procedures, growth skyrocketed.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (opened the second, with focusing on hospitality, client experience, team building, and sta...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6002,7 +6002,7 @@
       "evidence_snippet": "retention.. and everything else can be taken care of by any SaaS products at fair price.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (retention.. and everything else can be taken care of by any SaaS products at fair price.) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6027,7 +6027,7 @@
       "evidence_snippet": "the only thing that can differentiate your gym from other gyms is how you create \"moment\" for your members.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (the only thing that can differentiate your gym from other gyms is how you create \"moment\" ...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6077,7 +6077,7 @@
       "evidence_snippet": "Knowing who didn't renew, who stopped showing up, and what action to take next sounds way more useful than 20 extra reports.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6102,7 +6102,7 @@
       "evidence_snippet": "What changed things was dropping the hard 12\u2011month ask at the beginning and treating the first 90 days like a \"dating phase.\"",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Replace a 12-month upfront commitment with month-to-month terms for new members' first 90...) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6127,7 +6127,7 @@
       "evidence_snippet": "I would remove the 12 month 'commitment.' There is a psychology with a commitment:Time frame:cost ratio they can scare people",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (I would remove the 12 month 'commitment.' There is a psychology with a commitment:Time...) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -6152,7 +6152,7 @@
       "evidence_snippet": "Discounts work, but not the best ROI long-term.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Cost/value complaint (Discounts work, but not the best ROI long-term.) \u2014 pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
+      "app_relevance_reasoning": "This is a cost/value complaint - pricing and billing sit outside a connection-layer app's scope; no community feature changes what something costs.",
       "outside_scope_type": "operational"
     },
     {
@@ -6177,7 +6177,7 @@
       "evidence_snippet": "it's more about retention than you think",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (it's more about retention than you think) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6202,7 +6202,7 @@
       "evidence_snippet": "going from 30 to 50 is less about getting more people through the door and more about getting more out of who you already have.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (going from 30 to 50 is less about getting more people through the door and more about gett...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6227,7 +6227,7 @@
       "evidence_snippet": "A lot of gyms lose renewals simply because nobody follows up at the right time",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6277,7 +6277,7 @@
       "evidence_snippet": "a problem i faced was keeping track of people's membership expiry, like when a person comes to the gym how do i quickly validate their membership expiry",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Use an NFC membership card app (Taply) to quickly validate membership expiry at check-in.) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6327,7 +6327,7 @@
       "evidence_snippet": "they care about \"does this make me more money or save me time right now?\"",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (they care about \"does this make me more money or save me time right now?\") rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6352,7 +6352,7 @@
       "evidence_snippet": "Constant anxiety on where are the people or why aren't they staying",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6377,7 +6377,7 @@
       "evidence_snippet": "They live and die by personal connection. One unanswered DM at 10",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6402,7 +6402,7 @@
       "evidence_snippet": "students and parents lose sight of where they are in the journey and quietly disengage.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6427,7 +6427,7 @@
       "evidence_snippet": "members notice smell before they notice cleanliness.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Physical-space complaint (members notice smell before they notice cleanliness.) \u2014 equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6452,7 +6452,7 @@
       "evidence_snippet": "I want my team spending time with members on the floor, not buried in marketing emails, text campaigns, and lead follow-up all day",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6552,7 +6552,7 @@
       "evidence_snippet": "'d trade branded apps (which clients barely open) for better automated follow-up when someone goes quiet for two weeks. Retention tooling at this size matters way more than white-label aesthetics.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": " \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
       "outside_scope_type": null
     },
     {
@@ -6602,7 +6602,7 @@
       "evidence_snippet": "If I don't show I lose the credits I spent on the class and get charged $14. This seems fair to me and keeps me on my toes.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Booking/cancellation policy friction (If I don't show I lose the credits I spent on the class and get charged $14. This seems...) \u2014 fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
       "outside_scope_type": "operational"
     },
     {
@@ -6627,7 +6627,7 @@
       "evidence_snippet": "I get concerned when my EFT attrition exceeds 5% in membership and 10% in Personal Training",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (I get concerned when my EFT attrition exceeds 5% in membership and 10% in Personal Trainin...) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6652,7 +6652,7 @@
       "evidence_snippet": "Cancellation fee makes life easier and happier...",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (Charging a cancellation fee for no-shows/late cancels) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6677,7 +6677,7 @@
       "evidence_snippet": "missing (at risk) members, the member utilization report (how many classes they use vs how many classes they pay for, which gives me churn signals)",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Kilo dashboard: missing (at-risk) members list, member utilization report (classes used vs...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6752,7 +6752,7 @@
       "evidence_snippet": "a member hasn't attended for 10 days, the system automatically sends a message",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request (software automatically messages members who haven't attended for 10 days (GymOS)) \u2014 TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6777,7 +6777,7 @@
       "evidence_snippet": "I do manually cancel memberships each week so I could just send an additional email",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (send an additional win-back/referral email during weekly manual cancellations) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -6802,7 +6802,7 @@
       "evidence_snippet": "Don't like it then refund my membership. Don't refund my membership and I'll quit",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (Don't like it then refund my membership. Don't refund my membership and I'll quit) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6877,7 +6877,7 @@
       "evidence_snippet": "My gym has a problem for retention rate and im nowadays fixing it",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "General retention commentary or opinion (My gym has a problem for retention rate and im nowadays fixing it) rather than a concrete mechanism \u2014 no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
       "outside_scope_type": "operational"
     },
     {
@@ -6902,7 +6902,7 @@
       "evidence_snippet": "We let them gift the remainder of their membership to a friend... Cheapest acquisition we had by a mile.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling (Let leaving members gift remaining membership to a friend via link in cancellation email; ...) \u2014 a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
       "outside_scope_type": "adjacent_tooling"
     }
   ]

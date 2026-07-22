@@ -529,8 +529,8 @@
       "evidence_snippet": "my membership included any Orangetheory studio... I don\u2019t see why F45\u2019s business model is like this. Guess I\u2019ll be back at OTF by the summer",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Comparing cross-studio access between OTF and F45's model is a booking/membership-structure comparison - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ebrggff",
@@ -679,7 +679,7 @@
       "evidence_snippet": "the studio was far from home and I wasn\u2019t going nearly as often as I would have liked. A F45 studio opened up around the corner and I love it.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Distance from home affecting attendance, resolved by a closer studio opening, is a location-convenience factor - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2679,8 +2679,8 @@
       "evidence_snippet": "some of us want to get the most out of our dues (I mean I'm basically paying around what others pay for access to 6 days a week instead of 7)",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wanting to get more access for the same dues is a billing/plan-value question - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "elq66xp",
@@ -2719,7 +2719,7 @@
       "pain_point_reasoning": "Studio had no Sunday classes and single-trainer mornings where the trainer struggled to engage during weight sessions",
       "pain_severity": 2,
       "pain_severity_reasoning": "Frustration described, no stated member loss",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": "Member polled the studio's Facebook group for Sunday class interest; studio trialled it monthly, then fortnightly, then weekly",
       "solution_category": "member_feedback_program",
       "effectiveness": 4,
@@ -2729,8 +2729,8 @@
       "evidence_snippet": "For sundays i joined the fb group and asked other members who would be interested in a sunday class. It was very popular and they trialled it once a month. Which then turned into once every 2 weeks. Now its weekly",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Polling the Facebook group to gauge demand for a Sunday class is exactly the kind of member-voice aggregation TWU's own community feature could support, even though adding the actual class is a scheduling decision the studio makes.",
+      "outside_scope_type": null
     },
     {
       "id": "em00eyj",
@@ -3104,8 +3104,8 @@
       "evidence_snippet": "I am considering leaving mine soon as they're constantly running late too by 5-15 minutes on some days - this morning I left class with 2 stations to go as I had to have a shower and get to work...",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Classes running consistently late is an operational scheduling/punctuality issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "enz7409",
@@ -3479,8 +3479,8 @@
       "evidence_snippet": "we started doubling up every station to fit everyone in as members on the waitlist started complaining about not being able to get into class and they'd turn up and sit outside the class waiting",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Doubling up stations to absorb waitlist demand is the studio's own capacity-management decision - not something a connection app does.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "epfdhpp",
@@ -3829,7 +3829,7 @@
       "evidence_snippet": "might be moving to North Phoenix AZ where there is no F45.. Seems like it would be hard to emulate on my own very well",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Considering moving to an area without any F45 location is a personal relocation circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -3954,8 +3954,8 @@
       "evidence_snippet": "My studio started threatening to charge and that\u2019s when I left. I can\u2019t commit to their classes all the time with my work but the evening classes would fill up day or so I had to book in.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Being threatened with a charge for inconsistent attendance is a billing/policy issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "eqwjzgz",
@@ -4004,7 +4004,7 @@
       "evidence_snippet": "Moving soon so it\u2019ll be more like 20-25 min. Thinking if it\u2019s worth it to keep the membership.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "An upcoming move increasing commute time is a personal logistics circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4829,7 +4829,7 @@
       "evidence_snippet": "having options throughout the day was the biggest reason I stuck with my current F45 location.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Having class-time variety throughout the day is the studio's own scheduling decision; trainers learning names is staff attentiveness - neither is a connection-layer mechanism.",
       "outside_scope_type": "operational"
     },
     {
@@ -5129,8 +5129,8 @@
       "evidence_snippet": "Variety of class times, plus we're open on Sunday. I'm a nurse, so it helps with my weird schedule.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Offering Sunday hours and varied class times for an irregular work schedule is the studio's own scheduling decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "etxjryl",
@@ -5604,8 +5604,8 @@
       "evidence_snippet": "I agree - 100%. I'm switching to Orangetheory solely for this reason.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Switching gyms solely for scheduling reasons is a booking/access decision - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f1g7hkc",
@@ -5629,8 +5629,8 @@
       "evidence_snippet": "I travel between Melbourne and Sydney quite a bit and it's a massive pain when I do. I tend to stop using F45 at all because it's such a hassle when I go to Sydney and it really interrupts my routine.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Traveling between two cities and struggling to use F45 consistently across locations is a multi-location access/booking limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f1l0xs6",
@@ -5704,7 +5704,7 @@
       "evidence_snippet": "I had to leave one as I moved and it was too far away and they offered to lower the price even though that had nothing to do with why I was leaving.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Moving far away led to leaving despite the studio offering a lower price to retain her - a location and pricing matter, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6379,8 +6379,8 @@
       "evidence_snippet": "I really miss the rowing. I really enjoy the classes availability and the locations given that I commute an hour for work. I still go to OrangeTheory, as I am paying for my last month of unlimited classes, but I only go on cardio days.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Valuing class availability against a long commute is a scheduling/access factor, alongside a programming preference (missing rowing) - neither is TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "f7em3u8",
@@ -6629,8 +6629,8 @@
       "evidence_snippet": "I agree with only 2x/day - but you can't any more...it's just if you book vs if you show up/cancel/whatever...Thinking I'll have to change studios now.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A limit on bookings per day plus cancellation/no-show policy friction is a booking-system limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fan93vg",
@@ -6654,7 +6654,7 @@
       "evidence_snippet": "our studio also runs 4 week and 6 week challenges. So there is constantly a churn of new members vs the people who actually have a monthly membership. To be honest I'm becoming not a fan.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "This is an observation about churn driven by the studio's own challenge-cycle structure - a program-design pattern, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -6779,8 +6779,8 @@
       "evidence_snippet": "I was very disappointed that we were missing out where other cities in nz were doing full timetables. Yes I think they should have discounted the price...I've had 2wks off now as the classes are too early with kids.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A thinner class timetable compared to other cities is a scheduling/capacity decision by the studio - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fcwvd2e",
@@ -7104,7 +7104,7 @@
       "evidence_snippet": "Maybe it's time for a new gym.. not a nice feeling when it feels like they care more about money than members.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "This is a vague sentiment that the studio prioritizes money over members, considering leaving - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -8204,7 +8204,7 @@
       "evidence_snippet": "classes fill up or are insanely busy, and these people are paying way less than me...where\u2019s the loyalty to the people that pay week in and week out?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "A fairness complaint about classes filling with lower-paying members is a pricing-tier and capacity issue - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -9004,8 +9004,8 @@
       "evidence_snippet": "it's the equivalent of 260usd. My biggest issue that they only offer two afternoon classes (530/630) which is why I backed off.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Only two afternoon class slots being offered relative to the cost is a scheduling-capacity limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhkj701",
@@ -9079,8 +9079,8 @@
       "evidence_snippet": "Last week I sat as Number 11 on the waitlist for Empire all week until the night before where I ended up making it into the class due to drop outs.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Sitting far down a class waitlist all week before finally getting in is a booking/capacity-management limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fhm61ad",
@@ -9704,7 +9704,7 @@
       "evidence_snippet": "Mine is just overall completely chaotic and disorganized and one of the reasons I'm leaving soon.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "General chaos and disorganization at the studio is an operations-management issue - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -9829,8 +9829,8 @@
       "evidence_snippet": "I was charged for late cancellation when I cancelled more than half and hour before the class. Another time I was refused to fo the class because I was late... previously other instructors allowed me",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Being incorrectly charged for a cancellation made with enough notice is a billing/policy-enforcement error - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fj8uetu",
@@ -9904,8 +9904,8 @@
       "evidence_snippet": "the membership isn't as flexible as OTF...no interchanging of studios cross town or nationally with your membership. The 10 packs and drop ins are limited in terms of the expiration dates.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Lacking cross-town or national studio interchange compared to a competitor's membership is a plan-structure limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fja1o52",
@@ -9954,8 +9954,8 @@
       "evidence_snippet": "in my area they're the same price but I'm able to actually get into F45 classes (all OT classes were constantly waitlisted or full)",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Switching gyms because a competitor's classes were constantly waitlisted is a booking-availability comparison - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjahyvt",
@@ -10054,7 +10054,7 @@
       "evidence_snippet": "I have to keep my membership at a standard gym so i can do a weights program outside of F45 - since I cant come and use the F45 equipment out of class hours",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Keeping a separate gym membership to cover a programming gap (independent weight work) F45 doesn't offer is a personal workaround for a program-design limitation - not something a connection app provides.",
       "outside_scope_type": "operational"
     },
     {
@@ -10079,8 +10079,8 @@
       "evidence_snippet": "My owner has 4 studios in the area and allows us to go to different locations!",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "An owner allowing members to access all four of their locations is a business-level access policy - not TWU's connection-layer domain, though it's a real convenience value.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjcbz8l",
@@ -10104,7 +10104,7 @@
       "evidence_snippet": "I used to do crossfit and loved this option...but moved and with no boxes in my area...f45 was the closest thing",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Moving to an area with no CrossFit boxes nearby, landing on F45 as the closest alternative, is a personal relocation circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -10129,8 +10129,8 @@
       "evidence_snippet": "a few F45 studios are managed by the same person and they have this policy of if you are a member in one studio you are able to train in other studios maximum 4 times a month",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Same-owner studios allowing cross-location access is a business-level membership policy - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjcpzmk",
@@ -10304,8 +10304,8 @@
       "evidence_snippet": "My main studio doubles everyone up on Hollywood to get more members into the class rather than opening a 4th class...I went to one on the weekend where it was one per station and man I miss that",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Doubling up stations instead of adding another class session is the studio's own capacity-management choice - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjfid9j",
@@ -10454,8 +10454,8 @@
       "evidence_snippet": "most of them have left the studio now though and theres very rarely a waitlist for Hollywood now; they should drop it back I might mention it",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Doubling up stations at the busiest slot easing a waitlist (as attendance also dropped) is a capacity-management outcome - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fjiczd5",
@@ -10654,7 +10654,7 @@
       "evidence_snippet": "I rejoined F45... fast forward 18 months, and I'm still at F45... allows me to walk in, do the workout and walk back out in 45 minutes.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Valuing F45's no-wait, timed-station format over a competitor's booking friction is a program-format preference - not something a connection app creates.",
       "outside_scope_type": "operational"
     },
     {
@@ -12004,8 +12004,8 @@
       "evidence_snippet": "I was thinking of freezing my membership because I'm really busy this time of year, but red diamond is my favorite.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Considering a freeze due to being busy is a billing/membership-flexibility question - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "hk5t1ij",
@@ -12229,8 +12229,8 @@
       "evidence_snippet": "Ours changed their schedule after COVID and never went back. I recently switched to a different studio because the post-COVID schedule was just not working for me.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A studio's schedule never reverting after COVID, prompting a switch, is a scheduling decision by the business - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "hl6yg0g",
@@ -12254,8 +12254,8 @@
       "evidence_snippet": "not able to book more than 1 class on weekends\u2026wtf with \u00a3190 per month membership and mid challenge!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A weekend booking limit of one class per day, despite a high monthly fee, is a booking-policy/capacity limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "hl5zd9o",
@@ -12279,8 +12279,8 @@
       "evidence_snippet": "Our was due to a drop in members during the pandemic. Owners are considering bringing back the later Saturday class due to demand",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Owners weighing whether to reinstate a cancelled Saturday time slot is a scheduling decision by the business - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "hlnu09h",
@@ -12379,8 +12379,8 @@
       "evidence_snippet": "particularly when booking a class right after work...my day can blow right up...$20 later\u2026",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Booking a class right after work leading to schedule conflicts and extra fees is a scheduling/booking-friction issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ijsifgo",
@@ -13029,8 +13029,8 @@
       "evidence_snippet": "I wish there was a system that would allow for a cheaper drop in or a monthly fee...so I don't have to miss workouts.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wanting a cheaper drop-in option instead of a fixed schedule is a pricing/plan-structure request - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ar2ob3",
@@ -13529,8 +13529,8 @@
       "evidence_snippet": "go to book my 630 am class and the slot is not there...I a little pissed. There was no notice.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A booked class slot disappearing without notice is a booking-system reliability issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "cdpltp",
@@ -13654,8 +13654,8 @@
       "evidence_snippet": "My F45 studio cancelled my class today due to 'only a few people booking in'...If I don't show up to a class I am charged \u00a315 ($27AUD!!).",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A studio cancelling a class due to low bookings, and the resulting no-show policy question, are scheduling/billing-policy matters - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "d2b157",
@@ -14129,8 +14129,8 @@
       "evidence_snippet": "At this point there's only 3-4 classes a day during the week and one on the weekend. It's super inconvenient",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A limited daily class count is a scheduling-capacity limitation - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1kwcpy4",
@@ -14554,7 +14554,7 @@
       "evidence_snippet": "This left a really sour taste in my mouth and almost reconsidering my membership at this point.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "This is a vague negative sentiment with no specific mechanism named - not something a connection app addresses.",
       "outside_scope_type": "operational"
     },
     {
@@ -14629,7 +14629,7 @@
       "evidence_snippet": "This feels like a lot of word salad and spin to justify financial cutbacks further.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "This is skepticism toward the studio's own explanation for financial cutbacks - a business-communication trust issue, not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14729,8 +14729,8 @@
       "evidence_snippet": "I won't be quitting anytime soon but would love to see more appropriate studio or class sizes.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wanting more appropriately sized studios or classes is a facility-capacity request - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1m6xtru",
@@ -14929,7 +14929,7 @@
       "evidence_snippet": "I want to quit my membership over this it drives me crazy...intro is routinely going 7-8 minutes long.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "A class intro routinely running long is an operational pacing issue - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -14979,8 +14979,8 @@
       "evidence_snippet": "It is really annoying that they are closed tomorrow, plus every single freaking holiday. I wish there were other, better options around.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Being closed on every holiday is a scheduling decision by the business - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1nc39mg",
@@ -15179,7 +15179,7 @@
       "evidence_snippet": "I'm no longer attending F45 as we only have one in the country, and I'm leaving at the end of this year",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Only one location existing in the country, and the member relocating away from it, is a geographic-availability circumstance - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -15429,8 +15429,8 @@
       "evidence_snippet": "My gym is expensive and now I have a day I don't feel is a good fit for me...I'm annoyed",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A pricing concern plus a class day no longer fitting her schedule are pricing and scheduling matters - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1pirhg7",
@@ -15704,8 +15704,8 @@
       "evidence_snippet": "I'm currently a member but planning to cancel soon due to schedule changes on their end, as well as the cost.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Planning to cancel over schedule changes made by the studio plus cost is a scheduling/pricing decision by the business - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1qwi1g2",
@@ -15929,7 +15929,7 @@
       "evidence_snippet": "This time I get there a minute after and got inside but the assistant coach won't let me join the class...Is this common?",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
+      "app_relevance_reasoning": "Being turned away for arriving a minute late is a coach's in-the-moment policy enforcement - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -16379,8 +16379,8 @@
       "evidence_snippet": "a member actually walked out frustrated because the class was packed and there wasn't enough space or equipment.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A member walking out because the class was overcrowded with insufficient equipment is a capacity-management failure - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1tnlj97",
@@ -16429,8 +16429,8 @@
       "evidence_snippet": "The extra 15 mins actually impacts my ability to make a ferry to the office so now I'm losing 2 days a week.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A schedule change adding fifteen minutes now conflicts with catching a ferry - a scheduling change by the business, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1tqr5km",
@@ -16479,8 +16479,8 @@
       "evidence_snippet": "It makes it difficult to justify the expense of an unlimited membership, when you feel like if you want to work out later...you have to have a 2nd gym membership.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Justifying an unlimited membership against limited class availability is a plan-structure and scheduling-capacity issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1tvunx4",
@@ -16629,8 +16629,8 @@
       "evidence_snippet": "Becoming frustrated with paying for unlimited with so little classes.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a class/location access issue - TWU doesn't replace scheduling or booking systems, so it can't make a class time or location work better.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Paying for unlimited access with too few classes available is a plan-structure and scheduling-capacity mismatch - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1uke8i8",

@@ -37,6 +37,12 @@ export type Finding = {
   // captured (orangetheory, crossfit, hyrox). Older communities' source data
   // didn't include it, so this is undefined there rather than null.
   app_relevance_reasoning?: string | null;
+  // Optional. Only meaningful when app_relevance === "not_addressable".
+  // Distinguishes "no software angle at all" (coaching, staffing, facility -
+  // operational) from "a real software ask, just not TWU's connection layer"
+  // (billing, dunning, booking/ops platforms - adjacent_tooling). Undefined
+  // for communities classified before this distinction existed.
+  outside_scope_type?: "operational" | "adjacent_tooling" | null;
   solution: string | null;
   solution_category: string | null;
   effectiveness: number | null;
@@ -252,6 +258,21 @@ export function methodologyRows(): MethodologyRow[] {
   });
 }
 
+// Per-community app_relevance caveats. crossfit, orangetheory, and hyrox
+// were classified with a reasoning-required app_relevance pass (every
+// finding carries app_relevance_reasoning). f45 and gymowner predate that
+// standard - no finding in either has app_relevance_reasoning, and spot
+// checks show it running looser than the other three (e.g. pricing and
+// coaching complaints get tagged partial_fit far more often here than the
+// same categories do elsewhere). Remove an entry once that community has
+// been reclassified under the same standard.
+const APP_RELEVANCE_CAVEATS: Partial<Record<string, string>> = {
+  f45: "app_relevance on this community was classified before the reasoning-required standard used for crossfit, orangetheory, and hyrox existed - no finding here has an app_relevance_reasoning. Category-level checks show it running looser than those three communities (pricing and coaching complaints, for example, get tagged partial_fit here far more often than the same categories do elsewhere). Read core_fit/partial_fit counts for f45 as provisional pending reclassification.",
+  gymowner: "app_relevance on this community was classified before the reasoning-required standard used for crossfit, orangetheory, and hyrox existed - no finding here has an app_relevance_reasoning. Read core_fit/partial_fit counts for gymowner as provisional pending reclassification.",
+  orangetheory:
+    "Read the relevant rate for this community with that in mind: it reflects the top-scored slice of the prescreen, not the full candidate pool, so it isn't directly comparable to the other communities' rates.",
+};
+
 export function methodologyExplainer(ds: CommunityDataset): { intro: string; rows: MethodologyRow[]; caveat: string | null } {
   const rows = methodologyRows();
   if (ds.subreddit === "all") {
@@ -260,17 +281,14 @@ export function methodologyExplainer(ds: CommunityDataset): { intro: string; row
         "Two of the five communities (gymowner, hyrox) had every scraped record go straight into classification - raw and analyzed are the same number there, by design, not by omission. The other three (crossfit, orangetheory, f45) ran a prescreen first, so only a subset of what was scraped was actually classified. The combined totals above are a straight sum of both kinds, which is why the gap between the two combined numbers exists at the aggregate level even though it's zero for two of the five sources.",
       rows,
       caveat:
-        "orangetheory is the one row worth reading carefully: only the top-scored 1,092 of 102,976 prescreen survivors were classified, not the full survivor pool. That's a much narrower and more biased sample than the other four communities, which is why its relevant rate is far higher than everywhere else and isn't directly comparable to them.",
+        "Two additional things to weigh before trusting the combined app_relevance split: orangetheory's classified pool is only the top-scored 1,092 of 102,976 prescreen survivors, a narrower and more biased sample than the other four communities. And f45 and gymowner's app_relevance tags predate the reasoning-required standard used for crossfit, orangetheory, and hyrox - their core_fit/partial_fit/not_addressable counts are provisional until reclassified, and early checks suggest f45 in particular is undercounting not_addressable relative to the other four.",
     };
   }
   const row = rows.find((r) => r.label === ds.label);
   return {
     intro: row?.detail ?? "",
     rows: row ? [row] : [],
-    caveat:
-      ds.subreddit === "orangetheory"
-        ? "Read the relevant rate for this community with that in mind: it reflects the top-scored slice of the prescreen, not the full candidate pool, so it isn't directly comparable to the other communities' rates."
-        : null,
+    caveat: APP_RELEVANCE_CAVEATS[ds.subreddit] ?? null,
   };
 }
 
@@ -1057,6 +1075,7 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
   { term: "Core fit", meaning: "I call it core fit when it's directly addressable by what TWU actually is: a community and connection layer (event discovery, workout partner matching, real-time chat, member profiles). Not booking or admin software, TWU explicitly doesn't replace that. This is judged against TWU's stated purpose, not a verified list of what's already built, a core fit finding may already exist in the product." },
   { term: "Partial fit", meaning: "Connection and visibility features can help around the edges (surface who's showing up, prompt a conversation) but I don't think they solve the underlying issue alone." },
   { term: "Not addressable", meaning: "A staffing, facility, coaching, pricing, or culture problem. Outside what I think a connection layer can fix directly." },
+  { term: "Adjacent tooling", meaning: "A subset of not addressable: the person clearly wants a software fix (billing automation, a churn dashboard, an integrated ops platform), just not TWU's - it's gym-admin/business software, not a community/connection feature. Kept separate from purely operational problems (coaching, staffing, facility) because it's a real product ask, just for someone else's roadmap." },
   { term: "Severity (1-5)", meaning: "How serious the member or owner made this problem sound. 1 is a passing annoyance, 5 is a stated reason someone left or almost left." },
   { term: "Difficulty (1-5)", meaning: "How hard I'd rate the mentioned solution to implement. 1 is trivial, 5 is a major operational lift." },
   { term: "Effectiveness (1-5)", meaning: "How well the mentioned solution reportedly worked, per the source. I only score this when a solution and an outcome were both mentioned." },

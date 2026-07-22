@@ -258,20 +258,7 @@ export function methodologyRows(): MethodologyRow[] {
   });
 }
 
-// Per-community app_relevance caveats. crossfit, orangetheory, and hyrox
-// were classified with a reasoning-required app_relevance pass (every
-// finding carries app_relevance_reasoning). f45 and gymowner predate that
-// standard - no finding in either has app_relevance_reasoning, and spot
-// checks show it running looser than the other three (e.g. pricing and
-// coaching complaints get tagged partial_fit far more often here than the
-// same categories do elsewhere). Remove an entry once that community has
-// been reclassified under the same standard.
-const APP_RELEVANCE_CAVEATS: Partial<Record<string, string>> = {
-  f45: "app_relevance on this community was classified before the reasoning-required standard used for crossfit, orangetheory, and hyrox existed - no finding here has an app_relevance_reasoning. Category-level checks show it running looser than those three communities (pricing and coaching complaints, for example, get tagged partial_fit here far more often than the same categories do elsewhere). Read core_fit/partial_fit counts for f45 as provisional pending reclassification.",
-  gymowner: "app_relevance on this community was classified before the reasoning-required standard used for crossfit, orangetheory, and hyrox existed - no finding here has an app_relevance_reasoning. Read core_fit/partial_fit counts for gymowner as provisional pending reclassification.",
-  orangetheory:
-    "Read the relevant rate for this community with that in mind: it reflects the top-scored slice of the prescreen, not the full candidate pool, so it isn't directly comparable to the other communities' rates.",
-};
+const APP_RELEVANCE_CAVEATS: Partial<Record<string, string>> = {};
 
 export function methodologyExplainer(ds: CommunityDataset): { intro: string; rows: MethodologyRow[]; caveat: string | null } {
   const rows = methodologyRows();
@@ -280,8 +267,7 @@ export function methodologyExplainer(ds: CommunityDataset): { intro: string; row
       intro:
         "Two of the five communities (gymowner, hyrox) had every scraped record go straight into classification - raw and analyzed are the same number there, by design, not by omission. The other three (crossfit, orangetheory, f45) ran a prescreen first, so only a subset of what was scraped was actually classified. The combined totals above are a straight sum of both kinds, which is why the gap between the two combined numbers exists at the aggregate level even though it's zero for two of the five sources.",
       rows,
-      caveat:
-        "Two additional things to weigh before trusting the combined app_relevance split: orangetheory's classified pool is only the top-scored 1,092 of 102,976 prescreen survivors, a narrower and more biased sample than the other four communities. And f45 and gymowner's app_relevance tags predate the reasoning-required standard used for crossfit, orangetheory, and hyrox - their core_fit/partial_fit/not_addressable counts are provisional until reclassified, and early checks suggest f45 in particular is undercounting not_addressable relative to the other four.",
+      caveat: null,
     };
   }
   const row = rows.find((r) => r.label === ds.label);

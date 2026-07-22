@@ -1292,7 +1292,7 @@
       "pain_point_reasoning": "Chasing payment from members who stopped showing up feels like nagging, so outreach gets postponed and the situation worsens; disappeared members get one soft check-in then are let go",
       "pain_severity": 3,
       "pain_severity_reasoning": "'I put it off and it just gets worse' \u2014 recurring, leads to silently lost members",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Scheduling/booking tools to reduce admin strain; one soft check-in for disappeared members; open to AI-drafted outreach with human approval if it can distinguish a week of illness from two months gone",
       "solution_category": "communication_tooling",
       "effectiveness": null,
@@ -1302,8 +1302,8 @@
       "evidence_snippet": "Most uncomfortable part is asking someone for money when they already stopped showing up. Feels like nagging. So I put it off and it just gets worse.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Scheduling/booking tools to reduce admin strain; one soft check-in for disappeared members; open to... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Scheduling and booking tools to reduce admin strain are owner-facing operational software; the discomfort with asking a lapsed member for payment is a billing-collections issue - neither is TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oo5wsbq",
@@ -1792,7 +1792,7 @@
       "pain_point_reasoning": "members/trials forget the gym without reminders and drift to competitors",
       "pain_severity": 3,
       "pain_severity_reasoning": "customers would otherwise have been lost",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "expiry reminders, trial follow-ups and automations via Hapana/vibefam",
       "solution_category": "automated_reminders",
       "effectiveness": 3,
@@ -1802,8 +1802,8 @@
       "evidence_snippet": "Expiry reminders, trial follow ups and other automations helped us close some customers who might have otherwise forgot about us",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "expiry reminders, trial follow-ups and automations via Hapana/vibefam \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Expiry reminders and trial follow-up automations are billing/sales-conversion tools - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "owr5gmp",
@@ -1892,7 +1892,7 @@
       "pain_point_reasoning": "retention/engagement automations misfire or go stale without ongoing maintenance",
       "pain_severity": 3,
       "pain_severity_reasoning": "recurring across three platforms in five years",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "PushPress/GHL automation workflows for member engagement",
       "solution_category": "communication_tooling",
       "effectiveness": 2,
@@ -1902,8 +1902,8 @@
       "evidence_snippet": "you end up with automations firing at the wrong members or going stale after a promo ends",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "PushPress/GHL automation workflows for member engagement \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This critiques automation workflows in named gym-management software (PushPress/GHL) misfiring or going stale - a specific competing product's limitation, not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "haf03a",
@@ -1917,7 +1917,7 @@
       "pain_point_reasoning": "Members' contact numbers on file are wrong, making declined-payment follow-up a recurring manual pain",
       "pain_severity": 3,
       "pain_severity_reasoning": "Clearly recurring issue across multiple members complicating failed-payment recovery",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Seeking a way to verify phone numbers at signup so declined payments can be chased",
       "solution_category": "communication_tooling",
       "effectiveness": null,
@@ -1927,8 +1927,8 @@
       "evidence_snippet": "members not having correct numbers which is making declined payments a pain to deal with",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Seeking a way to verify phone numbers at signup so declined payments can be chased \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Wanting to verify phone numbers at signup to reduce declined payments is a billing/data-quality issue - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "xqfq9h",
@@ -2167,7 +2167,7 @@
       "pain_point_reasoning": "4-year CrossFit owner: no platform lets him see who hasn't booked in 2 weeks and send a check-in message; engagement automation missing everywhere",
       "pain_severity": 3,
       "pain_severity_reasoning": "Switched software twice, demoed ~15 platforms over years of daily friction",
-      "app_relevance": "not_addressable",
+      "app_relevance": "core_fit",
       "solution": "Settled on a platform 8 months ago that nails daily basics (fast booking, auto-retry failed payments, auto-promote waitlists) but still lacks engagement automation",
       "solution_category": "software_management_tool",
       "effectiveness": 3,
@@ -2177,8 +2177,8 @@
       "evidence_snippet": "seeing who hasnt booked in 2 weeks and sending them a check in message inside the platform",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
-      "outside_scope_type": "adjacent_tooling"
+      "app_relevance_reasoning": "Seeing who hasn't booked in two weeks and sending them a check-in message inside the platform is exactly the engagement-visibility and outreach mechanism TWU's connection layer is built to provide.",
+      "outside_scope_type": null
     },
     {
       "id": "f03vq43",
@@ -2317,7 +2317,7 @@
       "pain_point_reasoning": "Owner describes ongoing communication load \u2014 leads, inactive members, and keeping coaches updated on member info \u2014 as draining.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as constant/ongoing ('draining'), a recurring operational burden rather than one incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2327,8 +2327,8 @@
       "evidence_snippet": "Whether it's leads, inactive members, letting my coaches know about pertinent info regarding members. The constant communication is draining",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about internal staff communication regarding leads and inactive members - an internal CRM/ops communication issue, not TWU's member-facing connection layer.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "n3hf98c",
@@ -2527,7 +2527,7 @@
       "evidence_snippet": "the members would always complain about our auto[mated messages]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "Members complaining about automated messages is a caution about how poorly designed automation can backfire - relevant to how TWU would need to design any messaging feature, though it's evidence of what doesn't work rather than a proven mechanism.",
       "outside_scope_type": null
     },
     {
@@ -2567,7 +2567,7 @@
       "pain_point_reasoning": "Across multiple locations, messaging-based communication (vs in-person) often comes off with the wrong tone and triggers negative reactions from members.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a recurring issue ('one of the issues'), not a single incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2577,8 +2577,8 @@
       "evidence_snippet": "we communicate comes off as semi offensive, wrong tone, or for whatever reason triggers the s[tudent]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is about communication tone coming across wrong and triggering students - a human communication-style issue, not something a connection app fixes.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nw3lmsb",
@@ -2592,7 +2592,7 @@
       "pain_point_reasoning": "Notes that important context about members and operations (notes, decisions, schedule exceptions) often lives in scattered messages or people's heads, causing pieced-together reconstruction later.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Described as a common recurring pattern heard across gyms, not one incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2602,8 +2602,8 @@
       "evidence_snippet": "Notes about members, staff decisions, schedule changes, exceptions, all of that often lives in people's heads or scattered messages.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Member notes and staff decisions living in people's heads instead of a system is an internal knowledge-management gap - an ops/CRM tool need, not TWU's member-facing connection layer.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "nw8m3ra",
@@ -2702,7 +2702,7 @@
       "evidence_snippet": "finding out after class that someone's card had failed weeks ago, or a coach guessing if a member was active",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Switching to a named platform (Wodify) for better payment/member-status visibility is adopting owner-facing billing software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2727,7 +2727,7 @@
       "evidence_snippet": "I've had a member ask \"did I already pay?\" while my coach waits on me to figure it out, and is a big pain.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Upgrading to a named platform (Wodify) to manage billing/membership status visibility is owner-facing billing software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2742,7 +2742,7 @@
       "pain_point_reasoning": "Describes gym owners getting drained not by one specific task but by cumulative chaos: fragmented client messaging, reschedules, chasing payments, and fixing no-shows.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Framed as a widespread, ongoing pattern ('a lot of gym owners'), not one incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -2752,8 +2752,8 @@
       "evidence_snippet": "it's the constant back and forth that drains them.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a vague statement about draining back-and-forth communication, without a specific mechanism - too vague to point to a concrete feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o66519m",
@@ -2767,7 +2767,7 @@
       "pain_point_reasoning": "Describes missed bookings/enquiries during promo season only being noticed once a customer is already upset, addressed by adopting a solid booking system.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Framed as a recurring seasonal chaos pattern, not one incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Use a solid booking system to prevent missed bookings/enquiries during high-demand promo periods.",
       "solution_category": "software_management_tool",
       "effectiveness": null,
@@ -2777,8 +2777,8 @@
       "evidence_snippet": "a solid booking system really saves you from all that chaos",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "Use a solid booking system to prevent missed bookings/enquiries during high-demand promo periods. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "A solid booking system preventing missed bookings and errors is booking/scheduling software - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "o76ryo8",
@@ -3252,7 +3252,7 @@
       "evidence_snippet": "Also have exit interview for when people move on and give them an opportunity to write up some feedback too.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Personal check-in conversations with each member, plus exit interviews with departing members to... \u2014 this is a community/visibility mechanism (surfacing engagement, prompting connection) squarely inside what TWU's chat/matching/profile layer does.",
+      "app_relevance_reasoning": "Personal check-in conversations with each member is exactly the kind of ongoing connection TWU's features could support and prompt; exit interviews for departing members are more of a business feedback process, though the underlying value of hearing directly from members is aligned with TWU's community focus.",
       "outside_scope_type": null
     },
     {
@@ -3417,7 +3417,7 @@
       "pain_point_reasoning": "Describes a systematic exit-survey practice: capturing why members leave, finding 99% cite moving/relocation rather than dissatisfaction.",
       "pain_severity": null,
       "pain_severity_reasoning": "Positive/neutral finding rather than a stated problem; low measured churn-from-dissatisfaction.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Track member data and politely ask for a cancellation reason whenever someone leaves.",
       "solution_category": "member_feedback_program",
       "effectiveness": 4,
@@ -3427,8 +3427,8 @@
       "evidence_snippet": "when they leave we politely ask if they would give a cancellation reason. Truly 99% of the time for us they are just movi[ng]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Track member data and politely ask for a cancellation reason whenever someone leaves. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Politely asking departing members for a cancellation reason is a feedback-collection process for the business - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ltv5p0d",
@@ -3592,7 +3592,7 @@
       "pain_point_reasoning": "Argues some member communication (coach feedback, personal outreach on life matters) needs to stay personal/manual even as other tasks get automated.",
       "pain_severity": null,
       "pain_severity_reasoning": "Opinion on tradeoffs, not tied to a specific incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -3602,8 +3602,8 @@
       "evidence_snippet": "there are other things I believe that need to be com[municated personally]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a vague belief that some things need to be communicated personally, without specifics - too vague to point to a concrete mechanism.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m0m2crl",
@@ -3617,7 +3617,7 @@
       "pain_point_reasoning": "Continues the automation-vs-personal-touch discussion, affirming that real in-person relationships matter more than AI-automated communication for retention.",
       "pain_severity": null,
       "pain_severity_reasoning": "Opinion, not a specific measured incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -3627,8 +3627,8 @@
       "evidence_snippet": "your clients having real connections and building relationships in person is way more valuable",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This explicitly argues that real, in-person relationship-building is more valuable than any digital tool - a counterpoint to app-based solutions, not an opportunity for one.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "m5xqzlv",
@@ -4617,7 +4617,7 @@
       "pain_point_reasoning": "Recommends physical feedback cards with pointed questions plus a drop-off box to surface what members like/dislike.",
       "pain_severity": null,
       "pain_severity_reasoning": "Recommended tactic, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Provide member feedback cards with specific questions and a drop-off box for suggestions.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -4627,7 +4627,7 @@
       "evidence_snippet": "Have a drop off box. Find out what members like, what they don't like Ask for suggestions.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Provide member feedback cards with specific questions and a drop-off box for suggestions. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A physical feedback-card and drop-box system for gathering member input and suggestions is exactly the kind of member-voice channel TWU's messaging or community features could digitize directly.",
       "outside_scope_type": null
     },
     {
@@ -4742,7 +4742,7 @@
       "pain_point_reasoning": "Notes they personally stay in touch with most members, but acknowledges this consistent contact 'is not the norm for most gyms.'",
       "pain_severity": null,
       "pain_severity_reasoning": "General observation about industry norms, not a specific incident.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -4752,8 +4752,8 @@
       "evidence_snippet": "I know that's not the norm for most gyms.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a fragment with no clear context about what practice isn't the norm - too vague to classify a specific mechanism.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o14orsv",
@@ -4817,7 +4817,7 @@
       "pain_point_reasoning": "Suggests interviewing/speaking with churned members directly to understand the actual reasons behind their cancellations.",
       "pain_severity": null,
       "pain_severity_reasoning": "Suggested diagnostic step, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Interview or speak with churned members to understand their specific reasons for leaving.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -4827,8 +4827,8 @@
       "evidence_snippet": "Have you had a chance to interview or speak to some of these members to understand the churn reasons?",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Interview or speak with churned members to understand their specific reasons for leaving. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Interviewing churned members to understand their reasons for leaving is a business research practice - not something a connection app conducts.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o1xvpmq",
@@ -4842,7 +4842,7 @@
       "pain_point_reasoning": "Reiterates conducting exit interviews with departing members to gather data before deciding on next steps.",
       "pain_severity": null,
       "pain_severity_reasoning": "Suggested diagnostic step, not a reported outcome.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Conduct exit interviews with departing members to gather data and inform next steps.",
       "solution_category": "member_feedback_program",
       "effectiveness": null,
@@ -4852,8 +4852,8 @@
       "evidence_snippet": "do an exit interview to get some data and then evolve from there",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Conduct exit interviews with departing members to gather data and inform next steps. \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Conducting exit interviews to gather churn data is a business research practice - not something a connection app conducts.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "o3yfcws",
@@ -6377,7 +6377,7 @@
       "evidence_snippet": "They live and die by personal connection. One unanswered DM at 10",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This names personal connection and DM responsiveness as make-or-break for retention - directionally TWU's messaging/connection domain, though the specific DM channel described here is likely a third-party platform rather than something TWU would replace.",
       "outside_scope_type": null
     },
     {
@@ -6442,7 +6442,7 @@
       "pain_point_reasoning": "Owner wants staff on the floor with members but they are buried in marketing emails, text campaigns and follow-up; asks how owners consistently bring members back in",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -6452,8 +6452,8 @@
       "evidence_snippet": "I want my team spending time with members on the floor, not buried in marketing emails, text campaigns, and lead follow-up all day",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a preference for staff spending time with members in person rather than managing marketing automation - an argument against more automated tooling, not for a new connection-layer feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "olq3k0o",
@@ -6552,7 +6552,7 @@
       "evidence_snippet": "'d trade branded apps (which clients barely open) for better automated follow-up when someone goes quiet for two weeks. Retention tooling at this size matters way more than white-label aesthetics.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "\u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "This values automated follow-up when someone goes quiet - directly TWU's engagement-visibility territory - but explicitly cautions that branded apps like what TWU might be are barely opened by clients, a real adoption risk worth taking seriously rather than dismissing.",
       "outside_scope_type": null
     },
     {
@@ -6817,7 +6817,7 @@
       "pain_point_reasoning": "Owner designing non-sales check-in cadence explicitly to reduce quiet churn of new members",
       "pain_severity": null,
       "pain_severity_reasoning": "not stated",
-      "app_relevance": "partial_fit",
+      "app_relevance": "core_fit",
       "solution": "Milestone follow-up structure: welcome, 3/6/9/12-month care check-ins with anti-annoyance rules",
       "solution_category": "automated_reminders",
       "effectiveness": null,
@@ -6827,7 +6827,7 @@
       "evidence_snippet": "make new members feel supported... reduce quiet churn",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "Milestone follow-up structure: welcome, 3/6/9/12-month care check-ins with anti-annoyance rules \u2014 TWU could reinforce this with a nudge or visibility feature, but the core fix here relies on something (a coach's judgment, a program design choice, personal habit) outside what the app itself controls.",
+      "app_relevance_reasoning": "A structured milestone follow-up schedule (welcome, then 3/6/9/12-month check-ins) explicitly designed to make members feel supported and catch quiet churn is exactly the engagement-and-connection cadence TWU's features could build directly.",
       "outside_scope_type": null
     },
     {

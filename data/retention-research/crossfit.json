@@ -6569,7 +6569,7 @@
       "pain_point_reasoning": "Poster is frustrated their gym \"posts the workouts at 8pm the night before which I absolutely HATE\" making it hard to plan, and says they were called \"a baby, lazy\" and told to quit when raising the issue.",
       "pain_severity": 2,
       "pain_severity_reasoning": "It's an ongoing irritation that shapes planning but the poster describes a workaround rather than leaving their box.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Found another gym's programming source that posts the full week of WODs every Sunday, which \"totally changed my ability to plan.\"",
       "solution_category": "found_alternative_programming_source",
       "effectiveness": 4,
@@ -6579,8 +6579,8 @@
       "evidence_snippet": "My gym posts the workouts at 8pm the night before which I absolutely HATE!!!!!",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot force a box to change its own WOD-posting/scheduling software, though visibility into planned attendance could partially ease the planning frustration described.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This is a complaint about the box's own WOD-posting timing and communication practice. There is no peer or community angle in it, so tying it to TWU's attendance-visibility features was a reach.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1ioob7x",
@@ -6769,7 +6769,7 @@
       "pain_point_reasoning": "Poster quit their CrossFit gym (though not CrossFit itself) and built a home setup, saying they \"focus on 'achieving fitness' now and don't get burned out,\" implying burnout was a factor at the box.",
       "pain_severity": 2,
       "pain_severity_reasoning": "The tone is mild and positive about the switch, suggesting burnout was a moderate rather than severe driver.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Set up a full home gym and switched to following CrossFit Linchpin programming independently.",
       "solution_category": "switched_to_home_gym_programming",
       "effectiveness": 4,
@@ -6779,8 +6779,8 @@
       "evidence_snippet": "Haven't quit CrossFit but quit the CrossFit gym. Got a full setup of equipment at home with the significant other and we've been doing CrossFit Linchpin programming for a year.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak features could help sustain motivation for home-based training, though it cannot address whatever burned the poster out at the box itself.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "She already has an accountability partner in her significant other and has sustained a home programming routine successfully for a year. TWU's peer-matching features exist to find this kind of connection, and she already has it.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1hxqmdn",
@@ -7119,7 +7119,7 @@
       "pain_point_reasoning": "Poster says 'due to fatigue (hello 5am wakeups) and scheduling I've stopped going to a CrossFit gym and just started paying for CrossFit programming to do at a commercial gym,' a direct postpartum scheduling/fatigue-driven dropout from box attendance.",
       "pain_severity": 2,
       "pain_severity_reasoning": "Mild inconvenience-level; she adapted by switching format rather than quitting fitness altogether, and reports feeling great again.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Stopped attending box classes and switched to paying for CrossFit-style programming to follow at a commercial gym on her own schedule",
       "solution_category": "switched_to_alternative_program",
       "effectiveness": 4,
@@ -7129,8 +7129,8 @@
       "evidence_snippet": "due to fatigue (hello 5am wakeups) and scheduling I've stopped going to a CrossFit gym and just started paying for CrossFit programming to do at a commercial gym.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's attendance/streak visibility could help by making the postpartum schedule crunch a shared accountability challenge, though it can't fix the underlying schedule or fatigue itself.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Postpartum fatigue and scheduling led her to switch to self-directed programming, and it worked well, she reports hitting PRs and feeling great. This is a self-directed solution with no community or accountability need described anywhere.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "ngk5yoq",
@@ -7194,7 +7194,7 @@
       "pain_point_reasoning": "Poster describes being ostracized by a clique of long-tenured members and coaches ('the cool kid club') who give 'dirty looks' and won't 'give me a fist bump,' making them feel 'like a second class citizen' despite liking the programming and coaching itself.",
       "pain_severity": 4,
       "pain_severity_reasoning": "Poster states 'in just really miserable at this gym' and is actively contemplating leaving despite loving the programming.",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -7204,8 +7204,8 @@
       "evidence_snippet": "I feel ostracized here at this gym by the what I call the \u201ccool kid club\u201d... I'm just sick of being treated like a second class citizen here.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and community features are directly relevant to clique-driven exclusion, since a more inclusive, attendance-based social structure could counter the 'cool kid club' dynamic described.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "She is being excluded by an existing clique of members who already know each other, the 'cool kid club.' TWU's discovery features help find new people to connect with, but cannot make an established group choose to include someone already in the gym.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "nb64llp",
@@ -7304,7 +7304,7 @@
       "evidence_snippet": "It was so bad that I had the \"cancel membership\" email drafted to the owner last night... So yeah, I deleted the draft. I'm keeping the membership and plan to go tomorrow.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is a near-textbook case for TWU's peer-accountability and community-support features, since it was the visible, in-person encouragement from peers and a coach (not any pricing or scheduling fix) that reversed her decision to quit.",
+      "app_relevance_reasoning": "This is a near-textbook case for TWU's peer-accountability features. It was the visible, in-person encouragement from peers, not any pricing or scheduling fix, that reversed her decision to quit. (The coach's role in this moment is staff behavior and is not being credited to TWU.)",
       "outside_scope_type": null
     },
     {
@@ -7369,7 +7369,7 @@
       "pain_point_reasoning": "Poster describes being 'nearly in tears every workout because I was so pathetic compared to everyone else' after a back injury forced heavy scaling, and quit for a commercial gym to escape 'the perceived pressure in crossfit.'",
       "pain_severity": 4,
       "pain_severity_reasoning": "Emotional distress ('nearly in tears') and comparison-driven pressure were severe enough to drive the poster to quit the box.",
-      "app_relevance": "core_fit",
+      "app_relevance": "partial_fit",
       "solution": "Quit CrossFit and moved to a commercial gym with anonymous classes to rebuild without comparison pressure",
       "solution_category": "switched_to_alternative_gym",
       "effectiveness": 4,
@@ -7379,7 +7379,7 @@
       "evidence_snippet": "Nearly in tears every workout because I was so pathetic compared to everyone else... It was a nice safe space where I could build myself back up slowly without the perceived pressure in crossfit.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "The comparison/pressure dynamic described is a community-culture issue that visible peer accountability (framed supportively rather than competitively) could potentially soften, though TWU can't address the underlying injury.",
+      "app_relevance_reasoning": "TWU's peer-accountability features, framed supportively, could help soften the comparison/pressure dynamic she describes. But the reasoning itself notes this is tangled up with an underlying injury that TWU cannot address, so this only gets partial credit.",
       "outside_scope_type": null
     },
     {
@@ -7794,7 +7794,7 @@
       "pain_point_reasoning": "Poster quit after 13 years, saying \"I don't need the competition or coaches to push me to workout anymore\" and that he was \"pushing myself too hard and heavy\" in the box, ultimately preferring solo training over box-based external motivation.",
       "pain_severity": 5,
       "pain_severity_reasoning": "The pain point drove full cancellation/permanent departure: \"I'll never go back to CrossFit.\"",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Built a home gym, worked out alone with a quality-over-quantity mindset instead of race-paced box workouts.",
       "solution_category": "self_directed_home_training",
       "effectiveness": 5,
@@ -7804,8 +7804,8 @@
       "evidence_snippet": "I don\u2019t need the competition or coaches to push me to workout anymore. I was pushing myself too hard and heavy when I worked out in a box anyway.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is exactly the peer-accountability/external-motivation dynamic TWU is built around, though here the poster explicitly moved away from needing that kind of push, showing accountability tools have limited pull once someone burns out on box culture.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The poster explicitly says he no longer needs competition or coaches to push him, and that he was pushing himself too hard in a box setting. Crediting TWU's accountability features here directly contradicts what he described.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "oer4sjy",
@@ -7894,7 +7894,7 @@
       "pain_point_reasoning": "After life changes, poster says \"the cost of the membership and constant lower back pain isn't seeming worth it anymore,\" directly citing price-to-value as a reason for quitting alongside injury.",
       "pain_severity": 5,
       "pain_severity_reasoning": "The stated factors drove the poster to fully switch away from CrossFit to free running workouts.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Switched to purely long-distance running and self-directed strength training done for free on his own time.",
       "solution_category": "switch_to_free_self_directed_activity",
       "effectiveness": 4,
@@ -7904,8 +7904,8 @@
       "evidence_snippet": "After some huge life changes the cost of the membership and constant lower back pain isn\u2019t seeming worth it anymore.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot address membership pricing or chronic pain directly, but the underlying value-for-money calculus is partially tied to engagement/attendance which peer accountability could influence.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Cost and chronic back pain are the drivers here. The claim that value-for-money is 'partially tied to engagement which peer accountability could influence' has no specific evidence to anchor it.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "osnocrz",
@@ -7944,7 +7944,7 @@
       "pain_point_reasoning": "Poster quit CrossFit citing stalled upper body progress, a new job limiting training days, and specifically that \"the older members had a pretty tight-knit group and they dont really socialize with others\" after his close friends moved away.",
       "pain_severity": 4,
       "pain_severity_reasoning": "Combination of factors led the poster to quit entirely (\"described some of the exact reasons that made me quit crossfit\").",
-      "app_relevance": "core_fit",
+      "app_relevance": "not_addressable",
       "solution": "Befriended other newer members from his own on-ramp cohort instead of trying to integrate with the established clique.",
       "solution_category": "peer_group_seeking",
       "effectiveness": 2,
@@ -7954,8 +7954,8 @@
       "evidence_snippet": "Costs are not bad in my country but after some of my best crossfit friends moved to another city, i didnt really get too close with the other members, i befriended the ones who were in the same on-ramp but the older members had a pretty tight-knit group and they dont really socialize with others.",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "The clique/exclusion problem and loss of connection after friends left is precisely the peer-community and social-motivation gap TWU's accountability/community features aim to fill.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "Her actual friends moved away, and the existing older-member group already knows each other and doesn't socialize with newer members. TWU's discovery features can't make an established, tight-knit group choose to be more welcoming.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "1uuxo0g",
@@ -8469,7 +8469,7 @@
       "pain_point_reasoning": "The poster states simply \"I quit crossfit,\" a first-person statement of ending their CrossFit participation, indicating a retention/attendance dropout.",
       "pain_severity": 5,
       "pain_severity_reasoning": "The statement itself is a completed cancellation ('I quit crossfit'), which matches the maximum severity definition of driving cancellation.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": null,
       "solution_category": null,
       "effectiveness": null,
@@ -8479,8 +8479,8 @@
       "evidence_snippet": "I quit crossfit.",
       "confidence_tier": "weak",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability and streak features could plausibly help retain members like this, but no reason for quitting is given so it's unclear if accountability would have helped.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "The entire evidence is 'I quit crossfit,' with no stated reason. There is nothing specific here to tie to a TWU feature.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "49d03t",

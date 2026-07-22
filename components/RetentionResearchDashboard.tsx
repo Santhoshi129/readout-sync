@@ -21,6 +21,7 @@ import { GapBarChart } from "@/components/GapBarChart";
 import { CrossCommunityTable } from "@/components/CrossCommunityTable";
 import { PainPointHeatmap } from "@/components/PainPointHeatmap";
 import { DataCoverageTable } from "@/components/DataCoverageTable";
+import { AdjacentToolingWishlist } from "@/components/AdjacentToolingWishlist";
 import {
   MEMBER_SUBREDDITS,
   OWNER_SUBREDDITS,
@@ -1612,6 +1613,8 @@ export function RetentionResearchDashboard({
           </div>
         </>
       )}
+
+      <AdjacentToolingWishlist findings={findings} />
 
       <section id="receipts" className="section">
         <div className="section-head">

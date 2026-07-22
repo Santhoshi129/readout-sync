@@ -127,7 +127,7 @@
       "evidence_snippet": "If memberships have been declining steadily for 12\u201318 months, that's almost always an experience + retenti[on issue]",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "A general heuristic that steady 12-18 month decline usually signals an experience/retention issue, without a specific mechanism - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -152,7 +152,7 @@
       "evidence_snippet": "Current members get tired of shitty equipment and leave. Perspective members see shitty equipment and never sign up.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Old equipment driving away both current members and prospective ones is a facility-maintenance issue - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -177,7 +177,7 @@
       "evidence_snippet": "Two issues that leaked the most members were cleanliness and recurring problems with some part of the facility",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Cleanliness and recurring facility problems being the top reasons members left is a facility-maintenance issue - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -302,8 +302,8 @@
       "evidence_snippet": "Reasons I have left a gym: Stupidly over engineered app for entry / Messy and unhygienic / Weights not re-racked",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "This lists several departure reasons, including an over-engineered entry app - a different app's access/UX design, not TWU's connection layer - alongside hygiene and gym-etiquette issues that are facility matters.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "orwi4ki",
@@ -852,7 +852,7 @@
       "evidence_snippet": "They bought clubs with most equipment over 6 years old. Much of it 8 and some even",
       "confidence_tier": "moderate",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Acquiring clubs with equipment six to eight years old is a facility-investment issue - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -877,7 +877,7 @@
       "evidence_snippet": "Owner never maintained the equipment. When I got there, all the equipment needed reupholstering, grips needed replacing",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "An owner never maintaining equipment, leaving it needing reupholstering and new grip tape, is a facility-maintenance failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -902,7 +902,7 @@
       "evidence_snippet": "he had equipment not being maintained and fal[ling apart]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Equipment not being maintained and falling apart is a facility-maintenance failure - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -1102,7 +1102,7 @@
       "evidence_snippet": "It's way too easy for the gym to be overcrowded at peak hours and create a massive churn cycle.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Overcrowding at peak hours creating a churn cycle is a facility-capacity issue - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -1652,7 +1652,7 @@
       "evidence_snippet": "I left as soon as I found a better gym and the price was actually higher",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Switching to a better gym despite a higher price is a facility/experience-quality comparison - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -1677,7 +1677,7 @@
       "evidence_snippet": "recently switched to a boutique gym which is 3x the price monthly because the environment, volume of people and equipment are better suited",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Switching to a pricier boutique gym for a better environment is a facility/experience-quality comparison - not something a connection app influences.",
       "outside_scope_type": "operational"
     },
     {
@@ -1952,7 +1952,7 @@
       "evidence_snippet": "Every week it's a new issue, new complaint... we are considering taking out the daycare completely",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "Weighing whether to remove a childcare amenity due to recurring complaints is a facility-amenity business decision - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4577,7 +4577,7 @@
       "evidence_snippet": "This probably is guest experience based not competition based.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "This is a vague diagnostic statement about guest experience versus competition, without specifics - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -6427,7 +6427,7 @@
       "evidence_snippet": "members notice smell before they notice cleanliness.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a physical-space complaint - equipment, cleanliness, and crowding are facility problems no app changes.",
+      "app_relevance_reasoning": "An insight that members notice smell before cleanliness is a facility-hygiene observation - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {

@@ -102,7 +102,7 @@
       "evidence_snippet": "A shrug where accountability used to be. I was sure members would leave.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "A shift from staff accountability to indifference ('a shrug') is a coaching-attitude decline - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -392,7 +392,7 @@
       "pain_point_reasoning": "A single coach collapsed class attendance; analytics used to catch at-risk members before churn",
       "pain_severity": 4,
       "pain_severity_reasoning": "Coach killed a 10-12 person class down to 0-4 participants",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": "Class utilization tracking, exit surveys, 6-12 month member surveys, and reports on 7-10 day non-attendance and downward attendance trends to flag at-risk members",
       "solution_category": "churn_risk_tracking",
       "effectiveness": null,
@@ -402,8 +402,8 @@
       "evidence_snippet": "Martial arts schools run reports on who hasn't attended in past 7 to 10 days and downward attendance trend to identify at risk members",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Tracking attendance drops over 7-10 days is a genuine engagement-visibility signal TWU's connection layer could surface directly to prompt outreach, even though it's currently delivered as an owner-facing report.",
+      "outside_scope_type": null
     },
     {
       "id": "ow22w3p",
@@ -627,7 +627,7 @@
       "evidence_snippet": "they start changing your programming for classes or sitting on their phones when they should be coaching",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "Coaches being on their phones instead of coaching, or changing programming unilaterally, is a staff-attentiveness issue - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -752,7 +752,7 @@
       "evidence_snippet": "That coach started off strong and then numbers fell flat and then went negative.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "A coach's retention numbers declining over time after a strong start is a coaching-performance observation, without a specific mechanism - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -2202,7 +2202,7 @@
       "evidence_snippet": "I have lost many trainers to taking jobs in fields out side of fitness.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "Losing trainers to jobs outside fitness is a staffing/labor-market issue - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -2427,7 +2427,7 @@
       "evidence_snippet": "they've felt like they just had a rep counter or babysitter not someone that's intentional on help[ing]",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "Feeling like a coach was just a 'rep counter' rather than someone intentionally helping is a coaching-quality and personalization complaint - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -3017,7 +3017,7 @@
       "pain_point_reasoning": "Studio owner: retention depends heavily on instructor quality and passion; members stay when they feel seen rather than being just another booking",
       "pain_severity": 2,
       "pain_severity_reasoning": "Ongoing recurring driver of member consistency, no figures",
-      "app_relevance": "not_addressable",
+      "app_relevance": "partial_fit",
       "solution": "Passionate, knowledgeable instructors; remembering regulars, personalized feedback, making members feel seen; community events with other brands",
       "solution_category": "community_events",
       "effectiveness": 3,
@@ -3027,8 +3027,8 @@
       "evidence_snippet": "making people feel seen instead of just being another booking has helped a lot with members consistency and retention",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Coaches making members 'feel seen' by remembering them personally is exactly the outcome TWU's engagement and profile features aim to create, even though here it's delivered through staff memory and attentiveness rather than software.",
+      "outside_scope_type": null
     },
     {
       "id": "oquaoc4",
@@ -3802,8 +3802,8 @@
       "evidence_snippet": "they spend less time chasing people and more time actually training.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Consolidating trainer scheduling, booking, and check-in so trainers spend less time chasing admin is an owner-facing operations/software-consolidation tool - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "np13ikf",
@@ -3902,7 +3902,7 @@
       "evidence_snippet": "If the person who \"specializes\" in weight loss can't get anyone to renew, then is it the best thing for your gym or the client",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "Questioning whether a specialist coach who can't retain clients is actually effective is a coaching-performance and fit question - not something a connection app resolves.",
       "outside_scope_type": "operational"
     },
     {
@@ -3927,7 +3927,7 @@
       "evidence_snippet": "most trainers are bad. So they intentionally avoid trainers unless they are interested.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a coaching-quality complaint - it's a staffing and training-quality issue with the gym's coaches, not something a connection app can fix.",
+      "app_relevance_reasoning": "A broad statement that most trainers are bad, leading members to avoid them, is a coaching-quality perception - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {

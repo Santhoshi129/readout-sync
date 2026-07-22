@@ -10654,7 +10654,7 @@
       "evidence_snippet": "I got so pissed I didn't even finish... isn't the group/coach motivation part of what we pay for?",
       "confidence_tier": "strong",
       "source_trust": "standard",
-      "app_relevance_reasoning": "This is exactly the peer-accountability and encouragement gap TWU targets: making participation visible so people are motivated and supported to finish, even when others leave early.",
+      "app_relevance_reasoning": "This is exactly the peer-accountability gap TWU targets: he was still working when everyone else finished and left without him, and visible participation/streak features are built to make people stick around and finish together. (The coach ignoring him is a separate, real complaint, but that's staff behavior and isn't being credited to TWU.)",
       "outside_scope_type": null
     },
     {
@@ -10979,7 +10979,7 @@
       "evidence_snippet": "I am becoming quite disheartened at times and think of quitting but my strength, form and endurance are really good according to my trainers.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU cannot fix her physical mobility limitations, but visible peer/coach encouragement and streak-based motivation could help offset the discouragement that is pushing her toward quitting.",
+      "app_relevance_reasoning": "TWU cannot fix her chronic mobility limitations, but peer encouragement and streak-based motivation could help offset the discouragement pushing her toward quitting. (Her trainers are only mentioned positively here, there's no coaching complaint in this finding at all, so the reasoning only credits the peer side.)",
       "outside_scope_type": null
     },
     {
@@ -11119,7 +11119,7 @@
       "pain_point_reasoning": "The poster admits 'I for one have hurt myself trying to go too heavy and wanting to finish and put my name on the leaderboard... I just overdid it,' describing a personal injury from competitive/leaderboard pressure.",
       "pain_severity": 3,
       "pain_severity_reasoning": "Describes an actual injury from overexertion, though not framed as gym-ending.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "Learned to listen to their body and scale workouts back when not ready.",
       "solution_category": "self_regulation_scaling",
       "effectiveness": 4,
@@ -11129,8 +11129,8 @@
       "evidence_snippet": "I for one have hurt myself trying to go too heavy and wanting to finish and put my name on the leaderboard... I just overdid it.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's leaderboard/streak features could actually exacerbate this pressure to overdo it, so it's a nuance the app should be aware of rather than a fix it provides.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "This flags a real risk rather than a fix: TWU's leaderboard/streak features could actually make this kind of overexertion-chasing-rankings behavior worse, not better. That's a caution for the product, not a case where TWU addresses the pain point.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "dts504y",
@@ -11694,7 +11694,7 @@
       "pain_point_reasoning": "The poster works overnight shifts (4pm-4am) and says \"I stopped going to class and do online programming on my own time\" because class schedules didn't fit their work hours.",
       "pain_severity": 3,
       "pain_severity_reasoning": "The scheduling conflict caused the poster to fully stop attending classes, though they continued training on their own.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "The poster switched to doing online programming on their own schedule instead of attending in-person classes.",
       "solution_category": "self_directed_online_programming",
       "effectiveness": 3,
@@ -11704,8 +11704,8 @@
       "evidence_snippet": "I stopped going to class and do online programming on my own time and I'm hitting PRs more often but losing weight is really hard with how little sleep I get.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU can't change a box's class schedule, but its peer-accountability/streak features could still help keep a remote/solo trainer engaged and connected to the community.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "He already switched to solo online programming and is hitting PRs more often. This is a self-directed success story with no stated need for community or accountability anywhere in the evidence.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "e1hgw4r",
@@ -11794,7 +11794,7 @@
       "pain_point_reasoning": "She describes struggling in team WODs and feeling humiliated after her partner's \"disappointment was palpable,\" and says she is \"thinking of not attending Friday classes to avoid team WODs,\" signaling a personal drop-off in attendance tied to social pressure.",
       "pain_severity": 2,
       "pain_severity_reasoning": "She hasn't quit but is considering skipping specific classes, a mild-to-moderate attendance disruption rather than full cancellation.",
-      "app_relevance": "partial_fit",
+      "app_relevance": "not_addressable",
       "solution": "She reflects that she should ask her coach to let her scale down during partner WODs and plans to attend morning classes with fewer people to reduce pressure.",
       "solution_category": "schedule_adjustment",
       "effectiveness": null,
@@ -11804,8 +11804,8 @@
       "evidence_snippet": "I'm thinking of not attending Friday classes to avoid team WODs.",
       "confidence_tier": "moderate",
       "source_trust": "standard",
-      "app_relevance_reasoning": "TWU's peer-accountability/streak framing could help her feel supported through team WODs, but the underlying pacing anxiety and partner-pairing logistics are coaching decisions outside TWU's scope.",
-      "outside_scope_type": null
+      "app_relevance_reasoning": "How teams and partners get paired for team WODs is a coaching/programming decision the box makes, the same as the team-structure case flagged earlier this session. TWU's discovery features don't touch how a box assigns partners.",
+      "outside_scope_type": "operational"
     },
     {
       "id": "8ul34n",

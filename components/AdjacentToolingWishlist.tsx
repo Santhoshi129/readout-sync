@@ -92,13 +92,34 @@ export function AdjacentToolingWishlist({ findings }: { findings: Finding[] }) {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [shown, setShown] = useState(6);
 
-  const items = useMemo(
-    () =>
-      findings
-        .filter((f) => f.app_relevance === "not_addressable" && f.outside_scope_type === "adjacent_tooling")
-        .map((f) => ({ f, category: categorize(f) })),
-    [findings]
-  );
+  const items = useMemo(() => {
+    const matched = findings
+      .filter((f) => f.app_relevance === "not_addressable" && f.outside_scope_type === "adjacent_tooling")
+      .map((f) => ({ f, category: categorize(f), community: communityFromPermalink(f.permalink) }));
+
+    // The combined dataset is a straight concatenation of each community's
+    // findings in a fixed order (gymowner first), so without this, the
+    // default (unfiltered, unscrolled) view of the list below would only
+    // ever show gymowner - not because it dominates the data, but because
+    // it happens to sort first. Round-robin across communities so the
+    // first N items shown are always a genuine cross-community sample.
+    const byCommunity = new Map<string, typeof matched>();
+    for (const item of matched) {
+      const list = byCommunity.get(item.community) ?? [];
+      list.push(item);
+      byCommunity.set(item.community, list);
+    }
+    const queues = Array.from(byCommunity.values());
+    const interleaved: typeof matched = [];
+    let i = 0;
+    while (interleaved.length < matched.length) {
+      const q = queues[i % queues.length];
+      if (q.length > 0) interleaved.push(q.shift()!);
+      i++;
+      if (queues.every((q) => q.length === 0)) break;
+    }
+    return interleaved;
+  }, [findings]);
 
   const byCategory = useMemo(() => {
     const counts = new Map<Category, number>();
@@ -106,11 +127,17 @@ export function AdjacentToolingWishlist({ findings }: { findings: Finding[] }) {
     return CATEGORY_ORDER.map((cat) => [cat, counts.get(cat) ?? 0] as [Category, number]).filter(([, c]) => c > 0);
   }, [items]);
 
+  const byCommunityCount = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const { community } of items) counts.set(community, (counts.get(community) ?? 0) + 1);
+    return counts;
+  }, [items]);
+
   const ownerShare = useMemo(() => {
     if (items.length === 0) return 0;
-    const ownerCount = items.filter(({ f }) => communityFromPermalink(f.permalink) === "r/gymowner").length;
+    const ownerCount = byCommunityCount.get("r/gymowner") ?? 0;
     return Math.round((ownerCount / items.length) * 100);
-  }, [items]);
+  }, [items, byCommunityCount]);
 
   if (items.length === 0) return null;
 
@@ -129,6 +156,14 @@ export function AdjacentToolingWishlist({ findings }: { findings: Finding[] }) {
           {items.length} finding{items.length === 1 ? "" : "s"} describing admin, billing, or ops tooling - none of it TWU&apos;s
           member-connection layer, all of it a real ask someone made
         </div>
+        {byCommunityCount.size > 1 && (
+          <div style={{ marginTop: 6, fontSize: 11.5, fontFamily: "var(--mono)", color: "var(--ink-faint)", letterSpacing: "0.02em" }}>
+            {Array.from(byCommunityCount.entries())
+              .sort((a, b) => b[1] - a[1])
+              .map(([c, n]) => `${c} ${n}`)
+              .join("  ·  ")}
+          </div>
+        )}
       </div>
 
       <div
@@ -212,7 +247,7 @@ export function AdjacentToolingWishlist({ findings }: { findings: Finding[] }) {
       )}
 
       <div style={{ marginTop: 22, paddingTop: 20, borderTop: "1px solid var(--border-soft, var(--border))", display: "flex", flexDirection: "column", gap: 10 }}>
-        {visibleItems.map(({ f, category }) => (
+        {visibleItems.map(({ f, category, community }) => (
           <div
             key={f.id}
             style={{
@@ -235,7 +270,7 @@ export function AdjacentToolingWishlist({ findings }: { findings: Finding[] }) {
                     padding: "1px 8px",
                   }}
                 >
-                  {communityFromPermalink(f.permalink)}
+                  {community}
                 </span>
                 <span
                   style={{

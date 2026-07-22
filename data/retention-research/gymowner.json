@@ -227,8 +227,8 @@
       "evidence_snippet": "Automated reminders + confirmations killed our no-show rate - went from ~20% to under 5%.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "AI-sent confirmation texts and automated rescheduling cutting the no-show rate from ~20% to under 5% is a booking/reminder-automation success - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "oe3v352",
@@ -277,7 +277,7 @@
       "evidence_snippet": "Show up rate is 20-30% and our lead to close ratio is 10%. We do everything manually.",
       "confidence_tier": "strong",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
+      "app_relevance_reasoning": "A low show-up rate (20-30%) handled entirely manually, without a specific mechanism proposed, is a general operations observation - not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -1202,8 +1202,8 @@
       "evidence_snippet": "we started charging for no-shows too... it actually filtered out a lot of the flaky ones. Plus automated waitlists helped a ton",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Immediate booking links instead of DM back-and-forth, plus charging for no-shows, are booking-system and billing-policy changes - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ols9rwn",
@@ -1277,7 +1277,7 @@
       "evidence_snippet": "We started charging a $10 fee... Within two weeks, our app booking data almost perfectly mirrored actual attendance because people hate losing money.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A $10 no-show fee unless cancelled in advance is a billing-policy mechanism - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1502,7 +1502,7 @@
       "evidence_snippet": "YTD we've had 466 no-shows and/or late cancels. Do the math.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "An 8-hour cancellation window with a $30 fee, cited against 466 no-shows year to date, is a billing-policy mechanism - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1527,7 +1527,7 @@
       "evidence_snippet": "We actually used to make hundreds per month on no show fees.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Charging no-show fees to recoup wasted spots is a billing-policy decision - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1577,7 +1577,7 @@
       "evidence_snippet": "once members know there is a consequence attached to reserving a spot and not showing up, no-shows drop significantly",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Automated no-show and late-cancel fees for unlimited members are a billing-automation mechanism - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1852,7 +1852,7 @@
       "evidence_snippet": "there are penalties for late cancellations/no-shows and enforce it through the system. This has reduced my no-show rate to almost 0.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Penalties for late cancellations enforced through the booking system are a billing/policy-enforcement mechanism - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -1877,7 +1877,7 @@
       "evidence_snippet": "We enforce no-show fees since the slot goes empty. The fee is about 50% of the cost of each class to deter no-shows.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A waitlist that auto-fills cancelled slots plus enforced no-show fees are booking and billing automation - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2102,8 +2102,8 @@
       "evidence_snippet": "Right now we send reminders, but it doesn't seem to change much.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Sending booking reminders and considering adding late-cancel fees are booking/billing mechanisms - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "1u8ff8h",
@@ -3102,8 +3102,8 @@
       "evidence_snippet": "The reminder going out 24h ahead with a one-tap cancel button was the big one. People who'd have ghosted just cancel instead",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Card-on-file billing with an automated 24-hour reminder and one-tap cancel is a booking/billing-automation mechanism - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ordre8u",
@@ -3127,8 +3127,8 @@
       "evidence_snippet": "opening registration only 24 to 48 hours before class drastically cuts down on ghosting",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Shortening the booking window so registration opens only 24-48 hours ahead is a booking-system policy change - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "os7snrd",
@@ -3177,8 +3177,8 @@
       "evidence_snippet": "My staff is still just handling the waitlists manually for no shows",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Seeking a tool to auto-message members on last-minute cancellations, since staff currently handle waitlists manually, is a booking/messaging-automation gap - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "fblzp8h",
@@ -6602,8 +6602,8 @@
       "evidence_snippet": "If I don't show I lose the credits I spent on the class and get charged $14. This seems fair to me and keeps me on my toes.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is booking/cancellation policy friction - fees and caps are policy decisions, not a connection-layer feature.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "A 12-hour cancellation window with credit loss plus a $14 no-show fee, which this member considers fair, is a billing/credit-policy mechanism - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "outdxck",
@@ -6652,7 +6652,7 @@
       "evidence_snippet": "Cancellation fee makes life easier and happier...",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Charging a cancellation fee for no-shows and late cancels is a billing-policy mechanism - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {

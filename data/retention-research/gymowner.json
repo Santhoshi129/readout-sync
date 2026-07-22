@@ -2452,7 +2452,7 @@
       "evidence_snippet": "Lack of consistency is the biggest headache, different spreadsheets, different calendars, total chaos.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Building an integrated operational system to replace scattered spreadsheets and calendars is business-operations software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2477,7 +2477,7 @@
       "evidence_snippet": "Wellnessliving keeps us from losing track of who's paid, who's cancelled, and who's new. Before that it was post-it notes and chaos.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Adopting a named platform (WellnessLiving) to track payment and cancellation status is owner-facing billing software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2627,7 +2627,7 @@
       "evidence_snippet": "everything used to be all over the place. Calendars here, notes there, messages everywhere.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "Consolidating scheduling, PT sessions, and client tracking into one system is business-operations software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -2677,7 +2677,7 @@
       "evidence_snippet": "current owner isn't implementing any retention strategies.",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague statement that the current owner isn't implementing retention strategies, without specifics, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -2802,7 +2802,7 @@
       "evidence_snippet": "chasing failed payments and trial follow-ups manually is a guaranteed recipe for burnout",
       "confidence_tier": "moderate",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Manually chasing failed payments and trial follow-ups is a billing/admin-burden issue - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3227,7 +3227,7 @@
       "evidence_snippet": "Losing members or quality trainers and debt.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A bare fragment about losing members, trainers, and debt, with no mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -3352,7 +3352,7 @@
       "evidence_snippet": "Client acquisition and client retention are paramount. Understand how much it costs to acquire a client and your attrition rate.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general statement about the importance of acquisition cost and retention, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -3377,8 +3377,8 @@
       "evidence_snippet": "combining member retention and supplement offerings is murky at best. I would like to see stats that specifically talk to that.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Wanting statistics correlating retention with supplement sales is a business-analytics wish - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "ll2ykt8",
@@ -3652,7 +3652,7 @@
       "evidence_snippet": "I just want simple ones like customer engagement and retention and class scheduling optimization",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Wanting simple engagement, retention, and scheduling-optimization tools is a business-analytics and scheduling-software wish - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -3752,7 +3752,7 @@
       "evidence_snippet": "selling a membership gets someone in the door, selling an experience keeps them coming back",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general business-philosophy statement about experience over transactional selling, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -3977,7 +3977,7 @@
       "evidence_snippet": "Having basic systems for money, retention, and daily ops saves a lot of stress.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "Valuing basic systems for money, retention, and daily operations is a business-operations software need - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4002,7 +4002,7 @@
       "evidence_snippet": "having zero structure usually lea[ds to problems]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A vague statement that zero structure leads to problems, without specifics, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -4227,7 +4227,7 @@
       "evidence_snippet": "I'd start measuring churn rate, retention rate, growth rate as a percentage, average length of stay, class fill rate",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "A wishlist of business metrics to track (churn, retention, growth rate, length of stay) is business-analytics software - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4327,7 +4327,7 @@
       "evidence_snippet": "most software seems built for big gyms with tons of features I'd never use.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is a business-operations/admin request - TWU is a member community and connection layer, not gym-management, booking, or billing software, so this falls outside its scope even though it's a legitimate software ask.",
+      "app_relevance_reasoning": "A critique that existing gym software is overbuilt with unused features is a software-market observation - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4352,7 +4352,7 @@
       "evidence_snippet": "Biggest software pain points gym owners talk about are messy billing, disconnected tools, and weak retention/lead flow.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "A summary of common software pain points (messy billing, disconnected tools, weak reporting) is a business-operations software gap - not TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -4402,7 +4402,7 @@
       "evidence_snippet": "The vast majority of locations get it wrong. They focus on the sales more than the retention.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general critique that most locations prioritize sales over retention, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -4727,7 +4727,7 @@
       "evidence_snippet": "90% of our cancellations are due to people moving out of the area or state.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "Ninety percent of cancellations being due to relocation is a life-circumstance churn driver - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -4877,7 +4877,7 @@
       "evidence_snippet": "maintaining member satisfaction and retention\u2014while consistently driving revenue and managing profit loss\u2014can be a significant challenge",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A general statement about balancing satisfaction, retention, revenue, and profit, without a specific mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -4952,7 +4952,7 @@
       "evidence_snippet": "most \"member perks\" sound great but end up being one more thing you have to babysit.",
       "confidence_tier": "weak",
       "source_trust": "self_reported",
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A critique that member-perk programs become an operational burden to maintain is a business-operations observation - not something a connection app fixes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5202,7 +5202,7 @@
       "evidence_snippet": "our average churn is 5.95% with no long term contracts",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A bare churn-rate statistic, without a mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5252,7 +5252,7 @@
       "evidence_snippet": "What actually drives retention long-term? Expert staff and the right gym management software working together.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This describes billing, payment-chasing, or business-analytics tooling - a real software need, but gym back-office/BI software, not TWU's member community and connection layer.",
+      "app_relevance_reasoning": "This names expert staff and gym-management software working together as the real retention drivers - staffing and business software, neither of which is TWU's connection-layer domain.",
       "outside_scope_type": "adjacent_tooling"
     },
     {
@@ -5277,7 +5277,7 @@
       "evidence_snippet": "a 78% retention rate is hella strong.",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A bare statement praising a 78% retention rate, without a mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {
@@ -5302,8 +5302,8 @@
       "evidence_snippet": "Improve retention. Check his member retebtion KPIs and find out why the memb[ers leave]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
-      "outside_scope_type": "operational"
+      "app_relevance_reasoning": "Advice to check a gym's retention KPIs when evaluating it is a business-diagnostics practice - not TWU's connection-layer domain.",
+      "outside_scope_type": "adjacent_tooling"
     },
     {
       "id": "o9dz4nc",
@@ -5327,7 +5327,7 @@
       "evidence_snippet": "most cancellations happen naturally as kids grow older and move on",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "Cancellations happening naturally as kids age out of a program is a life-stage churn pattern - not something a connection app changes.",
       "outside_scope_type": "operational"
     },
     {
@@ -5377,7 +5377,7 @@
       "evidence_snippet": "A sub-10% cancellat[ion rate]",
       "confidence_tier": "weak",
       "source_trust": null,
-      "app_relevance_reasoning": "This is general retention commentary or opinion rather than a concrete mechanism - no specific software fix is being proposed here, connection-layer or otherwise.",
+      "app_relevance_reasoning": "A bare fragment citing a sub-10% cancellation rate, without a mechanism, is not something to act on here.",
       "outside_scope_type": "operational"
     },
     {

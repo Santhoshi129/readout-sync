@@ -33,15 +33,7 @@ interface Counts {
   [key: string]: number;
 }
 
-export async function GET(req: NextRequest) {
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret) {
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
-    }
-  }
-
+async function syncGrowthOutreach() {
   const c: Counts = {};
   const inc = (k: string) => {
     c[k] = (c[k] || 0) + 1;
@@ -93,7 +85,6 @@ export async function GET(req: NextRequest) {
     sequence_stopped: n("seqstopped"),
     ig_sent_total: igSentTotal,
     ig_replies: igReplies,
-    // Pre-computed rates so kpi-data.ts doesn't need to know the raw tag math
     email_reply_rate_pct: n("sent") > 0 ? round1((n("replied") / n("sent")) * 100) : 0,
     ig_reply_rate_pct: igSentTotal > 0 ? round1((igReplies / igSentTotal) * 100) : 0,
     interested_rate_pct: n("replied") > 0 ? round1((n("interested") / n("replied")) * 100) : 0,
@@ -103,6 +94,41 @@ export async function GET(req: NextRequest) {
     synced_at: new Date().toISOString(),
   };
 
-  const ok = await kvSetJSON("growth-outreach:latest", payload);
-  return NextResponse.json({ ok, payload });
+  return kvSetJSON("growth-outreach:latest", payload);
+}
+
+async function syncAdoption() {
+  const token = process.env.TWU_API_TOKEN;
+  if (!token) return { ok: false, reason: "TWU_API_TOKEN not set" };
+
+  const res = await fetch("https://dashboard.trainwithus.app/api/v1/community/member-overlap", {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  if (!res.ok) return { ok: false, reason: `member-overlap responded ${res.status}` };
+  const json = await res.json();
+  const data = json?.data ?? null;
+  if (!data) return { ok: false, reason: "Unexpected response shape" };
+
+  const ok = await kvSetJSON("adoption:latest", { ...data, synced_at: new Date().toISOString() });
+  return { ok };
+}
+
+export async function GET(req: NextRequest) {
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret) {
+    const auth = req.headers.get("authorization");
+    if (auth !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+    }
+  }
+
+  const [growthOutreachOk, adoptionResult] = await Promise.all([syncGrowthOutreach(), syncAdoption()]);
+
+  return NextResponse.json({
+    ok: growthOutreachOk && adoptionResult.ok,
+    growth_outreach: growthOutreachOk,
+    adoption: adoptionResult,
+    synced_at: new Date().toISOString(),
+  });
 }

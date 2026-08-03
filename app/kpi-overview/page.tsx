@@ -27,8 +27,37 @@ import type { HistoryPoint } from "@/lib/readout";
 
 export const revalidate = 30;
 
-function dropDeadPoints(points: HistoryPoint[], keys: string[]): HistoryPoint[] {
-  return points.filter((p) => keys.some((k) => (p.metrics[k] ?? 0) > 0));
+// A raw 10-minute-cadence history plotted straight across 30 days is noisy
+// even when every point is real, and a partial/failed sync run can write a
+// low-but-nonzero count - not caught by a simple "is it exactly 0" check -
+// which shows up as a sharp fake drop on the line. This does two things:
+//   1. Rejects any point where a monotonic metric (one that can only ever
+//      grow - contacts, replies, and joins never legitimately shrink by a
+//      quarter between two 10-minute syncs) drops more than 25% below the
+//      running last-good value. That's a corrupted/partial write, not real
+//      activity, so it's excluded rather than plotted as a crash.
+//   2. Downsamples to one point per calendar day (the last accepted
+//      snapshot of that day) - cleaner to read, and matches what a "30-day
+//      trend" actually means rather than showing 10-minute jitter.
+function cleanDailyTrend(points: HistoryPoint[], monotonicKeys: string[]): HistoryPoint[] {
+  const lastGood: Record<string, number> = {};
+  const accepted: HistoryPoint[] = [];
+  for (const p of points) {
+    const corrupt = monotonicKeys.some((k) => {
+      const v = p.metrics[k] ?? 0;
+      const prev = lastGood[k];
+      return prev != null && prev > 0 && v < prev * 0.75;
+    });
+    if (corrupt) continue;
+    monotonicKeys.forEach((k) => {
+      const v = p.metrics[k] ?? 0;
+      if (lastGood[k] == null || v > lastGood[k]) lastGood[k] = v;
+    });
+    accepted.push(p);
+  }
+  const byDay = new Map<string, HistoryPoint>();
+  for (const p of accepted) byDay.set(p.ts.slice(0, 10), p);
+  return Array.from(byDay.values());
 }
 
 export default async function KpiOverview() {
@@ -36,8 +65,8 @@ export default async function KpiOverview() {
   const syncStatus = await getSyncStatus();
   const leadHistoryRaw = await getHistory("twu_readout_live", 30);
   const adoptionHistoryRaw = await getHistory("blended_readout_live", 30);
-  const leadHistory = dropDeadPoints(leadHistoryRaw, ["total_contacts_in_ghl"]);
-  const adoptionHistory = dropDeadPoints(adoptionHistoryRaw, ["total_identified"]);
+  const leadHistory = cleanDailyTrend(leadHistoryRaw, ["total_contacts_in_ghl", "email_replied", "hot_leads"]);
+  const adoptionHistory = cleanDailyTrend(adoptionHistoryRaw, ["total_identified", "total_joined"]);
   const retention = combinedDataset();
   const allFlows = [...FLOWS].sort((a, b) => a.order - b.order);
 
@@ -84,6 +113,9 @@ export default async function KpiOverview() {
         )}
 
         <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
+          <p style={{ color: "var(--ink-faint)", fontSize: 12.5, marginBottom: 16 }}>
+            One point per day, last 30 days. Corrupted snapshots from partial/failed sync runs are excluded rather than plotted.
+          </p>
           <div className="card" style={{ padding: 32, marginBottom: 20 }}>
             <div className="eyebrow muted" style={{ marginBottom: 22 }}>Gym owner outreach — 30 days</div>
             <Trend

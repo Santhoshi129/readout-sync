@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/sync-retention",
       "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/cron/sync-growth-outreach",
+      "schedule": "30 15 * * *"
     }
   ]
 }

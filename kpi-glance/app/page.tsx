@@ -1,19 +1,19 @@
 import { growthKpis, outreachKpis, buildAdoptionKpis, buildRetentionKpis } from "@/lib/kpi-data";
-import { fetchMemberOverlap } from "@/lib/live-data";
+import { fetchMemberOverlap, fetchLatestRetentionPayload } from "@/lib/live-data";
 import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const overlap = await fetchMemberOverlap();
+  const [overlap, retention] = await Promise.all([fetchMemberOverlap(), fetchLatestRetentionPayload()]);
   const isLive = overlap !== null;
 
   const allSections = [
     { id: "growth", title: "Growth", question: "Is it growing?", kpis: growthKpis },
     { id: "outreach", title: "Outreach Effectiveness", question: "Is it working?", kpis: outreachKpis },
     { id: "adoption", title: "App Adoption", question: "Is it working? Is it growing?", kpis: buildAdoptionKpis(overlap) },
-    { id: "retention", title: "Retention Health", question: "Where are the problems?", kpis: buildRetentionKpis(overlap) },
+    { id: "retention", title: "Retention Health", question: "Where are the problems?", kpis: buildRetentionKpis(overlap, retention) },
   ];
 
   const allKpis = allSections.flatMap((s) => s.kpis);

@@ -1,5 +1,5 @@
 import { Kpi } from "./types";
-import { OverlapData, round1 } from "./live-data";
+import { OverlapData, RetentionAlertsPayload, round1 } from "./live-data";
 
 /**
  * SAMPLE DATA — v1 scaffold.
@@ -151,71 +151,103 @@ export function buildAdoptionKpis(overlap: OverlapData | null): Kpi[] {
   ];
 }
 
-export function buildRetentionKpis(overlap: OverlapData | null): Kpi[] {
-  const live = overlap !== null;
+export function buildRetentionKpis(overlap: OverlapData | null, retention: RetentionAlertsPayload | null): Kpi[] {
   const inBoth = overlap?.in_both?.length ?? 0;
   const inZpNotApp = overlap?.in_zp_not_app?.length ?? 0;
   const total = inBoth + inZpNotApp;
-  const gap = live && total > 0 ? round1((inZpNotApp / total) * 100) : 36;
+  const hasOverlap = overlap !== null && total > 0;
+  const hasRetention = retention !== null;
+  const byType = retention?.alerts_by_type ?? {};
+
+  // A KPI needs BOTH pieces to be real: the alert count (numerator, from
+  // the webhook payload) and total in_both members (denominator, from the
+  // overlap report) — having only one still leaves a sample number.
+  const pctOf = (alertType: string, fallback: number): { value: number; live: boolean; note?: string } => {
+    if (hasOverlap && hasRetention && inBoth > 0) {
+      const count = byType[alertType] ?? 0;
+      return {
+        value: round1((count / inBoth) * 100),
+        live: true,
+        note: `${count} of ${inBoth} linked members`,
+      };
+    }
+    return { value: fallback, live: false };
+  };
+
+  const atRisk = pctOf("at_risk", 12.5);
+  const needsAttention = pctOf("needs_attention", 18.9);
+  const attendanceDrop = pctOf("attendance_drop", 14.1);
+  const snapshotPending = pctOf("snapshot_pending", 4.2);
+  const adoptionGapValue = hasOverlap ? round1((inZpNotApp / total) * 100) : 36;
+
+  const blockerNote = !hasRetention
+    ? "Retention Watch still needs to be repointed at /api/retention-webhook — see instructions"
+    : !hasOverlap
+    ? "TWU_API_TOKEN not set — have the alert counts but not the total member count to turn them into a %"
+    : undefined;
 
   return [
     {
       id: "pct-at-risk",
       question: "retention",
       label: "Members At-Risk",
-      value: 12.5,
+      value: atRisk.value,
       unit: "%",
       threshold: { direction: "lower-is-better", good: 10, warn: 20 },
       trendDeltaPct: null,
       source: "Retention Watch daily payload",
-      status: "sample",
-      note: "Needs a per-member engagement call for every linked member — too slow to run live on every page load. Persist the daily n8n run somewhere (Sheet/Mongo) and this reads from that instead",
+      status: atRisk.live ? "live" : "sample",
+      note: atRisk.note ?? blockerNote,
     },
     {
       id: "pct-needs-attention",
       question: "retention",
       label: "Needs Attention",
-      value: 18.9,
+      value: needsAttention.value,
       unit: "%",
       threshold: { direction: "lower-is-better", good: 15, warn: 25 },
       trendDeltaPct: null,
       source: "Retention Watch daily payload",
-      status: "sample",
+      status: needsAttention.live ? "live" : "sample",
+      note: needsAttention.note,
     },
     {
       id: "pct-attendance-drop",
       question: "retention",
       label: "Attendance Drop (7+ days)",
-      value: 14.1,
+      value: attendanceDrop.value,
       unit: "%",
       threshold: { direction: "lower-is-better", good: 10, warn: 20 },
       trendDeltaPct: null,
       source: "Retention Watch daily payload",
-      status: "sample",
+      status: attendanceDrop.live ? "live" : "sample",
+      note: attendanceDrop.note,
     },
     {
       id: "adoption-gap",
       question: "retention",
       label: "Adoption Gap (not on app)",
-      value: gap,
+      value: adoptionGapValue,
       unit: "%",
       threshold: { direction: "lower-is-better", good: 30, warn: 50 },
       trendDeltaPct: null,
       source: "Retention Watch overlap report",
-      status: live ? "live" : "sample",
-      note: live ? `${inZpNotApp} of ${total} active ZenPlanner members never linked the app` : undefined,
+      status: hasOverlap ? "live" : "sample",
+      note: hasOverlap ? `${inZpNotApp} of ${total} active ZenPlanner members never linked the app` : undefined,
     },
     {
       id: "data-coverage-gap",
       question: "retention",
       label: "Data Coverage Gap",
-      value: 4.2,
+      value: snapshotPending.value,
       unit: "%",
       threshold: { direction: "lower-is-better", good: 5, warn: 15 },
       trendDeltaPct: null,
       source: "Retention Watch daily payload",
-      status: "sample",
-      note: "Operational health, not member health — high value means engagement snapshots aren't generating for some members",
+      status: snapshotPending.live ? "live" : "sample",
+      note:
+        snapshotPending.note ??
+        "Operational health, not member health — high value means engagement snapshots aren't generating for some members",
     },
   ];
 }

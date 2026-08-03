@@ -10,57 +10,49 @@ export interface OverlapData {
   in_app_not_zp: OverlapMember[];
 }
 
-/**
- * Calls the same /community/member-overlap endpoint Retention Watch's
- * "Get Member Overlap Report" node already calls. Requires TWU_API_TOKEN
- * to be set in Vercel's Environment Variables (Settings -> Environments) —
- * use the same Bearer token from that n8n node's Authorization header.
- *
- * Returns null (never throws) if the token isn't set or the call fails, so
- * the UI can cleanly fall back to sample data instead of crashing the page.
- */
-export async function fetchMemberOverlap(): Promise<OverlapData | null> {
-  const token = process.env.TWU_API_TOKEN;
-  if (!token) return null;
+export interface RetentionAlertsPayload {
+  run_completed_at: string;
+  alert_count: number;
+  alerts_by_type: Record<string, number>;
+  synced_at?: string;
+}
 
-  try {
-    const res = await fetch("https://dashboard.trainwithus.app/api/v1/community/member-overlap", {
-      headers: { Authorization: `Bearer ${token}` },
-      next: { revalidate: 300 }, // 5 min cache, matches Retention Watch's own daily cadence closely enough
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json?.data ?? null;
-  } catch {
-    return null;
-  }
+export interface GrowthOutreachPayload {
+  total_contacts: number;
+  hot_leads: number;
+  warm_leads: number;
+  email_sent: number;
+  email_replied: number;
+  interested: number;
+  sequence_complete: number;
+  sequence_stopped: number;
+  ig_sent_total: number;
+  ig_replies: number;
+  email_reply_rate_pct: number;
+  ig_reply_rate_pct: number;
+  interested_rate_pct: number;
+  hot_lead_share_pct: number;
+  sequence_complete_rate_pct: number;
+  synced_at?: string;
 }
 
 export function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
 
-export interface RetentionAlertsPayload {
-  run_completed_at: string;
-  alert_count: number;
-  alerts_by_type: Record<string, number>;
-  received_at?: string;
+// All three of these just read whatever the daily crons last wrote to KV.
+// Nothing here calls an external API directly — see app/api/cron/*.
+export async function fetchLatestOverlap(): Promise<OverlapData | null> {
+  const { kvGetJSON } = await import("./kv");
+  return kvGetJSON<OverlapData>("adoption:latest");
 }
 
-/**
- * Reads back whatever Retention Watch's daily run most recently POSTed
- * to /api/retention-webhook. Returns null if nothing has landed yet
- * (workflow not repointed, or MONGODB_URI not set).
- */
 export async function fetchLatestRetentionPayload(): Promise<RetentionAlertsPayload | null> {
-  try {
-    const { getDb } = await import("./mongo");
-    const db = await getDb();
-    if (!db) return null;
-    const doc = await db.collection("retention_watch").findOne({ _id: "latest" as never });
-    if (!doc) return null;
-    return doc as unknown as RetentionAlertsPayload;
-  } catch {
-    return null;
-  }
+  const { kvGetJSON } = await import("./kv");
+  return kvGetJSON<RetentionAlertsPayload>("retention:latest");
+}
+
+export async function fetchLatestGrowthOutreach(): Promise<GrowthOutreachPayload | null> {
+  const { kvGetJSON } = await import("./kv");
+  return kvGetJSON<GrowthOutreachPayload>("growth-outreach:latest");
 }

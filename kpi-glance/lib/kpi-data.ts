@@ -1,106 +1,102 @@
 import { Kpi } from "./types";
-import { OverlapData, RetentionAlertsPayload, round1 } from "./live-data";
+import { GrowthOutreachPayload, OverlapData, RetentionAlertsPayload, round1 } from "./live-data";
 
 /**
- * SAMPLE DATA — v1 scaffold.
- *
- * Every KPI here is wired for the real formula/source described in
- * twu-kpi-dashboard-spec.md. To go live, replace the literal values below
- * with real fetches:
- *   - GHL gym-owners + GHL members: reuse the auth pattern from readout-sync
- *   - Retention Watch: read the daily payload the n8n workflow POSTs
- *     (currently only in n8n's own execution log — see note on retentionKpis)
- *   - Revenue: blocked until data source is confirmed (see revenueKpis)
- *
  * `status` on each KPI controls what the UI shows:
  *   "sample"  -> real formula, placeholder number, shown with a SAMPLE tag
  *   "live"    -> real formula, real number
  *   "blocked" -> no data source yet, shown greyed out with the blocker noted
+ *
+ * Growth/Outreach originally targeted trial-conversion/win-rate style
+ * metrics, but TWU's gym-owners GHL pipeline is an outreach-sequence
+ * tracker, not a sales-stage CRM — there's no won/lost or trial data to
+ * pull. Swapped for what the tags actually support: reply rates, lead
+ * quality mix, and sequence completion. See app/api/cron/sync-growth-outreach.
  */
 
-export const growthKpis: Kpi[] = [
-  {
-    id: "lead-to-trial",
-    question: "growth",
-    label: "Lead → Trial Conversion",
-    value: 13.2,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 15, warn: 8 },
-    trendDeltaPct: 2.1,
-    source: "GHL gym-owners",
-    status: "sample",
-  },
-  {
-    id: "trial-to-active",
-    question: "growth",
-    label: "Trial → Active Conversion",
-    value: 51,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 60, warn: 40 },
-    trendDeltaPct: -4.5,
-    source: "GHL gym-owners",
-    status: "sample",
-  },
-  {
-    id: "win-rate",
-    question: "growth",
-    label: "Win Rate",
-    value: 21,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 25, warn: 15 },
-    trendDeltaPct: 0.8,
-    source: "GHL gym-owners",
-    status: "sample",
-  },
-  {
-    id: "sales-cycle",
-    question: "growth",
-    label: "Sales Cycle Length",
-    value: 18,
-    unit: "days",
-    threshold: null,
-    trendDeltaPct: 11.0,
-    source: "GHL gym-owners",
-    status: "sample",
-    note: "Trending longer vs prior period — watch, no fixed target",
-  },
-];
+export function buildGrowthKpis(go: GrowthOutreachPayload | null): Kpi[] {
+  const live = go !== null;
+  return [
+    {
+      id: "interested-rate",
+      question: "growth",
+      label: "Interested Rate",
+      value: live ? go!.interested_rate_pct : 22,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 25, warn: 12 },
+      trendDeltaPct: null,
+      source: "GHL gym-owners (interested / replied)",
+      status: live ? "live" : "sample",
+      note: live ? `${go!.interested} of ${go!.email_replied} replies marked interested` : undefined,
+    },
+    {
+      id: "hot-lead-share",
+      question: "growth",
+      label: "Hot Lead Share",
+      value: live ? go!.hot_lead_share_pct : 38,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 40, warn: 20 },
+      trendDeltaPct: null,
+      source: "GHL gym-owners tag mix",
+      status: live ? "live" : "sample",
+      note: live ? `${go!.hot_leads} hot / ${go!.hot_leads + go!.warm_leads} hot+warm` : undefined,
+    },
+    {
+      id: "sequence-complete-rate",
+      question: "growth",
+      label: "Sequence Complete Rate",
+      value: live ? go!.sequence_complete_rate_pct : 64,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 70, warn: 50 },
+      trendDeltaPct: null,
+      source: "GHL gym-owners",
+      status: live ? "live" : "sample",
+      note: live ? `${go!.sequence_complete} completed vs ${go!.sequence_stopped} stopped early` : undefined,
+    },
+    {
+      id: "total-pipeline-contacts",
+      question: "growth",
+      label: "Total Pipeline Contacts",
+      value: live ? go!.total_contacts : 850,
+      unit: "count",
+      threshold: null,
+      trendDeltaPct: null,
+      source: "GHL gym-owners",
+      status: live ? "live" : "sample",
+      note: "Scale indicator, not a rate — no fixed target",
+    },
+  ];
+}
 
-export const outreachKpis: Kpi[] = [
-  {
-    id: "email-reply-rate",
-    question: "outreach",
-    label: "Email Reply Rate",
-    value: 6.4,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 8, warn: 4 },
-    trendDeltaPct: 1.2,
-    source: "Readout sync / GHL",
-    status: "sample",
-  },
-  {
-    id: "ig-reply-rate",
-    question: "outreach",
-    label: "IG Reply Rate",
-    value: 9.8,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 12, warn: 6 },
-    trendDeltaPct: -1.0,
-    source: "Readout sync / GHL",
-    status: "sample",
-  },
-  {
-    id: "outreach-to-call",
-    question: "outreach",
-    label: "Outreach → Call Booked",
-    value: 1.9,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 3, warn: 1.5 },
-    trendDeltaPct: 0.3,
-    source: "GHL",
-    status: "sample",
-  },
-];
+export function buildOutreachKpis(go: GrowthOutreachPayload | null): Kpi[] {
+  const live = go !== null;
+  return [
+    {
+      id: "email-reply-rate",
+      question: "outreach",
+      label: "Email Reply Rate",
+      value: live ? go!.email_reply_rate_pct : 6.4,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 8, warn: 4 },
+      trendDeltaPct: null,
+      source: "GHL gym-owners",
+      status: live ? "live" : "sample",
+      note: live ? `${go!.email_replied} of ${go!.email_sent} sent` : undefined,
+    },
+    {
+      id: "ig-reply-rate",
+      question: "outreach",
+      label: "IG Reply Rate",
+      value: live ? go!.ig_reply_rate_pct : 9.8,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 12, warn: 6 },
+      trendDeltaPct: null,
+      source: "GHL gym-owners",
+      status: live ? "live" : "sample",
+      note: live ? `${go!.ig_replies} of ${go!.ig_sent_total} sent` : undefined,
+    },
+  ];
+}
 
 export function buildAdoptionKpis(overlap: OverlapData | null): Kpi[] {
   const live = overlap !== null;

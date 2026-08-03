@@ -1,17 +1,20 @@
-import { growthKpis, outreachKpis, buildAdoptionKpis, buildRetentionKpis } from "@/lib/kpi-data";
-import { fetchMemberOverlap, fetchLatestRetentionPayload } from "@/lib/live-data";
+import { buildGrowthKpis, buildOutreachKpis, buildAdoptionKpis, buildRetentionKpis } from "@/lib/kpi-data";
+import { fetchLatestOverlap, fetchLatestRetentionPayload, fetchLatestGrowthOutreach } from "@/lib/live-data";
 import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [overlap, retention] = await Promise.all([fetchMemberOverlap(), fetchLatestRetentionPayload()]);
-  const isLive = overlap !== null;
+  const [overlap, retention, growthOutreach] = await Promise.all([
+    fetchLatestOverlap(),
+    fetchLatestRetentionPayload(),
+    fetchLatestGrowthOutreach(),
+  ]);
 
   const allSections = [
-    { id: "growth", title: "Growth", question: "Is it growing?", kpis: growthKpis },
-    { id: "outreach", title: "Outreach Effectiveness", question: "Is it working?", kpis: outreachKpis },
+    { id: "growth", title: "Growth", question: "Is it growing?", kpis: buildGrowthKpis(growthOutreach) },
+    { id: "outreach", title: "Outreach Effectiveness", question: "Is it working?", kpis: buildOutreachKpis(growthOutreach) },
     { id: "adoption", title: "App Adoption", question: "Is it working? Is it growing?", kpis: buildAdoptionKpis(overlap) },
     { id: "retention", title: "Retention Health", question: "Where are the problems?", kpis: buildRetentionKpis(overlap, retention) },
   ];
@@ -28,11 +31,11 @@ export default async function Home() {
         <p className="text-sm text-ink-dim max-w-2xl">
           Is it working. Is it growing. Where are the problems. Every number below answers one of those three.
         </p>
-        <p className={`text-xs mt-1 ${isLive ? "text-signal-good" : "text-signal-warn"}`}>
+        <p className="text-xs mt-1 text-ink-faint">
           {liveCount} of {allKpis.length} KPIs are live right now
-          {!isLive && " — TWU_API_TOKEN isn't set in Vercel yet, so even the ready-to-go ones are showing sample data"}
-          {isLive && sampleCount > 0 && `, ${sampleCount} still sample — the rest need GHL/ZenPlanner credentials or a persisted Retention Watch history`}
-          .
+          {sampleCount > 0 && `, ${sampleCount} still sample — waiting on their daily sync cron to run at least once`}
+          . Nothing on this page ever calls an external API directly — every number here is read from a cache
+          that daily background jobs fill in.
         </p>
       </header>
 

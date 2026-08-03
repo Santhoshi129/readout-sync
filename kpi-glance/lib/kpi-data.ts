@@ -1,4 +1,5 @@
 import { Kpi } from "./types";
+import { OverlapData, round1 } from "./live-data";
 
 /**
  * SAMPLE DATA — v1 scaffold.
@@ -101,103 +102,123 @@ export const outreachKpis: Kpi[] = [
   },
 ];
 
-export const adoptionKpis: Kpi[] = [
-  {
-    id: "app-adoption-rate",
-    question: "adoption",
-    label: "App Adoption Rate",
-    value: 64,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 70, warn: 50 },
-    trendDeltaPct: 3.4,
-    source: "Retention Watch overlap report",
-    status: "sample",
-    note: "in_both / (in_both + in_zp_not_app) — this one is ready to go live today, no new endpoint needed",
-  },
-  {
-    id: "new-app-signups",
-    question: "adoption",
-    label: "New App Signups (30d)",
-    value: 34,
-    unit: "count",
-    threshold: null,
-    trendDeltaPct: 9.0,
-    source: "Retention Watch engagement data",
-    status: "sample",
-  },
-  {
-    id: "dau-mau",
-    question: "adoption",
-    label: "DAU / MAU (Stickiness)",
-    value: null,
-    unit: "%",
-    threshold: { direction: "higher-is-better", good: 20, warn: 10 },
-    trendDeltaPct: null,
-    source: "App usage endpoint (Alex)",
-    status: "blocked",
-    note: "Blocked — waiting on the app-usage endpoint Dave mentioned Alex would provide",
-  },
-];
+export function buildAdoptionKpis(overlap: OverlapData | null): Kpi[] {
+  const live = overlap !== null;
+  const inBoth = overlap?.in_both?.length ?? 0;
+  const inZpNotApp = overlap?.in_zp_not_app?.length ?? 0;
+  const total = inBoth + inZpNotApp;
+  const rate = live && total > 0 ? round1((inBoth / total) * 100) : 64;
 
-export const retentionKpis: Kpi[] = [
-  {
-    id: "pct-at-risk",
-    question: "retention",
-    label: "Members At-Risk",
-    value: 12.5,
-    unit: "%",
-    threshold: { direction: "lower-is-better", good: 10, warn: 20 },
-    trendDeltaPct: null,
-    source: "Retention Watch daily payload",
-    status: "sample",
-    note: "No trend arrow yet — daily runs aren't persisted anywhere queryable, only in n8n's own execution log",
-  },
-  {
-    id: "pct-needs-attention",
-    question: "retention",
-    label: "Needs Attention",
-    value: 18.9,
-    unit: "%",
-    threshold: { direction: "lower-is-better", good: 15, warn: 25 },
-    trendDeltaPct: null,
-    source: "Retention Watch daily payload",
-    status: "sample",
-  },
-  {
-    id: "pct-attendance-drop",
-    question: "retention",
-    label: "Attendance Drop (7+ days)",
-    value: 14.1,
-    unit: "%",
-    threshold: { direction: "lower-is-better", good: 10, warn: 20 },
-    trendDeltaPct: null,
-    source: "Retention Watch daily payload",
-    status: "sample",
-  },
-  {
-    id: "adoption-gap",
-    question: "retention",
-    label: "Adoption Gap (not on app)",
-    value: 36,
-    unit: "%",
-    threshold: { direction: "lower-is-better", good: 30, warn: 50 },
-    trendDeltaPct: null,
-    source: "Retention Watch daily payload",
-    status: "sample",
-  },
-  {
-    id: "data-coverage-gap",
-    question: "retention",
-    label: "Data Coverage Gap",
-    value: 4.2,
-    unit: "%",
-    threshold: { direction: "lower-is-better", good: 5, warn: 15 },
-    trendDeltaPct: null,
-    source: "Retention Watch daily payload",
-    status: "sample",
-    note: "Operational health, not member health — high value means engagement snapshots aren't generating for some members",
-  },
-];
+  return [
+    {
+      id: "app-adoption-rate",
+      question: "adoption",
+      label: "App Adoption Rate",
+      value: rate,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 70, warn: 50 },
+      trendDeltaPct: live ? null : 3.4,
+      source: "Retention Watch overlap report",
+      status: live ? "live" : "sample",
+      note: live
+        ? `${inBoth} linked / ${total} total active ZenPlanner members`
+        : "TWU_API_TOKEN not set in Vercel — showing sample data",
+    },
+    {
+      id: "new-app-signups",
+      question: "adoption",
+      label: "New App Signups (30d)",
+      value: 34,
+      unit: "count",
+      threshold: null,
+      trendDeltaPct: 9.0,
+      source: "Retention Watch engagement data",
+      status: "sample",
+      note: "Needs a per-member engagement call — too slow to run live on every page load, needs the daily snapshot persisted somewhere first",
+    },
+    {
+      id: "dau-mau",
+      question: "adoption",
+      label: "DAU / MAU (Stickiness)",
+      value: null,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 20, warn: 10 },
+      trendDeltaPct: null,
+      source: "App usage endpoint (Alex)",
+      status: "blocked",
+      note: "Blocked — waiting on the app-usage endpoint Dave mentioned Alex would provide",
+    },
+  ];
+}
+
+export function buildRetentionKpis(overlap: OverlapData | null): Kpi[] {
+  const live = overlap !== null;
+  const inBoth = overlap?.in_both?.length ?? 0;
+  const inZpNotApp = overlap?.in_zp_not_app?.length ?? 0;
+  const total = inBoth + inZpNotApp;
+  const gap = live && total > 0 ? round1((inZpNotApp / total) * 100) : 36;
+
+  return [
+    {
+      id: "pct-at-risk",
+      question: "retention",
+      label: "Members At-Risk",
+      value: 12.5,
+      unit: "%",
+      threshold: { direction: "lower-is-better", good: 10, warn: 20 },
+      trendDeltaPct: null,
+      source: "Retention Watch daily payload",
+      status: "sample",
+      note: "Needs a per-member engagement call for every linked member — too slow to run live on every page load. Persist the daily n8n run somewhere (Sheet/Mongo) and this reads from that instead",
+    },
+    {
+      id: "pct-needs-attention",
+      question: "retention",
+      label: "Needs Attention",
+      value: 18.9,
+      unit: "%",
+      threshold: { direction: "lower-is-better", good: 15, warn: 25 },
+      trendDeltaPct: null,
+      source: "Retention Watch daily payload",
+      status: "sample",
+    },
+    {
+      id: "pct-attendance-drop",
+      question: "retention",
+      label: "Attendance Drop (7+ days)",
+      value: 14.1,
+      unit: "%",
+      threshold: { direction: "lower-is-better", good: 10, warn: 20 },
+      trendDeltaPct: null,
+      source: "Retention Watch daily payload",
+      status: "sample",
+    },
+    {
+      id: "adoption-gap",
+      question: "retention",
+      label: "Adoption Gap (not on app)",
+      value: gap,
+      unit: "%",
+      threshold: { direction: "lower-is-better", good: 30, warn: 50 },
+      trendDeltaPct: null,
+      source: "Retention Watch overlap report",
+      status: live ? "live" : "sample",
+      note: live ? `${inZpNotApp} of ${total} active ZenPlanner members never linked the app` : undefined,
+    },
+    {
+      id: "data-coverage-gap",
+      question: "retention",
+      label: "Data Coverage Gap",
+      value: 4.2,
+      unit: "%",
+      threshold: { direction: "lower-is-better", good: 5, warn: 15 },
+      trendDeltaPct: null,
+      source: "Retention Watch daily payload",
+      status: "sample",
+      note: "Operational health, not member health — high value means engagement snapshots aren't generating for some members",
+    },
+  ];
+}
 
 /**
  * Revenue is confirmed in scope (both TWU's own revenue and gym-client
@@ -209,10 +230,3 @@ export const retentionKpis: Kpi[] = [
  * numbers. Add a `revenueKpis` array here once a source is confirmed.
  */
 export const revenueBlocked = true;
-
-export const allSections = [
-  { id: "growth", title: "Growth", question: "Is it growing?", kpis: growthKpis },
-  { id: "outreach", title: "Outreach Effectiveness", question: "Is it working?", kpis: outreachKpis },
-  { id: "adoption", title: "App Adoption", question: "Is it working? Is it growing?", kpis: adoptionKpis },
-  { id: "retention", title: "Retention Health", question: "Where are the problems?", kpis: retentionKpis },
-] as const;

@@ -1,10 +1,24 @@
-import { allSections } from "@/lib/kpi-data";
+import { growthKpis, outreachKpis, buildAdoptionKpis, buildRetentionKpis } from "@/lib/kpi-data";
+import { fetchMemberOverlap } from "@/lib/live-data";
 import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const overlap = await fetchMemberOverlap();
+  const isLive = overlap !== null;
+
+  const allSections = [
+    { id: "growth", title: "Growth", question: "Is it growing?", kpis: growthKpis },
+    { id: "outreach", title: "Outreach Effectiveness", question: "Is it working?", kpis: outreachKpis },
+    { id: "adoption", title: "App Adoption", question: "Is it working? Is it growing?", kpis: buildAdoptionKpis(overlap) },
+    { id: "retention", title: "Retention Health", question: "Where are the problems?", kpis: buildRetentionKpis(overlap) },
+  ];
+
   const allKpis = allSections.flatMap((s) => s.kpis);
   const sampleCount = allKpis.filter((k) => k.status === "sample").length;
+  const liveCount = allKpis.filter((k) => k.status === "live").length;
 
   return (
     <main className="min-h-screen px-6 py-8 sm:px-10 sm:py-10 max-w-6xl mx-auto">
@@ -14,12 +28,12 @@ export default function Home() {
         <p className="text-sm text-ink-dim max-w-2xl">
           Is it working. Is it growing. Where are the problems. Every number below answers one of those three.
         </p>
-        {sampleCount > 0 && (
-          <p className="text-xs text-signal-warn mt-1">
-            {sampleCount} of {allKpis.length} KPIs are still sample data — formulas and thresholds are real, live
-            values are pending real credentials/endpoints.
-          </p>
-        )}
+        <p className={`text-xs mt-1 ${isLive ? "text-signal-good" : "text-signal-warn"}`}>
+          {liveCount} of {allKpis.length} KPIs are live right now
+          {!isLive && " — TWU_API_TOKEN isn't set in Vercel yet, so even the ready-to-go ones are showing sample data"}
+          {isLive && sampleCount > 0 && `, ${sampleCount} still sample — the rest need GHL/ZenPlanner credentials or a persisted Retention Watch history`}
+          .
+        </p>
       </header>
 
       <div className="mb-8">

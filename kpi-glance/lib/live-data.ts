@@ -39,3 +39,28 @@ export async function fetchMemberOverlap(): Promise<OverlapData | null> {
 export function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
+
+export interface RetentionAlertsPayload {
+  run_completed_at: string;
+  alert_count: number;
+  alerts_by_type: Record<string, number>;
+  received_at?: string;
+}
+
+/**
+ * Reads back whatever Retention Watch's daily run most recently POSTed
+ * to /api/retention-webhook. Returns null if nothing has landed yet
+ * (workflow not repointed, or MONGODB_URI not set).
+ */
+export async function fetchLatestRetentionPayload(): Promise<RetentionAlertsPayload | null> {
+  try {
+    const { getDb } = await import("./mongo");
+    const db = await getDb();
+    if (!db) return null;
+    const doc = await db.collection("retention_watch").findOne({ _id: "latest" as never });
+    if (!doc) return null;
+    return doc as unknown as RetentionAlertsPayload;
+  } catch {
+    return null;
+  }
+}

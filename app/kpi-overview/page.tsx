@@ -31,6 +31,29 @@ function dropDeadPoints(points: HistoryPoint[], keys: string[]): HistoryPoint[] 
   return points.filter((p) => keys.some((k) => (p.metrics[k] ?? 0) > 0));
 }
 
+// Honest directional read on a history series: compares the first vs last
+// surviving (non-dead-point) snapshot. Returns null rather than a guess when
+// there isn't enough history to say anything real.
+function trendDirection(points: HistoryPoint[], key: string): { delta: number; pct: number | null } | null {
+  if (points.length < 2) return null;
+  const first = points[0].metrics[key] ?? 0;
+  const last = points[points.length - 1].metrics[key] ?? 0;
+  return { delta: last - first, pct: first > 0 ? Math.round(((last - first) / first) * 1000) / 10 : null };
+}
+
+function GlanceTile({
+  label, big, sub, tone,
+}: { label: string; big: string; sub: string; tone: "good" | "bad" | "neutral" }) {
+  const color = tone === "good" ? "var(--good)" : tone === "bad" ? "var(--bad)" : "var(--amber)";
+  return (
+    <div className="card" style={{ padding: 28, borderLeft: `3px solid ${color}` }}>
+      <div className="stat-label">{label}</div>
+      <div style={{ fontFamily: "var(--font-head)", fontSize: 40, fontWeight: 800, marginTop: 6, color }}>{big}</div>
+      <div style={{ color: "var(--ink-faint)", fontSize: 13, marginTop: 6 }}>{sub}</div>
+    </div>
+  );
+}
+
 export default async function KpiOverview() {
   const { data, error, fetchedAt } = await getReadout();
   const syncStatus = await getSyncStatus();
@@ -40,6 +63,13 @@ export default async function KpiOverview() {
   const adoptionHistory = dropDeadPoints(adoptionHistoryRaw, ["total_identified"]);
   const retention = combinedDataset();
   const allFlows = [...FLOWS].sort((a, b) => a.order - b.order);
+
+  const contactsTrend = trendDirection(leadHistory, "total_contacts_in_ghl");
+  const adoptionTrend = trendDirection(adoptionHistory, "total_joined");
+  const problemsCount = sum(data, [
+    "lead_gen.stage_no_response", "lead_gen.stage_dead", "app_adoption.opted_out",
+    "app_adoption.no_response", "app_adoption.needs_dave_review", "ig_bridge_outreach.needs_review",
+  ]) ?? 0;
 
   const emailSent = num(data, "lead_gen.email_outreach_sent") ?? 0;
   const emailReplied = num(data, "lead_gen.email_replied") ?? 0;
@@ -84,7 +114,49 @@ export default async function KpiOverview() {
         )}
 
         <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Is this working</h2>
+          <div className="grid grid-2" style={{ gap: 24, marginBottom: 20, alignItems: "stretch" }}>
+            <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div className="eyebrow muted" style={{ marginBottom: 10, alignSelf: "flex-start" }}>Gym owner reply rate</div>
+              <Ring value={num(data, "lead_gen.email_replied")} total={num(data, "lead_gen.email_outreach_sent")} centerLabel="of emails sent" pctOverride={num(data, "lead_gen.email_reply_rate_pct")} />
+            </div>
+            <div className="card" style={{ padding: 32, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div className="eyebrow muted" style={{ marginBottom: 10, alignSelf: "flex-start" }}>Member app adoption</div>
+              <Ring value={num(data, "app_adoption.total_joined")} total={num(data, "app_adoption.total_identified")} centerLabel="in the community" pctOverride={num(data, "app_adoption.adoption_rate_pct")} />
+            </div>
+          </div>
+          <div className="grid grid-4" style={{ gap: 16, marginBottom: 8 }}>
+            <GlanceTile
+              label="Owner leads, 30-day trend"
+              tone={!contactsTrend ? "neutral" : contactsTrend.delta > 0 ? "good" : contactsTrend.delta < 0 ? "bad" : "neutral"}
+              big={!contactsTrend ? "—" : `${contactsTrend.delta > 0 ? "↑" : contactsTrend.delta < 0 ? "↓" : "→"} ${fmt(Math.abs(contactsTrend.delta))}`}
+              sub={!contactsTrend ? "Not enough history yet" : contactsTrend.pct != null ? `${contactsTrend.pct > 0 ? "+" : ""}${contactsTrend.pct}% vs 30 days ago` : "vs 30 days ago"}
+            />
+            <GlanceTile
+              label="Members joined, 30-day trend"
+              tone={!adoptionTrend ? "neutral" : adoptionTrend.delta > 0 ? "good" : adoptionTrend.delta < 0 ? "bad" : "neutral"}
+              big={!adoptionTrend ? "—" : `${adoptionTrend.delta > 0 ? "↑" : adoptionTrend.delta < 0 ? "↓" : "→"} ${fmt(Math.abs(adoptionTrend.delta))}`}
+              sub={!adoptionTrend ? "Not enough history yet" : adoptionTrend.pct != null ? `${adoptionTrend.pct > 0 ? "+" : ""}${adoptionTrend.pct}% vs 30 days ago` : "vs 30 days ago"}
+            />
+            <GlanceTile
+              label="Flagged for attention"
+              tone={problemsCount > 0 ? "bad" : "good"}
+              big={fmt(problemsCount)}
+              sub={problemsCount > 0 ? "cold leads, opted-out, no-response, needs review" : "nothing flagged right now"}
+            />
+            <GlanceTile
+              label="Sync status"
+              tone={syncStatus?.ok === false ? "bad" : "good"}
+              big={syncStatus?.ok === false ? "Failing" : "Live"}
+              sub={data?.meta?.generated_at ? `as of ${new Date(data.meta.generated_at).toLocaleTimeString()}` : "—"}
+            />
+          </div>
+          <p style={{ color: "var(--ink-faint)", fontSize: 12, marginTop: 14 }}>
+            The row above answers is-this-working / is-this-growing / where-are-the-problems in one look. Full detail below.
+          </p>
+        </section>
+
+        <section className="section">
+          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>More detail — outreach &amp; adoption</h2>
           <p style={{ color: "var(--ink-faint)", fontSize: 13.5, marginBottom: 16 }}>
             Gym-owner outreach and member adoption, side by side.
           </p>

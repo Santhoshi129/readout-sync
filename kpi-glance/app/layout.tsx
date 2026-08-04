@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TWU · KPI Glance",
+  title: "TWU Status Report",
   description: "Internal at-a-glance KPI dashboard for Train With Us / Blended Athletics",
   robots: { index: false, follow: false },
 };

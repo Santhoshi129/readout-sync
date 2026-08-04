@@ -89,7 +89,7 @@ export default async function Home() {
           >
             T
           </span>
-          <span className="eyebrow !text-ink-dim">Blended Athletics · KPI Glance</span>
+          <span className="eyebrow !text-ink-dim">Blended Athletics · TWU Status Report</span>
 
           <span className="ml-auto flex items-center gap-2">
             <span
@@ -105,7 +105,7 @@ export default async function Home() {
         <div className="mb-7">
           <p className="eyebrow">Train With Us · daily threshold view</p>
           <h1 className="mt-2 font-display text-[30px] font-bold leading-tight text-ink sm:text-[36px]">
-            KPI Glance
+            TWU Status Report
           </h1>
           <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-ink-dim">
             Daily threshold view across pipeline, outreach, and member health.{" "}

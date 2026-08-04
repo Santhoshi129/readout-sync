@@ -36,6 +36,21 @@ export async function GET() {
   const headers = { "X-N8N-API-KEY": apiKey, accept: "application/json" };
   const report: Record<string, unknown> = { base_host: new URL(root).host, workflow_id: workflowId };
 
+  // 0. Every workflow the key can see, so a wrong N8N_WORKFLOW_ID is
+  //    obvious and the correct id can be read off directly.
+  try {
+    const res = await fetch(`${root}/api/v1/workflows?limit=100`, { headers, cache: "no-store" });
+    report.all_workflows = res.ok
+      ? ((await res.json())?.data ?? []).map((w: { id: string; name: string; active: boolean }) => ({
+          id: w.id,
+          name: w.name,
+          active: w.active,
+        }))
+      : { status: res.status, body: truncate(await res.text()) };
+  } catch (e) {
+    report.all_workflows = { error: e instanceof Error ? e.message : String(e) };
+  }
+
   // 1. Does the workflow exist, and what are its nodes called?
   try {
     const wfRes = await fetch(`${root}/api/v1/workflows/${workflowId}`, { headers, cache: "no-store" });

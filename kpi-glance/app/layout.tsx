@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "TWU Status Report",
-  description: "Internal at-a-glance KPI dashboard for Train With Us / Blended Athletics",
+  description: "Internal daily status report for Train With Us",
   robots: { index: false, follow: false },
 };
 

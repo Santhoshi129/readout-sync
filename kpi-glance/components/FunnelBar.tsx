@@ -1,54 +1,69 @@
+"use client";
+
+import { useState } from "react";
+
 /**
  * Stage-by-stage drop-off, so a rate like "Interested Rate 7.4%" can be read
  * against the volumes it came from rather than in isolation.
  *
- * Ordinal single-hue ramp (blue, light → dark), validated for the dark
- * surface: the darkest step used is #184f95 at 2.23:1, above the 2:1 ordinal
- * floor. Every stage is directly labelled, so identity never rests on hue.
+ * Every stage is directly labelled with its count and carry-over share, so
+ * the chart is complete without interaction; hovering a row adds the drop
+ * from the previous stage and the share of the very top of the funnel.
+ *
+ * Amber ordinal ramp taken from Readout's own accent, validated light→dark
+ * on the #141414 card surface: monotone lightness, clear step gaps, darkest
+ * step 3.85:1 against the surface.
  */
 
 export interface Stage {
   label: string;
   value: number;
-  /** Optional note shown under the stage, e.g. a conversion off the prior step. */
-  note?: string;
 }
 
-const RAMP = ["#86b6ef", "#5598e7", "#2a78d6", "#184f95"];
+const RAMP = ["#f0dda6", "#e6c766", "#c9a84c", "#8a6f2a"];
 
 export default function FunnelBar({ title, stages }: { title: string; stages: Stage[] }) {
+  const [active, setActive] = useState<number | null>(null);
   const usable = stages.filter((s) => Number.isFinite(s.value));
   if (usable.length < 2 || usable[0].value <= 0) return null;
 
   const top = usable[0].value;
 
   return (
-    <div className="rounded-xl border border-base-line bg-base-panel p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-dim">{title}</p>
+    <div className="rounded-2xl border border-base-line bg-base-card p-5">
+      <p className="eyebrow">{title}</p>
 
-      <div className="mt-3 flex flex-col gap-2">
+      <div className="mt-4 flex flex-col gap-2.5">
         {usable.map((stage, i) => {
           const pct = Math.max(1.5, (stage.value / top) * 100);
           const prior = i > 0 ? usable[i - 1].value : null;
           const stepPct = prior && prior > 0 ? (stage.value / prior) * 100 : null;
+          const dropped = prior !== null ? prior - stage.value : null;
+          const isActive = active === i;
 
           return (
-            <div key={stage.label} className="flex items-center gap-3">
-              <span className="w-[104px] shrink-0 text-[11px] leading-tight text-ink-dim sm:w-[128px]">
+            <div
+              key={stage.label}
+              className="relative flex items-center gap-3 rounded-md px-1 py-0.5 transition-colors hover:bg-base-raised"
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+            >
+              <span className="w-[110px] shrink-0 text-[11.5px] leading-tight text-ink-dim sm:w-[132px]">
                 {stage.label}
               </span>
 
-              <div className="relative h-4 flex-1">
+              <div className="h-4 flex-1">
                 <div
-                  className="h-full rounded-[4px]"
+                  className="h-full rounded-[4px] transition-opacity"
                   style={{
                     width: `${pct}%`,
                     background: RAMP[Math.min(i, RAMP.length - 1)],
+                    opacity: active === null || isActive ? 1 : 0.55,
                   }}
                 />
               </div>
 
-              <span className="w-[86px] shrink-0 text-right font-mono text-[12px] tabular text-ink">
+              <span className="w-[92px] shrink-0 text-right font-mono text-[12px] tabular text-ink">
                 {stage.value.toLocaleString()}
                 {stepPct !== null && (
                   <span className="ml-1.5 text-[10.5px] text-ink-faint">
@@ -56,14 +71,25 @@ export default function FunnelBar({ title, stages }: { title: string; stages: St
                   </span>
                 )}
               </span>
+
+              {isActive && (
+                <div className="pointer-events-none absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded-md border border-base-line bg-base-raised px-2.5 py-1.5 shadow-lg">
+                  <span className="font-mono text-[11px] tabular text-ink">
+                    {stage.value.toLocaleString()}
+                  </span>
+                  <span className="ml-2 text-[10.5px] text-ink-dim">
+                    {((stage.value / top) * 100).toFixed(1)}% of the top of the funnel
+                    {dropped !== null && dropped > 0 && ` · ${dropped.toLocaleString()} lost here`}
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
 
-      <p className="mt-2.5 text-[10.5px] leading-snug text-ink-faint">
-        Each row shows the count at that stage; the small figure is the share carried over from the
-        stage above it.
+      <p className="mt-3 text-[10.5px] leading-snug text-ink-faint">
+        Count at each stage; the small figure is the share carried over from the stage above.
       </p>
     </div>
   );

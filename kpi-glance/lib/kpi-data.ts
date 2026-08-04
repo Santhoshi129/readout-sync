@@ -1,5 +1,5 @@
 import { Kpi, lowSampleCaveat, Section } from "./types";
-import { deltaOf, GrowthPoint, MemberPoint, seriesOf } from "./history";
+import { datesOf, deltaOf, GrowthPoint, MemberPoint, seriesOf } from "./history";
 import { Segment, SEG } from "@/components/CompositionBar";
 import { Stage } from "@/components/FunnelBar";
 import {
@@ -25,9 +25,16 @@ const n = (v: number) => v.toLocaleString();
  * ------------------------------------------------------------------ */
 
 /** Attaches a real trend to a KPI, or leaves it bare when history is absent. */
-function withTrend(kpi: Kpi, values: number[], inverse = false): Kpi {
+function withTrend(kpi: Kpi, values: number[], dates: string[] = [], inverse = false): Kpi {
   if (values.length < 2) return kpi;
-  return { ...kpi, spark: values, delta: deltaOf(values), sparkDays: values.length, inverse };
+  return {
+    ...kpi,
+    spark: values,
+    sparkDates: dates.length === values.length ? dates : undefined,
+    delta: deltaOf(values),
+    sparkDays: values.length,
+    inverse,
+  };
 }
 
 export function buildProductUsage(
@@ -53,7 +60,8 @@ export function buildProductUsage(
           threshold: { direction: "higher-is-better", good: 70, warn: 50 },
           detail: `${n(linked)} of ${n(total)} active members on the app`,
         },
-        adoptionSeries
+        adoptionSeries,
+        datesOf(history)
       )
     );
     kpis.push(
@@ -66,7 +74,8 @@ export function buildProductUsage(
           threshold: null,
           detail: "active ZenPlanner members across all gyms",
         },
-        seriesOf(history, (p) => p.in_both + p.in_zp_not_app)
+        seriesOf(history, (p) => p.in_both + p.in_zp_not_app),
+        datesOf(history)
       )
     );
   }
@@ -139,6 +148,7 @@ export function buildMemberHealth(
           caveat: lowSampleCaveat(linked),
         },
         series,
+        datesOf(history),
         true
       )
     );
@@ -180,6 +190,7 @@ export function buildMemberHealth(
             caveat: lowSampleCaveat(base),
           },
           series,
+          datesOf(history),
           true
         )
       );
@@ -218,7 +229,8 @@ export function buildPipeline(
             detail: `${n(go.interested)} of ${n(go.email_replied)} replies marked interested`,
             caveat: lowSampleCaveat(go.email_replied),
           },
-          seriesOf(history, (p) => p.interested_rate_pct)
+          seriesOf(history, (p) => p.interested_rate_pct),
+          datesOf(history)
         )
       );
     }
@@ -234,7 +246,8 @@ export function buildPipeline(
             detail: `${n(go.hot_leads)} hot of ${n(go.hot_leads + go.warm_leads)} qualified leads`,
             caveat: lowSampleCaveat(go.hot_leads + go.warm_leads),
           },
-          seriesOf(history, (p) => p.hot_lead_share_pct)
+          seriesOf(history, (p) => p.hot_lead_share_pct),
+          datesOf(history)
         )
       );
     }
@@ -250,7 +263,8 @@ export function buildPipeline(
             detail: `${n(go.sequence_complete)} completed vs ${n(go.sequence_stopped)} stopped early`,
             caveat: lowSampleCaveat(go.sequence_complete + go.sequence_stopped),
           },
-          seriesOf(history, (p) => p.sequence_complete_rate_pct)
+          seriesOf(history, (p) => p.sequence_complete_rate_pct),
+          datesOf(history)
         )
       );
     }
@@ -265,7 +279,8 @@ export function buildPipeline(
             threshold: null,
             detail: "gym-owner contacts in the GHL pipeline",
           },
-          seriesOf(history, (p) => p.total_contacts)
+          seriesOf(history, (p) => p.total_contacts),
+          datesOf(history)
         )
       );
     }
@@ -299,7 +314,8 @@ export function buildOutreach(
             detail: `${n(go.email_replied)} replies of ${n(go.email_sent)} sent`,
             caveat: lowSampleCaveat(go.email_sent),
           },
-          seriesOf(history, (p) => p.email_reply_rate_pct)
+          seriesOf(history, (p) => p.email_reply_rate_pct),
+          datesOf(history)
         )
       );
     }
@@ -315,7 +331,8 @@ export function buildOutreach(
             detail: `${n(go.ig_replies)} replies of ${n(go.ig_sent_total)} DMs sent`,
             caveat: lowSampleCaveat(go.ig_sent_total),
           },
-          seriesOf(history, (p) => p.ig_reply_rate_pct)
+          seriesOf(history, (p) => p.ig_reply_rate_pct),
+          datesOf(history)
         )
       );
     }
@@ -391,7 +408,19 @@ export function buildAlertMix(retention: RetentionSnapshot | null): Segment[] {
  *  - Revenue: TWU's own revenue needs Stripe or GHL invoice access; gym-client
  *    revenue needs ZenPlanner billing access. Neither is confirmed.
  */
-export const NOT_YET_LIVE: { label: string; reason: string }[] = [
-  { label: "Stickiness (DAU/MAU)", reason: "awaiting an app-usage endpoint" },
-  { label: "Revenue", reason: "awaiting Stripe / ZenPlanner billing access" },
+export const NOT_YET_LIVE = [
+  {
+    label: "Stickiness (DAU/MAU)",
+    reason: "awaiting an app-usage endpoint",
+    blocker:
+      "No endpoint exposes daily or monthly active users. It cannot be derived from Retention Watch, whose payload contains only members that triggered an alert and never the healthy active ones, so any figure built from it would badly undercount.",
+    needs: "an app-usage endpoint from Alex",
+  },
+  {
+    label: "Revenue",
+    reason: "awaiting Stripe / ZenPlanner billing access",
+    blocker:
+      "Both halves are in scope and neither has a confirmed source: TWU's own revenue from gyms, and the revenue those gyms bill their own members.",
+    needs: "Stripe or GHL invoice access, plus ZenPlanner billing",
+  },
 ];

@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-display: ui-sans-serif, "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-body: ui-sans-serif, "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", "IBM Plex Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 * {
@@ -13,20 +12,27 @@
 }
 
 body {
-  background-image:
-    radial-gradient(circle at 10% -10%, rgba(61, 220, 151, 0.05), transparent 40%),
-    radial-gradient(circle at 90% 0%, rgba(242, 84, 91, 0.04), transparent 35%);
+  background: #000;
 }
 
 ::selection {
-  background: #3ddc9733;
+  background: rgba(201, 168, 76, 0.28);
 }
 
 :focus-visible {
-  outline: 2px solid #3ddc97;
+  outline: 2px solid #c9a84c;
   outline-offset: 2px;
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Readout's small-caps label treatment: mono, wide tracking, quiet ink. */
+.eyebrow {
+  font-family: "SF Mono", ui-monospace, "Roboto Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 10.5px;
+  color: #6b6b6b;
 }

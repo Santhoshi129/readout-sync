@@ -91,7 +91,7 @@ export default async function Home() {
             alt="Blended Athletics"
             className="h-7 w-7 shrink-0 rounded-lg bg-base-card object-contain"
           />
-          <span className="eyebrow !text-ink-dim">Blended Athletics · TWU Status Report</span>
+          <span className="eyebrow !text-ink-dim">TWU Status Report</span>
 
           <span className="ml-auto flex items-center gap-2">
             <span

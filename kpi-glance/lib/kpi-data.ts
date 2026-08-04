@@ -56,14 +56,19 @@ export function buildProductUsage(
         adoptionSeries
       )
     );
-    kpis.push({
-      id: "members-covered",
-      label: "Members Covered",
-      value: total,
-      unit: "count",
-      threshold: null,
-      detail: "active ZenPlanner members across all gyms",
-    });
+    kpis.push(
+      withTrend(
+        {
+          id: "members-covered",
+          label: "Members Covered",
+          value: total,
+          unit: "count",
+          threshold: null,
+          detail: "active ZenPlanner members across all gyms",
+        },
+        seriesOf(history, (p) => p.in_both + p.in_zp_not_app)
+      )
+    );
   }
 
   return {

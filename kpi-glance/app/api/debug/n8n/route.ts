@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -20,10 +20,12 @@ function truncate(v: unknown): unknown {
   return v;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const baseUrl = process.env.N8N_BASE_URL;
   const apiKey = process.env.N8N_API_KEY;
-  const workflowId = process.env.N8N_WORKFLOW_ID;
+  // ?workflow=<id> inspects a different workflow than the configured one,
+  // for confirming an id before committing it to the env var.
+  const workflowId = req.nextUrl.searchParams.get("workflow") || process.env.N8N_WORKFLOW_ID;
 
   if (!baseUrl || !apiKey || !workflowId) {
     return NextResponse.json({

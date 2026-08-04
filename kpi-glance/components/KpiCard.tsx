@@ -35,19 +35,34 @@ function ThresholdBar({ kpi, severity }: { kpi: Kpi; severity: Severity }) {
   if (!kpi.threshold) return null;
   const { direction, good, warn } = kpi.threshold;
 
-  const scaleMax =
-    direction === "higher-is-better"
-      ? Math.max(good * 1.35, kpi.value * 1.1, 1)
-      : Math.max(warn * 1.5, kpi.value * 1.1, 1);
+  // The scale has to admit negative values: Member Base Change is a signed
+  // percentage, and a domain that starts at zero renders -2% as an empty
+  // stub. Domain is derived from the thresholds and the value together.
+  const lowerBetter = direction === "lower-is-better";
+  const domainMin = lowerBetter ? 0 : Math.min(0, warn * 1.5, kpi.value * 1.2);
+  const domainMax = lowerBetter
+    ? Math.max(warn * 1.5, kpi.value * 1.1, 1)
+    : Math.max(good * 1.35, kpi.value * 1.1, domainMin + 1);
+  const span = domainMax - domainMin || 1;
+  const at = (v: number) => Math.min(100, Math.max(0, ((v - domainMin) / span) * 100));
 
-  const fill = Math.min(100, Math.max(2, (kpi.value / scaleMax) * 100));
-  const goodMark = Math.min(100, (good / scaleMax) * 100);
+  const zero = domainMin < 0 ? at(0) : null;
+  const fillFrom = domainMin < 0 ? Math.min(at(0), at(kpi.value)) : 0;
+  const fillTo = domainMin < 0 ? Math.max(at(0), at(kpi.value)) : at(kpi.value);
+  const goodMark = at(good);
+
   const unit = kpi.unit === "%" ? "%" : "";
 
   return (
     <div className="mt-3.5">
       <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-base-raised">
-        <div className={`h-full rounded-full ${railColor[severity]}`} style={{ width: `${fill}%` }} />
+        <div
+          className={`absolute inset-y-0 rounded-full ${railColor[severity]}`}
+          style={{ left: `${fillFrom}%`, width: `${Math.max(1.5, fillTo - fillFrom)}%` }}
+        />
+        {zero !== null && (
+          <div className="absolute inset-y-0 w-px bg-ink-faint/40" style={{ left: `${zero}%` }} aria-hidden />
+        )}
         <div
           className="absolute inset-y-0 w-px bg-ink-faint/60"
           style={{ left: `${goodMark}%` }}

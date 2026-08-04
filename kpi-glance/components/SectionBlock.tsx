@@ -9,11 +9,11 @@ export default function SectionBlock({ section }: { section: Section }) {
 
   return (
     <section>
-      <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-base-line pb-2">
-        <h2 className="font-display text-[15px] font-bold text-ink">{section.title}</h2>
-        <span className="ml-auto text-[10px] uppercase tracking-wide text-ink-faint">
+      <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-base-line pb-2.5">
+        <h2 className="font-display text-[17px] font-bold text-ink">{section.title}</h2>
+        <span className="eyebrow ml-auto">
           {section.source}
-          {synced && <span className="normal-case tracking-normal"> · {synced}</span>}
+          {synced && ` · ${synced}`}
         </span>
       </div>
 

@@ -21,6 +21,8 @@ export interface Kpi {
   spark?: number[];
   /** Change across the sparkline window, in percentage points for rates. */
   delta?: number | null;
+  /** ISO dates matching `spark`, so a hovered point can name its day. */
+  sparkDates?: string[];
   /** How many days the sparkline covers, for the card's footnote. */
   sparkDays?: number;
   /** True when a rise in this metric is bad (at-risk, drop-off, and similar). */

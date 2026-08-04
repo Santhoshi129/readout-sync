@@ -12,13 +12,13 @@ const railColor: Record<Severity, string> = {
   good: "bg-signal-good",
   warn: "bg-signal-warn",
   bad: "bg-signal-bad",
-  neutral: "bg-base-line",
+  neutral: "bg-ink-muted",
 };
 
 const badge: Record<Severity, { text: string; cls: string } | null> = {
-  good: { text: "Green", cls: "text-signal-good bg-signal-goodDim/40 border-signal-goodDim" },
-  warn: { text: "Yellow", cls: "text-signal-warn bg-signal-warnDim/40 border-signal-warnDim" },
-  bad: { text: "Red", cls: "text-signal-bad bg-signal-badDim/40 border-signal-badDim" },
+  good: { text: "On target", cls: "text-signal-good border-signal-goodDim bg-signal-goodDim/30" },
+  warn: { text: "Watch", cls: "text-signal-warn border-signal-warnDim bg-signal-warnDim/30" },
+  bad: { text: "Off target", cls: "text-signal-bad border-signal-badDim bg-signal-badDim/30" },
   neutral: null,
 };
 
@@ -28,8 +28,8 @@ function formatValue(kpi: Kpi): string {
 }
 
 /**
- * A single bar showing where the value sits between the red floor and the
- * green target, so the card is readable without doing arithmetic.
+ * Where the value sits between the red floor and the green target, so the
+ * card is readable without doing arithmetic. The tick marks the target.
  */
 function ThresholdBar({ kpi, severity }: { kpi: Kpi; severity: Severity }) {
   if (!kpi.threshold) return null;
@@ -42,27 +42,24 @@ function ThresholdBar({ kpi, severity }: { kpi: Kpi; severity: Severity }) {
 
   const fill = Math.min(100, Math.max(2, (kpi.value / scaleMax) * 100));
   const goodMark = Math.min(100, (good / scaleMax) * 100);
+  const unit = kpi.unit === "%" ? "%" : "";
 
   return (
-    <div className="mt-3">
-      <div className="relative h-1 w-full rounded-full bg-base-raised overflow-hidden">
+    <div className="mt-3.5">
+      <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-base-raised">
         <div className={`h-full rounded-full ${railColor[severity]}`} style={{ width: `${fill}%` }} />
         <div
-          className="absolute inset-y-0 w-px bg-ink-faint/70"
+          className="absolute inset-y-0 w-px bg-ink-faint/60"
           style={{ left: `${goodMark}%` }}
           aria-hidden
         />
       </div>
-      <div className="mt-1.5 flex justify-between text-[10px] tabular text-ink-faint">
+      <div className="mt-1.5 flex justify-between font-mono text-[9.5px] tabular text-ink-faint">
         <span>
-          {direction === "higher-is-better" ? "red below" : "green below"}{" "}
-          {direction === "higher-is-better" ? warn : good}
-          {kpi.unit === "%" ? "%" : ""}
+          {direction === "higher-is-better" ? `red <${warn}${unit}` : `green <${good}${unit}`}
         </span>
         <span>
-          {direction === "higher-is-better" ? "green at" : "red above"}{" "}
-          {direction === "higher-is-better" ? good : warn}
-          {kpi.unit === "%" ? "%" : ""}
+          {direction === "higher-is-better" ? `green ≥${good}${unit}` : `red >${warn}${unit}`}
         </span>
       </div>
     </div>
@@ -74,49 +71,61 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
   const tag = badge[severity];
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-base-line bg-base-panel p-4">
-      <span className={`absolute inset-y-0 left-0 w-[3px] ${railColor[severity]}`} aria-hidden />
+    <div className="relative flex flex-col overflow-hidden rounded-2xl border border-base-line bg-base-card p-5">
+      <span className={`absolute inset-x-0 top-0 h-[2px] ${railColor[severity]}`} aria-hidden />
 
       <div className="flex items-start justify-between gap-2">
-        <span className="text-[13px] font-medium leading-snug text-ink-dim">{kpi.label}</span>
+        <span className="text-[12.5px] font-medium leading-snug text-ink-dim">{kpi.label}</span>
         {tag && (
           <span
-            className={`shrink-0 rounded-full border px-2 py-[1px] text-[10px] font-semibold uppercase tracking-wide ${tag.cls}`}
+            className={`shrink-0 rounded-full border px-2 py-[2px] font-mono text-[9px] uppercase tracking-[0.12em] ${tag.cls}`}
           >
             {tag.text}
           </span>
         )}
       </div>
 
-      <div className="mt-2 flex items-baseline gap-2">
-        <span className={`font-mono text-[28px] font-semibold leading-none tabular ${valueColor[severity]}`}>
+      <div className="mt-2.5 flex items-baseline gap-2">
+        <span
+          className={`font-display text-[30px] font-bold leading-none tabular ${valueColor[severity]}`}
+        >
           {formatValue(kpi)}
         </span>
         <Delta kpi={kpi} />
       </div>
 
-      <p className="mt-1.5 text-[11px] leading-snug text-ink-faint">{kpi.detail}</p>
+      <p className="mt-2 text-[11px] leading-snug text-ink-faint">{kpi.detail}</p>
 
       {kpi.caveat && (
-        <p className="mt-1 text-[10.5px] font-medium leading-snug text-signal-warn/90">{kpi.caveat}</p>
+        <p className="mt-1.5 text-[10.5px] font-medium leading-snug text-signal-warn/90">
+          {kpi.caveat}
+        </p>
       )}
 
       <ThresholdBar kpi={kpi} severity={severity} />
 
-      {kpi.spark && kpi.spark.length > 1 ? (
-        <>
-          <Sparkline values={kpi.spark} severity={severity} label={kpi.label} />
-          <p className="mt-0.5 text-[10px] text-ink-faint">
-            last {kpi.sparkDays ?? kpi.spark.length} days
+      <div className="mt-auto">
+        {kpi.spark && kpi.spark.length > 1 ? (
+          <>
+            <Sparkline
+              values={kpi.spark}
+              dates={kpi.sparkDates}
+              severity={severity}
+              label={kpi.label}
+              unit={kpi.unit}
+            />
+            <p className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.1em] text-ink-faint">
+              {kpi.sparkDays ?? kpi.spark.length}d · hover for daily values
+            </p>
+          </>
+        ) : (
+          // Says why the trend is missing rather than leaving a silent gap.
+          <p className="mt-3.5 text-[10px] leading-snug text-ink-faint">
+            No trend yet — this source keeps no history, so the line starts once a second daily
+            sync has run.
           </p>
-        </>
-      ) : (
-        // Says why the trend is missing rather than leaving a silent gap.
-        <p className="mt-3 text-[10px] leading-snug text-ink-faint">
-          No trend yet — this source keeps no history, so the line starts once a second daily sync
-          has run.
-        </p>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -133,10 +142,10 @@ function Delta({ kpi }: { kpi: Kpi }) {
   const unit = kpi.unit === "%" ? "pt" : "";
   return (
     <span
-      className={`font-mono text-[11.5px] tabular ${
+      className={`font-mono text-[11px] tabular ${
         improving ? "text-signal-good" : "text-signal-bad"
       }`}
-      title={`${rising ? "Up" : "Down"} ${Math.abs(kpi.delta)}${unit} over the window shown`}
+      title={`${rising ? "Up" : "Down"} ${Math.abs(kpi.delta)}${unit} across the window shown`}
     >
       {rising ? "▲" : "▼"} {Math.abs(kpi.delta)}
       {unit}

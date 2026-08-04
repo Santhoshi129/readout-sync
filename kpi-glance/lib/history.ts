@@ -65,6 +65,11 @@ export function seriesOf<T>(points: T[], pick: (p: T) => number | null): number[
   return points.map(pick).filter((v): v is number => typeof v === "number" && Number.isFinite(v));
 }
 
+/** Dates matching a series, for labelling a hovered point. */
+export function datesOf<T extends { date: string }>(points: T[]): string[] {
+  return points.map((p) => p.date);
+}
+
 /**
  * Change between the first and last point of a series, in percentage
  * points for rates. Null when there aren't two points to compare.

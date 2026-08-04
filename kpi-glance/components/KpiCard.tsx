@@ -103,13 +103,19 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
 
       <ThresholdBar kpi={kpi} severity={severity} />
 
-      {kpi.spark && kpi.spark.length > 1 && (
+      {kpi.spark && kpi.spark.length > 1 ? (
         <>
           <Sparkline values={kpi.spark} severity={severity} label={kpi.label} />
           <p className="mt-0.5 text-[10px] text-ink-faint">
             last {kpi.sparkDays ?? kpi.spark.length} days
           </p>
         </>
+      ) : (
+        // Says why the trend is missing rather than leaving a silent gap.
+        <p className="mt-3 text-[10px] leading-snug text-ink-faint">
+          No trend yet — this source keeps no history, so the line starts once a second daily sync
+          has run.
+        </p>
       )}
     </div>
   );

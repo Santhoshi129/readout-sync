@@ -64,7 +64,9 @@ export default function ProblemRadar({ sections }: { sections: Section[] }) {
         <span className="text-[11px] text-ink-faint">everything off target right now</span>
       </div>
 
-      <ul className="flex flex-col gap-2">
+      {/* Two columns once there are enough flags to push the KPI sections
+          below the fold — the radar has to stay glanceable. */}
+      <ul className={`grid gap-2 ${flags.length > 4 ? "lg:grid-cols-2" : ""}`}>
         {flags.map(({ kpi, severity, sectionTitle }) => (
           <li
             key={kpi.id}

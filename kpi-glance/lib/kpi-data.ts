@@ -82,6 +82,7 @@ export function buildProductUsage(
   return {
     id: "product-usage",
     title: "Product Usage",
+    purpose: "Has the paying member base actually adopted the app?",
     source:
       overlap?.origin === "n8n" ? "member-overlap via Retention Watch" : "TWU member-overlap API",
     syncedAt: overlap?.synced_at ?? null,
@@ -111,20 +112,76 @@ export function buildMemberHealth(
   history: MemberPoint[] = []
 ): Section {
   const kpis: Kpi[] = [];
-  const linked = overlap?.in_both ?? 0;
+  const assessed = overlap?.in_both ?? 0;
+  const notLinked = overlap?.in_zp_not_app ?? 0;
+  const base = assessed + notLinked;
   const counts = normaliseAlertCounts(retention?.alerts_by_type);
+  const canRate = retention !== null && assessed > 0;
 
-  // A rate needs both halves to be real: the alert count from Retention
-  // Watch, and the linked-member denominator from the overlap report.
-  const canRate = retention !== null && linked > 0;
+  /**
+   * Is the member base itself growing or shrinking? This is the retention
+   * outcome — everything else in this section is a leading indicator of it.
+   * Measured across the whole history window, on the full member base, so
+   * it is the one figure here that is not limited to app-linked members.
+   */
+  const baseSeries = seriesOf(history, (p) => p.in_both + p.in_zp_not_app);
+  if (baseSeries.length >= 2) {
+    const first = baseSeries[0];
+    const last = baseSeries[baseSeries.length - 1];
+    const changePct = first > 0 ? round1(((last - first) / first) * 100) : 0;
+    const days = baseSeries.length;
+    kpis.push({
+      id: "member-base-change",
+      label: `Member Base Change (${days}d)`,
+      value: changePct,
+      unit: "%",
+      threshold: { direction: "higher-is-better", good: 0, warn: -3 },
+      detail: `${n(last)} active members now, from ${n(first)} ${days} days ago`,
+      spark: baseSeries,
+      sparkDates: datesOf(history),
+      sparkDays: days,
+      delta: null,
+    });
+  }
+
+  /**
+   * The size of the intervention queue. Alert types were verified to be
+   * mutually exclusive per member against a live execution (611 alerts,
+   * 611 distinct members, no duplicates), so summing the member-level
+   * types gives a true headcount rather than a double count.
+   */
+  const MEMBER_LEVEL = ["at_risk", "needs_attention", "attendance_drop"];
+  if (canRate) {
+    const flagged = MEMBER_LEVEL.reduce((sum, k) => sum + (counts.get(k) ?? 0), 0);
+    if (flagged > 0) {
+      const series = seriesOf(history, (p) => {
+        const total = MEMBER_LEVEL.reduce((sum, k) => sum + (p.alerts?.[k] ?? 0), 0);
+        return p.in_both > 0 ? round1((total / p.in_both) * 100) : null;
+      });
+      kpis.push(
+        withTrend(
+          {
+            id: "members-needing-action",
+            label: "Members Needing Action",
+            value: round1((flagged / assessed) * 100),
+            unit: "%",
+            threshold: { direction: "lower-is-better", good: 20, warn: 35 },
+            detail: `${n(flagged)} of ${n(assessed)} assessed members flagged today`,
+          },
+          series,
+          datesOf(history),
+          true
+        )
+      );
+    }
+  }
 
   const add = (
     id: string,
     label: string,
     aliases: string[],
     good: number,
-    warn: number,
-    note?: string
+    warn: number
   ) => {
     if (!canRate) return;
     const key = aliases.find((a) => counts.has(a));
@@ -140,11 +197,11 @@ export function buildMemberHealth(
         {
           id,
           label,
-          value: round1((count / linked) * 100),
+          value: round1((count / assessed) * 100),
           unit: "%",
           threshold: { direction: "lower-is-better", good, warn },
-          detail: note ?? `${n(count)} of ${n(linked)} linked members`,
-          caveat: lowSampleCaveat(linked),
+          detail: `${n(count)} of ${n(assessed)} assessed members`,
+          caveat: lowSampleCaveat(assessed),
         },
         series,
         datesOf(history),
@@ -153,55 +210,33 @@ export function buildMemberHealth(
     );
   };
 
-  add("pct-at-risk", "Members At-Risk", ["at_risk", "atrisk", "risk"], 10, 20);
-  add("pct-needs-attention", "Needs Attention", ["needs_attention", "attention"], 15, 25);
-  add(
-    "pct-attendance-drop",
-    "Attendance Drop (7+ days)",
-    ["attendance_drop", "attendance_decline", "no_show"],
-    10,
-    20
-  );
-  // "Data Coverage Gap" was defined against a snapshot_pending alert type
-  // the live workflow does not emit. Its real alert types are not_on_app /
-  // needs_attention / at_risk / attendance_drop, so the gap is expressed
-  // against the one that exists: members never linked to the app, measured
-  // over the whole member base rather than over linked members.
-  if (retention !== null && overlap && overlap.in_both + overlap.in_zp_not_app > 0) {
-    const key = ["not_on_app", "never_linked"].find((a) => counts.has(a));
-    if (key !== undefined) {
-      const base = overlap.in_both + overlap.in_zp_not_app;
-      const series = seriesOf(history, (p) => {
-        const total = p.in_both + p.in_zp_not_app;
-        const k = ["not_on_app", "never_linked"].find((a) => a in (p.alerts ?? {}));
-        if (k === undefined || total <= 0) return null;
-        return round1((p.alerts[k] / total) * 100);
-      });
-      kpis.push(
-        withTrend(
-          {
-            id: "not-on-app",
-            label: "Not On App",
-            value: round1((counts.get(key)! / base) * 100),
-            unit: "%",
-            threshold: { direction: "lower-is-better", good: 30, warn: 50 },
-            detail: `${n(counts.get(key)!)} of ${n(base)} members never linked the app`,
-            caveat: lowSampleCaveat(base),
-          },
-          series,
-          datesOf(history),
-          true
-        )
-      );
-    }
-  }
+  // The severe tier, and the behavioural signal that usually precedes it.
+  add("pct-at-risk", "At Risk (severe)", ["at_risk", "atrisk", "risk"], 10, 20);
+  add("pct-attendance-drop", "Attendance Drop (7+ days)", ["attendance_drop", "attendance_decline", "no_show"], 10, 20);
+
+  // "Not On App" used to sit here as a health KPI. It is an adoption
+  // measure, already carried by App Adoption Rate, and having it in both
+  // places put the same fact on the Problem Radar twice. It now appears
+  // once, as the caveat below, because that is what it actually is for this
+  // section: the limit of what can be assessed at all.
+  const coveragePct = base > 0 ? round1((assessed / base) * 100) : 0;
+  const caveat =
+    base > 0 && notLinked > 0
+      ? `Health can only be assessed for the ${n(assessed)} members linked to the app — ${coveragePct}% of the base. The other ${n(
+          notLinked
+        )} members generate no engagement signal, so every rate above describes the visible ${coveragePct}%, not all ${n(
+          base
+        )} members.`
+      : undefined;
 
   return {
     id: "member-health",
     title: "Member Health",
+    purpose: "Are we keeping members, and who needs intervention today?",
     source: "Retention Watch daily run",
     syncedAt: retention?.synced_at ?? retention?.run_completed_at ?? null,
     kpis,
+    caveat,
   };
 }
 
@@ -288,6 +323,7 @@ export function buildPipeline(
   return {
     id: "pipeline",
     title: "Pipeline",
+    purpose: "Is the gym-owner pipeline filling and converting to real interest?",
     source: "GHL gym-owners",
     syncedAt: go?.synced_at ?? null,
     kpis,
@@ -340,6 +376,7 @@ export function buildOutreach(
   return {
     id: "outreach",
     title: "Outreach Channels",
+    purpose: "Are email and Instagram earning replies at all?",
     source: "GHL gym-owners",
     syncedAt: go?.synced_at ?? null,
     kpis,

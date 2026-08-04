@@ -64,7 +64,11 @@ export function targetText(kpi: Kpi): string {
 export interface Section {
   id: string;
   title: string;
+  /** One line stating what question the section answers. */
+  purpose?: string;
   source: string;
   syncedAt: string | null;
   kpis: Kpi[];
+  /** A limitation the reader must know before trusting the numbers above. */
+  caveat?: string;
 }

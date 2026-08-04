@@ -88,7 +88,7 @@ export default async function Home() {
               for a 28px static logo. */}
           <img
             src="/logo.png"
-            alt="Blended Athletics"
+            alt="TWU"
             className="h-7 w-7 shrink-0 rounded-lg bg-base-card object-contain"
           />
           <span className="eyebrow !text-ink-dim">TWU Status Report</span>

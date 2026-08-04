@@ -83,12 +83,14 @@ export default async function Home() {
       {/* Top bar mirrors the Readout dashboard's chrome. */}
       <header className="sticky top-0 z-20 border-b border-base-line bg-base/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-5 py-3.5 sm:px-8">
-          <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber font-display text-[13px] font-bold text-black"
-            aria-hidden
-          >
-            T
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- matches the
+              Readout dashboard's plain <img> brand mark; no next/image needed
+              for a 28px static logo. */}
+          <img
+            src="/logo.png"
+            alt="Blended Athletics"
+            className="h-7 w-7 shrink-0 rounded-lg bg-base-card object-contain"
+          />
           <span className="eyebrow !text-ink-dim">Blended Athletics · TWU Status Report</span>
 
           <span className="ml-auto flex items-center gap-2">

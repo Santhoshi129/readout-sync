@@ -1,4 +1,5 @@
 import { Kpi, Severity, severityOf } from "@/lib/types";
+import Sparkline from "./Sparkline";
 
 const valueColor: Record<Severity, string> = {
   good: "text-signal-good",
@@ -87,8 +88,11 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
         )}
       </div>
 
-      <div className={`mt-2 font-mono text-[28px] font-semibold leading-none tabular ${valueColor[severity]}`}>
-        {formatValue(kpi)}
+      <div className="mt-2 flex items-baseline gap-2">
+        <span className={`font-mono text-[28px] font-semibold leading-none tabular ${valueColor[severity]}`}>
+          {formatValue(kpi)}
+        </span>
+        <Delta kpi={kpi} />
       </div>
 
       <p className="mt-1.5 text-[11px] leading-snug text-ink-faint">{kpi.detail}</p>
@@ -98,6 +102,38 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
       )}
 
       <ThresholdBar kpi={kpi} severity={severity} />
+
+      {kpi.spark && kpi.spark.length > 1 && (
+        <>
+          <Sparkline values={kpi.spark} severity={severity} label={kpi.label} />
+          <p className="mt-0.5 text-[10px] text-ink-faint">
+            last {kpi.sparkDays ?? kpi.spark.length} days
+          </p>
+        </>
+      )}
     </div>
+  );
+}
+
+/**
+ * Direction of travel over the sparkline window. Improvement is judged
+ * against the metric's own direction, so a falling at-risk rate reads as
+ * good and a falling reply rate reads as bad.
+ */
+function Delta({ kpi }: { kpi: Kpi }) {
+  if (kpi.delta === null || kpi.delta === undefined || kpi.delta === 0) return null;
+  const rising = kpi.delta > 0;
+  const improving = kpi.inverse ? !rising : rising;
+  const unit = kpi.unit === "%" ? "pt" : "";
+  return (
+    <span
+      className={`font-mono text-[11.5px] tabular ${
+        improving ? "text-signal-good" : "text-signal-bad"
+      }`}
+      title={`${rising ? "Up" : "Down"} ${Math.abs(kpi.delta)}${unit} over the window shown`}
+    >
+      {rising ? "▲" : "▼"} {Math.abs(kpi.delta)}
+      {unit}
+    </span>
   );
 }

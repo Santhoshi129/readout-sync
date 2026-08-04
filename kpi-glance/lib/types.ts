@@ -17,6 +17,14 @@ export interface Kpi {
   detail: string;
   /** Set when the number is real but the sample behind it is too small to trust. */
   caveat?: string;
+  /** Real daily readings, oldest to newest. Absent when no history exists yet. */
+  spark?: number[];
+  /** Change across the sparkline window, in percentage points for rates. */
+  delta?: number | null;
+  /** How many days the sparkline covers, for the card's footnote. */
+  sparkDays?: number;
+  /** True when a rise in this metric is bad (at-risk, drop-off, and similar). */
+  inverse?: boolean;
 }
 
 /** Below this many observations a rate is too noisy to act on. */

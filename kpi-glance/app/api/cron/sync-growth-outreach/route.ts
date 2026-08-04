@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { storeSetJSON } from "@/lib/store";
+import { storeGetJSON, storeSetJSON } from "@/lib/store";
 import { KEY_ADOPTION, KEY_GROWTH } from "@/lib/live-data";
 import { authorizeCron } from "@/lib/cron-auth";
+import { dayOf, GrowthPoint, KEY_GROWTH_HISTORY, mergePoints, Series } from "@/lib/history";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -113,7 +114,28 @@ async function syncGrowthOutreach(): Promise<{ ok: boolean; reason?: string; con
   };
 
   const result = await storeSetJSON(KEY_GROWTH, payload);
-  return result.ok ? { ok: true, contacts: total } : { ok: false, reason: result.error };
+  if (!result.ok) return { ok: false, reason: result.error };
+
+  // Append today's point. GHL exposes current tag state only with no archive
+  // to backfill from, so this series starts the first day the cron runs.
+  const date = dayOf(payload.synced_at);
+  if (date) {
+    const stored = (await storeGetJSON<Series<GrowthPoint>>(KEY_GROWTH_HISTORY)) ?? { points: [] };
+    const merged = mergePoints(stored.points, [
+      {
+        date,
+        interested_rate_pct: payload.interested_rate_pct,
+        hot_lead_share_pct: payload.hot_lead_share_pct,
+        sequence_complete_rate_pct: payload.sequence_complete_rate_pct,
+        email_reply_rate_pct: payload.email_reply_rate_pct,
+        ig_reply_rate_pct: payload.ig_reply_rate_pct,
+        total_contacts: payload.total_contacts,
+      },
+    ]);
+    await storeSetJSON(KEY_GROWTH_HISTORY, { points: merged, updated_at: payload.synced_at });
+  }
+
+  return { ok: true, contacts: total };
 }
 
 async function syncAdoption(): Promise<{ ok: boolean; reason?: string; members?: number }> {

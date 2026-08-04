@@ -7,7 +7,6 @@ import {
   buildPipeline,
   buildPipelineFunnel,
   buildProductUsage,
-  NOT_YET_LIVE,
 } from "@/lib/kpi-data";
 import {
   fetchLatestGrowthOutreach,
@@ -28,7 +27,6 @@ import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
 import FunnelBar from "@/components/FunnelBar";
 import CompositionBar from "@/components/CompositionBar";
-import Coverage from "@/components/Coverage";
 
 export const dynamic = "force-dynamic";
 
@@ -182,8 +180,6 @@ export default async function Home() {
             )}
 
             <SectionBlock section={outreach} />
-
-            <Coverage sections={sections} pending={NOT_YET_LIVE} />
           </div>
         ) : (
           <div className="rounded-2xl border border-base-line bg-base-card px-5 py-6">

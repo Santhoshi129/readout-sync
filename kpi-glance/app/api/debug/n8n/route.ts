@@ -14,6 +14,20 @@ export const maxDuration = 60;
  * never returns credential values or member-level data.
  */
 
+function nodeJsonByPrefix(
+  runData: Record<string, { data?: { main?: { json?: unknown }[][] } }[]>,
+  prefix: string
+): Record<string, unknown> | null {
+  for (const [name, runs] of Object.entries(runData)) {
+    if (!name.toLowerCase().startsWith(prefix)) continue;
+    for (let i = runs.length - 1; i >= 0; i--) {
+      const json = runs[i]?.data?.main?.[0]?.[0]?.json;
+      if (json && typeof json === "object") return json as Record<string, unknown>;
+    }
+  }
+  return null;
+}
+
 function truncate(v: unknown): unknown {
   if (Array.isArray(v)) return `array(${v.length})`;
   if (v && typeof v === "object") return `object{${Object.keys(v).slice(0, 12).join(",")}}`;
@@ -138,6 +152,40 @@ export async function GET(req: NextRequest) {
       }
     } catch (e) {
       report.detail_error = e instanceof Error ? e.message : String(e);
+    }
+  }
+
+  // Are alert types mutually exclusive per member? The KPI layer sums them
+  // to get "members flagged", which is only valid if no member appears
+  // twice. Verified here rather than assumed. No member data is returned —
+  // only counts.
+  if (newest?.id) {
+    try {
+      const res = await fetch(`${root}/api/v1/executions/${newest.id}?includeData=true`, {
+        headers,
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const runData = (await res.json())?.data?.resultData?.runData ?? {};
+        const payload = nodeJsonByPrefix(runData, "build batch payload");
+        const alerts = (payload?.alerts ?? []) as Record<string, unknown>[];
+        const keys = new Set<string>();
+        const perMember = new Map<string, number>();
+        for (const a of alerts) {
+          const k = String(a.profile_id ?? a.zp_person_id ?? a.email ?? Math.random());
+          keys.add(k);
+          perMember.set(k, (perMember.get(k) ?? 0) + 1);
+        }
+        const dupes = [...perMember.values()].filter((n) => n > 1).length;
+        report.exclusivity_check = {
+          alerts_total: alerts.length,
+          distinct_members: keys.size,
+          members_with_more_than_one_alert: dupes,
+          mutually_exclusive: dupes === 0 && keys.size === alerts.length,
+        };
+      }
+    } catch (e) {
+      report.exclusivity_check = { error: e instanceof Error ? e.message : String(e) };
     }
   }
 

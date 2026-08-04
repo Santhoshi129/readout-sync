@@ -15,7 +15,7 @@ export interface Pending {
 
 const DESCRIPTIONS: Record<string, string> = {
   "product-usage": "How much of the paying member base has actually adopted the app.",
-  "member-health": "Which members are drifting — at risk, needing attention, or dropping attendance.",
+  "member-health": "Which members are drifting: at risk, needing attention, or dropping attendance.",
   pipeline: "Whether the gym-owner pipeline is filling and converting to real interest.",
   outreach: "Whether email and Instagram are earning replies at all.",
 };
@@ -41,7 +41,7 @@ export default function Coverage({
       <p className="mt-2.5 max-w-3xl text-[12.5px] leading-relaxed text-ink-dim">
         A threshold view, not a report. Every figure is scored green, amber or red against an agreed
         target, and the Problem Radar at the top lists only what is currently off. For raw counts and
-        the editorial breakdown of each automation, the Readout dashboard remains the place to look —
+        the editorial breakdown of each automation, the Readout dashboard remains the place to look;
         this page deliberately does not duplicate it.
       </p>
 
@@ -57,7 +57,7 @@ export default function Coverage({
                 />
                 <p className="text-[12px] leading-snug text-ink-dim">
                   <span className="font-medium text-ink">{s.title}</span>
-                  {" — "}
+                  {": "}
                   {DESCRIPTIONS[s.id] ?? `${s.kpis.length} KPIs.`}{" "}
                   <span className="text-ink-faint">
                     {s.kpis.length} KPI{s.kpis.length === 1 ? "" : "s"} from {s.source}.
@@ -79,7 +79,7 @@ export default function Coverage({
                 />
                 <p className="text-[12px] leading-snug text-ink-dim">
                   <span className="font-medium text-ink">{p.label}</span>
-                  {" — "}
+                  {": "}
                   {p.blocker}{" "}
                   <span className="text-amber">Needs: {p.needs}</span>
                 </p>

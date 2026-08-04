@@ -120,7 +120,7 @@ export default async function Home() {
             <p className="text-[12.5px] text-signal-warn">
               <span className="font-semibold">Data may be stale.</span>{" "}
               <span className="text-ink-dim">
-                The most recent sync finished {Math.round(age!)} hours ago — the daily job may not
+                The most recent sync finished {Math.round(age!)} hours ago. The daily job may not
                 have run. Treat the numbers below as last known, not current.
               </span>
             </p>
@@ -138,8 +138,8 @@ export default async function Home() {
                 <li key={f.label} className="text-[12px] text-ink-dim">
                   <span className="font-medium text-ink">{f.label}</span>
                   {f.lastSuccess
-                    ? ` — last succeeded ${relativeSync(f.lastSuccess) ?? "a while ago"}`
-                    : " — no successful sync yet"}
+                    ? `: last succeeded ${relativeSync(f.lastSuccess) ?? "a while ago"}`
+                    : ": no successful sync yet"}
                 </li>
               ))}
             </ul>
@@ -188,7 +188,7 @@ export default async function Home() {
             <p className="text-[13.5px] text-ink">No data has been synced yet.</p>
             <p className="mt-1.5 text-[12.5px] text-ink-dim">
               The daily jobs write their first snapshot on the next scheduled run. Nothing is shown
-              here until real numbers exist — this page never displays placeholder values.
+              here until real numbers exist. This page never displays placeholder values.
             </p>
           </div>
         )}

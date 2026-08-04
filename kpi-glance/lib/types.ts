@@ -34,7 +34,7 @@ export const LOW_SAMPLE = 30;
 
 export function lowSampleCaveat(denominator: number): string | undefined {
   if (denominator >= LOW_SAMPLE) return undefined;
-  return `Low sample (n=${denominator}) — treat as directional`;
+  return `Low sample (n=${denominator}): treat as directional`;
 }
 
 export type Severity = "good" | "warn" | "bad" | "neutral";

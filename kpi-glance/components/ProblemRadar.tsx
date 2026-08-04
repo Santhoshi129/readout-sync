@@ -29,7 +29,7 @@ export default function ProblemRadar({ sections }: { sections: Section[] }) {
     return (
       <div className="rounded-2xl border border-base-line bg-base-card px-5 py-4">
         <p className="text-[13px] text-ink-dim">
-          No thresholded KPIs have data yet — the Problem Radar turns on with the first daily sync.
+          No thresholded KPIs have data yet. The Problem Radar turns on with the first daily sync.
         </p>
       </div>
     );

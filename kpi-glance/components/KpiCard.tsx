@@ -136,7 +136,7 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
         ) : (
           // Says why the trend is missing rather than leaving a silent gap.
           <p className="mt-3.5 text-[10px] leading-snug text-ink-faint">
-            No trend yet — this source keeps no history, so the line starts once a second daily
+            No trend yet. This source keeps no history, so the line starts once a second daily
             sync has run.
           </p>
         )}

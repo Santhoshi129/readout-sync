@@ -17,6 +17,10 @@ import {
  * rendered. A number on this page is always a real number.
  */
 
+// Dev note (not shown as page copy): the threshold good/warn values set on
+// each KPI below are working placeholders until Kimberly supplies the agreed
+// benchmarks. Update the `threshold` objects here when those targets arrive.
+
 const n = (v: number) => v.toLocaleString();
 
 /* ------------------------------------------------------------------ *
@@ -222,11 +226,7 @@ export function buildMemberHealth(
   const coveragePct = base > 0 ? round1((assessed / base) * 100) : 0;
   const caveat =
     base > 0 && notLinked > 0
-      ? `Health can only be assessed for the ${n(assessed)} members linked to the app — ${coveragePct}% of the base. The other ${n(
-          notLinked
-        )} members generate no engagement signal, so every rate above describes the visible ${coveragePct}%, not all ${n(
-          base
-        )} members.`
+      ? `Health data covers members linked to the app only (${coveragePct}% of ${n(base)}).`
       : undefined;
 
   return {

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { storeGetJSONFresh, storeSetJSON } from "@/lib/store";
 import { KEY_ADOPTION, KEY_GROWTH } from "@/lib/live-data";
 import { authorizeCron } from "@/lib/cron-auth";
+import { fetchWithRetry } from "@/lib/http";
+import { recordSyncStatus } from "@/lib/sync-status";
 import { dayOf, GrowthPoint, KEY_GROWTH_HISTORY, mergePoints, Series } from "@/lib/history";
 
 export const dynamic = "force-dynamic";
@@ -22,20 +24,19 @@ const GHL_VER = "2021-07-28";
 async function ghlGet(token: string, url: string, qs: Record<string, string | number>) {
   const u = new URL(url);
   Object.entries(qs || {}).forEach(([k, v]) => u.searchParams.set(k, String(v)));
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const res = await fetch(u, { headers: { Authorization: token, Version: GHL_VER }, cache: "no-store" });
-      if (res.status === 429) {
-        await new Promise((r) => setTimeout(r, 1200 * (attempt + 1)));
-        continue;
-      }
-      if (!res.ok) return null;
-      return await res.json();
-    } catch {
-      await new Promise((r) => setTimeout(r, 800));
-    }
+  try {
+    // One retry on transient failure (429/5xx/timeout); an auth error (401/403)
+    // is returned as a non-ok response and treated as a hard failure below.
+    const res = await fetchWithRetry(u, {
+      headers: { Authorization: token, Version: GHL_VER },
+      cache: "no-store",
+      timeoutMs: 15000,
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
   }
-  return null;
 }
 
 const round1 = (x: number) => Math.round(x * 10) / 10;
@@ -144,9 +145,12 @@ async function syncAdoption(): Promise<{ ok: boolean; reason?: string; members?:
 
   let res: Response;
   try {
-    res = await fetch("https://dashboard.trainwithus.app/api/v1/community/member-overlap", {
+    // One retry on transient failure (5xx/timeout); a 401/403 is returned
+    // un-retried and reported as the reason below.
+    res = await fetchWithRetry("https://dashboard.trainwithus.app/api/v1/community/member-overlap", {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
+      timeoutMs: 15000,
     });
   } catch (err) {
     return { ok: false, reason: err instanceof Error ? err.message : "member-overlap fetch failed" };
@@ -184,10 +188,22 @@ export async function GET(req: NextRequest) {
     syncAdoption().catch((e) => ({ ok: false as const, reason: String(e) })),
   ]);
 
+  const synced_at = new Date().toISOString();
+
+  // Record per-source health so a silent failure surfaces on the page instead
+  // of just serving stale numbers.
+  await recordSyncStatus(
+    {
+      growth_outreach: { ok: growth.ok, error: growth.ok ? undefined : growth.reason },
+      adoption_twu: { ok: adoption.ok, error: adoption.ok ? undefined : adoption.reason },
+    },
+    synced_at
+  ).catch(() => {});
+
   return NextResponse.json({
     ok: growth.ok || adoption.ok,
     growth_outreach: growth,
     adoption,
-    synced_at: new Date().toISOString(),
+    synced_at,
   });
 }

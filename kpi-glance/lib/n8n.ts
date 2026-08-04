@@ -21,6 +21,8 @@
  * dropped here and never written to storage.
  */
 
+import { fetchWithRetry } from "./http";
+
 export interface RetentionCounts {
   run_completed_at: string | null;
   alert_count: number;
@@ -80,7 +82,9 @@ export async function fetchExecutionCounts(
   apiKey: string,
   executionId: string
 ): Promise<{ retention: RetentionCounts | null; overlap: OverlapCounts | null } | null> {
-  const res = await fetch(`${root}/api/v1/executions/${executionId}?includeData=true`, {
+  // Large (multi-MB) payload: retry once on transient failure, but no hard
+  // timeout so a legitimately slow download is not cut off mid-stream.
+  const res = await fetchWithRetry(`${root}/api/v1/executions/${executionId}?includeData=true`, {
     headers: { "X-N8N-API-KEY": apiKey, accept: "application/json" },
     cache: "no-store",
   });
@@ -96,9 +100,9 @@ export async function listRecentExecutions(
   workflowId: string,
   limit: number
 ): Promise<{ id: string; startedAt: string }[]> {
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `${root}/api/v1/executions?workflowId=${encodeURIComponent(workflowId)}&status=success&limit=${limit}`,
-    { headers: { "X-N8N-API-KEY": apiKey, accept: "application/json" }, cache: "no-store" }
+    { headers: { "X-N8N-API-KEY": apiKey, accept: "application/json" }, cache: "no-store", timeoutMs: 15000 }
   );
   if (!res.ok) return [];
   return ((await res.json())?.data ?? []) as { id: string; startedAt: string }[];
@@ -149,16 +153,17 @@ export async function resolveWorkflow(): Promise<
   const root = baseUrl.replace(/\/+$/, "");
   const headers = { "X-N8N-API-KEY": apiKey, accept: "application/json" };
 
-  const probe = await fetch(`${root}/api/v1/workflows/${encodeURIComponent(configured)}`, {
+  const probe = await fetchWithRetry(`${root}/api/v1/workflows/${encodeURIComponent(configured)}`, {
     headers,
     cache: "no-store",
+    timeoutMs: 15000,
   });
   if (probe.ok) return { ok: true, root, apiKey, workflowId: configured };
   if (probe.status !== 404) {
     return { ok: false, error: `n8n workflow lookup returned ${probe.status}` };
   }
 
-  const listAll = await fetch(`${root}/api/v1/workflows?limit=250`, { headers, cache: "no-store" });
+  const listAll = await fetchWithRetry(`${root}/api/v1/workflows?limit=250`, { headers, cache: "no-store", timeoutMs: 15000 });
   if (!listAll.ok) {
     return { ok: false, error: `Workflow ${configured} not found and workflow list returned ${listAll.status}` };
   }
@@ -188,12 +193,13 @@ export async function fetchLatestRetentionSnapshot(): Promise<
   //    exist, which surfaced only as "no data". If the id 404s, fall back to
   //    finding the Retention Watch workflow by name.
   let activeId = workflowId;
-  const probe = await fetch(`${root}/api/v1/workflows/${encodeURIComponent(workflowId)}`, {
+  const probe = await fetchWithRetry(`${root}/api/v1/workflows/${encodeURIComponent(workflowId)}`, {
     headers,
     cache: "no-store",
+    timeoutMs: 15000,
   });
   if (probe.status === 404) {
-    const listAll = await fetch(`${root}/api/v1/workflows?limit=250`, { headers, cache: "no-store" });
+    const listAll = await fetchWithRetry(`${root}/api/v1/workflows?limit=250`, { headers, cache: "no-store", timeoutMs: 15000 });
     if (!listAll.ok) {
       return { ok: false, error: `Workflow ${workflowId} not found and workflow list returned ${listAll.status}` };
     }
@@ -208,9 +214,9 @@ export async function fetchLatestRetentionSnapshot(): Promise<
   }
 
   // 1. Newest successful run. Deliberately no includeData here — cheap call.
-  const listRes = await fetch(
+  const listRes = await fetchWithRetry(
     `${root}/api/v1/executions?workflowId=${encodeURIComponent(activeId)}&status=success&limit=1`,
-    { headers, cache: "no-store" }
+    { headers, cache: "no-store", timeoutMs: 15000 }
   );
   if (!listRes.ok) {
     return { ok: false, error: `n8n executions list returned ${listRes.status}` };
@@ -223,7 +229,8 @@ export async function fetchLatestRetentionSnapshot(): Promise<
   }
 
   // 2. That one execution's data.
-  const detailRes = await fetch(`${root}/api/v1/executions/${latest.id}?includeData=true`, {
+  // Large (multi-MB) payload: retry once on transient failure, no hard timeout.
+  const detailRes = await fetchWithRetry(`${root}/api/v1/executions/${latest.id}?includeData=true`, {
     headers,
     cache: "no-store",
   });

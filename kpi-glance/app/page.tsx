@@ -23,6 +23,7 @@ import {
   Series,
 } from "@/lib/history";
 import { easternStamp, hoursSince, newestStamp, relativeSync, STALE_AFTER_HOURS } from "@/lib/format";
+import { fetchSyncStatus, SOURCE_LABELS } from "@/lib/sync-status";
 import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
 import FunnelBar from "@/components/FunnelBar";
@@ -32,13 +33,24 @@ import Coverage from "@/components/Coverage";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [overlap, retention, growthOutreach, memberHistory, growthHistory] = await Promise.all([
-    fetchLatestOverlap(),
-    fetchLatestRetentionPayload(),
-    fetchLatestGrowthOutreach(),
-    storeGetJSON<Series<MemberPoint>>(KEY_MEMBER_HISTORY),
-    storeGetJSON<Series<GrowthPoint>>(KEY_GROWTH_HISTORY),
-  ]);
+  const [overlap, retention, growthOutreach, memberHistory, growthHistory, syncStatus] =
+    await Promise.all([
+      fetchLatestOverlap(),
+      fetchLatestRetentionPayload(),
+      fetchLatestGrowthOutreach(),
+      storeGetJSON<Series<MemberPoint>>(KEY_MEMBER_HISTORY),
+      storeGetJSON<Series<GrowthPoint>>(KEY_GROWTH_HISTORY),
+      fetchSyncStatus(),
+    ]);
+
+  // Sources whose most recent daily run failed — surfaced so a silent failure
+  // is visible rather than hidden behind stale-but-plausible numbers.
+  const failedSources = Object.entries(syncStatus ?? {})
+    .filter(([, s]) => s.ok === false)
+    .map(([key, s]) => ({
+      label: SOURCE_LABELS[key] ?? key,
+      lastSuccess: s.last_success_at,
+    }));
 
   const memberPoints = memberHistory?.points ?? [];
   const growthPoints = growthHistory?.points ?? [];
@@ -96,8 +108,7 @@ export default async function Home() {
             KPI Glance
           </h1>
           <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-ink-dim">
-            Is it working, is it growing, and where are the problems — answered without clicking
-            anything.{" "}
+            Daily threshold view across pipeline, outreach, and member health.{" "}
             {latestStamp && (
               <span className="text-ink-faint">Data as of {latestStamp} ET.</span>
             )}
@@ -113,6 +124,25 @@ export default async function Home() {
                 have run. Treat the numbers below as last known, not current.
               </span>
             </p>
+          </div>
+        )}
+
+        {failedSources.length > 0 && (
+          <div className="mb-5 rounded-2xl border border-signal-warnDim bg-base-card px-5 py-4">
+            <p className="text-[12.5px] text-signal-warn">
+              <span className="font-semibold">Some sources did not update on the last run.</span>{" "}
+              <span className="text-ink-dim">Figures drawn from these may be stale:</span>
+            </p>
+            <ul className="mt-1.5 flex flex-col gap-1">
+              {failedSources.map((f) => (
+                <li key={f.label} className="text-[12px] text-ink-dim">
+                  <span className="font-medium text-ink">{f.label}</span>
+                  {f.lastSuccess
+                    ? ` — last succeeded ${relativeSync(f.lastSuccess) ?? "a while ago"}`
+                    : " — no successful sync yet"}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
@@ -165,8 +195,7 @@ export default async function Home() {
 
         <footer className="mt-10 border-t border-base-line pt-4">
           <p className="eyebrow !tracking-[0.14em] leading-relaxed">
-            Read-only · figures written once daily by background jobs and read from cache · no
-            external calls on page load
+            Updated daily · figures cached, not live on page load
           </p>
         </footer>
       </main>

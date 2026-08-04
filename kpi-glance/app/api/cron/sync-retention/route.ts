@@ -15,6 +15,7 @@ import {
   Series,
 } from "@/lib/history";
 import { authorizeCron } from "@/lib/cron-auth";
+import { recordSyncStatus } from "@/lib/sync-status";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -48,16 +49,32 @@ export async function GET(req: NextRequest) {
   const denied = authorizeCron(req);
   if (denied) return denied;
 
+  // A total n8n failure means none of the three outputs updated — record all
+  // three as failed so the page can flag them rather than showing stale data.
+  const failAll = async (error: string) => {
+    const at = new Date().toISOString();
+    await recordSyncStatus(
+      {
+        retention: { ok: false, error },
+        overlap_n8n: { ok: false, error },
+        member_history: { ok: false, error },
+      },
+      at
+    ).catch(() => {});
+  };
+
   let result: Awaited<ReturnType<typeof fetchLatestRetentionSnapshot>>;
   try {
     result = await fetchLatestRetentionSnapshot();
   } catch (err) {
-    return NextResponse.json(
-      { ok: false, error: err instanceof Error ? err.message : "n8n request failed" },
-      { status: 200 }
-    );
+    const error = err instanceof Error ? err.message : "n8n request failed";
+    await failAll(error);
+    return NextResponse.json({ ok: false, error }, { status: 200 });
   }
-  if (!result.ok) return NextResponse.json({ ok: false, error: result.error }, { status: 200 });
+  if (!result.ok) {
+    await failAll(result.error);
+    return NextResponse.json({ ok: false, error: result.error }, { status: 200 });
+  }
 
   const { snapshot } = result;
   const synced_at = new Date().toISOString();
@@ -92,6 +109,22 @@ export async function GET(req: NextRequest) {
   }
 
   written.history = await backfillHistory(snapshot.started_at);
+
+  // Per-source health, so a source that failed inside an otherwise-successful
+  // run still surfaces on the page instead of quietly serving stale numbers.
+  const status = (v: unknown) =>
+    (v as { ok?: boolean; error?: string }) ?? { ok: false, error: "no result" };
+  const r = status(written.retention);
+  const o = status(written.overlap);
+  const h = status(written.history);
+  await recordSyncStatus(
+    {
+      retention: { ok: !!r.ok, error: r.ok ? undefined : r.error },
+      overlap_n8n: { ok: !!o.ok, error: o.ok ? undefined : o.error },
+      member_history: { ok: !!h.ok, error: h.ok ? undefined : h.error },
+    },
+    synced_at
+  ).catch(() => {});
 
   return NextResponse.json({
     ok: true,

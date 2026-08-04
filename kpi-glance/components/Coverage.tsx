@@ -88,12 +88,6 @@ export default function Coverage({
           </ul>
         </div>
       </div>
-
-      <p className="mt-5 border-t border-base-lineSoft pt-3.5 text-[11px] leading-relaxed text-ink-faint">
-        Nothing here is estimated. A KPI without a confirmed source is left off the page entirely
-        rather than filled with a placeholder, and a trend line is drawn only where real daily history
-        exists. Thresholds are working placeholders until Kimberly supplies benchmarks.
-      </p>
     </section>
   );
 }

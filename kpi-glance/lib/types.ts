@@ -15,6 +15,16 @@ export interface Kpi {
   threshold: Threshold | null;
   /** Short factual basis for the number, e.g. "208 of 1,465 linked members" */
   detail: string;
+  /** Set when the number is real but the sample behind it is too small to trust. */
+  caveat?: string;
+}
+
+/** Below this many observations a rate is too noisy to act on. */
+export const LOW_SAMPLE = 30;
+
+export function lowSampleCaveat(denominator: number): string | undefined {
+  if (denominator >= LOW_SAMPLE) return undefined;
+  return `Low sample (n=${denominator}) — treat as directional`;
 }
 
 export type Severity = "good" | "warn" | "bad" | "neutral";

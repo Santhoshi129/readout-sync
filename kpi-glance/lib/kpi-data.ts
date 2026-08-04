@@ -1,4 +1,4 @@
-import { Kpi, Section } from "./types";
+import { Kpi, lowSampleCaveat, Section } from "./types";
 import {
   GrowthOutreachPayload,
   OverlapData,
@@ -102,6 +102,7 @@ export function buildMemberHealth(
       unit: "%",
       threshold: { direction: "lower-is-better", good, warn },
       detail: note ?? `${n(count)} of ${n(linked)} linked members`,
+      caveat: lowSampleCaveat(linked),
     });
   };
 
@@ -148,6 +149,7 @@ export function buildPipeline(go: GrowthOutreachPayload | null): Section {
         unit: "%",
         threshold: { direction: "higher-is-better", good: 25, warn: 12 },
         detail: `${n(go.interested)} of ${n(go.email_replied)} replies marked interested`,
+        caveat: lowSampleCaveat(go.email_replied),
       });
     }
     if (go.hot_leads + go.warm_leads > 0) {
@@ -158,6 +160,7 @@ export function buildPipeline(go: GrowthOutreachPayload | null): Section {
         unit: "%",
         threshold: { direction: "higher-is-better", good: 40, warn: 20 },
         detail: `${n(go.hot_leads)} hot of ${n(go.hot_leads + go.warm_leads)} qualified leads`,
+        caveat: lowSampleCaveat(go.hot_leads + go.warm_leads),
       });
     }
     if (go.sequence_complete + go.sequence_stopped > 0) {
@@ -168,6 +171,7 @@ export function buildPipeline(go: GrowthOutreachPayload | null): Section {
         unit: "%",
         threshold: { direction: "higher-is-better", good: 70, warn: 50 },
         detail: `${n(go.sequence_complete)} completed vs ${n(go.sequence_stopped)} stopped early`,
+        caveat: lowSampleCaveat(go.sequence_complete + go.sequence_stopped),
       });
     }
     if (go.total_contacts > 0) {
@@ -203,6 +207,7 @@ export function buildOutreach(go: GrowthOutreachPayload | null): Section {
         unit: "%",
         threshold: { direction: "higher-is-better", good: 8, warn: 4 },
         detail: `${n(go.email_replied)} replies of ${n(go.email_sent)} sent`,
+        caveat: lowSampleCaveat(go.email_sent),
       });
     }
     if (go.ig_sent_total > 0) {
@@ -213,6 +218,7 @@ export function buildOutreach(go: GrowthOutreachPayload | null): Section {
         unit: "%",
         threshold: { direction: "higher-is-better", good: 12, warn: 6 },
         detail: `${n(go.ig_replies)} replies of ${n(go.ig_sent_total)} DMs sent`,
+        caveat: lowSampleCaveat(go.ig_sent_total),
       });
     }
   }

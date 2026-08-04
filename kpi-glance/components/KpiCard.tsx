@@ -93,6 +93,10 @@ export default function KpiCard({ kpi }: { kpi: Kpi }) {
 
       <p className="mt-1.5 text-[11px] leading-snug text-ink-faint">{kpi.detail}</p>
 
+      {kpi.caveat && (
+        <p className="mt-1 text-[10.5px] font-medium leading-snug text-signal-warn/90">{kpi.caveat}</p>
+      )}
+
       <ThresholdBar kpi={kpi} severity={severity} />
     </div>
   );

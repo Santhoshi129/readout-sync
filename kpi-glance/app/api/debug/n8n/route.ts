@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authorizeCron } from "@/lib/cron-auth";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -21,6 +22,11 @@ function truncate(v: unknown): unknown {
 }
 
 export async function GET(req: NextRequest) {
+  // Shares the cron guard: once CRON_SECRET is set this endpoint is closed
+  // to anyone without it, since it reveals n8n workflow names and structure.
+  const denied = authorizeCron(req);
+  if (denied) return denied;
+
   const baseUrl = process.env.N8N_BASE_URL;
   const apiKey = process.env.N8N_API_KEY;
   // ?workflow=<id> inspects a different workflow than the configured one,

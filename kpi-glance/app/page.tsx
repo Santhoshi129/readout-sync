@@ -1,7 +1,11 @@
 import {
+  buildAlertMix,
+  buildInstagramFunnel,
   buildMemberHealth,
+  buildMemberSplit,
   buildOutreach,
   buildPipeline,
+  buildPipelineFunnel,
   buildProductUsage,
   NOT_YET_LIVE,
 } from "@/lib/kpi-data";
@@ -10,28 +14,50 @@ import {
   fetchLatestOverlap,
   fetchLatestRetentionPayload,
 } from "@/lib/live-data";
+import { storeGetJSON } from "@/lib/store";
+import {
+  GrowthPoint,
+  KEY_GROWTH_HISTORY,
+  KEY_MEMBER_HISTORY,
+  MemberPoint,
+  Series,
+} from "@/lib/history";
 import { easternStamp, hoursSince, newestStamp, STALE_AFTER_HOURS } from "@/lib/format";
 import SectionBlock from "@/components/SectionBlock";
 import ProblemRadar from "@/components/ProblemRadar";
+import FunnelBar from "@/components/FunnelBar";
+import CompositionBar from "@/components/CompositionBar";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [overlap, retention, growthOutreach] = await Promise.all([
+  const [overlap, retention, growthOutreach, memberHistory, growthHistory] = await Promise.all([
     fetchLatestOverlap(),
     fetchLatestRetentionPayload(),
     fetchLatestGrowthOutreach(),
+    storeGetJSON<Series<MemberPoint>>(KEY_MEMBER_HISTORY),
+    storeGetJSON<Series<GrowthPoint>>(KEY_GROWTH_HISTORY),
   ]);
+
+  const memberPoints = memberHistory?.points ?? [];
+  const growthPoints = growthHistory?.points ?? [];
 
   // Order matters: usage and member health first (is the product working),
   // then pipeline and outreach (is it growing). The Problem Radar above
   // covers the third question on its own.
-  const sections = [
-    buildProductUsage(overlap),
-    buildMemberHealth(overlap, retention),
-    buildPipeline(growthOutreach),
-    buildOutreach(growthOutreach),
-  ].filter((s) => s.kpis.length > 0);
+  const productUsage = buildProductUsage(overlap, memberPoints);
+  const memberHealth = buildMemberHealth(overlap, retention, memberPoints);
+  const pipeline = buildPipeline(growthOutreach, growthPoints);
+  const outreach = buildOutreach(growthOutreach, growthPoints);
+
+  const sections = [productUsage, memberHealth, pipeline, outreach].filter(
+    (s) => s.kpis.length > 0
+  );
+
+  const memberSplit = buildMemberSplit(overlap);
+  const alertMix = buildAlertMix(retention);
+  const pipelineFunnel = buildPipelineFunnel(growthOutreach);
+  const igFunnel = buildInstagramFunnel(growthOutreach);
 
   const latest = newestStamp(sections.map((s) => s.syncedAt));
   const latestStamp = easternStamp(latest);
@@ -77,9 +103,34 @@ export default async function Home() {
 
       {hasData ? (
         <div className="flex flex-col gap-8">
-          {sections.map((section) => (
-            <SectionBlock key={section.id} section={section} />
-          ))}
+          <SectionBlock section={productUsage} />
+
+          {(memberSplit.length > 0 || alertMix.length > 0) && (
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              <CompositionBar
+                title="Where the member base sits"
+                segments={memberSplit}
+                totalLabel="active members"
+              />
+              <CompositionBar
+                title="What today's alerts consist of"
+                segments={alertMix}
+                totalLabel="alerts raised"
+              />
+            </div>
+          )}
+
+          <SectionBlock section={memberHealth} />
+          <SectionBlock section={pipeline} />
+
+          {(pipelineFunnel.length > 0 || igFunnel.length > 0) && (
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              <FunnelBar title="Gym-owner outreach funnel" stages={pipelineFunnel} />
+              <FunnelBar title="Instagram funnel" stages={igFunnel} />
+            </div>
+          )}
+
+          <SectionBlock section={outreach} />
         </div>
       ) : (
         <div className="rounded-xl border border-base-line bg-base-panel px-4 py-5">
@@ -95,7 +146,8 @@ export default async function Home() {
         <p className="text-[11px] leading-relaxed text-ink-faint">
           Read-only. Every figure is written once a day by a background job and read from cache — this
           page never calls GHL, the TWU API, or n8n on load. Any KPI without a confirmed data source is
-          omitted entirely rather than estimated.
+          omitted entirely rather than estimated, and a trend line is drawn only where real daily
+          history exists.
         </p>
         <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint">
           Not yet live:{" "}

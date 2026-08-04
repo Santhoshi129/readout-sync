@@ -70,6 +70,106 @@ function len(v: unknown): number {
   return Array.isArray(v) ? v.length : 0;
 }
 
+/**
+ * Aggregate counts for one past execution, used to backfill history.
+ * Fetched one execution at a time so a slow or oversized payload can never
+ * stall the whole daily job.
+ */
+export async function fetchExecutionCounts(
+  root: string,
+  apiKey: string,
+  executionId: string
+): Promise<{ retention: RetentionCounts | null; overlap: OverlapCounts | null } | null> {
+  const res = await fetch(`${root}/api/v1/executions/${executionId}?includeData=true`, {
+    headers: { "X-N8N-API-KEY": apiKey, accept: "application/json" },
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+  const runData: RunData = (await res.json())?.data?.resultData?.runData ?? {};
+  return { retention: extractRetention(runData, null), overlap: extractOverlap(runData) };
+}
+
+/** Lists recent successful executions without pulling their (large) data. */
+export async function listRecentExecutions(
+  root: string,
+  apiKey: string,
+  workflowId: string,
+  limit: number
+): Promise<{ id: string; startedAt: string }[]> {
+  const res = await fetch(
+    `${root}/api/v1/executions?workflowId=${encodeURIComponent(workflowId)}&status=success&limit=${limit}`,
+    { headers: { "X-N8N-API-KEY": apiKey, accept: "application/json" }, cache: "no-store" }
+  );
+  if (!res.ok) return [];
+  return ((await res.json())?.data ?? []) as { id: string; startedAt: string }[];
+}
+
+function extractRetention(runData: RunData, startedAt: string | null): RetentionCounts | null {
+  const payload =
+    nodeJson(runData, (nm) => nm.toLowerCase().startsWith("build batch payload")) ??
+    (() => {
+      for (const [, runs] of Object.entries(runData)) {
+        for (let i = runs.length - 1; i >= 0; i--) {
+          const json = runs[i]?.data?.main?.[0]?.[0]?.json as Record<string, unknown> | undefined;
+          if (json && typeof json === "object" && "alerts_by_type" in json) return json;
+        }
+      }
+      return null;
+    })();
+  if (!payload) return null;
+  return {
+    run_completed_at: (payload.run_completed_at as string) ?? startedAt,
+    alert_count: Number(payload.alert_count) || len(payload.alerts),
+    alerts_by_type: toCountMap(payload.alerts_by_type),
+  };
+}
+
+function extractOverlap(runData: RunData): OverlapCounts | null {
+  const node = nodeJson(runData, (nm) => nm.toLowerCase().startsWith("get member overlap report"));
+  const od = (node?.data ?? null) as Record<string, unknown> | null;
+  if (!od || !Array.isArray(od.in_both)) return null;
+  return {
+    in_both: len(od.in_both),
+    in_zp_not_app: len(od.in_zp_not_app),
+    in_app_not_zp: len(od.in_app_not_zp),
+    generated_at: ((node?.meta as Record<string, unknown> | undefined)?.generated_at as string) ?? null,
+  };
+}
+
+/** Resolves the workflow id, falling back to a name match if it 404s. */
+export async function resolveWorkflow(): Promise<
+  { ok: true; root: string; apiKey: string; workflowId: string } | { ok: false; error: string }
+> {
+  const baseUrl = process.env.N8N_BASE_URL;
+  const apiKey = process.env.N8N_API_KEY;
+  const configured = process.env.N8N_WORKFLOW_ID;
+  if (!baseUrl || !apiKey || !configured) {
+    return { ok: false, error: "N8N_BASE_URL / N8N_API_KEY / N8N_WORKFLOW_ID not all set" };
+  }
+  const root = baseUrl.replace(/\/+$/, "");
+  const headers = { "X-N8N-API-KEY": apiKey, accept: "application/json" };
+
+  const probe = await fetch(`${root}/api/v1/workflows/${encodeURIComponent(configured)}`, {
+    headers,
+    cache: "no-store",
+  });
+  if (probe.ok) return { ok: true, root, apiKey, workflowId: configured };
+  if (probe.status !== 404) {
+    return { ok: false, error: `n8n workflow lookup returned ${probe.status}` };
+  }
+
+  const listAll = await fetch(`${root}/api/v1/workflows?limit=250`, { headers, cache: "no-store" });
+  if (!listAll.ok) {
+    return { ok: false, error: `Workflow ${configured} not found and workflow list returned ${listAll.status}` };
+  }
+  const all = ((await listAll.json())?.data ?? []) as { id: string; name: string }[];
+  const match = all.find((w) => /retention\s*watch/i.test(w.name));
+  if (!match) {
+    return { ok: false, error: `Workflow ${configured} not found, and no workflow name matched "Retention Watch"` };
+  }
+  return { ok: true, root, apiKey, workflowId: match.id };
+}
+
 export async function fetchLatestRetentionSnapshot(): Promise<
   { ok: true; snapshot: N8nSnapshot } | { ok: false; error: string }
 > {

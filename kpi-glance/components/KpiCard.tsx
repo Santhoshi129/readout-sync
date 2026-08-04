@@ -1,113 +1,99 @@
-import { Kpi, severityOf } from "@/lib/types";
+import { Kpi, Severity, severityOf } from "@/lib/types";
 
-const severityColor: Record<string, string> = {
+const valueColor: Record<Severity, string> = {
   good: "text-signal-good",
   warn: "text-signal-warn",
   bad: "text-signal-bad",
   neutral: "text-ink",
-  blocked: "text-ink-faint",
 };
 
-const severityDot: Record<string, string> = {
+const railColor: Record<Severity, string> = {
   good: "bg-signal-good",
   warn: "bg-signal-warn",
   bad: "bg-signal-bad",
-  neutral: "bg-ink-faint",
-  blocked: "bg-ink-faint",
+  neutral: "bg-base-line",
+};
+
+const badge: Record<Severity, { text: string; cls: string } | null> = {
+  good: { text: "Green", cls: "text-signal-good bg-signal-goodDim/40 border-signal-goodDim" },
+  warn: { text: "Yellow", cls: "text-signal-warn bg-signal-warnDim/40 border-signal-warnDim" },
+  bad: { text: "Red", cls: "text-signal-bad bg-signal-badDim/40 border-signal-badDim" },
+  neutral: null,
 };
 
 function formatValue(kpi: Kpi): string {
-  if (kpi.value === null) return "—";
   if (kpi.unit === "%") return `${kpi.value.toFixed(1)}%`;
-  if (kpi.unit === "days") return `${kpi.value.toFixed(0)}d`;
   return kpi.value.toLocaleString();
 }
 
-function Runway({ kpi }: { kpi: Kpi }) {
-  if (!kpi.threshold || kpi.value === null) return null;
+/**
+ * A single bar showing where the value sits between the red floor and the
+ * green target, so the card is readable without doing arithmetic.
+ */
+function ThresholdBar({ kpi, severity }: { kpi: Kpi; severity: Severity }) {
+  if (!kpi.threshold) return null;
   const { direction, good, warn } = kpi.threshold;
+
   const scaleMax =
     direction === "higher-is-better"
-      ? Math.max(good * 1.4, kpi.value * 1.1, 1)
-      : Math.max(warn * 1.6, kpi.value * 1.1, 1);
+      ? Math.max(good * 1.35, kpi.value * 1.1, 1)
+      : Math.max(warn * 1.5, kpi.value * 1.1, 1);
 
-  const pct = (n: number) => Math.min(100, Math.max(0, (n / scaleMax) * 100));
-  const markerPos = pct(kpi.value);
-
-  const zones =
-    direction === "higher-is-better"
-      ? [
-          { width: pct(warn), color: "bg-signal-badDim" },
-          { width: pct(good) - pct(warn), color: "bg-signal-warnDim" },
-          { width: 100 - pct(good), color: "bg-signal-goodDim" },
-        ]
-      : [
-          { width: pct(good), color: "bg-signal-goodDim" },
-          { width: pct(warn) - pct(good), color: "bg-signal-warnDim" },
-          { width: 100 - pct(warn), color: "bg-signal-badDim" },
-        ];
+  const fill = Math.min(100, Math.max(2, (kpi.value / scaleMax) * 100));
+  const goodMark = Math.min(100, (good / scaleMax) * 100);
 
   return (
-    <div className="relative mt-3 h-1.5 w-full rounded-full overflow-hidden bg-base-raised flex">
-      {zones.map((z, i) => (
-        <div key={i} style={{ width: `${z.width}%` }} className={z.color} />
-      ))}
-      <div
-        className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 -translate-x-1/2 rounded-full border-2 border-base bg-ink"
-        style={{ left: `${markerPos}%` }}
-      />
+    <div className="mt-3">
+      <div className="relative h-1 w-full rounded-full bg-base-raised overflow-hidden">
+        <div className={`h-full rounded-full ${railColor[severity]}`} style={{ width: `${fill}%` }} />
+        <div
+          className="absolute inset-y-0 w-px bg-ink-faint/70"
+          style={{ left: `${goodMark}%` }}
+          aria-hidden
+        />
+      </div>
+      <div className="mt-1.5 flex justify-between text-[10px] tabular text-ink-faint">
+        <span>
+          {direction === "higher-is-better" ? "red below" : "green below"}{" "}
+          {direction === "higher-is-better" ? warn : good}
+          {kpi.unit === "%" ? "%" : ""}
+        </span>
+        <span>
+          {direction === "higher-is-better" ? "green at" : "red above"}{" "}
+          {direction === "higher-is-better" ? good : warn}
+          {kpi.unit === "%" ? "%" : ""}
+        </span>
+      </div>
     </div>
   );
 }
 
 export default function KpiCard({ kpi }: { kpi: Kpi }) {
   const severity = severityOf(kpi);
-  const blocked = kpi.status === "blocked";
+  const tag = badge[severity];
 
   return (
-    <div
-      className={`rounded-lg border border-base-line bg-base-panel p-4 flex flex-col gap-1 ${
-        blocked ? "opacity-60" : ""
-      }`}
-    >
+    <div className="relative overflow-hidden rounded-xl border border-base-line bg-base-panel p-4">
+      <span className={`absolute inset-y-0 left-0 w-[3px] ${railColor[severity]}`} aria-hidden />
+
       <div className="flex items-start justify-between gap-2">
-        <span className="text-xs font-medium text-ink-dim leading-snug">{kpi.label}</span>
-        <span className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${severityDot[severity]}`} />
-      </div>
-
-      <div className="flex items-baseline gap-2">
-        <span className={`font-mono font-semibold text-2xl tabular ${severityColor[severity]}`}>
-          {formatValue(kpi)}
-        </span>
-        {kpi.trendDeltaPct !== null && kpi.value !== null && (
+        <span className="text-[13px] font-medium leading-snug text-ink-dim">{kpi.label}</span>
+        {tag && (
           <span
-            className={`font-mono text-xs tabular ${
-              kpi.trendDeltaPct >= 0 ? "text-signal-good" : "text-signal-bad"
-            }`}
+            className={`shrink-0 rounded-full border px-2 py-[1px] text-[10px] font-semibold uppercase tracking-wide ${tag.cls}`}
           >
-            {kpi.trendDeltaPct >= 0 ? "▲" : "▼"} {Math.abs(kpi.trendDeltaPct).toFixed(1)}
-            {kpi.unit === "%" ? "pt" : "%"}
+            {tag.text}
           </span>
         )}
       </div>
 
-      <Runway kpi={kpi} />
-
-      <div className="mt-2 flex items-center justify-between gap-2">
-        <span className="text-[10px] uppercase tracking-wide text-ink-faint">{kpi.source}</span>
-        {kpi.status === "sample" && (
-          <span className="text-[10px] uppercase tracking-wide text-signal-warn border border-signal-warnDim rounded px-1.5 py-0.5">
-            Sample
-          </span>
-        )}
-        {kpi.status === "blocked" && (
-          <span className="text-[10px] uppercase tracking-wide text-ink-faint border border-base-line rounded px-1.5 py-0.5">
-            Blocked
-          </span>
-        )}
+      <div className={`mt-2 font-mono text-[28px] font-semibold leading-none tabular ${valueColor[severity]}`}>
+        {formatValue(kpi)}
       </div>
 
-      {kpi.note && <p className="mt-1 text-[11px] text-ink-faint leading-snug">{kpi.note}</p>}
+      <p className="mt-1.5 text-[11px] leading-snug text-ink-faint">{kpi.detail}</p>
+
+      <ThresholdBar kpi={kpi} severity={severity} />
     </div>
   );
 }

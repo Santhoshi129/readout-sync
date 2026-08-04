@@ -1,260 +1,242 @@
-import { Kpi } from "./types";
-import { GrowthOutreachPayload, OverlapData, RetentionAlertsPayload, round1 } from "./live-data";
+import { Kpi, Section } from "./types";
+import {
+  GrowthOutreachPayload,
+  OverlapData,
+  RetentionAlertsPayload,
+  round1,
+} from "./live-data";
 
 /**
- * `status` on each KPI controls what the UI shows:
- *   "sample"  -> real formula, placeholder number, shown with a SAMPLE tag
- *   "live"    -> real formula, real number
- *   "blocked" -> no data source yet, shown greyed out with the blocker noted
+ * Every builder below returns real numbers or nothing at all.
  *
- * Growth/Outreach originally targeted trial-conversion/win-rate style
- * metrics, but TWU's gym-owners GHL pipeline is an outreach-sequence
- * tracker, not a sales-stage CRM — there's no won/lost or trial data to
- * pull. Swapped for what the tags actually support: reply rates, lead
- * quality mix, and sequence completion. See app/api/cron/sync-growth-outreach.
+ * There are deliberately no sample values and no placeholder cards: if a
+ * daily snapshot is missing, or a payload doesn't contain the field a KPI
+ * needs, that KPI is omitted, and a section with no KPIs left is not
+ * rendered. A number on this page is always a real number.
  */
 
-export function buildGrowthKpis(go: GrowthOutreachPayload | null): Kpi[] {
-  const live = go !== null;
-  return [
-    {
-      id: "interested-rate",
-      question: "growth",
-      label: "Interested Rate",
-      value: live ? go!.interested_rate_pct : 22,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 25, warn: 12 },
-      trendDeltaPct: null,
-      source: "GHL gym-owners (interested / replied)",
-      status: live ? "live" : "sample",
-      note: live ? `${go!.interested} of ${go!.email_replied} replies marked interested` : undefined,
-    },
-    {
-      id: "hot-lead-share",
-      question: "growth",
-      label: "Hot Lead Share",
-      value: live ? go!.hot_lead_share_pct : 38,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 40, warn: 20 },
-      trendDeltaPct: null,
-      source: "GHL gym-owners tag mix",
-      status: live ? "live" : "sample",
-      note: live ? `${go!.hot_leads} hot / ${go!.hot_leads + go!.warm_leads} hot+warm` : undefined,
-    },
-    {
-      id: "sequence-complete-rate",
-      question: "growth",
-      label: "Sequence Complete Rate",
-      value: live ? go!.sequence_complete_rate_pct : 64,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 70, warn: 50 },
-      trendDeltaPct: null,
-      source: "GHL gym-owners",
-      status: live ? "live" : "sample",
-      note: live ? `${go!.sequence_complete} completed vs ${go!.sequence_stopped} stopped early` : undefined,
-    },
-    {
-      id: "total-pipeline-contacts",
-      question: "growth",
-      label: "Total Pipeline Contacts",
-      value: live ? go!.total_contacts : 850,
-      unit: "count",
-      threshold: null,
-      trendDeltaPct: null,
-      source: "GHL gym-owners",
-      status: live ? "live" : "sample",
-      note: "Scale indicator, not a rate — no fixed target",
-    },
-  ];
-}
+const n = (v: number) => v.toLocaleString();
 
-export function buildOutreachKpis(go: GrowthOutreachPayload | null): Kpi[] {
-  const live = go !== null;
-  return [
-    {
-      id: "email-reply-rate",
-      question: "outreach",
-      label: "Email Reply Rate",
-      value: live ? go!.email_reply_rate_pct : 6.4,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 8, warn: 4 },
-      trendDeltaPct: null,
-      source: "GHL gym-owners",
-      status: live ? "live" : "sample",
-      note: live ? `${go!.email_replied} of ${go!.email_sent} sent` : undefined,
-    },
-    {
-      id: "ig-reply-rate",
-      question: "outreach",
-      label: "IG Reply Rate",
-      value: live ? go!.ig_reply_rate_pct : 9.8,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 12, warn: 6 },
-      trendDeltaPct: null,
-      source: "GHL gym-owners",
-      status: live ? "live" : "sample",
-      note: live ? `${go!.ig_replies} of ${go!.ig_sent_total} sent` : undefined,
-    },
-  ];
-}
+/* ------------------------------------------------------------------ *
+ * Product Usage — from the TWU member-overlap report
+ * ------------------------------------------------------------------ */
 
-export function buildAdoptionKpis(overlap: OverlapData | null): Kpi[] {
-  const live = overlap !== null;
-  const inBoth = overlap?.in_both?.length ?? 0;
-  const inZpNotApp = overlap?.in_zp_not_app?.length ?? 0;
-  const total = inBoth + inZpNotApp;
-  const rate = live && total > 0 ? round1((inBoth / total) * 100) : 64;
+export function buildProductUsage(overlap: OverlapData | null): Section {
+  const kpis: Kpi[] = [];
+  const linked = overlap?.in_both?.length ?? 0;
+  const notLinked = overlap?.in_zp_not_app?.length ?? 0;
+  const total = linked + notLinked;
 
-  return [
-    {
+  if (overlap && total > 0) {
+    kpis.push({
       id: "app-adoption-rate",
-      question: "adoption",
       label: "App Adoption Rate",
-      value: rate,
+      value: round1((linked / total) * 100),
       unit: "%",
       threshold: { direction: "higher-is-better", good: 70, warn: 50 },
-      trendDeltaPct: live ? null : 3.4,
-      source: "Retention Watch overlap report",
-      status: live ? "live" : "sample",
-      note: live
-        ? `${inBoth} linked / ${total} total active ZenPlanner members`
-        : "TWU_API_TOKEN not set in Vercel — showing sample data",
-    },
-    {
-      id: "new-app-signups",
-      question: "adoption",
-      label: "New App Signups (30d)",
-      value: 34,
+      detail: `${n(linked)} of ${n(total)} active members on the app`,
+    });
+    kpis.push({
+      id: "members-covered",
+      label: "Members Covered",
+      value: total,
       unit: "count",
       threshold: null,
-      trendDeltaPct: 9.0,
-      source: "Retention Watch engagement data",
-      status: "sample",
-      note: "Needs a per-member engagement call — too slow to run live on every page load, needs the daily snapshot persisted somewhere first",
-    },
-    {
-      id: "dau-mau",
-      question: "adoption",
-      label: "DAU / MAU (Stickiness)",
-      value: null,
-      unit: "%",
-      threshold: { direction: "higher-is-better", good: 20, warn: 10 },
-      trendDeltaPct: null,
-      source: "App usage endpoint (Alex)",
-      status: "blocked",
-      note: "Blocked — waiting on the app-usage endpoint Dave mentioned Alex would provide",
-    },
-  ];
+      detail: "active ZenPlanner members across all gyms",
+    });
+  }
+
+  return {
+    id: "product-usage",
+    title: "Product Usage",
+    source: "TWU member-overlap API",
+    syncedAt: overlap?.synced_at ?? null,
+    kpis,
+  };
 }
 
-export function buildRetentionKpis(overlap: OverlapData | null, retention: RetentionAlertsPayload | null): Kpi[] {
-  const inBoth = overlap?.in_both?.length ?? 0;
-  const inZpNotApp = overlap?.in_zp_not_app?.length ?? 0;
-  const total = inBoth + inZpNotApp;
-  const hasOverlap = overlap !== null && total > 0;
-  const hasRetention = retention !== null;
-  const byType = retention?.alerts_by_type ?? {};
+/* ------------------------------------------------------------------ *
+ * Member Health — from the Retention Watch daily payload
+ * ------------------------------------------------------------------ */
 
-  // A KPI needs BOTH pieces to be real: the alert count (numerator, from
-  // the webhook payload) and total in_both members (denominator, from the
-  // overlap report) — having only one still leaves a sample number.
-  const pctOf = (alertType: string, fallback: number): { value: number; live: boolean; note?: string } => {
-    if (hasOverlap && hasRetention && inBoth > 0) {
-      const count = byType[alertType] ?? 0;
-      return {
-        value: round1((count / inBoth) * 100),
-        live: true,
-        note: `${count} of ${inBoth} linked members`,
-      };
-    }
-    return { value: fallback, live: false };
+/** Alert-type keys vary in casing/spacing across payload versions. */
+function normaliseAlertCounts(raw: Record<string, unknown> | undefined) {
+  const out = new Map<string, number>();
+  if (!raw) return out;
+  for (const [k, v] of Object.entries(raw)) {
+    const num = typeof v === "number" ? v : Number(v);
+    if (!Number.isFinite(num)) continue;
+    out.set(String(k).toLowerCase().replace(/[^a-z0-9]+/g, "_"), num);
+  }
+  return out;
+}
+
+export function buildMemberHealth(
+  overlap: OverlapData | null,
+  retention: RetentionAlertsPayload | null
+): Section {
+  const kpis: Kpi[] = [];
+  const linked = overlap?.in_both?.length ?? 0;
+  const counts = normaliseAlertCounts(retention?.alerts_by_type);
+
+  // A rate needs both halves to be real: the alert count from Retention
+  // Watch, and the linked-member denominator from the overlap report.
+  const canRate = retention !== null && linked > 0;
+
+  const add = (
+    id: string,
+    label: string,
+    aliases: string[],
+    good: number,
+    warn: number,
+    note?: string
+  ) => {
+    if (!canRate) return;
+    const key = aliases.find((a) => counts.has(a));
+    if (key === undefined) return; // field absent from payload — omit rather than show 0%
+    const count = counts.get(key)!;
+    kpis.push({
+      id,
+      label,
+      value: round1((count / linked) * 100),
+      unit: "%",
+      threshold: { direction: "lower-is-better", good, warn },
+      detail: note ?? `${n(count)} of ${n(linked)} linked members`,
+    });
   };
 
-  const atRisk = pctOf("at_risk", 12.5);
-  const needsAttention = pctOf("needs_attention", 18.9);
-  const attendanceDrop = pctOf("attendance_drop", 14.1);
-  const snapshotPending = pctOf("snapshot_pending", 4.2);
-  const adoptionGapValue = hasOverlap ? round1((inZpNotApp / total) * 100) : 36;
+  add("pct-at-risk", "Members At-Risk", ["at_risk", "atrisk", "risk"], 10, 20);
+  add("pct-needs-attention", "Needs Attention", ["needs_attention", "attention"], 15, 25);
+  add(
+    "pct-attendance-drop",
+    "Attendance Drop (7+ days)",
+    ["attendance_drop", "attendance_decline", "no_show"],
+    10,
+    20
+  );
+  add(
+    "data-coverage-gap",
+    "Data Coverage Gap",
+    ["snapshot_pending", "no_snapshot", "missing_snapshot"],
+    5,
+    15,
+    undefined
+  );
 
-  const blockerNote = !hasRetention
-    ? "Retention Watch still needs to be repointed at /api/retention-webhook — see instructions"
-    : !hasOverlap
-    ? "TWU_API_TOKEN not set — have the alert counts but not the total member count to turn them into a %"
-    : undefined;
+  return {
+    id: "member-health",
+    title: "Member Health",
+    source: "Retention Watch daily run",
+    syncedAt: retention?.synced_at ?? retention?.run_completed_at ?? null,
+    kpis,
+  };
+}
 
-  return [
-    {
-      id: "pct-at-risk",
-      question: "retention",
-      label: "Members At-Risk",
-      value: atRisk.value,
-      unit: "%",
-      threshold: { direction: "lower-is-better", good: 10, warn: 20 },
-      trendDeltaPct: null,
-      source: "Retention Watch daily payload",
-      status: atRisk.live ? "live" : "sample",
-      note: atRisk.note ?? blockerNote,
-    },
-    {
-      id: "pct-needs-attention",
-      question: "retention",
-      label: "Needs Attention",
-      value: needsAttention.value,
-      unit: "%",
-      threshold: { direction: "lower-is-better", good: 15, warn: 25 },
-      trendDeltaPct: null,
-      source: "Retention Watch daily payload",
-      status: needsAttention.live ? "live" : "sample",
-      note: needsAttention.note,
-    },
-    {
-      id: "pct-attendance-drop",
-      question: "retention",
-      label: "Attendance Drop (7+ days)",
-      value: attendanceDrop.value,
-      unit: "%",
-      threshold: { direction: "lower-is-better", good: 10, warn: 20 },
-      trendDeltaPct: null,
-      source: "Retention Watch daily payload",
-      status: attendanceDrop.live ? "live" : "sample",
-      note: attendanceDrop.note,
-    },
-    {
-      id: "adoption-gap",
-      question: "retention",
-      label: "Adoption Gap (not on app)",
-      value: adoptionGapValue,
-      unit: "%",
-      threshold: { direction: "lower-is-better", good: 30, warn: 50 },
-      trendDeltaPct: null,
-      source: "Retention Watch overlap report",
-      status: hasOverlap ? "live" : "sample",
-      note: hasOverlap ? `${inZpNotApp} of ${total} active ZenPlanner members never linked the app` : undefined,
-    },
-    {
-      id: "data-coverage-gap",
-      question: "retention",
-      label: "Data Coverage Gap",
-      value: snapshotPending.value,
-      unit: "%",
-      threshold: { direction: "lower-is-better", good: 5, warn: 15 },
-      trendDeltaPct: null,
-      source: "Retention Watch daily payload",
-      status: snapshotPending.live ? "live" : "sample",
-      note:
-        snapshotPending.note ??
-        "Operational health, not member health — high value means engagement snapshots aren't generating for some members",
-    },
-  ];
+/* ------------------------------------------------------------------ *
+ * Pipeline + Outreach — from the GHL gym-owners contact tags
+ * ------------------------------------------------------------------ */
+
+export function buildPipeline(go: GrowthOutreachPayload | null): Section {
+  const kpis: Kpi[] = [];
+
+  if (go) {
+    if (go.email_replied > 0) {
+      kpis.push({
+        id: "interested-rate",
+        label: "Interested Rate",
+        value: go.interested_rate_pct,
+        unit: "%",
+        threshold: { direction: "higher-is-better", good: 25, warn: 12 },
+        detail: `${n(go.interested)} of ${n(go.email_replied)} replies marked interested`,
+      });
+    }
+    if (go.hot_leads + go.warm_leads > 0) {
+      kpis.push({
+        id: "hot-lead-share",
+        label: "Hot Lead Share",
+        value: go.hot_lead_share_pct,
+        unit: "%",
+        threshold: { direction: "higher-is-better", good: 40, warn: 20 },
+        detail: `${n(go.hot_leads)} hot of ${n(go.hot_leads + go.warm_leads)} qualified leads`,
+      });
+    }
+    if (go.sequence_complete + go.sequence_stopped > 0) {
+      kpis.push({
+        id: "sequence-complete-rate",
+        label: "Sequence Complete Rate",
+        value: go.sequence_complete_rate_pct,
+        unit: "%",
+        threshold: { direction: "higher-is-better", good: 70, warn: 50 },
+        detail: `${n(go.sequence_complete)} completed vs ${n(go.sequence_stopped)} stopped early`,
+      });
+    }
+    if (go.total_contacts > 0) {
+      kpis.push({
+        id: "total-pipeline-contacts",
+        label: "Total Pipeline Contacts",
+        value: go.total_contacts,
+        unit: "count",
+        threshold: null,
+        detail: "gym-owner contacts in the GHL pipeline",
+      });
+    }
+  }
+
+  return {
+    id: "pipeline",
+    title: "Pipeline",
+    source: "GHL gym-owners",
+    syncedAt: go?.synced_at ?? null,
+    kpis,
+  };
+}
+
+export function buildOutreach(go: GrowthOutreachPayload | null): Section {
+  const kpis: Kpi[] = [];
+
+  if (go) {
+    if (go.email_sent > 0) {
+      kpis.push({
+        id: "email-reply-rate",
+        label: "Email Reply Rate",
+        value: go.email_reply_rate_pct,
+        unit: "%",
+        threshold: { direction: "higher-is-better", good: 8, warn: 4 },
+        detail: `${n(go.email_replied)} replies of ${n(go.email_sent)} sent`,
+      });
+    }
+    if (go.ig_sent_total > 0) {
+      kpis.push({
+        id: "ig-reply-rate",
+        label: "IG Reply Rate",
+        value: go.ig_reply_rate_pct,
+        unit: "%",
+        threshold: { direction: "higher-is-better", good: 12, warn: 6 },
+        detail: `${n(go.ig_replies)} replies of ${n(go.ig_sent_total)} DMs sent`,
+      });
+    }
+  }
+
+  return {
+    id: "outreach",
+    title: "Outreach Channels",
+    source: "GHL gym-owners",
+    syncedAt: go?.synced_at ?? null,
+    kpis,
+  };
 }
 
 /**
- * Revenue is confirmed in scope (both TWU's own revenue and gym-client
- * revenue) but the data source for each hasn't been confirmed yet:
- *   - TWU's own revenue: Stripe? GHL invoices? — TBD
- *   - Gym client revenue: likely ZenPlanner billing, same system Retention
- *     Watch already reads from — needs API access confirmed
- * Left out of the KPI arrays above entirely rather than shipped as fake
- * numbers. Add a `revenueKpis` array here once a source is confirmed.
+ * Two KPI groups are confirmed in scope but have no data source yet, so
+ * they are not rendered as cards at all — only named in the page footer:
+ *
+ *  - Stickiness (DAU/MAU): needs an app-usage endpoint from Alex. It cannot
+ *    be derived from Retention Watch, whose payload only contains members
+ *    that triggered an alert, never the healthy active ones.
+ *  - Revenue: TWU's own revenue needs Stripe or GHL invoice access; gym-client
+ *    revenue needs ZenPlanner billing access. Neither is confirmed.
  */
-export const revenueBlocked = true;
+export const NOT_YET_LIVE: { label: string; reason: string }[] = [
+  { label: "Stickiness (DAU/MAU)", reason: "awaiting an app-usage endpoint" },
+  { label: "Revenue", reason: "awaiting Stripe / ZenPlanner billing access" },
+];

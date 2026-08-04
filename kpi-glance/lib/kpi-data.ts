@@ -1,8 +1,8 @@
 import { Kpi, lowSampleCaveat, Section } from "./types";
 import {
   GrowthOutreachPayload,
-  OverlapData,
-  RetentionAlertsPayload,
+  OverlapSnapshot,
+  RetentionSnapshot,
   round1,
 } from "./live-data";
 
@@ -21,10 +21,10 @@ const n = (v: number) => v.toLocaleString();
  * Product Usage — from the TWU member-overlap report
  * ------------------------------------------------------------------ */
 
-export function buildProductUsage(overlap: OverlapData | null): Section {
+export function buildProductUsage(overlap: OverlapSnapshot | null): Section {
   const kpis: Kpi[] = [];
-  const linked = overlap?.in_both?.length ?? 0;
-  const notLinked = overlap?.in_zp_not_app?.length ?? 0;
+  const linked = overlap?.in_both ?? 0;
+  const notLinked = overlap?.in_zp_not_app ?? 0;
   const total = linked + notLinked;
 
   if (overlap && total > 0) {
@@ -49,7 +49,8 @@ export function buildProductUsage(overlap: OverlapData | null): Section {
   return {
     id: "product-usage",
     title: "Product Usage",
-    source: "TWU member-overlap API",
+    source:
+      overlap?.origin === "n8n" ? "member-overlap via Retention Watch" : "TWU member-overlap API",
     syncedAt: overlap?.synced_at ?? null,
     kpis,
   };
@@ -72,11 +73,11 @@ function normaliseAlertCounts(raw: Record<string, unknown> | undefined) {
 }
 
 export function buildMemberHealth(
-  overlap: OverlapData | null,
-  retention: RetentionAlertsPayload | null
+  overlap: OverlapSnapshot | null,
+  retention: RetentionSnapshot | null
 ): Section {
   const kpis: Kpi[] = [];
-  const linked = overlap?.in_both?.length ?? 0;
+  const linked = overlap?.in_both ?? 0;
   const counts = normaliseAlertCounts(retention?.alerts_by_type);
 
   // A rate needs both halves to be real: the alert count from Retention
@@ -115,14 +116,26 @@ export function buildMemberHealth(
     10,
     20
   );
-  add(
-    "data-coverage-gap",
-    "Data Coverage Gap",
-    ["snapshot_pending", "no_snapshot", "missing_snapshot"],
-    5,
-    15,
-    undefined
-  );
+  // "Data Coverage Gap" was defined against a snapshot_pending alert type
+  // the live workflow does not emit. Its real alert types are not_on_app /
+  // needs_attention / at_risk / attendance_drop, so the gap is expressed
+  // against the one that exists: members never linked to the app, measured
+  // over the whole member base rather than over linked members.
+  if (retention !== null && overlap && overlap.in_both + overlap.in_zp_not_app > 0) {
+    const key = ["not_on_app", "never_linked"].find((a) => counts.has(a));
+    if (key !== undefined) {
+      const base = overlap.in_both + overlap.in_zp_not_app;
+      kpis.push({
+        id: "not-on-app",
+        label: "Not On App",
+        value: round1((counts.get(key)! / base) * 100),
+        unit: "%",
+        threshold: { direction: "lower-is-better", good: 30, warn: 50 },
+        detail: `${n(counts.get(key)!)} of ${n(base)} members never linked the app`,
+        caveat: lowSampleCaveat(base),
+      });
+    }
+  }
 
   return {
     id: "member-health",

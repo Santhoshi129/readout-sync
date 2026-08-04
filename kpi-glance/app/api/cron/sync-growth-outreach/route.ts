@@ -137,9 +137,18 @@ async function syncAdoption(): Promise<{ ok: boolean; reason?: string; members?:
     return { ok: false, reason: "Unexpected member-overlap response shape" };
   }
 
-  const result = await storeSetJSON(KEY_ADOPTION, { ...data, synced_at: new Date().toISOString() });
+  // Store counts only — the raw report contains member emails and ids that
+  // this dashboard has no need to persist.
+  const counts = {
+    in_both: data.in_both?.length ?? 0,
+    in_zp_not_app: data.in_zp_not_app?.length ?? 0,
+    in_app_not_zp: data.in_app_not_zp?.length ?? 0,
+    origin: "twu-api" as const,
+    synced_at: new Date().toISOString(),
+  };
+  const result = await storeSetJSON(KEY_ADOPTION, counts);
   return result.ok
-    ? { ok: true, members: (data.in_both?.length ?? 0) + (data.in_zp_not_app?.length ?? 0) }
+    ? { ok: true, members: counts.in_both + counts.in_zp_not_app }
     : { ok: false, reason: result.error };
 }
 

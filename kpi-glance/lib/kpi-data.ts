@@ -1,7 +1,6 @@
 import { Kpi, lowSampleCaveat, Section } from "./types";
 import { datesOf, deltaOf, GrowthPoint, MemberPoint, seriesOf } from "./history";
-import { Segment, SEG } from "@/components/CompositionBar";
-import { Stage } from "@/components/FunnelBar";
+import { SEG, Segment, Stage } from "./chart-tokens";
 import {
   GrowthOutreachPayload,
   OverlapSnapshot,

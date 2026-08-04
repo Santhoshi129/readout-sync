@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FUNNEL_RAMP as RAMP, Stage } from "@/lib/chart-tokens";
 
 /**
  * Stage-by-stage drop-off, so a rate like "Interested Rate 7.4%" can be read
@@ -15,12 +16,7 @@ import { useState } from "react";
  * step 3.85:1 against the surface.
  */
 
-export interface Stage {
-  label: string;
-  value: number;
-}
 
-const RAMP = ["#f0dda6", "#e6c766", "#c9a84c", "#8a6f2a"];
 
 export default function FunnelBar({ title, stages }: { title: string; stages: Stage[] }) {
   const [active, setActive] = useState<number | null>(null);

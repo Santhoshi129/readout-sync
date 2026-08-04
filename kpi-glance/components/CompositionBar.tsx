@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Segment } from "@/lib/chart-tokens";
 
 /**
  * Part-to-whole for a population, so a percentage can be read against the
@@ -12,32 +13,6 @@ import { useState } from "react";
  * and states the count in words.
  */
 
-export interface Segment {
-  label: string;
-  value: number;
-  color: string;
-}
-
-/**
- * Alert types form an ordered severity scale, so they take a validated
- * single-hue ordinal ramp rather than four status hues. Four status hues
- * were tried first and failed outright — attendance-drop orange against
- * at-risk red measured normal-vision ΔE 9.6, under the hard floor of 15,
- * which labelling does not excuse.
- *
- * Red ramp on the #141414 card surface: monotone lightness, clear step
- * gaps, darkest step 2.49:1, hue spread 4°.
- */
-export const SEG = {
-  /** Population split: on the app vs not. */
-  good: "#6fd39a",
-  neutral: "#3a3a3a",
-  /** Severity ramp, most severe first. */
-  sev1: "#8f3a3a",
-  sev2: "#b85252",
-  sev3: "#d18686",
-  sev4: "#e8b3b3",
-};
 
 export default function CompositionBar({
   title,

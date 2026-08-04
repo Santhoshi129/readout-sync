@@ -30,10 +30,15 @@ export async function GET() {
     ok: true,
     checked_at: new Date().toISOString(),
     sources: {
-      product_usage: describe(overlap !== null, overlap?.synced_at),
+      product_usage: {
+        ...describe(overlap !== null, overlap?.synced_at),
+        origin: overlap?.origin ?? null,
+        members: overlap ? overlap.in_both + overlap.in_zp_not_app : null,
+      },
       member_health: {
         ...describe(retention !== null, retention?.synced_at),
         alert_types: Object.keys(retention?.alerts_by_type ?? {}),
+        alert_count: retention?.alert_count ?? null,
       },
       pipeline_outreach: describe(growth !== null, growth?.synced_at),
     },

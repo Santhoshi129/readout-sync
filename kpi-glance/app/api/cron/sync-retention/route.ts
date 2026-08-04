@@ -5,7 +5,7 @@ import {
   listRecentExecutions,
   resolveWorkflow,
 } from "@/lib/n8n";
-import { storeGetJSON, storeSetJSON } from "@/lib/store";
+import { storeGetJSONFresh, storeSetJSON } from "@/lib/store";
 import { KEY_ADOPTION_N8N, KEY_RETENTION } from "@/lib/live-data";
 import {
   dayOf,
@@ -106,7 +106,7 @@ async function backfillHistory(latestStartedAt: string | null) {
   const wf = await resolveWorkflow();
   if (!wf.ok) return { ok: false, error: wf.error };
 
-  const stored = (await storeGetJSON<Series<MemberPoint>>(KEY_MEMBER_HISTORY)) ?? { points: [] };
+  const stored = (await storeGetJSONFresh<Series<MemberPoint>>(KEY_MEMBER_HISTORY)) ?? { points: [] };
   const haveDates = new Set(stored.points.map((p) => p.date));
 
   const executions = await listRecentExecutions(wf.root, wf.apiKey, wf.workflowId, LOOKBACK);

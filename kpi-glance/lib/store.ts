@@ -23,9 +23,25 @@ function pathFor(key: string): string {
   return `${PREFIX}/${key.replace(/[^a-zA-Z0-9._-]/g, "-")}.json`;
 }
 
+/**
+ * Cached read — correct for page loads, where a snapshot at most a minute
+ * stale is indistinguishable from fresh.
+ */
 export async function storeGetJSON<T>(key: string): Promise<T | null> {
+  return read<T>(key, true);
+}
+
+/**
+ * Uncached read. Required for read-modify-write, where a cached copy would
+ * silently drop whatever the previous write just added.
+ */
+export async function storeGetJSONFresh<T>(key: string): Promise<T | null> {
+  return read<T>(key, false);
+}
+
+async function read<T>(key: string, useCache: boolean): Promise<T | null> {
   try {
-    const res = await get(pathFor(key), { access: "private" });
+    const res = await get(pathFor(key), { access: "private", useCache });
     if (!res || res.statusCode !== 200 || !res.stream) return null;
     const text = await new Response(res.stream).text();
     if (!text) return null;

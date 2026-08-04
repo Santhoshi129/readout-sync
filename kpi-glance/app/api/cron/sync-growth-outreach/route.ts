@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { storeGetJSON, storeSetJSON } from "@/lib/store";
+import { storeGetJSONFresh, storeSetJSON } from "@/lib/store";
 import { KEY_ADOPTION, KEY_GROWTH } from "@/lib/live-data";
 import { authorizeCron } from "@/lib/cron-auth";
 import { dayOf, GrowthPoint, KEY_GROWTH_HISTORY, mergePoints, Series } from "@/lib/history";
@@ -120,7 +120,7 @@ async function syncGrowthOutreach(): Promise<{ ok: boolean; reason?: string; con
   // to backfill from, so this series starts the first day the cron runs.
   const date = dayOf(payload.synced_at);
   if (date) {
-    const stored = (await storeGetJSON<Series<GrowthPoint>>(KEY_GROWTH_HISTORY)) ?? { points: [] };
+    const stored = (await storeGetJSONFresh<Series<GrowthPoint>>(KEY_GROWTH_HISTORY)) ?? { points: [] };
     const merged = mergePoints(stored.points, [
       {
         date,

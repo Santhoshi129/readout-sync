@@ -1,32 +1,25 @@
-export type Question = "growth" | "outreach" | "adoption" | "retention";
-
-export type SourceStatus = "live" | "sample" | "blocked";
-
 export type Direction = "higher-is-better" | "lower-is-better";
 
 export interface Threshold {
   direction: Direction;
-  good: number; // boundary at/beyond which the metric is green
-  warn: number; // boundary at/beyond which the metric is yellow (between warn and good)
+  good: number; // at/beyond this the metric is green
+  warn: number; // between warn and good the metric is yellow
 }
 
 export interface Kpi {
   id: string;
-  question: Question;
   label: string;
-  value: number | null; // null when blocked / no data yet
-  unit: "%" | "days" | "count" | "ratio";
-  threshold: Threshold | null; // null = comparative/trend-only metric, no fixed color
-  trendDeltaPct: number | null; // vs prior period, null if unknown
-  source: string;
-  status: SourceStatus;
-  note?: string;
+  value: number;
+  unit: "%" | "count";
+  /** null = scale/context number with no target; shown neutral, never in the Problem Radar */
+  threshold: Threshold | null;
+  /** Short factual basis for the number, e.g. "208 of 1,465 linked members" */
+  detail: string;
 }
 
-export type Severity = "good" | "warn" | "bad" | "neutral" | "blocked";
+export type Severity = "good" | "warn" | "bad" | "neutral";
 
 export function severityOf(kpi: Kpi): Severity {
-  if (kpi.status === "blocked" || kpi.value === null) return "blocked";
   if (!kpi.threshold) return "neutral";
   const { direction, good, warn } = kpi.threshold;
   const v = kpi.value;
@@ -34,9 +27,24 @@ export function severityOf(kpi: Kpi): Severity {
     if (v >= good) return "good";
     if (v >= warn) return "warn";
     return "bad";
-  } else {
-    if (v <= good) return "good";
-    if (v <= warn) return "warn";
-    return "bad";
   }
+  if (v <= good) return "good";
+  if (v <= warn) return "warn";
+  return "bad";
+}
+
+/** Plain-language statement of what the threshold expects, for the Problem Radar. */
+export function targetText(kpi: Kpi): string {
+  if (!kpi.threshold) return "";
+  const { direction, good } = kpi.threshold;
+  const t = kpi.unit === "%" ? `${good}%` : good.toLocaleString();
+  return direction === "higher-is-better" ? `target ≥ ${t}` : `target < ${t}`;
+}
+
+export interface Section {
+  id: string;
+  title: string;
+  source: string;
+  syncedAt: string | null;
+  kpis: Kpi[];
 }
